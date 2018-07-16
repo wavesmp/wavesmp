@@ -1,0 +1,27 @@
+.tablemenubar {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.tablemenubar-search-box {
+  margin-top: 19px;
+  text-align: right;
+}
+
+.tablemenubar-search-box input {
+  width: 200px;
+  margin-left: 2px;
+  background-color: var(--input-background-color);
+  color: #fff;
+  border: 1px solid var(--input-background-color);
+  border-radius: 4px;
+}
+
+.tablemenubar-input-icon {
+  color: var(--input-icon-color);
+}
+
+.tablemenubar-buttons {
+  margin-top: 17px;
+}
+

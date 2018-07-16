@@ -1,0 +1,88 @@
+{
+  "TEST_MODAL1": {
+    "type": "type1",
+    "props": {
+      "prop": "prop1"
+    }
+  },
+  "TEST_CONTEXTMENU1": {
+    "type": "type1",
+    "x": "x1",
+    "y": "y1",
+    "props": {
+      "prop": "prop1"
+    }
+  },
+  "TEST_CONTEXTMENU2": {
+    "type": "type2",
+    "props": {
+      "prop": "prop2"
+    }
+  },
+  "TEST_USER1": {
+    "idp": "testIdp1",
+    "idpId": "testIdpId1",
+    "email": "testEmail1",
+    "name": "testName1"
+  },
+  "TEST_USER1_UPDATE": {
+    "email": "testUpdatedEmail1",
+    "name": "testUpdatedName1"
+  },
+  "TEST_USER2": {
+    "idp": "testIdp2",
+    "idpId": "testIdpId2",
+    "email": "testEmail2",
+    "name": "testName2"
+  },
+  "TEST_USER2_UPDATE": {
+    "email": "testUpdatedEmail2",
+    "name": "testUpdatedName2"
+  },
+  "TEST_TRACK1": {
+    "title": "testTitle1",
+    "artist": "testArtist1",
+    "album": "testAlbum1",
+    "genre": "testGenre1",
+    "duration": 61.7,
+    "idp": "testIdp1",
+    "idpId": "testIdpId1",
+    "source": "testSource1"
+  },
+  "TEST_TRACK1_UPDATE": {
+    "title": "testUpdatedTitle1",
+    "artist": "testUpdatedArtist1",
+    "album": "testUpdatedAlbum1",
+    "genre": "testUpdatedGenre1",
+    "duration": 71.7,
+    "source": "testUpdatedSource1"
+  },
+  "TEST_TRACK2": {
+    "title": "testTitle2",
+    "artist": "testArtist2",
+    "album": "testAlbum2",
+    "genre": "testGenre2",
+    "duration": 62.7,
+    "idp": "testIdp2",
+    "idpId": "testIdpId2",
+    "source": "testSource2"
+  },
+  "TEST_TRACK2_UPDATE": {
+    "title": "testUpdatedTitle2",
+    "artist": "testUpdatedArtist2",
+    "album": "testUpdatedAlbum2",
+    "genre": "testUpdatedGenre2",
+    "duration": 72.7,
+    "source": "testUpdatedSource2"
+  },
+  "TEST_PLAYLIST_NAME1": "testPlaylistName1",
+  "TEST_PLAYLIST_NAME2": "testPlaylistName2",
+  "TEST_PLAYLIST_COPY_NAME1": "testPlaylistCopyName1",
+  "TEST_PLAYLIST_COPY_NAME2": "testPlaylistCopyName2",
+  "TEST_PLAYLIST_MOVE_NAME1": "testPlaylistMoveName1",
+  "TEST_PLAYLIST_MOVE_NAME2": "testPlaylistMoveName2",
+  "TEST_IDP": "testIdp",
+  "TEST_TRACK_ID": "testTrackId",
+  "TEST_SEARCH": "testSearch",
+  "TEST_TOKEN": "testToken"
+}

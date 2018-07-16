@@ -1,0 +1,29 @@
+{
+  "name": "waves-client-selectors",
+  "version": "1.0.0",
+  "description": "Waves client selectors",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha"
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-client-selectors.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "format-duration": "^1.1.0",
+    "fuse.js": "^3.2.0",
+    "reselect": "^3.0.1",
+    "waves-client-constants": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "lodash.zip": "^4.2.0",
+    "mocha": "^5.2.0",
+    "mongoid-js": "^1.1.3",
+    "nyc": "^11.8.0",
+    "waves-test-data": "^1.0.0"
+  }
+}

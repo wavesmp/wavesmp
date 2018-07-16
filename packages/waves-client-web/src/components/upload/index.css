@@ -1,0 +1,22 @@
+
+.upload-drop-zone {
+  height: 200px;
+  border-width: 2px;
+  margin-bottom: 20px;
+  color: var(--smalltext-color);
+  border-style: dashed;
+  border-color: var(--dropdown-color);
+  line-height: 200px;
+  text-align: center
+}
+
+.upload-drop-zone-dragging {
+  background-color: var(--selected-color);
+  border-color: var(--selected-color-border);
+  border-style: solid;
+}
+
+.upload-file-input {
+  display: inline-block;
+  vertical-align: middle;
+}

@@ -1,0 +1,18 @@
+{
+  "name": "waves-client-auth",
+  "version": "1.0.0",
+  "description": "Waves client authentication methods",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"No tests :(\""
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-client-auth.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1"
+  }
+}

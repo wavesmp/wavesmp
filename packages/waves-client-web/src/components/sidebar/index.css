@@ -1,0 +1,201 @@
+
+/* Mobile sidebar. Collapses to the bottom */
+#sidebar-container {
+  float: left;
+  background: var(--sidebar-color);
+  bottom: 0px;
+  width: 100%;
+  position: fixed;
+  text-align: center;
+}
+
+#sidebar-container>ul>li>a,
+#sidebar-container>ul>li>span {
+  font-family: 'Open Sans', sans-serif;
+  border: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: var(--sidebar-icons-color);
+  font-size: 14px;
+  text-align: center;
+  background: var(--sidebar-color);
+  display: block;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#sidebar-container .sidebar-active {
+  background-color: var(--body-color);
+  color: var(--sidebar-color-active-icon);
+  pointer-events: none;
+}
+
+/* float left collapses sidebar to bottom */
+#sidebar-container>ul>li {
+  float: left;
+  padding-left: 0px;
+  min-width: var(--sidebar-width);
+}
+
+/* When in wide view (e.g. viewing playlists), stack sidebar items */
+#sidebar-container.sidebar-container-wide>ul>li {
+  float: none;
+}
+
+#sidebar-container>ul>li>a:hover,
+#sidebar-container>ul>li>span:hover {
+  background: var(--sidebar-color-hover);
+  color: #fff;
+}
+
+#sidebar-container.sidebar-container-wide>ul>li>a,
+#sidebar-container.sidebar-container-wide>ul>li>span {
+  text-align: left;
+}
+
+#sidebar-container.sidebar-container-wide>ul>li>span.sidebar-divider {
+  border-bottom: 2px solid;
+  font-size: 13px;
+  padding-bottom: 5px;
+  cursor: default;
+}
+
+#sidebar-container.sidebar-container-wide>ul>li>span.sidebar-divider:hover {
+  background: var(--sidebar-color);
+  color: var(--sidebar-icons-color);
+}
+
+/* We use both <a> and <span> for nav links. Add span for consistency */
+.nav>li>span {
+  padding: 10px 15px;
+}
+
+/* Main bar transition */
+#sidebar-container.mainbartransition-enter {
+  bottom: 0px;
+  transform: translateY(100%);
+}
+
+#sidebar-container.mainbartransition-enter.mainbartransition-enter-active {
+  bottom: 0px;
+  transform: translateY(0%);
+  transition: transform 1000ms ease 1000ms;
+}
+
+#sidebar-container.mainbartransition-leave {
+  bottom: 0px;
+  transform: translateY(0%);
+}
+
+#sidebar-container.mainbartransition-leave.mainbartransition-leave-active {
+  bottom: 0px;
+  transform: translateY(100%);
+  transition: transform 1000ms ease;
+}
+
+/* Playlist bar transition */
+#sidebar-container.playlistbartransition-enter {
+  bottom: 0px;
+  transform: translateY(100%);
+}
+
+#sidebar-container.playlistbartransition-enter.playlistbartransition-enter-active {
+  bottom: 0px;
+  transform: translateY(0%);
+  transition: transform 1000ms ease 1000ms;
+}
+
+#sidebar-container.playlistbartransition-leave {
+  bottom: 0px;
+  transform: translateY(0%);
+}
+
+#sidebar-container.playlistbartransition-leave.playlistbartransition-leave-active {
+  bottom: 0px;
+  transform: translateY(100%);
+  transition: transform 1000ms ease;
+}
+
+/* TODO probably want to move to hamburger menu eventually */
+@media only screen and (min-width: 516px) {
+  .nav>li.sidebar-profile-link {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  /* Desktop */
+  #sidebar-container {
+    height: 100%;
+    top: 65px;
+    transition: top 0.8s cubic-bezier(.02, .01, .47, 1);
+  }
+
+  #sidebar-container.sidebar-container-narrow {
+    width: var(--sidebar-width);
+  }
+
+  #sidebar-container.sidebar-container-wide {
+    width: var(--playlistbar-width);
+  }
+
+  #sidebar-container.sidebar-container-player-visible {
+    top: calc(65px + var(--trackslider-width));
+  }
+
+  #sidebar-container>ul>li {
+    width: 100%;
+  }
+
+  #sidebar-container.sidebar-container-wide>ul>li>a,
+  #sidebar-container.sidebar-container-wide>ul>li>span {
+    padding: 20px 15px;
+  }
+
+  /* Main bar transition */
+  #sidebar-container.mainbartransition-enter {
+    width: var(--transitionbar-width);
+    transform: rotateY(90deg);
+  }
+
+  #sidebar-container.mainbartransition-enter.mainbartransition-enter-active {
+    width: var(--sidebar-width);
+    transform: rotateY(0deg);
+    transition: transform 1000ms ease 1000ms, width 1000ms ease 1000ms;
+  }
+
+  #sidebar-container.mainbartransition-leave {
+    width: var(--sidebar-width);
+    transform: rotateY(0deg);
+  }
+
+  #sidebar-container.mainbartransition-leave.mainbartransition-leave-active {
+    width: var(--transitionbar-width);
+    transform: rotateY(90deg);
+    transition: transform 1000ms ease, width 1000ms ease;
+  }
+
+  /* Playlist bar transition */
+  #sidebar-container.playlistbartransition-enter {
+    width: var(--transitionbar-width);
+    transform: rotateY(90deg);
+  }
+
+  #sidebar-container.playlistbartransition-enter.playlistbartransition-enter-active {
+    width: var(--playlistbar-width);
+    transform: rotateY(0deg);
+    transition: transform 1000ms ease 1000ms, width 1000ms ease 1000ms;
+  }
+
+  #sidebar-container.playlistbartransition-leave {
+    width: var(--playlistbar-width);
+    transform: rotateY(0deg);
+  }
+
+  #sidebar-container.playlistbartransition-leave.playlistbartransition-leave-active {
+    width: var(--transitionbar-width);
+    transform: rotateY(90deg);
+    transition: transform 1000ms ease, width 1000ms ease;
+  }
+}

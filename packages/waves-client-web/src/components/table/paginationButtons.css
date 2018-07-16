@@ -1,0 +1,48 @@
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 20px 0;
+}
+
+.pagination > li {
+  display: inline;
+}
+
+.pagination > li > a {
+  float: left;
+  padding: 6px 12px;
+  margin-left: -1px;
+  border-radius: 50%;
+  margin: 0 5px;
+  background-color: transparent;
+  border: 2px solid var(--table-color-border);
+  color: var(--smalltext-color);
+  /* Avoid underlines on hover */
+  text-decoration: none;
+}
+
+.pagination > li:first-child > a {
+  margin-left: 0;
+}
+
+.pagination > li > a:hover:not(.disabled) {
+  background-color: transparent;
+  border-color: var(--button-primary-color);
+  color: var(--button-primary-color);
+}
+
+.pagination > li > a.active,
+.pagination > li > a.active:hover,
+.pagination > li > a.active:focus {
+  color: var(--body-color);
+  background-color: var(--smalltext-color);
+  border-color: var(--smalltext-color);
+}
+
+.pagination > li > a.active {
+  pointer-events: none;
+}
+
+.pagination > li > a.disabled {
+  cursor: not-allowed;
+}

@@ -1,0 +1,50 @@
+{
+  "name": "waves-client-web",
+  "version": "1.0.0",
+  "description": "Waves web client",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-client-web.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.5",
+    "js-yaml": "^3.12.0",
+    "string-replace-loader": "^2.1.1",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.0.0",
+    "webpack-cli": "^2.0.0"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "bson-objectid": "^1.2.3",
+    "format-duration": "^1.1.0",
+    "musicmetadata": "^2.0.5",
+    "react": "^16.3.2",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.2.0",
+    "waves-action-types": "^1.0.0",
+    "waves-client-actions": "^1.0.0",
+    "waves-client-auth": "^1.0.0",
+    "waves-client-constants": "^1.0.0",
+    "waves-client-local-state": "^1.0.0",
+    "waves-client-player": "^1.0.0",
+    "waves-client-reducer": "^1.0.0",
+    "waves-client-selectors": "^1.0.0",
+    "waves-socket": "^1.0.0"
+  }
+}

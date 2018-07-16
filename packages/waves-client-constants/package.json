@@ -1,0 +1,12 @@
+{
+  "name": "waves-client-constants",
+  "version": "1.0.0",
+  "description": "Waves client constants",
+  "main": "index.js",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-client-constants.git"
+  },
+  "license": "ISC"
+}

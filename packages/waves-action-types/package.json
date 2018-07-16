@@ -1,0 +1,15 @@
+{
+  "name": "waves-action-types",
+  "version": "1.0.0",
+  "description": "Waves action types",
+  "main": "index.js",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-action-types.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "keymirror": "^0.1.1"
+  }
+}

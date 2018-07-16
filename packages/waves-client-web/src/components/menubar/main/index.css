@@ -1,0 +1,186 @@
+
+.menubar-main-header {
+  min-height: var(--menubar-height);
+  background: var(--menubar-color);
+  position: fixed;
+  width: 100%;
+}
+
+.menubar-main-container {
+  width: 100%;
+  min-height: var(--menubar-height);
+  font-family: 'Open Sans', sans-serif;
+}
+
+.menubar-profile-link {
+  margin: 20px 20px 0 0;
+  list-style: none;
+  font-size: 14px;
+  display: none;
+  float: right;
+  position: relative;
+}
+
+@media only screen and (min-width: 516px) {
+  .menubar-profile-link {
+    display: block;
+  }
+}
+
+.menubar-profile-link>a {
+  color: #fff;
+}
+
+.menubar-settings-list {
+  list-style: none;
+  padding-left: 8px;
+  max-width: 120px;
+}
+
+.menubar-settings-list-item {
+  cursor: pointer;
+  border: 1px solid var(--dropdown-color);
+  padding: 1px;
+  padding-left: 8px;
+  border-radius: 4px;
+}
+
+.menubar-settings-list-item:hover {
+  background-color: var(--dropdown-color-light);
+  border: 1px solid var(--dropdown-selected-border-color);
+}
+
+
+/* Logo */
+.menubar-main-logo {
+  display: inline;
+  width: 102px;
+  position: relative;
+  top: 14px;
+  left: 36px;
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.menubar-main-logo.menubar-player-visible.menubar-transition {
+  transition: opacity 1s ease, left 1s ease, width 1s ease, transform 1s ease;
+}
+
+.menubar-main-logo.menubar-player-visible {
+  left: 0px;
+  width: 0px;
+  opacity: 0;
+  transform: scaleX(0.565);
+}
+
+@media only screen and (min-width: 516px) {
+  .menubar-main-logo.menubar-player-visible {
+    opacity: 1;
+    width: 102px;
+    left: 0;
+    transform: scaleX(0.565);
+  }
+}
+
+/* @media only screen and (min-width: 641px) {
+ *   .menubar-main-logo.menubar-player-visible {
+ *   }
+ * }
+ */
+
+@media only screen and (min-width: 768px) {
+  .menubar-main-logo.menubar-player-visible {
+    left: 36px;
+    transform: scaleX(1.0);
+  }
+}
+
+/* Logo name */
+.menubar-main-logo-name.menubar-player-visible {
+  transition: opacity 1s ease;
+}
+
+.menubar-main-logo-name {
+  opacity: 1;
+  position: absolute;
+  top: 22px;
+  left: 180px;
+  width: auto;
+  height: auto;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  transform: scaleX(2.0);
+}
+
+.menubar-main-logo-name.menubar-player-visible {
+  opacity: 0;
+}
+
+@media only screen and (min-width:1025px) {
+  .menubar-main-logo-name.menubar-player-visible {
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* todo move out? */
+.menubar-dropdown-menu {
+  /* Custom overrides */
+  min-width: 250px;
+  right: 0;
+
+  /* bootstrap */
+  background-color: var(--dropdown-color);
+  position: absolute;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: 4px;
+}
+
+.menubar-dropdown-header {
+  padding: 3px 20px;
+  font-size: 12px;
+  color: #777;
+  white-space: nowrap;
+}
+
+.menubar-dropdown-divider {
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+
+.menubar-dropdown-link {
+  display: block;
+  padding: 3px 20px;
+  font-weight: normal;
+  color: #333;
+  white-space: nowrap;
+}
+
+.menubar-dropdown-link:hover,
+.menubar-dropdown-link:focus {
+  color: #262626;
+  text-decoration: none;
+  background-color: #f5f5f5;
+}
+
+.menubar-dropdown-item-icon {
+  float: right;
+}

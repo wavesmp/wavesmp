@@ -1,0 +1,20 @@
+{
+  "name": "waves-server-auth",
+  "version": "1.0.0",
+  "description": "Waves server auth verification",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"No tests :(\""
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-server-auth.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "waves-server-logger": "^1.0.0"
+  }
+}

@@ -1,0 +1,68 @@
+
+.trackslider {
+  position: absolute;
+  top: 60px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* TODO used to have fancier slider, but shit broke
+ * relied on experimental css
+ * .trackslider {
+ *   cursor: pointer;
+ *   display: block;
+ *   *height: 100%;*
+ *   *margin-left: 10px;*
+ *   min-height: 50px;
+ *   overflow: hidden;
+ *   width: 45px;
+ *   position: fixed;
+ *   top: 38px;
+ * }
+ *
+ *
+ *
+ * .trackslider:focus {
+ *   box-shadow: none;
+ *   outline: none;
+ * }
+ *
+ * .trackslider:hover::-webkit-slider-thumb,
+ * .trackslider:active::-webkit-slider-thumb {
+ *   width: 10px;
+ *   height: 10px;
+ *   * ball *
+ *   background: #fff;
+ * }
+ *
+ * .trackslider::-webkit-slider-runnable-track {
+ *   -webkit-appearance: none;
+ *   * Right portion *
+ *   background: var(--main-theme-color);
+ *   height: 3px;
+ * }
+ * .trackslider::-webkit-slider-thumb {
+ *   width: 10px;
+ *   height: 10px;
+ *   * ball *
+ *   background: #fff;
+ *   * width: 0px; *
+ *   * height: 0px; * * Hide only when chrome bug is resolved *
+ *   * -webkit-appearance: none; *
+ *   background: transparent;
+ *   border-radius: 50%;
+ *   margin-top: -3px;
+ *   position: relative;
+ * }
+ * .trackslider::-webkit-slider-thumb:before {
+ *   position: absolute;
+ *   top: 3px;
+ *   right: 50%;
+ *   left: -2000px;
+ *   * left portion *
+ *   background: #fff;
+ *   content: '';
+ *   height: 3px;
+ *   pointer-events: none;
+ * }
+ */

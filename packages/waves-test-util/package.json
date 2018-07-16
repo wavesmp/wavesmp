@@ -1,0 +1,15 @@
+{
+  "name": "waves-test-util",
+  "version": "1.0.0",
+  "description": "Test util functions for Waves projects",
+  "main": "index.json",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-test-util.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+      "chai": "^4.1.2"
+    }
+}

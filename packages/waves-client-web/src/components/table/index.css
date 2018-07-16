@@ -1,0 +1,36 @@
+.common-table-status-ok {
+  color: #19b698;
+}
+
+.common-table-row-selected {
+  background-color: var(--selected-color);
+  border-color: var(--selected-color-border);
+  border-style: solid;
+  color: #fff;
+}
+
+.table>tbody>tr.common-table-row-selected>td:first-child {
+  padding-top: 1px;
+}
+
+.table>tbody>tr.common-table-row-selected>td:last-child {
+  padding-bottom: 1px;
+}
+
+@media only screen and (min-width: 768px) {
+  .table>tbody>tr.common-table-row-selected>td,
+  .table>tbody>tr.common-table-row-selected>td:first-child,
+  .table>tbody>tr.common-table-row-selected>td:last-child {
+    padding: 7px;
+  }
+}
+
+.common-columns-small-screen-hide {
+  display: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .common-columns-small-screen-hide {
+    display: table-cell;
+  }
+}

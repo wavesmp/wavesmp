@@ -1,0 +1,20 @@
+{
+  "name": "waves-client-player",
+  "version": "1.0.0",
+  "description": "Waves client player",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"No tests here :(\" && exit 1"
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-client-player.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "left-pad": "^1.2.0",
+    "waves-client-auth": "^1.0.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "waves-server-db",
+  "version": "1.0.0",
+  "description": "Accesses the waves server database",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha"
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-server-db.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "mongoose": "^5.0.11"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "dockerode": "^2.5.4",
+    "lodash.zip": "^4.2.0",
+    "mocha": "^5.0.4",
+    "nyc": "^11.6.0",
+    "wait-port": "^0.2.2",
+    "waves-test-data": "^1.0.0",
+    "waves-test-util": "^1.0.0"
+  }
+}

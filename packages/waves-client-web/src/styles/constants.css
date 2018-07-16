@@ -1,0 +1,39 @@
+:root {
+  /* Old light theme */
+  --main-theme-color: MAIN_THEME_COLOR;
+  --body-color-old: BODY_COLOR_OLD;
+  --body-background-color-old: BODY_BACKGROUND_COLOR_OLD;
+
+  --menubar-color: MENUBAR_COLOR;
+  --menubar-height: MENUBAR_HEIGHT;
+
+  --sidebar-color: SIDEBAR_COLOR;
+  --sidebar-color-hover: SIDEBAR_COLOR_HOVER;
+  --sidebar-color-active-icon: SIDEBAR_COLOR_ACTIVE_ICON;
+  --sidebar-icons-color: SIDEBAR_ICONS_COLOR;
+  --sidebar-width: SIDEBAR_WIDTH;
+  --playlistbar-width: PLAYLISTBAR_WIDTH;
+  --transitionbar-width: calc((var(--sidebar-width) + var(--playlistbar-width)) / 2);
+
+  --body-color: BODY_COLOR;
+
+  --smalltext-color: SMALLTEXT_COLOR;
+
+  --table-color-hover: TABLE_COLOR_HOVER;
+  --table-color-border: TABLE_COLOR_BORDER;
+  --input-background-color: INPUT_BACKGROUND_COLOR;
+  --input-icon-color: INPUT_ICON_COLOR;
+
+  --button-primary-color: BUTTON_PRIMARY_COLOR;
+
+  --selected-color: SELECTED_COLOR;
+  --selected-color-border: SELECTED_COLOR_BORDER;
+
+  --dropdown-color: DROPDOWN_COLOR;
+  --dropdown-color-light: DROPDOWN_COLOR_LIGHT;
+  --dropdown-selected-border-color: DROPDOWN_SELECTED_BORDER_COLOR;
+
+  --trackslider-width: TRACKSLIDER_WIDTH;
+  --trackplayer-background-color: TRACKSLIDER_BACKGROUND_COLOR;
+  --trackplayer-border-color: TRACKSLIDER_BORDER_COLOR;
+}

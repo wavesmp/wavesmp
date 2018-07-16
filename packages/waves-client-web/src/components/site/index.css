@@ -1,0 +1,116 @@
+
+.site-main-left {
+  width: 100%;
+  padding: 45px 15px;
+  float: left;
+}
+
+.site-main-right {
+  width: 100%;
+  padding: 45px 15px;
+  float: right;
+}
+
+@media only screen and (min-width: 861px) {
+  .site-main-left {
+    width: 45%;
+    padding: 45px 80px;
+  }
+}
+
+@media only screen and (min-width: 861px) {
+  .site-main-right {
+    width: 55%;
+    padding: 45px 80px;
+    padding-left: 0px;
+  }
+}
+
+.site-login-separator {
+  border-bottom: 1px solid var(--table-color-border);
+  padding-bottom: 25px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.site-input-box {
+  margin-top: 19px;
+}
+
+/* TODO watch the width on this
+ *      can cause icon to move up */
+.site-input-box input {
+  width: 100%;
+  background-color: var(--input-background-color);
+  color: #fff;
+  border: 1px solid var(--input-background-color);
+  border-radius: 4px;
+}
+
+.site-input-icon {
+  position: relative;
+  top: 0px;
+  left: 10px;
+}
+
+.site-input {
+  line-height: 35px;
+  padding-left: 43px;
+  margin-left: -25px;
+}
+
+.site-create-account-button {
+  width: 100%;
+  margin: 0px;
+  margin-top: 18px;
+}
+
+.site-main-browser {
+  width: 100%;
+  border: 5px solid var(--table-color-border);
+  border-radius: 10px;
+}
+
+.site-main-browser-img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.site-main-browser-bar>div {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+/* TODO add spacing to player menu bar? */
+.site-main-browser-bar {
+  background-color: var(--table-color-border);
+  border-bottom: 3px solid var(--table-color-border);
+}
+
+.site-idp-separator {
+  height: 5px;
+  width: 45%;
+  display: inline-block;
+  border-top: 1px solid var(--table-color-border);
+}
+
+.site-idp-separator-words {
+  text-align: center;
+  margin: 20px 0px;
+  width: 10%;
+  display: inline-block;
+  font-size: 13px;
+}
+
+.site-google-login-img {
+  margin-left: 1px;
+  position: relative;
+}
+
+.site-google-login-button {
+  margin-left: -33px;
+  margin-top: 0px;
+}

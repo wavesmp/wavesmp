@@ -1,0 +1,44 @@
+
+.trackplayer {
+  height: 51px;
+  position: absolute;
+  left: 50%;
+  top: 7px;
+}
+
+.trackplayer-info {
+  border-width: 2px;
+  border-color: var(--trackplayer-border-color);
+  border-radius: 25px;
+  border-style: solid;
+  background-color: var(--trackplayer-background-color);
+  transform: translate(-50%, 0);
+  width: 320px;
+}
+
+.trackplayer-info-title {
+  text-align: center;
+  font-size: 13px;
+  color: #000;
+  margin-top: 5px;
+  margin-bottom: 2px;
+}
+
+.trackplayer-info-artist {
+  text-align: center;
+  font-size: 11px;
+  color: #000;
+  margin: 0;
+}
+
+.trackplayer-buttons:hover {
+  text-shadow: 0px 0px 10px #0C88DC, 0px 0px 20px #0F60F7;
+}
+
+.trackplayer-button-activated {
+  color: #428BCA;
+}
+
+/* Trackplayer button styline is inline */
+
+

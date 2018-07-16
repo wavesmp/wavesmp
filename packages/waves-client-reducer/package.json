@@ -1,0 +1,28 @@
+{
+  "name": "waves-client-reducer",
+  "version": "1.0.0",
+  "description": "Waves client store reducer",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "nyc mocha --recursive"
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-client-reducer.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "redux": "^4.0.0",
+    "waves-action-types": "^1.0.0",
+    "waves-client-constants": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1",
+    "mongoid-js": "^1.1.3",
+    "nyc": "^11.7.1",
+    "waves-test-data": "^1.0.0",
+    "waves-test-util": "^1.0.0"
+  }
+}

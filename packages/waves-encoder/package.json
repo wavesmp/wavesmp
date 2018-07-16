@@ -1,0 +1,20 @@
+{
+  "name": "waves-encoder",
+  "version": "1.0.0",
+  "description": "Encodes Waves server and client messages",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha"
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-encoder.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.4",
+    "nyc": "^11.6.0"
+  }
+}

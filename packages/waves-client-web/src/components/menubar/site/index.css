@@ -1,0 +1,19 @@
+
+.menubar-site-logos {
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+  margin-left: 45px;
+}
+
+.menubar-site-logo {
+  width: 102px;
+}
+
+.menubar-site-logo-name {
+  color: #fff;
+  font-weight: 800;
+  font-style: italic;
+  transform: scaleX(2.0);
+  margin-left: 40px;
+}

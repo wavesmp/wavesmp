@@ -1,0 +1,39 @@
+import React from 'react'
+
+import Track from './track'
+import PlaylistAdd from './track/playlistAdd'
+
+import './index.css'
+
+const CONTEXT_MENUS = {
+  track: Track,
+  playlistAdd: PlaylistAdd
+}
+
+const EMPTY_MENU = <menu className='contextmenu'/>
+
+/* Context menu used is used for table rows */
+export default class ContextMenu extends React.Component {
+
+  render() {
+    const { contextmenu } = this.props
+    const numMenus = contextmenu.length
+    if (numMenus === 0) {
+      return EMPTY_MENU
+    }
+
+    const menu = contextmenu[numMenus - 1]
+    const { type, props, x, y } = menu
+    const Component = CONTEXT_MENUS[type]
+
+    const style = {
+      left: x + 'px',
+      top: y + 'px'
+    }
+    return (
+      <menu className='contextmenu contextmenu-active' style={style}>
+        <Component {...props}/>
+      </menu>
+    )
+  }
+}

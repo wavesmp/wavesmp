@@ -1,0 +1,19 @@
+{
+  "name": "waves-socket",
+  "version": "1.0.0",
+  "description": "WebSocket wrapper for Waves server communication",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests here. See waves-server-main tests instead\" && exit 1"
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-socket.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "waves-action-types": "^1.0.0",
+    "waves-encoder": "^1.0.0"
+  }
+}
