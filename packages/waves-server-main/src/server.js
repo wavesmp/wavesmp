@@ -13,8 +13,8 @@ const WavesServer = require('./wavesServer')
 function parseConfig() {
   args.version('1.0.0')
     .option('-c, --config-file [FILE]',
-            'path to the JSON config file [config.json]',
-            '../config.json')
+            'path to the JSON config file [config.js]',
+            '../config.js')
     .parse(process.argv)
 
   const { configFile } = args
