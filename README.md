@@ -10,8 +10,8 @@ Requirements
 ============
 - Docker
 - Node
+- [Google Auth Client ID](https://developers.google.com/identity/sign-in/web/sign-in)
 - S3 configured for Web Federation
-- Google Auth Client ID provisioned
 
 Instructions
 ============

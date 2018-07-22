@@ -9,7 +9,7 @@
 /packages/waves-client-web/build
 
 # Ignore web client config file
-/packages/waves-client-web/src/config.json
+/packages/waves-client-web/src/config.js
 
 # Ignore web client certs
 /packages/waves-client-web/rootfs/etc/letsencrypt
