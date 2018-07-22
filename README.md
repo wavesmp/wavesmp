@@ -11,7 +11,7 @@ Requirements
 - Docker
 - Node
 - [Google Auth Client ID](https://developers.google.com/identity/sign-in/web/sign-in)
-- S3 configured for Web Federation
+- [S3 bucket configured for Google auth](./aws)
 
 Instructions
 ============
