@@ -3,9 +3,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-cd "$(dirname "${0}")"
+REPO_DIR="$(readlink -f "$(dirname "${0}")")"
+cd "${REPO_DIR}"
 
-NAME=waves-client-web
+CONTAINER_NAME="$(basename "${REPO_DIR}")"
 
 # Usually, the container only needs read access to the files below.
 # However, since it's convenient to renew the the certs within
@@ -18,17 +19,17 @@ LETSENCRYPT_DEST=/etc/letsencrypt
 DHPARAM_SRC="$(readlink -f rootfs/etc/ssl/certs/dhparam.pem)"
 DHPARAM_DEST=/etc/ssl/certs/dhparam.pem
 
-if [[ ! -z "$(sudo docker ps -a -q -f name="${NAME}")" ]]; then
-	sudo docker stop "${NAME}"
-	sudo docker rm "${NAME}"
+if [[ ! -z "$(docker ps -a -q -f name="${CONTAINER_NAME}")" ]]; then
+	docker stop "${CONTAINER_NAME}"
+	docker rm "${CONTAINER_NAME}"
 fi
 
-sudo docker run \
+docker run \
     -d \
     -p 80:80 \
     -p 443:443 \
     -v "${LETSENCRYPT_SRC}:${LETSENCRYPT_DEST}" \
     -v "${DHPARAM_SRC}:${DHPARAM_DEST}:ro" \
     --net host \
-    --name "${NAME}" \
-    "${NAME}"
+    --name "${CONTAINER_NAME}" \
+    "${CONTAINER_NAME}"

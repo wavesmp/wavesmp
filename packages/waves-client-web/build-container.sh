@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+set -o nounset
 set -o pipefail
 
 usage() {
@@ -9,23 +10,21 @@ usage() {
     exit 1
 }
 
+[[ "$#" != 1 ]] && usage
 HOST="$1"
+[[ -z "${HOST}" ]] && usage
 
-if [[ -z "${HOST}" ]]; then
-    usage
-fi
+REPO_DIR="$(readlink -f "$(dirname "${0}")")"
+cd "${REPO_DIR}"
 
-cd "$(dirname "${0}")"
-
+CONTAINER_NAME="$(basename "${REPO_DIR}")"
 BUILD_DIR=build
 
 # Clean
-sudo rm -rf "${BUILD_DIR}"
+rm -rf "${BUILD_DIR}"
 
 # Build
 ./npm.sh run build
-
-sudo chown -R osoriano:osoriano build
 
 # Copy static assets
 cp src/index.html \
@@ -33,5 +32,5 @@ cp src/index.html \
    vendor/aws-sdk-2.268.1.min.js \
    "${BUILD_DIR}"
 
-# Build Docker images
-sudo docker build -t waves-client-web --build-arg "host=${HOST}" .
+# Build Docker image
+docker build -t "${CONTAINER_NAME}" --build-arg "host=${HOST}" .
