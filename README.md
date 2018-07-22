@@ -20,5 +20,8 @@ Instructions
 - In the [waves-client-web package](./packages/waves-client-web),
   rename `config.example.json` as `config.json`
 - Substitute AWS/Google/hostname values in the waves-client-web config.json
+- In the [waves-server-main package](./packages/waves-server-main),
+  rename `config.example.json` as `config.json`
+- Substitute Google client id in the waves-server-main config.json
 - Optionally, run the `restore-server.sh <bucket_name>` script if restoring from s3 bucket
 - See the `waves-server-main` and `waves-client-web` packages for entry scripts
