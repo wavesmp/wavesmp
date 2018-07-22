@@ -16,4 +16,4 @@
 /packages/waves-client-web/rootfs/etc/ssl
 
 # Ignore server config file
-/packages/waves-server-main/config.json
+/packages/waves-server-main/config.js
