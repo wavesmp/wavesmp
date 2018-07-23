@@ -1,8 +1,14 @@
 Waves Music Player
 ==================
 A multi-tenant music player with a client/server architecture.
-Music is stored in S3. Music metadata stored MongoDB.
-Uses Google auth.
+Manages your personal music collection on the cloud.
+
+Features
+========
+- Responsive web design supports multiple screen sizes.
+- Client directly talks to the cloud to manage music. Stream anywhere
+- Music metadata is stored locally to quickly view your entire library.
+- Supports multiple users by integrating with identity providers (e.g. Google)
 
 TODO instructions are a work in progress. Open an issue if it's missing something
 
