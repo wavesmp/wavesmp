@@ -1,5 +1,5 @@
-Waves Music Player
-==================
+# <img src="https://s3-us-west-2.amazonaws.com/assets.wavesmusicplayer.com/waves-logo-full.png"/>
+
 A multi-tenant music player with a client/server architecture.
 Manages your personal music collection on the cloud.
 
