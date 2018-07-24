@@ -30,8 +30,7 @@ export default class UserSettings extends React.Component {
   iconClasses = 'fa fa-lg fa-user'
 
   header = {
-    // TODO remove hardcoded name
-    text: 'Omar Soriano',
+    text: this.props.userName,
     classes: 'fa fa-user menubar-dropdown-item-icon'
   }
 
