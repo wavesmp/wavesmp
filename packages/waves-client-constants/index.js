@@ -27,4 +27,9 @@ constants.modalTypes = keyMirror({
   SETTINGS: null,
 })
 
+constants.contextmenuTypes = keyMirror({
+  TRACK: null,
+  PLAYLIST_ADD: null,
+})
+
 module.exports = constants

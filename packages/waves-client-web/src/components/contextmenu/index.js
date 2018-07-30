@@ -1,13 +1,15 @@
 import React from 'react'
 
+import { contextmenuTypes } from 'waves-client-constants'
+
 import Track from './track'
 import PlaylistAdd from './track/playlistAdd'
 
 import './index.css'
 
 const CONTEXT_MENUS = {
-  track: Track,
-  playlistAdd: PlaylistAdd
+  [contextmenuTypes.TRACK]: Track,
+  [contextmenuTypes.PLAYLISTADD]: PlaylistAdd
 }
 
 const EMPTY_MENU = <menu className='contextmenu'/>

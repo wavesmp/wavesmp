@@ -41,7 +41,7 @@ class Track extends React.Component {
 
         <PlaylistAdd onClick={ev => {
           actions.contextmenuNext({
-            type: 'playlistAdd',
+            type: constants.contextmenuTypes.PLAYLIST_ADD,
             props: {
               currentPlaylist: playlistName
             }

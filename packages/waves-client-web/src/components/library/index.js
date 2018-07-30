@@ -3,7 +3,8 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { DEFAULT_PLAYLIST, FULL_PLAYLIST as playlistName } from 'waves-client-constants'
+import { DEFAULT_PLAYLIST, FULL_PLAYLIST as playlistName,
+         contextmenuTypes } from 'waves-client-constants'
 import * as WavesActions from 'waves-client-actions'
 import { getOrCreatePlaylistSelectors, getDefaultPlaylistSearch } from 'waves-client-selectors'
 
@@ -69,7 +70,7 @@ class Library extends React.Component {
     actions.contextmenuSet({
       x: ev.pageX,
       y: ev.pageY,
-      type: 'track',
+      type: contextmenuTypes.TRACK,
       props: {
         itemPlayId,
         trackId,

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import * as WavesActions from 'waves-client-actions'
 import { DEFAULT_PLAYLIST as playlistName,
-         FULL_PLAYLIST, modalTypes } from 'waves-client-constants'
+         FULL_PLAYLIST, modalTypes, contextmenuTypes } from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors, getLibraryPlaylistSearch } from 'waves-client-selectors'
 
 import TablePage from '../tablepage'
@@ -98,7 +98,7 @@ class NowPlaying extends React.Component {
     actions.contextmenuSet({
       x: ev.pageX,
       y: ev.pageY,
-      type: 'track',
+      type: contextmenuTypes.TRACK,
       props: {
         itemPlayId,
         trackId,
