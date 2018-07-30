@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import { modalTypes } from 'waves-client-constants'
+
 function onUnsupportedFeatureClick(ev) {
   toastr.error('This feature is coming soon!', 'Feature Unavailable')
 }
@@ -13,7 +15,7 @@ export default class SettingsBar extends React.Component {
 
   onSettingsClick = () => {
     const { actions } = this.props
-    actions.modalSet({type: 'settings'})
+    actions.modalSet({type: modalTypes.SETTINGS})
   }
 
   render() {

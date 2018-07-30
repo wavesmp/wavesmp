@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { DEFAULT_PLAYLIST as playlistName, FULL_PLAYLIST } from 'waves-client-constants'
+import { DEFAULT_PLAYLIST as playlistName,
+         FULL_PLAYLIST, modalTypes } from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors, getLibraryPlaylistSearch } from 'waves-client-selectors'
 
 import TablePage from '../tablepage'
@@ -53,12 +54,12 @@ class NowPlaying extends React.Component {
       message: `This will clear the ${TITLE} playlist. Are you sure?`,
       onDelete: this.onDelete
     }
-    actions.modalSet({type: 'actionConfirm', props})
+    actions.modalSet({type: modalTypes.ACTION_CONFIRM, props})
   }
 
   onPlaylistSave = () => {
     const { actions } = this.props
-    actions.modalSet({type: 'playlistSave'})
+    actions.modalSet({type: modalTypes.PLAYLIST_SAVE})
   }
 
   defaultButtons = [

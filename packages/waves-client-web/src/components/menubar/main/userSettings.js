@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { modalTypes } from 'waves-client-constants'
+
 import Dropdown from './dropdown'
 
 export default class UserSettings extends React.Component {
@@ -11,7 +13,7 @@ export default class UserSettings extends React.Component {
 
   onAccountSettingsClick = () => {
     const { actions } = this.props
-    actions.modalSet({type: 'settings'})
+    actions.modalSet({type: modalTypes.SETTINGS})
   }
 
   items = [

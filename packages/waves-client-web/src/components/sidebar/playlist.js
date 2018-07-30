@@ -59,7 +59,7 @@ export default class PlaylistBar extends React.Component {
     // TODO implment me
     console.log('NOT YET IMPLEMENTED')
     // const { actions } = this.props
-    // actions.modalSet({type: 'playlistAdd'})
+    // actions.modalSet({type: constants.modalTypes.PLAYLIST_ADD})
   }
 
   render() {

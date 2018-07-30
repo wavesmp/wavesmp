@@ -64,7 +64,7 @@ class Track extends React.Component {
 
         {playlistName === constants.FULL_PLAYLIST &&
           <LibraryDelete onClick={ev => {
-            actions.modalSet({type: 'tracksDelete'})
+            actions.modalSet({type: constants.modalTypes.TRACKS_DELETE})
           }}/>
         }
 

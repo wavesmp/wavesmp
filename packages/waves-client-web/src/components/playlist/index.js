@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { DEFAULT_PLAYLIST, FULL_PLAYLIST } from 'waves-client-constants'
+import { DEFAULT_PLAYLIST, FULL_PLAYLIST, modalTypes } from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors, getLibraryPlaylistSearch,
          getDefaultPlaylistSearch} from 'waves-client-selectors'
 
@@ -58,7 +58,7 @@ class Playlist extends React.Component {
 
   onSettingsClick = () => {
     const { actions, playlistName } = this.props
-    actions.modalSet({type: 'playlistSettings', props: {playlistName}})
+    actions.modalSet({type: modalTypes.PLAYLIST_SETTINGS, props: {playlistName}})
   }
 
   onItemEdit = (id, attr, update) => {

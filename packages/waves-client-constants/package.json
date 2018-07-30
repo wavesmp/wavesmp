@@ -8,5 +8,8 @@
     "type": "git",
     "url": "git@github.com:wavesmp/waves-client-constants.git"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "keymirror": "^0.1.1"
+  }
 }

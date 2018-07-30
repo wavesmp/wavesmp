@@ -1,3 +1,5 @@
+const keyMirror = require('keymirror')
+
 const constants = {}
 
 constants.DEFAULT_PLAYLIST = '__nowplaying'
@@ -16,5 +18,13 @@ constants.iconRemoveColor = '#C11313'
 constants.iconDeleteColor = '#696969'
 constants.iconDownloadColor = '#505050'
 constants.iconBackColor = '#4aa3df'
+
+constants.modalTypes = keyMirror({
+  TRACKS_DELETE: null,
+  ACTION_CONFIRM: null,
+  PLAYLIST_SAVE: null,
+  PLAYLIST_SETTINGS: null,
+  SETTINGS: null,
+})
 
 module.exports = constants

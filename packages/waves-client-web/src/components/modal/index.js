@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { modalTypes } from 'waves-client-constants'
+
 import ActionConfirm from './actionConfirm'
 import PlaylistSave from './playlistsave'
 import PlaylistSettings from './playlistsettings'
@@ -10,11 +12,11 @@ import './index.css'
 
 const MODALS = {
   null: null,
-  playlistSave: PlaylistSave,
-  actionConfirm: ActionConfirm,
-  settings: Settings,
-  playlistSettings: PlaylistSettings,
-  tracksDelete: TracksDelete
+  [modalTypes.PLAYLIST_SAVE]: PlaylistSave,
+  [modalTypes.ACTION_CONFIRM]: ActionConfirm,
+  [modalTypes.SETTINGS]: Settings,
+  [modalTypes.PLAYLIST_SETTINGS]: PlaylistSettings,
+  [modalTypes.TRACKS_DELETE]: TracksDelete
 }
 
 export default class Modal extends React.Component {
