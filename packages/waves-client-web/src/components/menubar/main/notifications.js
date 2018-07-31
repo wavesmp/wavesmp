@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { dropdownTypes } from 'waves-client-constants'
+
 import Dropdown from './dropdown'
 
 
@@ -35,8 +37,12 @@ export default class Notifications extends React.Component {
   ]
 
   render() {
+    const { actions, dropdown } = this.props
     return (
         <Dropdown
+          actions={actions}
+          dropdown={dropdown}
+          dropdownName={dropdownTypes.NOTIFICATIONS}
           iconClasses={this.iconClasses}
           header={this.header}
           items={this.items}

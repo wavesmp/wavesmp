@@ -32,4 +32,9 @@ constants.contextmenuTypes = keyMirror({
   PLAYLIST_ADD: null,
 })
 
+constants.dropdownTypes = keyMirror({
+  USER_SETTINGS: null,
+  NOTIFICATIONS: null,
+})
+
 module.exports = constants

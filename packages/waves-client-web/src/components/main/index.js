@@ -14,9 +14,25 @@ import Playlist from '../playlist'
 import Library from '../library'
 
 class MainApp extends React.Component {
+  onClick = () => {
+    const { actions, contextmenu, dropdown, modal } = this.props
+    if (contextmenu.length !== 0) {
+      actions.contextmenuReset()
+    }
+
+    if (dropdown) {
+      actions.dropdownSet(null)
+    }
+
+    if (modal) {
+      actions.modalSet(null)
+    }
+
+  }
+
   render() {
     const { modal, sidebar, playlists, playing,
-            actions, contextmenu,
+            actions, contextmenu, dropdown,
             account, location, history } = this.props
     const { user } = account
     if (!user) {
@@ -25,7 +41,7 @@ class MainApp extends React.Component {
       )
     }
     return (
-      <div onClick={actions.contextmenuReset}>
+      <div onClick={this.onClick}>
         <Route path='/nowplaying' component={NowPlaying}/>
         <Route path='/library' component={Library}/>
         <Route path='/upload' component={Upload}/>
@@ -37,6 +53,7 @@ class MainApp extends React.Component {
                  location={location}
                  userName={user.name}/>
         <MenuBar actions={actions}
+                 dropdown={dropdown}
                  playing={playing}
                  history={history}
                  userName={user.name}/>
@@ -55,7 +72,8 @@ function mapStateToProps(state) {
     sidebar: state.sidebar,
     contextmenu: state.contextmenu,
     modal: state.modal,
-    account: state.account
+    account: state.account,
+    dropdown: state.dropdown
   }
 }
 

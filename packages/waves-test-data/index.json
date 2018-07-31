@@ -84,5 +84,6 @@
   "TEST_IDP": "testIdp",
   "TEST_TRACK_ID": "testTrackId",
   "TEST_SEARCH": "testSearch",
-  "TEST_TOKEN": "testToken"
+  "TEST_TOKEN": "testToken",
+  "TEST_DROPDOWN": "testDropdown"
 }

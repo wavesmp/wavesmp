@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { modalTypes } from 'waves-client-constants'
+import { modalTypes, dropdownTypes } from 'waves-client-constants'
 
 import Dropdown from './dropdown'
 
@@ -37,8 +37,12 @@ export default class UserSettings extends React.Component {
   }
 
   render() {
+    const { actions, dropdown } = this.props
     return (
         <Dropdown
+          actions={actions}
+          dropdown={dropdown}
+          dropdownName={dropdownTypes.USER_SETTINGS}
           iconClasses={this.iconClasses}
           header={this.header}
           items={this.items}

@@ -1,13 +1,11 @@
 import React from 'react'
 
 export default class Dropdown extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { active: false }
-  }
-
   onIconClick = () => {
-    this.setState({ active: !this.state.active })
+    const { actions, dropdown, dropdownName } = this.props
+    if (dropdown !== dropdownName) {
+      actions.dropdownSet(dropdownName)
+    }
   }
 
   renderDropdownHeader() {
@@ -38,14 +36,13 @@ export default class Dropdown extends React.Component {
   }
 
   render() {
-    const { active } = this.state
-    const { iconClasses } = this.props
+    const { iconClasses, dropdown, dropdownName } = this.props
     return (
       <div className='menubar-profile-link'>
         <a href='javascript:;' onClick={this.onIconClick}>
           <i className={iconClasses}></i>
         </a>
-        { active && this.renderDropdown() }
+        { dropdown === dropdownName && this.renderDropdown() }
       </div>
     )
   }

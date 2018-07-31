@@ -15,7 +15,7 @@ let prevPlayerVisible = false
 export default class MenuBar extends React.Component {
   render() {
 
-    const { actions, playing, history, userName } = this.props
+    const { actions, dropdown, playing, history, userName } = this.props
     const { isPlaying, track } = playing
 
 
@@ -58,8 +58,10 @@ export default class MenuBar extends React.Component {
                                    transitionLeaveTimeout={300}>
             {trackPlayer}
           </ReactCSSTransitionGroup>
-          <Notifications/>
-          <UserSettings actions={actions}
+          <Notifications actions={actions} dropdown={dropdown}/>
+          <UserSettings
+            actions={actions}
+            dropdown={dropdown}
             history={history}
             userName={userName}/>
         </div>
