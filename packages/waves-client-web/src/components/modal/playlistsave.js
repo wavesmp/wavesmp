@@ -43,7 +43,7 @@ class SavePlaylistModal extends React.Component {
     const { playlistSaveName } = this.state
     return (
       <ModalWrapper>
-        <ModalHeader title={TITLE}/>
+        <ModalHeader title={TITLE} onClose={this.onClose}/>
 
         <div className='modal-body'>
           <div style={{display: 'flex', alignItems: 'center'}}>

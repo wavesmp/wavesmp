@@ -58,7 +58,7 @@ class AccountSettingsModal extends React.Component {
     const activeColumns = ALL_COLUMNS.filter(x => columns.has(x))
     return (
       <ModalWrapper>
-        <ModalHeader title={TITLE}/>
+        <ModalHeader title={TITLE} onClose={this.onClose}/>
 
         <div className='modal-body'>
           <div>

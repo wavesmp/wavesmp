@@ -17,10 +17,10 @@ export class ModalWrapper extends React.Component {
 
 export class ModalHeader extends React.Component {
   render() {
-    const { title } = this.props
+    const { title, onClose } = this.props
     return (
       <div className='modal-header'>
-        <button type='button' className='modal-close'>
+        <button type='button' className='modal-close' onClick={onClose}>
           <span>&times;</span>
         </button>
         <h4 className='modal-title'>{title}</h4>

@@ -22,7 +22,7 @@ class ActionConfirmModal extends React.Component {
     const { deleteTitle, message, title, additionalRow, disabled } = this.props
     return (
       <ModalWrapper>
-        <ModalHeader title={title}/>
+        <ModalHeader title={title} onClose={this.onClose}/>
         <div className='modal-body'>
           <div>
               <span style={{marginTop: '6px'}}>
