@@ -1,9 +1,13 @@
 import React from 'react'
 
+import { DROPDOWN_DATA_VALUE } from 'waves-client-constants'
+
 export default class Dropdown extends React.Component {
   onIconClick = () => {
     const { actions, dropdown, dropdownName } = this.props
-    if (dropdown !== dropdownName) {
+    if (dropdown === dropdownName) {
+      actions.dropdownSet(null)
+    } else {
       actions.dropdownSet(dropdownName)
     }
   }
@@ -38,8 +42,10 @@ export default class Dropdown extends React.Component {
   render() {
     const { iconClasses, dropdown, dropdownName } = this.props
     return (
-      <div className='menubar-profile-link'>
-        <a href='javascript:;' onClick={this.onIconClick}>
+      <div className='menubar-profile-link'
+           data-toggle={DROPDOWN_DATA_VALUE}
+           onClick={this.onIconClick}>
+        <a href='javascript:;'>
           <i className={iconClasses}></i>
         </a>
         { dropdown === dropdownName && this.renderDropdown() }

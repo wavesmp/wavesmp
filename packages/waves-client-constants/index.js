@@ -37,4 +37,7 @@ constants.dropdownTypes = keyMirror({
   NOTIFICATIONS: null,
 })
 
+constants.DROPDOWN_DATA_VALUE = 'dropdown'
+constants.TOGGLE_DATA_KEY = 'data-toggle'
+
 module.exports = constants

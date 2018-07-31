@@ -1,26 +1,43 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { Route } from 'react-router-dom'
+
+import * as WavesActions from 'waves-client-actions'
+import { TOGGLE_DATA_KEY, DROPDOWN_DATA_VALUE } from 'waves-client-constants'
+
 import SideBar from '../sidebar'
 import MenuBar from '../menubar/main'
 import Upload from '../upload'
 import ContextMenu from '../contextmenu'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import * as WavesActions from 'waves-client-actions'
 import Modal from '../modal'
-import { Route } from 'react-router-dom'
-
 import NowPlaying from '../nowplaying'
 import Playlist from '../playlist'
 import Library from '../library'
 
 class MainApp extends React.Component {
-  onClick = () => {
+  ancestorHasAttribute(node, key, val) {
+    /* document object does not have parent node.
+     * Can't just check for node here, since document
+     * does not have getAttribute method*/
+    while (node.parentNode) {
+      if (node.getAttribute(key) === val) {
+        return true
+      }
+      node = node.parentNode
+    }
+    return false
+  }
+
+  onClick = ev => {
     const { actions, contextmenu, dropdown, modal } = this.props
+    const { target } = ev
     if (contextmenu.length !== 0) {
       actions.contextmenuReset()
     }
 
-    if (dropdown) {
+    if (dropdown && !this.ancestorHasAttribute(
+        target, TOGGLE_DATA_KEY, DROPDOWN_DATA_VALUE)) {
       actions.dropdownSet(null)
     }
 
