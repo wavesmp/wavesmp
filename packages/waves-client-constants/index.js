@@ -38,6 +38,7 @@ constants.dropdownTypes = keyMirror({
 })
 
 constants.DROPDOWN_DATA_VALUE = 'dropdown'
+constants.MODAL_DATA_VALUE = 'modal'
 constants.TOGGLE_DATA_KEY = 'data-toggle'
 
 module.exports = constants

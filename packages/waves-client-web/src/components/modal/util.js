@@ -1,12 +1,14 @@
 import React from 'react'
 
+import { MODAL_DATA_VALUE } from 'waves-client-constants'
+
 export class ModalWrapper extends React.Component {
   render() {
     const { children } = this.props
     return (
       <div className='fixed-full-page modal'>
         <div className='modal-dialog'>
-          <div className='modal-content'>
+          <div className='modal-content' data-toggle={MODAL_DATA_VALUE}>
             {children}
           </div>
         </div>

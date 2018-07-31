@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 
 import * as WavesActions from 'waves-client-actions'
-import { TOGGLE_DATA_KEY, DROPDOWN_DATA_VALUE } from 'waves-client-constants'
+import { TOGGLE_DATA_KEY, DROPDOWN_DATA_VALUE,
+         MODAL_DATA_VALUE } from 'waves-client-constants'
 
 import SideBar from '../sidebar'
 import MenuBar from '../menubar/main'
@@ -41,7 +42,8 @@ class MainApp extends React.Component {
       actions.dropdownSet(null)
     }
 
-    if (modal) {
+    if (modal && !this.ancestorHasAttribute(
+        target, TOGGLE_DATA_KEY, MODAL_DATA_VALUE)) {
       actions.modalSet(null)
     }
 
