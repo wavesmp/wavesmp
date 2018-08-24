@@ -32,13 +32,18 @@ fi
 # Deploy mongo db if not present
 DB_IMAGE=mongo:3.6.6
 DB_VOLUME_DEST=/data/db
+# Mongo docker image defaults to --bind_ip_all flag
+# Restrict to localhost since we run DB on host network
+# See https://github.com/docker-library/mongo/pull/226
+DB_EXTRA_ARGS=("--bind_ip" "127.0.0.1")
 if [[ -z "$(docker ps -a -q -f name="${DB_NAME}")" ]]; then
     docker run \
         -d \
         --net host \
         --name "${DB_NAME}" \
         --mount "type=volume,src=${DB_VOLUME_NAME},dst=${DB_VOLUME_DEST},volume-driver=local" \
-        "${DB_IMAGE}"
+        "${DB_IMAGE}" \
+        "${DB_EXTRA_ARGS[@]}"
 else
     echo "Database already running"
 fi
