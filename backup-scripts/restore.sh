@@ -31,11 +31,13 @@ fi
 
 # Deploy mongo db if not present
 DB_IMAGE=mongo:3.6.6
+DB_VOLUME_DEST=/data/db
 if [[ -z "$(docker ps -a -q -f name="${DB_NAME}")" ]]; then
     docker run \
         -d \
         --net host \
         --name "${DB_NAME}" \
+        --mount "type=volume,src=${DB_VOLUME_NAME},dst=${DB_VOLUME_DEST},volume-driver=local" \
         "${DB_IMAGE}"
 else
     echo "Database already running"
