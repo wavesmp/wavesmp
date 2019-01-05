@@ -17,3 +17,6 @@
 
 # Ignore server config file
 /packages/waves-server-main/config.js
+
+# istanbuljs code coverage output
+.nyc_output
