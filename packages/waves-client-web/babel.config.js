@@ -5,10 +5,10 @@
  * See: https://github.com/webpack/webpack/issues/1866 */
 module.exports = {
   presets: [
-    'babel-preset-react'
+    '@babel/preset-react'
   ].map(require.resolve),
   plugins: [
-    'babel-plugin-transform-class-properties',
-    'babel-plugin-transform-object-rest-spread'
+    '@babel/plugin-proposal-class-properties',
+    '@babel/plugin-proposal-object-rest-spread'
   ].map(require.resolve)
 }
