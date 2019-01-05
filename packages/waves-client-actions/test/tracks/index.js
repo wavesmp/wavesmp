@@ -264,32 +264,36 @@ describe('#tracks()', async () => {
     const ws = new WavesSocket({})
 
     const sourceType = 's3'
-    const uploads = [track1, track2]
-    const playerUploads = [
-      {...track1, source: 's3'},
-      {...track2, source: 's3'}
-    ]
+    const playing = { track: track1 }
+    const uploads = { [track1.id]: track1, [track2.id]: track2 }
+    const uploadValues = Object.values(uploads)
+    const getState = () => ({tracks: {uploads, playing}})
 
-    const thunk = actions.tracksUpload(sourceType, uploads)
-
-    assert.isDefined(types.PLAYLIST_DELETE)
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(
-      { type: types.PLAYLIST_DELETE, playlistName: UPLOAD_PLAYLIST })
+    const thunk = actions.tracksUpload(sourceType)
 
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock.expects('upload')
-      .once().withExactArgs(sourceType, uploads)
-      .returns(playerUploads)
+    const playerUploadExpect = playerMock.expects('upload')
+      .once().withExactArgs(sourceType, uploadValues)
+      .returns({uploaded: uploadValues})
 
     assert.isDefined(types.TRACKS_UPDATE)
     const wsMock = sinon.mock(ws)
     const wsExpect = wsMock.expects('sendBestEffortMessage')
       .once()
       .withExactArgs(types.TRACKS_UPDATE,
-        {tracks: playerUploads})
+        {tracks: uploadValues})
 
-    await thunk(dispatchMock, undefined, { player, ws })
+    assert.isDefined(types.TRACK_UPLOADS_DELETE)
+    const uploadKeys = new Set(Object.keys(uploads))
+    const dispatchMock = sinon.mock()
+    const dispatchExpect = dispatchMock.once().withExactArgs(
+      { type: types.TRACK_UPLOADS_DELETE,
+        deleteIds: uploadKeys })
+
+    const playerPauseExpect = playerMock.expects('pause')
+      .once().withExactArgs()
+
+    await thunk(dispatchMock, getState, { player, ws })
 
     playerMock.verify()
     wsMock.verify()
