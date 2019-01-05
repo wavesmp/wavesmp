@@ -64,8 +64,8 @@ class Server {
       },
 
       [types.PLAYLIST_DELETE]: async (ws, user, data, reqId) => {
-        log.info('Deleting playlist')
         const { playlistName } = data
+        log.info(`Deleting playlist: ${playlistName}`)
         await this.storage.deletePlaylist(user, playlistName)
         if (reqId) {
           this.sendMessage(ws, types.PLAYLIST_DELETE, {}, reqId)
