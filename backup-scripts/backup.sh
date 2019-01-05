@@ -42,9 +42,9 @@ echo "Backed up database"
 
 # Back up certs
 mkdir -p "${UPLOAD_DIR}/etc"
-pushd "${UPLOAD_DIR}"
 cp -r "${PACKAGES_DIR}/waves-client-web/rootfs/etc/"{letsencrypt,ssl} \
     "${UPLOAD_DIR}/etc"
+pushd "${UPLOAD_DIR}"
 tar -czf "${CERTS_TAR}" etc
 aws s3 cp --quiet "${CERTS_TAR}" "${BACKUP_URL}/${CERTS_TAR}"
 rm -rf "${CERTS_TAR}" etc
