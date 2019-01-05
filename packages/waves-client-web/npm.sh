@@ -16,7 +16,7 @@ PACKAGES_DIR="$(readlink -f "${REPO_DIR}/..")"
 DEST_PACKAGES_DIR=/home/node
 
 CONTAINER_NAME="$(basename "${REPO_DIR}")-build"
-IMAGE=node:10.7.0
+IMAGE=node:11.6.0-stretch
 
 docker run \
     --rm \
