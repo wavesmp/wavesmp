@@ -32,6 +32,21 @@ class TablePageData extends React.Component {
       )
     }
     if (numItems === 0) {
+      if (routerSearchString) {
+        return (
+          <div>
+            <TableMenuBar buttons={buttons}
+                          location={location}
+                          routerSearchString={routerSearchString}
+                          onSettingsClick={onSettingsClick}
+                          history={history}/>
+            <div className='clearfix'></div>
+            <h3 style={{marginTop: '100px', marginBottom: '100px', textAlign: 'center'}}>
+              No data
+            </h3>
+          </div>
+        )
+      }
       return (
         <h3 style={{marginTop: '100px', marginBottom: '100px', textAlign: 'center'}}>
           {noDataMsg}
