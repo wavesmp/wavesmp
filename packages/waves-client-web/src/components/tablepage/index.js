@@ -39,7 +39,7 @@ class TablePageData extends React.Component {
       )
     }
     return (
-      <div>
+      <React.Fragment>
         <TableMenuBar buttons={buttons}
                       location={location}
                       routerSearchString={routerSearchString}
@@ -47,7 +47,7 @@ class TablePageData extends React.Component {
                       history={history}/>
         <Table {...other} location={location}
                           numItems={numItems}/>
-      </div>
+      </React.Fragment>
     )
   }
 }

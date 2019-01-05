@@ -40,21 +40,19 @@ export default class TableMenuBar extends React.Component {
 
     return (
       <div style={{marginBottom: '0px'}} className='tablemenubar'>
-        <div>
-          <Buttons buttons={buttons}/>
-          <div className='pull-right tablemenubar-search-box'>
-            {settingsComponent}
-            <i className='fa fa-lg fa-search tablemenubar-input-icon'
-               style={{position: 'relative',
-                       top: '0px',
-                       left: '25px'}}></i>
-            <input type='text'
-                   value={this.state.searchValue}
-                   style={{paddingLeft: '30px'}}
-                   placeholder={routerSearchString}
-                   onKeyDown={this.onKeyDown}
-                   onChange={this.onChange}/>
-          </div>
+        <Buttons buttons={buttons}/>
+        <div className='pull-right tablemenubar-search-box'>
+          {settingsComponent}
+          <i className='fa fa-lg fa-search tablemenubar-input-icon'
+             style={{position: 'relative',
+                     top: '0px',
+                     left: '25px'}}></i>
+          <input type='text'
+                 value={this.state.searchValue}
+                 style={{paddingLeft: '30px'}}
+                 placeholder={routerSearchString}
+                 onKeyDown={this.onKeyDown}
+                 onChange={this.onChange}/>
         </div>
       </div>
     )
