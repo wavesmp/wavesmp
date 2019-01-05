@@ -41,9 +41,8 @@ class NowPlaying extends React.Component {
   }
 
   onDelete = () => {
-    const { actions, playlistName } = this.props
+    const { actions } = this.props
     actions.playlistDelete(playlistName)
-    this.onClose()
   }
 
   onClear = () => {
