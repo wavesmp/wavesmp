@@ -1,7 +1,8 @@
 {
     "scripts": {
         "bootstrap": "lerna bootstrap",
-        "npm-check": "lerna exec npm-check"
+        "npm-check": "lerna exec npm-check",
+        "test": "lerna run test"
     },
     "devDependencies": {
         "lerna": "^3.8.5"
