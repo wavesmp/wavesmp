@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Waves client player",
   "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"No tests here :(\" && exit 1"
-  },
   "author": "",
   "repository": {
     "type": "git",

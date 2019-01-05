@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Waves client authentication methods",
   "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"No tests :(\""
-  },
   "author": "",
   "repository": {
     "type": "git",
