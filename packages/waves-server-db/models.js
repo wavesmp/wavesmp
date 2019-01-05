@@ -110,6 +110,7 @@ const trackSchema = mongoose.Schema({
   strict: 'throw',
   strictQuery: 'throw',
   _id: false,
+  id: false,
   toObject: {
     versionKey: false,
     transform: trackToObject
