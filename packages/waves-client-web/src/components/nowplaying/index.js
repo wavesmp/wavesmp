@@ -117,12 +117,12 @@ class NowPlaying extends React.Component {
     let playlistLoaded = false
     let numItems
     if (playlist) {
+      if (routerSearchString != playlistSearchString) {
+        actions.playlistSearchUpdate(playlistName, location.search)
+      }
       ({ playId, selection } = playlist)
       playlistLoaded = true
       if (routerSearchString) {
-        if (routerSearchString != playlistSearchString) {
-          actions.playlistSearchUpdate(playlistName, location.search)
-        }
         numItems = searchItems.length
       } else {
         numItems = playlist.tracks.length

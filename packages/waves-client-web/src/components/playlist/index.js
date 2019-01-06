@@ -94,10 +94,10 @@ class Playlist extends React.Component {
     if (playlist) {
       ({ playId, selection } = playlist)
       playlistLoaded = true
+      if (routerSearchString != playlistSearchString) {
+        actions.playlistSearchUpdate(playlistName, location.search)
+      }
       if (routerSearchString) {
-        if (routerSearchString != playlistSearchString) {
-          actions.playlistSearchUpdate(playlistName, location.search)
-        }
         numItems = searchItems.length
       } else {
         numItems = playlist.tracks.length

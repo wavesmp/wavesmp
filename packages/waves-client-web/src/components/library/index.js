@@ -94,10 +94,10 @@ class Library extends React.Component {
 
       ({ ascending, playId, sortKey, selection } = playlist)
       playlistLoaded = true
+      if (routerSearchString != playlistSearchString) {
+        shouldUpdateSearch = true
+      }
       if (routerSearchString) {
-        if (routerSearchString != playlistSearchString) {
-          shouldUpdateSearch = true
-        }
         numItems = searchItems.length
       } else {
         numItems = playlist.tracks.length
