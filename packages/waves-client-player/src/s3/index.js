@@ -2,9 +2,13 @@ const Promise = require('bluebird')
 
 const S3Client = require('./client')
 
+const STREAM_ERROR_RETRIES = 1
+
 class S3Player {
   constructor(opts) {
     this.stream = new Audio()
+    this.stream.onerror = this.onStreamError.bind(this)
+    this.streamErrorRetries = STREAM_ERROR_RETRIES
     this.client = new S3Client(opts)
   }
 
@@ -25,11 +29,34 @@ class S3Player {
     }
   }
 
+  /* Audio source URLs may expire, which can lead to a 403 Forbidden
+   * http code. This results in a stream error code MEDIA_ERR_NETWORK.
+   * Catch these errors and retry. Update this code if there is a way
+   * to check underlying http code. */
+  async onStreamError() {
+    const err = this.stream.error
+    if (this.streamErrorRetries && err.code === err.MEDIA_ERR_NETWORK) {
+      console.log('Got stream network error. Retrying')
+      this.streamErrorRetries -= 1
+      const { currentTime } = this.stream
+      console.log(`Retrying playback at time ${currentTime}`)
+      await this.load()
+      this.seek(currentTime)
+      await this.stream.play()
+      return
+    }
+    toastr.error(err.message, 'Stream Failure')
+    console.log('Unexpected stream error')
+    console.log(`message: ${err.message}`)
+    console.log(`code: ${err.code}`)
+  }
+
   async play() {
     if (!this.loaded) {
       await this.load()
     }
-    this.stream.play();
+    this.streamErrorRetries = STREAM_ERROR_RETRIES
+    await this.stream.play();
   }
 
   pause() {
