@@ -20,12 +20,20 @@ export default class TableMenuBar extends React.Component {
     if (keyCode !== ENTER_KEY_CODE) {
       return
     }
+    this.applySearchFilter(ev.currentTarget.value)
+  }
 
+  onSearchReset = () => {
+    this.setState({searchValue: ''})
+    this.applySearchFilter('')
+  }
+
+  applySearchFilter(searchString) {
     const { history, location } = this.props
     const { pathname, search } = location
     const qp = new URLSearchParams(search)
     qp.set('page', 0)
-    qp.set('search', ev.currentTarget.value)
+    qp.set('search', searchString)
     history.push({ pathname, search: `${qp}` })
   }
 
@@ -33,7 +41,11 @@ export default class TableMenuBar extends React.Component {
     const { buttons, location, onSettingsClick, history } = this.props
     let settingsComponent = null
     if (onSettingsClick) {
-      settingsComponent = <i className='fa fa-lg fa-cog' onClick={onSettingsClick}/>
+      settingsComponent = (
+        <i className='fa fa-lg fa-cog'
+           onClick={onSettingsClick}
+           style={{position: 'absolute', top: '5px', left: '-30px'}}/>
+      )
     }
 
     return (
@@ -42,14 +54,21 @@ export default class TableMenuBar extends React.Component {
         <div className='pull-right tablemenubar-search-box'>
           {settingsComponent}
           <i className='fa fa-lg fa-search tablemenubar-input-icon'
-             style={{position: 'relative',
-                     top: '0px',
-                     left: '25px'}}></i>
+             style={{position: 'absolute',
+                     top: '5px',
+                     left: '6px'}}></i>
           <input type='text'
                  value={this.state.searchValue}
-                 style={{paddingLeft: '30px'}}
+                 style={{paddingLeft: '30px', paddingRight: '25px'}}
                  onKeyDown={this.onKeyDown}
                  onChange={this.onChange}/>
+          {this.state.searchValue &&
+            <i className='fa fa-lg fa-times tablemenubar-input-icon'
+               onClick={this.onSearchReset}
+               style={{position: 'absolute',
+                       top: '5px',
+                       right: '5px'}}></i>
+          }
         </div>
       </div>
     )

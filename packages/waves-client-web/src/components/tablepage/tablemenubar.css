@@ -5,12 +5,11 @@
 
 .tablemenubar-search-box {
   margin-top: 19px;
-  text-align: right;
+  position: relative;
 }
 
 .tablemenubar-search-box input {
   width: 200px;
-  margin-left: 2px;
   background-color: var(--input-background-color);
   color: #fff;
   border: 1px solid var(--input-background-color);
