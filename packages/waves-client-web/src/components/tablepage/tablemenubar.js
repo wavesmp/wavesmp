@@ -8,7 +8,7 @@ const ENTER_KEY_CODE = 13
 export default class TableMenuBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {searchValue: ''};
+    this.state = {searchValue: props.routerSearchString};
   }
 
   onChange = ev => {
@@ -27,12 +27,10 @@ export default class TableMenuBar extends React.Component {
     qp.set('page', 0)
     qp.set('search', ev.currentTarget.value)
     history.push({ pathname, search: `${qp}` })
-    this.setState({ searchValue: '' })
   }
 
   render() {
-    const { buttons, location, onSettingsClick,
-            history, routerSearchString } = this.props
+    const { buttons, location, onSettingsClick, history } = this.props
     let settingsComponent = null
     if (onSettingsClick) {
       settingsComponent = <i className='fa fa-lg fa-cog' onClick={onSettingsClick}/>
@@ -50,7 +48,6 @@ export default class TableMenuBar extends React.Component {
           <input type='text'
                  value={this.state.searchValue}
                  style={{paddingLeft: '30px'}}
-                 placeholder={routerSearchString}
                  onKeyDown={this.onKeyDown}
                  onChange={this.onChange}/>
         </div>
