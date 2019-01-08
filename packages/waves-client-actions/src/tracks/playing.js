@@ -25,6 +25,7 @@ function shuffleToggle() {
 function seek(newTime) {
   return (dispatch, getState, { player }) => {
     player.seek(newTime)
+    dispatch({ type: types.PLAYING_TIME_UPDATE, currentTime: newTime })
   }
 }
 
