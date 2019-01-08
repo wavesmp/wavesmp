@@ -12,6 +12,12 @@ class FilePlayer {
     this.stream.addEventListener('ended', onTrackEnded)
   }
 
+  setOnTimeUpdate(onTimeUpdate) {
+    this.stream.addEventListener('timeupdate', () => {
+      onTimeUpdate(this.stream.currentTime)
+    })
+  }
+
   async trackNext(track, isPlaying) {
     if (this.trackUrl) {
       URL.revokeObjectURL(this.trackUrl)

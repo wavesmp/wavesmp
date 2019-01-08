@@ -21,6 +21,12 @@ class S3Player {
     this.stream.addEventListener('ended', onTrackEnded)
   }
 
+  setOnTimeUpdate(onTimeUpdate) {
+    this.stream.addEventListener('timeupdate', () => {
+      onTimeUpdate(this.stream.currentTime)
+    })
+  }
+
   async trackNext(track, isPlaying) {
     this.track = track
     this.loaded = false
