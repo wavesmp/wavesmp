@@ -1,39 +1,27 @@
 const actionTypes = require('waves-action-types')
 
-/*
- * TODO probably want to move to a model where updates
- * (e.g. elapsed, startDate) * come from track progress
- * callback
- */
-
 const initialPlaying = {
   isPlaying: false,
   playlist: null,
   track: null,
   shuffle: false,
   repeat: false,
-  seeking: false,
-  elapsed: 0,
-  startDate: null
+  currentTime: 0
 }
 
 function reducerPlaying(playing = initialPlaying, action) {
   switch (action.type) {
     case actionTypes.PLAYING_PLAY: {
-      const { startDate } = action
       return {
         ...playing,
-        isPlaying: true,
-        startDate
+        isPlaying: true
       }
     }
 
     case actionTypes.PLAYING_PAUSE: {
-      const { elapsed } = action
       return {
         ...playing,
-        isPlaying: false,
-        elapsed
+        isPlaying: false
       }
     }
 
@@ -45,24 +33,17 @@ function reducerPlaying(playing = initialPlaying, action) {
       return {...playing, repeat: !playing.repeat, shuffle: false}
     }
 
-    case actionTypes.PLAYING_TRACK_REPEAT: {
-      const { startDate } = action
-      return {...playing, startDate}
-    }
-
-    case actionTypes.PLAYING_SEEK: {
-      const { startDate } = action
-      return {...playing, startDate}
+    case actionTypes.PLAYING_TIME_UPDATE: {
+      const { currentTime } = action
+      return {...playing, currentTime }
     }
 
     case actionTypes.TRACK_NEXT: {
-      const { nextTrack, startDate } = action
+      const { nextTrack } = action
       if (nextTrack) {
         return {
           ...playing,
-          track: nextTrack,
-          startDate,
-          elapsed: 0
+          track: nextTrack
         }
       }
       return {...playing, isPlaying: false}
@@ -74,8 +55,6 @@ function reducerPlaying(playing = initialPlaying, action) {
         ...playing,
         isPlaying: true,
         track,
-        startDate,
-        elapsed: 0,
         playlist: playlistName
       }
     }

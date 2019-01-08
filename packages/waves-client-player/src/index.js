@@ -32,6 +32,13 @@ class Player {
     }
   }
 
+  setOnTimeUpdate(onTimeUpdate) {
+    for (const source in this.players) {
+      const player = this.players[source]
+      player.setOnTimeUpdate(onTimeUpdate)
+    }
+  }
+
   async trackNext(track, isPlaying) {
     this.pause()
     this.track = track

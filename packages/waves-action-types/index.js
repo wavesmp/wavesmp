@@ -24,8 +24,8 @@ const actionTypes = keyMirror({
   PLAYING_PAUSE: null,
   PLAYING_REPEAT_TOGGLE: null,
   PLAYING_SHUFFLE_TOGGLE: null,
+  PLAYING_TIME_UPDATE: null,
   PLAYING_TRACK_REPEAT: null,
-  PLAYING_SEEK: null,
 
   TRACKS_DELETE: null,
   TRACKS_UPDATE: null,

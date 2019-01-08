@@ -9,6 +9,10 @@ export default async (store, ws, player, localState) => {
     store.dispatch(WavesActions.trackEnded(URLSearchParams))
   })
 
+  player.setOnTimeUpdate(currentTime => {
+    store.dispatch(WavesActions.playingTimeUpdate(currentTime))
+  })
+
   /* Recieve data from server */
   ws.setOnLibraryUpdate(lib => {
     store.dispatch(WavesActions.tracksUpdate(lib))
