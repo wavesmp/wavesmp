@@ -52,18 +52,8 @@ class S3Client {
       Body: file,
       ContentType: file.type
     }
-
-    // AWS.putObject does not support promise:
-    // https://github.com/aws/aws-sdk-js/issues/1008
-    return new Promise((resolve, reject) => {
-      this.bucket.putObject(params, (err, data) => {
-        if (err) {
-            reject(err)
-            return
-        }
-        resolve(data)
-      })
-    })
+    const req = this.bucket.putObject(params)
+    return req.promise()
   }
 
   // picture has format (string) and data (Uint8Array) attributes
