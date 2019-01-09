@@ -170,6 +170,7 @@ function tracksUpload(trackSource) {
     if (track && deleteIds.has(track.id)) {
       player.pause()
     }
+    tracksUpdate(uploaded)(dispatch, getState)
   }
 }
 
