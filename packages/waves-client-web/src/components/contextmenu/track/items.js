@@ -87,13 +87,9 @@ export class PlaylistAddItem extends React.Component {
   render() {
     const { onClick, title } = this.props
     return (
-      <li className='contextmenu-item'>
-        <div className='btn btn-default contextmenu-link' onClick={onClick}>
-        <div>
-          <i className='fa fa-fw fa fa-lg fa-list'></i>
-          &nbsp;&nbsp;{title}
-        </div>
-        </div>
+      <li className='btn btn-default contextmenu-item' onClick={onClick}>
+        <i className='fa fa-lg fa-list'></i>
+        &nbsp;&nbsp;{title}
       </li>
     )
   }

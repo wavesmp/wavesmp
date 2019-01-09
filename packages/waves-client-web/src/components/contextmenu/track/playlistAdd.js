@@ -34,10 +34,10 @@ class PlaylistAdd extends React.Component {
 
   render() {
     return (
-      <ul className='contextmenu-items'>
+      <React.Fragment>
         <Back onClick={this.onBackClick}/>
         {this.getPlaylistAddItems()}
-      </ul>
+      </React.Fragment>
     )
   }
 }
