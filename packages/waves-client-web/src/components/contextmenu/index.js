@@ -9,7 +9,7 @@ import './index.css'
 
 const CONTEXT_MENUS = {
   [contextmenuTypes.TRACK]: Track,
-  [contextmenuTypes.PLAYLISTADD]: PlaylistAdd
+  [contextmenuTypes.PLAYLIST_ADD]: PlaylistAdd
 }
 
 const EMPTY_MENU = <menu className='contextmenu'/>
