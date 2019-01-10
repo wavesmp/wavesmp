@@ -55,7 +55,7 @@ export class State extends React.Component {
     switch (state) {
       case 'preview':
         return 'fa-eye'
-      case 'importing':
+      case 'pending':
         return 'fa-spinner fa-pulse'
       default:
         return 'fa-check-circle common-table-status-ok'
