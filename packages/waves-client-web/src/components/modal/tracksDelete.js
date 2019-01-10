@@ -74,7 +74,7 @@ class TracksDeleteModal extends React.Component {
     const deleteTitle = deleting ? 'Deleting' : 'Delete'
     const plurality = hasMoreThanOne(selection) ? 's' : ''
     const title = 'Delete track' + plurality
-    const message = `This will delete track${plurality}. Are you sure?`
+    const message = `This will delete the track${plurality} below. Are you sure?`
     return (
       <ActionConfirmModal
         deleteTitle={deleteTitle}
