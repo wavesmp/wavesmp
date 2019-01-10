@@ -96,9 +96,12 @@ class Server {
         }
       },
       [types.TRACKS_DELETE]: async (ws, user, data, reqId) => {
-        log.info('Deleting from library')
         const { deleteIds } = data
-        this.storage.deleteTracks(user, deleteIds)
+        log.info(`Deleting from library: ${deleteIds}`)
+        await this.storage.deleteTracks(user, deleteIds)
+        if (reqId) {
+          this.sendMessage(ws, types.TRACKS_DELETE, {}, reqId)
+        }
       }
     }
   }
