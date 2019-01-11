@@ -18,10 +18,10 @@ describe('#library()', () => {
     const ws = new WavesSocket({})
 
     const id = track1.id
-    const attr = 'title'
-    const update = 'newTitle'
-    const action = {type: types.LIBRARY_TRACK_UPDATE, id, attr, update}
-    const thunk = actions.libraryInfoUpdate(id, attr, update)
+    const key = 'title'
+    const value = 'newTitle'
+    const action = {type: types.LIBRARY_TRACK_UPDATE, ids: [id], key, value}
+    const thunk = actions.libraryInfoUpdate(id, key, value)
 
     assert.isDefined(types.LIBRARY_TRACK_UPDATE)
     const dispatchMock = sinon.mock()
@@ -31,13 +31,22 @@ describe('#library()', () => {
     const wsExpect = wsMock.expects('sendBestEffortMessage')
       .once()
       .withExactArgs(types.LIBRARY_TRACK_UPDATE,
-        {id, attr, update})
+        {id, key, value})
 
     thunk(dispatchMock, undefined, { ws })
 
     dispatchMock.verify()
     wsMock.verify()
 
+  })
+
+  it('track local info update', () => {
+    const ids = [track1.id, track2.id]
+    const key = 'title'
+    const value = 'newTitle'
+    assert.isDefined(types.LIBRARY_TRACK_UPDATE)
+    const action = {type: types.LIBRARY_TRACK_UPDATE, ids, key, value}
+    assert.deepEqual(action, actions.libraryLocalInfoUpdate(ids, key, value))
   })
 
 })

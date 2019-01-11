@@ -22,12 +22,12 @@ function reducerLibrary(library = initialLibrary, action) {
       return libraryUpdate
     }
     case actionTypes.LIBRARY_TRACK_UPDATE: {
-      const track = library[action.id]
-      return {...library, [action.id]: {
-          ...track,
-          [action.attr]: action.update
-        }
+      const { ids, key, value } = action
+      const libraryUpdate = {...library}
+      for (const id of ids) {
+        libraryUpdate[id] = { ...library[id], [key]: value }
       }
+      return libraryUpdate
     }
     default:
       return library

@@ -74,9 +74,9 @@ class Server {
 
       [types.LIBRARY_TRACK_UPDATE]: async (ws, user, data, reqId) => {
         log.info('Updating track info')
-        const { id, attr, update } = data
+        const { id, key, value } = data
         const updateObj = {
-          [attr]: update,
+          [key]: value,
           idp: user.idp,
           idpId: user.idpId
         }

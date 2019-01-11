@@ -43,15 +43,15 @@ describe('#library()', () => {
   })
 
   it('library track update', () => {
-    const attr = 'title'
+    const key = 'title'
     action = {
       type: actionTypes.LIBRARY_TRACK_UPDATE,
-      id: track1.id,
-      attr,
-      update: update1[attr]
+      ids: [track1.id],
+      key,
+      value: update1[key]
     }
     state = assertNewState(library, state, action)
-    assert.deepEqual(state, {[track1.id]: {...track1, [attr]: update1[attr]}})
+    assert.deepEqual(state, {[track1.id]: {...track1, [key]: update1[key]}})
   })
 
 })
