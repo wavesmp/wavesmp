@@ -20,12 +20,13 @@ function reducerUploads(state = initialState, action) {
       }
       return newState
     }
-    case actionTypes.UPLOAD_TRACK_UPDATE: {
-      return {...state, [action.id]: {
-          ...state[action.id],
-          [action.attr]: action.update
-        }
+    case actionTypes.UPLOAD_TRACKS_UPDATE: {
+      const { ids, key, value } = action
+      const newState = {...state}
+      for (const id of ids) {
+        newState[id] = {...state[id], [key]: value}
       }
+      return newState
     }
     default:
       return state

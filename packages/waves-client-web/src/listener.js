@@ -9,6 +9,11 @@ export default async (store, ws, player, localState) => {
     store.dispatch(WavesActions.trackEnded(URLSearchParams))
   })
 
+  player.setOnUploadProgress((trackId, progress) => {
+    store.dispatch(WavesActions.uploadInfoUpdate(
+      trackId, 'uploadProgress', progress))
+  })
+
   player.setOnTimeUpdate(currentTime => {
     store.dispatch(WavesActions.playingTimeUpdate(currentTime))
   })

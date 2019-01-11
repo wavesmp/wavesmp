@@ -27,6 +27,10 @@ class S3Player {
     })
   }
 
+  setOnUploadProgress(onUploadProgress) {
+    this.client.setOnUploadProgress(onUploadProgress)
+  }
+
   async trackNext(track, isPlaying) {
     this.track = track
     this.loaded = false
@@ -97,23 +101,17 @@ class S3Player {
   }
 
   async upload(uploads) {
-    try {
-      uploads = await Promise.all(uploads.map(this._upload, this))
-      const uploaded = []
-      const errors = []
-      for (const upload of uploads) {
-        if (upload.err) {
-          errors.push(upload)
-        } else {
-          uploaded.push(upload)
-        }
+    uploads = await Promise.all(uploads.map(this._upload, this))
+    const uploaded = []
+    const errors = []
+    for (const upload of uploads) {
+      if (upload.err) {
+        errors.push(upload)
+      } else {
+        uploaded.push(upload)
       }
-      return { errors, uploaded }
-    } catch (err) {
-      console.log('Unexpected error while uploading all tracks')
-      console.log(err)
-      return null
     }
+    return { errors, uploaded }
   }
 
   /* Upload to s3. Convert tracks to s3 track. */
@@ -132,10 +130,7 @@ class S3Player {
         track.image = picture.format
       }
 
-      const resp = await this.client.putTrack(track.id, file)
-      console.log('GOT UPLOAD TRACK RESP')
-      console.log(resp)
-
+      await this.client.putTrack(track.id, file)
       toastr.success(file.name, 'Uploaded file')
       return track
     } catch (err) {
