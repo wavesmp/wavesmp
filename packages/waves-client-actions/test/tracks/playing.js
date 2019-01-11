@@ -10,98 +10,59 @@ describe('#playing()', () => {
 
   it('#pause()', () => {
     const player = new Player({})
-
-    const thunk = actions.pause()
-
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once()
-
     const playerMock = sinon.mock(player)
     const playerExpect = playerMock.expects('pause').once().withExactArgs()
 
-    const elapsed = 5000 // 5 seconds ago
-    const startDate = new Date() - elapsed
-    const playing = { startDate }
-    const tracks = { playing }
-    thunk(dispatchMock, () => ({ tracks }), { player })
-
-    dispatchMock.verify()
-    playerMock.verify()
-
-    const dispatchCall = dispatchExpect.firstCall
-    const dispatchArgs = dispatchCall.args
-    assert.lengthOf(dispatchArgs, 1)
-    const dispatchArg = dispatchArgs[0]
-    assert.lengthOf(Object.keys(dispatchArg), 2)
+    const dispatchMock = sinon.mock()
     assert.isDefined(types.PLAYING_PAUSE)
-    assert.strictEqual(types.PLAYING_PAUSE, dispatchArg.type)
+    const dispatchExpect = dispatchMock.once().withExactArgs({
+      type: types.PLAYING_PAUSE
+    })
 
-    const buffer = 100 // 0.1s
-    assert.closeTo(dispatchArg.elapsed, elapsed, buffer)
-  })
 
-  it('#play()', () => {
-    const player = new Player({})
-
-    const thunk = actions.play()
-
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once()
-
-    const playerMock = sinon.mock(player)
-    const playerExpect = playerMock.expects('play').once().withExactArgs()
-
-    const elapsed = 5000 // 5s
-    const playing = { elapsed }
-    const tracks = { playing }
-    thunk(dispatchMock, () => ({ tracks }), { player })
-
-    dispatchMock.verify()
-    playerMock.verify()
-
-    const dispatchCall = dispatchExpect.firstCall
-    const dispatchArgs = dispatchCall.args
-    assert.lengthOf(dispatchArgs, 1)
-    const dispatchArg = dispatchArgs[0]
-    assert.lengthOf(Object.keys(dispatchArg), 2)
-    assert.isDefined(types.PLAYING_PLAY)
-    assert.strictEqual(types.PLAYING_PLAY, dispatchArg.type)
-
-    const buffer = 100 // 0.1s
-    assert.closeTo(dispatchArg.startDate, new Date() - elapsed, buffer)
-  })
-
-  it('#seek()', () => {
-    const pos = 0.5
-    const duration = 60
-    const elapsed = pos * duration
-    const expectedStartDate = new Date() - elapsed * 1000
-
-    const player = new Player({})
-
-    const thunk = actions.seek(pos, duration)
-
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once()
-
-    const playerMock = sinon.mock(player)
-    const playerExpect = playerMock.expects('seek').once().withExactArgs(elapsed)
-
+    const thunk = actions.pause()
     thunk(dispatchMock, undefined, { player })
 
     dispatchMock.verify()
     playerMock.verify()
+  })
 
-    const dispatchCall = dispatchExpect.firstCall
-    const dispatchArgs = dispatchCall.args
-    assert.lengthOf(dispatchArgs, 1)
-    const dispatchArg = dispatchArgs[0]
-    assert.lengthOf(Object.keys(dispatchArg), 2)
-    assert.isDefined(types.PLAYING_SEEK)
-    assert.strictEqual(types.PLAYING_SEEK, dispatchArg.type)
+  it('#play()', () => {
+    const player = new Player({})
+    const playerMock = sinon.mock(player)
+    const playerExpect = playerMock.expects('play').once().withExactArgs()
 
-    const buffer = 100 // 0.1s
-    assert.closeTo(dispatchArg.startDate, expectedStartDate, buffer)
+    const dispatchMock = sinon.mock()
+    assert.isDefined(types.PLAYING_PLAY)
+    const dispatchExpect = dispatchMock.once().withExactArgs({
+      type: types.PLAYING_PLAY
+    })
+
+    const thunk = actions.play()
+    thunk(dispatchMock, () => ({ tracks }), { player })
+
+    dispatchMock.verify()
+    playerMock.verify()
+  })
+
+  it('#seek()', () => {
+    const newTime = 3
+    const player = new Player({})
+    const playerMock = sinon.mock(player)
+    const playerExpect = playerMock.expects('seek').once().withExactArgs(newTime)
+
+    const dispatchMock = sinon.mock()
+    assert.isDefined(types.PLAYING_TIME_UPDATE)
+    const dispatchExpect = dispatchMock.once().withExactArgs({
+      type: types.PLAYING_TIME_UPDATE,
+      currentTime: newTime
+    })
+
+    const thunk = actions.seek(newTime)
+    thunk(dispatchMock, undefined, { player })
+
+    dispatchMock.verify()
+    playerMock.verify()
   })
 
   it('#repeatToggle()', () => {

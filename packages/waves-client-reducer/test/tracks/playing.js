@@ -23,9 +23,7 @@ describe('#playing()', () => {
       track: null,
       shuffle: false,
       repeat: false,
-      seeking: false,
-      elapsed: 0,
-      startDate: null
+      currentTime: 0
     })
   })
 
@@ -62,67 +60,43 @@ describe('#playing()', () => {
   })
 
   it('track toggle', () => {
-    const startDate = new Date()
     const action = {
       type: actionTypes.TRACK_TOGGLE,
       playlistName: playlistName1,
-      track: track1,
-      startDate
+      track: track1
     }
     state = assertNewState(playing, state, action)
     assert.isTrue(state.isPlaying)
     assert.strictEqual(state.track, track1)
-    assert.strictEqual(state.startDate, startDate)
-    assert.strictEqual(state.elapsed, 0)
     assert.strictEqual(state.playlist, playlistName1)
   })
 
   it('track pause', () => {
-    const elapsed = new Date() - state.startDate
-    assert.isAtLeast(elapsed, 0)
-    assert.isBelow(elapsed, 1000)
-    const action = { type: actionTypes.PLAYING_PAUSE, elapsed }
+    const action = { type: actionTypes.PLAYING_PAUSE }
     state = assertNewState(playing, state, action)
     assert.isFalse(state.isPlaying)
-    assert.strictEqual(state.elapsed, elapsed)
   })
 
   it('track play', () => {
-    const startDate = new Date()
-    const action = { type: actionTypes.PLAYING_PLAY, startDate }
+    const action = { type: actionTypes.PLAYING_PLAY }
     state = assertNewState(playing, state, action)
     assert.isTrue(state.isPlaying)
-    assert.strictEqual(state.startDate, startDate)
   })
 
-  it('track repeat', () => {
-    const startDate = new Date()
-    const action = { type: actionTypes.PLAYING_TRACK_REPEAT, startDate }
+  it('track time update', () => {
+    const action = { type: actionTypes.PLAYING_TIME_UPDATE, currentTime: 3 }
     state = assertNewState(playing, state, action)
-    assert.isTrue(state.isPlaying)
-    assert.strictEqual(state.startDate, startDate)
-  })
-
-  it('track seek', () => {
-    const startDate = new Date() - 10000
-    const action = { type: actionTypes.PLAYING_SEEK, startDate }
-    state = assertNewState(playing, state, action)
-    assert.isTrue(state.isPlaying)
-    assert.strictEqual(state.startDate, startDate)
+    assert.strictEqual(state.currentTime, 3)
   })
 
   it('track next', () => {
-    const startDate = new Date()
     const action = {
       type: actionTypes.TRACK_NEXT,
-      nextTrack: track2,
-      startDate
+      nextTrack: track2
     }
     state = assertNewState(playing, state, action)
     assert.isTrue(state.isPlaying)
     assert.strictEqual(state.track, track2)
-    assert.strictEqual(state.startDate, startDate)
-    assert.strictEqual(state.elapsed, 0)
     assert.strictEqual(state.playlist, playlistName1)
   })
 
@@ -159,9 +133,7 @@ describe('#playing()', () => {
       track: null,
       shuffle: false,
       repeat: false,
-      seeking: false,
-      elapsed: 0,
-      startDate: null
+      currentTime: 0
     })
   })
 

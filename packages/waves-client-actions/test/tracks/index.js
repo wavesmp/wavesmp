@@ -265,9 +265,10 @@ describe('#tracks()', async () => {
 
     const sourceType = 's3'
     const playing = { track: track1 }
+    const library = null
     const uploads = { [track1.id]: track1, [track2.id]: track2 }
     const uploadValues = Object.values(uploads)
-    const getState = () => ({tracks: {uploads, playing}})
+    const getState = () => ({tracks: {uploads, playing, library}})
 
     const thunk = actions.tracksUpload(sourceType)
 
@@ -283,18 +284,30 @@ describe('#tracks()', async () => {
       .withExactArgs(types.TRACKS_UPDATE,
         {tracks: uploadValues})
 
-    assert.isDefined(types.TRACK_UPLOADS_DELETE)
-    const uploadKeys = new Set(Object.keys(uploads))
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(
-      { type: types.TRACK_UPLOADS_DELETE,
-        deleteIds: uploadKeys })
-
     const playerPauseExpect = playerMock.expects('pause')
       .once().withExactArgs()
 
+    const dispatchMock = sinon.mock()
+    const dispatchExpect = dispatchMock.twice()
+
     await thunk(dispatchMock, getState, { player, ws })
 
+    assert.isDefined(types.TRACK_UPLOADS_DELETE)
+    const uploadKeys = new Set(Object.keys(uploads))
+    const firstDisptachCall = dispatchExpect.firstCall
+    assert.isTrue(firstDisptachCall.calledWithExactly({
+      type: types.TRACK_UPLOADS_DELETE,
+      deleteIds: uploadKeys
+    }))
+
+    const secondDisptachCall = dispatchExpect.secondCall
+    assert.isTrue(secondDisptachCall.calledWithExactly({
+      type: types.TRACKS_UPDATE,
+      libraryById: uploads
+    }))
+
+
+    dispatchMock.verify()
     playerMock.verify()
     wsMock.verify()
   })
