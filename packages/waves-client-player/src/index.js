@@ -90,7 +90,7 @@ class Player {
   }
 
   /* Delete the tracks. Does not return items in the given order.
-   * Does now throw. Item will be null if delete failed. */
+   * Does not throw. Item will be null if delete failed. */
   async deleteTracks(tracks) {
     const tracksBySource = this._getTracksBySource(tracks)
     const promises = []

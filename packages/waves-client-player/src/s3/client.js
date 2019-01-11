@@ -111,7 +111,7 @@ class S3Client {
         }
         data.Deleted = data.Deleted.map(({Key}) => keyToTrack[Key])
         for (const err of data.Errors) {
-          err.Track = keyToTrack(err.Key)
+          err.Track = keyToTrack[err.Key]
         }
         resolve(data)
       })
