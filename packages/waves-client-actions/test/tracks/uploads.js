@@ -8,11 +8,11 @@ describe('#uploads()', () => {
 
   it('#uploadInfoUpdate()', () => {
     const id = 'testId'
-    const attr = 'testAttr'
-    const update = 'testUpdate'
-    assert.isDefined(types.UPLOAD_TRACK_UPDATE)
-    const expectedAction = { type: types.UPLOAD_TRACK_UPDATE, id, attr, update }
-    assert.deepEqual(actions.uploadInfoUpdate(id, attr, update), expectedAction)
+    const key = 'testAttr'
+    const value = 'testUpdate'
+    assert.isDefined(types.UPLOAD_TRACKS_UPDATE)
+    const expectedAction = { type: types.UPLOAD_TRACKS_UPDATE, ids: [id], key, value }
+    assert.deepEqual(actions.uploadInfoUpdate(id, key, value), expectedAction)
   })
 
 })

@@ -33,20 +33,20 @@ describe('#uploads()', () => {
   })
 
   it('upload track update', () => {
-    assert.isDefined(actionTypes.UPLOAD_TRACK_UPDATE)
-    const attr = 'title'
+    assert.isDefined(actionTypes.UPLOAD_TRACKS_UPDATE)
+    const key = 'title'
     action = {
-      type: actionTypes.UPLOAD_TRACK_UPDATE,
-      id: track1.id,
-      attr,
-      update: update1[attr]
+      type: actionTypes.UPLOAD_TRACKS_UPDATE,
+      ids: [track1.id],
+      key,
+      value: update1[key]
     }
     state = assertNewState(uploads, state, action)
     const expectedState = {
       ...updateLib,
       [track1.id]: {
         ...track1,
-        [attr]: update1[attr]
+        [key]: update1[key]
       }
     }
     assert.deepEqual(state, expectedState)

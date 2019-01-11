@@ -12,6 +12,13 @@ class ActionConfirmModal extends React.Component {
     actions.modalSet(null)
   }
 
+  onAction = async () => {
+    const { onAction } = this.props
+    if (await onAction()) {
+      this.onClose()
+    }
+  }
+
   onDelete = async () => {
     const { onDelete } = this.props
     if (await onDelete()) {
@@ -20,7 +27,7 @@ class ActionConfirmModal extends React.Component {
   }
 
   render() {
-    const { deleteTitle, message, title, additionalRow, disabled } = this.props
+    const { deleteTitle, actionTitle, message, title, additionalRow, disabled } = this.props
     return (
       <ModalWrapper>
         <ModalHeader title={title} onClose={this.onClose}/>
@@ -35,6 +42,8 @@ class ActionConfirmModal extends React.Component {
 
         <ModalFooter
           disabled={disabled}
+          actionTitle={actionTitle}
+          onAction={this.onAction}
           deleteTitle={deleteTitle}
           onDelete={this.onDelete}
           onClose={this.onClose}/>

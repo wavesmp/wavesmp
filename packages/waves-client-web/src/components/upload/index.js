@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { UPLOAD_PLAYLIST as playlistName } from 'waves-client-constants'
+import { UPLOAD_PLAYLIST as playlistName, modalTypes } from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 
 import ContentPage from '../contentpage'
@@ -31,9 +31,7 @@ class Upload extends React.Component {
 
   onUpload = async () => {
     const { actions } = this.props
-    this.setState({uploading: true})
-    await actions.tracksUpload('s3')
-    this.setState({uploading: false})
+    actions.modalSet({type: modalTypes.TRACKS_UPLOAD})
   }
 
   onDragEnter = ev => {
@@ -119,9 +117,9 @@ class Upload extends React.Component {
     return displayItems
   }
 
-  onItemEdit = (id, attr, update) => {
+  onItemEdit = (id, key, value) => {
     const { actions } = this.props
-    actions.uploadInfoUpdate(id, attr, update)
+    actions.uploadInfoUpdate(id, key, value)
   }
 
   renderUploads() {

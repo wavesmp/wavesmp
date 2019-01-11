@@ -48,7 +48,7 @@ const actionTypes = keyMirror({
   PLAYLIST_DELETE: null,
   PLAYLIST_MOVE: null,
 
-  UPLOAD_TRACK_UPDATE: null,
+  UPLOAD_TRACKS_UPDATE: null,
 })
 
 module.exports = actionTypes

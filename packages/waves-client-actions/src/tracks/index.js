@@ -162,15 +162,28 @@ function tracksUpload(trackSource) {
     const { tracks } = getState()
     const { playing, uploads } = tracks
     const { track } = playing
+    const uploadIds = Object.keys(uploads)
+    dispatch({ type: types.UPLOAD_TRACKS_UPDATE, ids: uploadIds, key: 'state', value: 'uploading' })
+    dispatch({ type: types.UPLOAD_TRACKS_UPDATE, ids: uploadIds, key: 'uploadProgress', value: 0 })
     const uploadValues = Object.values(uploads)
-    const { uploaded } = await player.upload(trackSource, uploadValues)
-    ws.sendBestEffortMessage(types.TRACKS_UPDATE, {tracks: uploaded})
-    const deleteIds = new Set(uploaded.map(t => t.id))
-    dispatch({ type: types.TRACK_UPLOADS_DELETE, deleteIds })
-    if (track && deleteIds.has(track.id)) {
+    const resp = await player.upload(trackSource, uploadValues)
+    const { errors, uploaded } = resp
+    try {
+      await ws.sendAckedMessage(types.TRACKS_UPDATE, {tracks: uploaded})
+    } catch (err) {
+      console.log('Failed to upload tracks to server')
+      console.log(err)
+      toastr.error(err, 'Upload Failure')
+      errors.push({err})
+      return resp
+    }
+    const uploadedIds = new Set(uploaded.map(t => t.id))
+    dispatch({ type: types.TRACK_UPLOADS_DELETE, deleteIds: uploadedIds })
+    if (track && uploadedIds.has(track.id)) {
       player.pause()
     }
     tracksUpdate(uploaded)(dispatch, getState)
+    return resp
   }
 }
 
@@ -203,7 +216,7 @@ function tracksDelete() {
     } catch (err) {
       console.log('Failed to delete tracks from server')
       console.log(err)
-      toastr.error(err, 'Upload Failure')
+      toastr.error(err, 'Delete Failure')
       errors.push(err)
     }
 

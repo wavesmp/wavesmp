@@ -32,6 +32,13 @@ class Player {
     }
   }
 
+  setOnUploadProgress(onUploadProgress) {
+    for (const source in this.players) {
+      const player = this.players[source]
+      player.setOnUploadProgress(onUploadProgress)
+    }
+  }
+
   setOnTimeUpdate(onTimeUpdate) {
     for (const source in this.players) {
       const player = this.players[source]

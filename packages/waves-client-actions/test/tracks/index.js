@@ -279,7 +279,7 @@ describe('#tracks()', async () => {
 
     assert.isDefined(types.TRACKS_UPDATE)
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock.expects('sendBestEffortMessage')
+    const wsExpect = wsMock.expects('sendAckedMessage')
       .once()
       .withExactArgs(types.TRACKS_UPDATE,
         {tracks: uploadValues})
@@ -288,20 +288,38 @@ describe('#tracks()', async () => {
       .once().withExactArgs()
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.twice()
+    const dispatchExpect = dispatchMock.exactly(4)
 
     await thunk(dispatchMock, getState, { player, ws })
 
-    assert.isDefined(types.TRACK_UPLOADS_DELETE)
-    const uploadKeys = new Set(Object.keys(uploads))
-    const firstDisptachCall = dispatchExpect.firstCall
-    assert.isTrue(firstDisptachCall.calledWithExactly({
-      type: types.TRACK_UPLOADS_DELETE,
-      deleteIds: uploadKeys
+    assert.isDefined(types.UPLOAD_TRACKS_UPDATE)
+    const uploadIds = Object.keys(uploads)
+    const firstDispatchCall = dispatchExpect.firstCall
+    assert.isTrue(firstDispatchCall.calledWithExactly({
+      type: types.UPLOAD_TRACKS_UPDATE,
+      ids: uploadIds,
+      key: 'state',
+      value: 'uploading'
     }))
 
     const secondDisptachCall = dispatchExpect.secondCall
     assert.isTrue(secondDisptachCall.calledWithExactly({
+      type: types.UPLOAD_TRACKS_UPDATE,
+      ids: uploadIds,
+      key: 'uploadProgress',
+      value: 0
+    }))
+
+    assert.isDefined(types.TRACK_UPLOADS_DELETE)
+    const uploadedIds = new Set(uploadIds)
+    const thirdDisptachCall = dispatchExpect.thirdCall
+    assert.isTrue(thirdDisptachCall.calledWithExactly({
+      type: types.TRACK_UPLOADS_DELETE,
+      deleteIds: uploadedIds
+    }))
+
+    const fourthDisptachCall = dispatchExpect.getCall(3)
+    assert.isTrue(fourthDisptachCall.calledWithExactly({
       type: types.TRACKS_UPDATE,
       libraryById: uploads
     }))

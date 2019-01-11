@@ -51,23 +51,33 @@ export class Name extends React.Component {
 }
 
 export class State extends React.Component {
-  getIconClasses(state) {
+  renderIcon(iconClasses) {
+    return <i className={`fa fa-lg ${iconClasses}`}></i>
+  }
+
+  renderRow() {
+    const { sample } = this.props
+    const { state } = sample
     switch (state) {
       case 'preview':
-        return 'fa-eye'
+        return this.renderIcon('fa-eye')
       case 'pending':
-        return 'fa-spinner fa-pulse'
+        return this.renderIcon('fa-spinner fa-pulse')
+      case 'uploading':
+        return (
+          <React.Fragment>
+            {`${sample.uploadProgress}%`}
+          </React.Fragment>
+        )
       default:
-        return 'fa-check-circle common-table-status-ok'
+        return this.renderIcon('fa-check-circle common-table-status-ok')
     }
   }
 
   render() {
-    const { sample } = this.props
-    let iconClasses = `fa fa-lg ${this.getIconClasses(sample.state)}`
     return (
       <td className='common-columns-small-screen-hide'>
-        <i className={iconClasses}></i>
+        {this.renderRow()}
       </td>
     )
   }

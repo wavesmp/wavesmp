@@ -7,8 +7,4 @@ function libraryInfoUpdate(id, key, value) {
   }
 }
 
-function libraryLocalInfoUpdate(ids, key, value) {
-  return { type: types.LIBRARY_TRACK_UPDATE, ids, key, value }
-}
-
 module.exports.libraryInfoUpdate = libraryInfoUpdate

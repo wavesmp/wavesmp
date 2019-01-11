@@ -12,6 +12,10 @@ class FilePlayer {
     this.stream.addEventListener('ended', onTrackEnded)
   }
 
+  setOnUploadProgress(onUploadProgress) {
+    // No local upload supported
+  }
+
   setOnTimeUpdate(onTimeUpdate) {
     this.stream.addEventListener('timeupdate', () => {
       onTimeUpdate(this.stream.currentTime)

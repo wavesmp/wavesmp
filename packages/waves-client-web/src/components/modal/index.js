@@ -7,6 +7,7 @@ import PlaylistSave from './playlistsave'
 import PlaylistSettings from './playlistsettings'
 import Settings from './settings'
 import TracksDelete from './tracksDelete'
+import TracksUpload from './tracksUpload'
 
 import './index.css'
 
@@ -16,7 +17,8 @@ const MODALS = {
   [modalTypes.ACTION_CONFIRM]: ActionConfirm,
   [modalTypes.SETTINGS]: Settings,
   [modalTypes.PLAYLIST_SETTINGS]: PlaylistSettings,
-  [modalTypes.TRACKS_DELETE]: TracksDelete
+  [modalTypes.TRACKS_DELETE]: TracksDelete,
+  [modalTypes.TRACKS_UPLOAD]: TracksUpload
 }
 
 export default class Modal extends React.Component {

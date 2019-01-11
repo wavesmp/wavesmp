@@ -8,6 +8,10 @@ class S3Client {
     this.providerId = providerId
   }
 
+  setOnUploadProgress(onUploadProgress) {
+    this.onUploadProgress = onUploadProgress
+  }
+
   login(idp, idpId, token) {
     AWS.config.region = this.regionName
     this.bucket = new AWS.S3({ params: { Bucket: this.bucketName } })
@@ -53,6 +57,13 @@ class S3Client {
       ContentType: file.type
     }
     const req = this.bucket.putObject(params)
+
+    req.on('httpUploadProgress', progress => {
+      const { loaded, total } = progress
+      const percentage = Math.round(loaded / total * 100)
+      this.onUploadProgress(trackId, percentage)
+    })
+
     return req.promise()
   }
 

@@ -1,7 +1,7 @@
 const types = require('waves-action-types')
 
-function uploadInfoUpdate(id, attr, update) {
-  return { type: types.UPLOAD_TRACK_UPDATE, id, attr, update }
+function uploadInfoUpdate(id, key, value) {
+  return { type: types.UPLOAD_TRACKS_UPDATE, ids: [id], key, value }
 }
 
 module.exports.uploadInfoUpdate = uploadInfoUpdate
