@@ -109,11 +109,15 @@ class S3Client {
             reject(err)
             return
         }
-        data.Deleted = data.Deleted.map(({Key}) => keyToTrack[Key])
         for (const err of data.Errors) {
-          err.Track = keyToTrack[err.Key]
+          err.track = keyToTrack[err.Key]
+          err.code = err.Code
+          err.message = err.Message
         }
-        resolve(data)
+        resolve({
+          deleted: data.Deleted.map(({Key}) => keyToTrack[Key]),
+          errors: data.Errors
+        })
       })
     })
   }

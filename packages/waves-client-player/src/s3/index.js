@@ -149,14 +149,10 @@ class S3Player {
 
   async deleteTracks(tracks) {
     try {
-      console.log('DELETING TRACKS')
-      console.log(tracks)
       const resp = await this.client.deleteTracks(tracks)
-      const { Deleted: deleted, Errors: errors } = resp
-      console.log('GOT RESP')
-      console.log(resp)
+      const { deleted, errors } = resp
       for (const err of errors) {
-        const { Track: track, Message: message } = err
+        const { track, message } = err
         const msg = `Delete failed: ${message}`
         toastr.error(`${track.artist} - ${track.title}`, msg)
         console.log(msg)
@@ -165,13 +161,13 @@ class S3Player {
       for (const track of deleted) {
         toastr.success(`${track.artist} - ${track.title}`, 'Track deleted')
       }
-      return deleted
+      return resp
     } catch (err) {
       const msg = 'Failed to delete from S3'
       toastr.error(err.toString(), msg)
       console.log(msg)
       console.log(err)
-      return []
+      return {deleted: [], errors: [err]}
     }
   }
 }

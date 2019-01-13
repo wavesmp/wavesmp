@@ -14,8 +14,9 @@ class ActionConfirmModal extends React.Component {
 
   onDelete = async () => {
     const { onDelete } = this.props
-    await onDelete()
-    this.onClose()
+    if (await onDelete()) {
+      this.onClose()
+    }
   }
 
   render() {

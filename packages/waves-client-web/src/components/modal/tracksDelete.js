@@ -18,8 +18,9 @@ class TracksDeleteModal extends React.Component {
   onDelete = async () => {
     const { actions } = this.props
     this.setState({deleting: true})
-    await actions.tracksDelete()
+    const { errors } = await actions.tracksDelete()
     this.setState({deleting: false})
+    return errors.length === 0
   }
 
   parsePlayId(playId) {

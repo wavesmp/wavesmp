@@ -191,17 +191,27 @@ function tracksDelete() {
     const { track } = playing
 
     const deleteIds = Object.values(selection)
+    dispatch({ type: types.LIBRARY_TRACK_UPDATE, ids: deleteIds, key: 'state', value: 'pending' })
     const deleteTracks = deleteIds.map(deleteId => library[deleteId])
-    const deletedTracks = await player.deleteTracks(deleteTracks)
-    /* Only a subset of deleteIds may have been completed */
-    const deletedIds = new Set(deletedTracks.filter(t => t != null).map(t => t.id))
+    const resp = await player.deleteTracks(deleteTracks)
+    const { deleted, errors } = resp
+    const deletedIds = new Set(deleted.map(t => t.id))
 
     dispatch({ type: types.TRACKS_DELETE, deleteIds: deletedIds })
-    ws.sendBestEffortMessage(types.TRACKS_DELETE, { deleteIds: [...deletedIds] })
+    try {
+      await ws.sendAckedMessage(types.TRACKS_DELETE, { deleteIds: [...deletedIds] })
+    } catch (err) {
+      console.log('Failed to delete tracks from server')
+      console.log(err)
+      toastr.error(err, 'Upload Failure')
+      errors.push(err)
+    }
 
     if (track && deletedIds.has(track.id)) {
       player.pause()
     }
+
+    return resp
   }
 }
 

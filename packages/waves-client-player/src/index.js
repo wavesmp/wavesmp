@@ -90,33 +90,24 @@ class Player {
   }
 
   /* Delete the tracks. Does not return items in the given order.
-   * Does not throw. Item will be null if delete failed. */
+   * Does not throw. Errors returned. */
   async deleteTracks(tracks) {
     const tracksBySource = this._getTracksBySource(tracks)
     const promises = []
+    const allDeleted = []
+    const allErrors = []
     for (const source in tracksBySource) {
       const sourceTracks = tracksBySource[source]
       const sourcePromise = this.players[source].deleteTracks(sourceTracks)
       promises.push(sourcePromise)
     }
 
-    const resolved = await Promise.all(promises)
-    // TODO Array.flat method coming soon (stage 3)
-    // return resolved.flat()
-    return flattenArray(resolved)
-  }
-}
-
-function flattenArray(arr) {
-  const res = []
-  for (const elem of arr) {
-    if (Array.isArray(elem)) {
-      res.push.apply(res, elem)
-    } else {
-      res.push(elem)
+    for (const {deleted, errors} of await Promise.all(promises)) {
+      Array.prototype.push.apply(allDeleted, deleted)
+      Array.prototype.push.apply(allErrors, errors)
     }
+    return {deleted: allDeleted, errors: allErrors}
   }
-  return res
 }
 
 module.exports = Player
