@@ -12,4 +12,3 @@ function libraryLocalInfoUpdate(ids, key, value) {
 }
 
 module.exports.libraryInfoUpdate = libraryInfoUpdate
-module.exports.libraryLocalInfoUpdate = libraryLocalInfoUpdate

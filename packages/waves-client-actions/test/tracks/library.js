@@ -40,13 +40,4 @@ describe('#library()', () => {
 
   })
 
-  it('track local info update', () => {
-    const ids = [track1.id, track2.id]
-    const key = 'title'
-    const value = 'newTitle'
-    assert.isDefined(types.LIBRARY_TRACK_UPDATE)
-    const action = {type: types.LIBRARY_TRACK_UPDATE, ids, key, value}
-    assert.deepEqual(action, actions.libraryLocalInfoUpdate(ids, key, value))
-  })
-
 })
