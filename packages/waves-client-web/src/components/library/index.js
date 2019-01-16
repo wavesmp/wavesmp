@@ -106,7 +106,7 @@ class Library extends React.Component {
       if ((routerSortKey && sortKey !== routerSortKey) ||
           (routerOrder && ('asc' === routerOrder) !== ascending)) {
         // TODO we may want to make this async if it takes too long
-        actions.updateSortKey(routerSortKey, 'asc' === routerOrder)
+        actions.playlistSort(playlistName, routerSortKey, 'asc' === routerOrder)
         shouldUpdateSearch = true
       }
       if (shouldUpdateSearch) {

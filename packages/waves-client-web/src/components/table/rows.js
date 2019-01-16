@@ -145,3 +145,12 @@ export class Genre extends React.Component {
     )
   }
 }
+
+export class CreatedAt extends React.Component {
+  render() {
+    const { sample } = this.props
+    return (
+      <td className='common-columns-small-screen-hide'>{sample.createdAtPretty}</td>
+    )
+  }
+}

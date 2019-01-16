@@ -65,7 +65,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         libraryPlaylist = getDefaultLibraryPlaylist()
       }
       const { sortKey, ascending, playId: oldPlayId } = libraryPlaylist
-      const playId = sortLibraryPlaylist(
+      const playId = sortPlaylist(
         libraryPlaylistTracks, libraryById, sortKey, ascending, oldPlayId)
       libraryPlaylist.tracks = libraryPlaylistTracks
       libraryPlaylist.playId = playId
@@ -113,15 +113,15 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       return {...playlists, [name]: {...playlist, search}}
     }
     case actionTypes.PLAYLIST_SORT: {
-      const { sortKey, ascending, library } = action
-      const libraryPlaylist = playlists[FULL_PLAYLIST]
-      const { playId: oldPlayId } = libraryPlaylist
-      const tracks = [...libraryPlaylist.tracks]
+      const { library, name, sortKey, ascending } = action
+      const playlist = playlists[name]
+      const { playId: oldPlayId } = playlist
+      const tracks = [...playlist.tracks]
 
-      const playId = sortLibraryPlaylist(tracks, library, sortKey, ascending, oldPlayId)
+      const playId = sortPlaylist(tracks, library, sortKey, ascending, oldPlayId)
       return {
         ...playlists,
-        [FULL_PLAYLIST]: {...libraryPlaylist, sortKey, ascending, tracks, playId}
+        [name]: {...playlist, sortKey, ascending, tracks, playId}
       }
     }
     case actionTypes.TRACK_UPLOADS_UPDATE: {
@@ -323,7 +323,7 @@ function trackNext(playlistsUpdate, playlistName, source, id, playId) {
   return playlistsUpdate
 }
 
-function sortLibraryPlaylist(tracks, library, sortKey, ascending, oldPlayId) {
+function sortPlaylist(tracks, library, sortKey, ascending, oldPlayId) {
   const factor = ascending ? 1 : -1
   const oldPlayIndex = getPlayIndex(oldPlayId)
   const oldTrack = oldPlayIndex != null && tracks[oldPlayIndex]

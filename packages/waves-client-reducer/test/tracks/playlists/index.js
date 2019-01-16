@@ -171,6 +171,7 @@ describe('#playlists()', () => {
   it('library sort key update', () => {
     action = {
       type: actionTypes.PLAYLIST_SORT,
+      name: FULL_PLAYLIST,
       sortKey: 'artist',
       ascending: false,
       library: libraryById

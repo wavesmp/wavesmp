@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Name, State, Time, Artist, Album, Genre } from './rows'
+import { Name, State, Time, Artist, Album, Genre, CreatedAt } from './rows'
 
 /*  TODO integrate common-columns-small-screen-hide
  *       with displayed columns in localstorage */
@@ -35,6 +35,11 @@ export const playlistColumns = [
     title: 'Genre',
     attribute: 'genre',
     Component: Genre
+  },
+  {
+    title: 'Created At',
+    attribute: 'createdAt',
+    Component: CreatedAt
   }
 ]
 export const libraryColumns = clonePlaylistColumns()

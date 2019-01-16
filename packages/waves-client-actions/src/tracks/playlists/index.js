@@ -65,6 +65,14 @@ function playlistAdd(source, dest) {
   }
 }
 
+function playlistSort(name, sortKey, ascending) {
+  return (dispatch, getState) => {
+    const { tracks } = getState()
+    const { library } = tracks
+    dispatch({ type: types.PLAYLIST_SORT, library, name, sortKey, ascending })
+  }
+}
+
 module.exports.playlistsUpdate = playlistsUpdate
 module.exports.playlistSearchUpdate = playlistSearchUpdate
 module.exports.playlistCopy = playlistCopy
@@ -72,5 +80,6 @@ module.exports.playlistDelete = playlistDelete
 module.exports.playlistMove = playlistMove
 module.exports.playlistRemove = playlistRemove
 module.exports.playlistAdd = playlistAdd
+module.exports.playlistSort = playlistSort
 
 Object.assign(module.exports, require('./selection'))

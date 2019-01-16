@@ -232,6 +232,10 @@ function tracksDelete() {
 function updateLibraryById(libraryById, update) {
   for (const item of update) {
     addMissingTags(item)
+    const epoch = parseInt(item.id.substring(0, 8), 16)
+    // TODO Currently sort keys must be strings
+    item.createdAt = epoch + ''
+    item.createdAtPretty = (new Date(epoch * 1000)).toLocaleString()
     libraryById[item.id] = item
   }
   return libraryById

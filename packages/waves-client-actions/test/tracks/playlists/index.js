@@ -1,11 +1,19 @@
 const { assert } = require('chai')
+const mongoid = require('mongoid-js')
 const sinon = require('sinon')
 
 const types = require('waves-action-types')
 const { DEFAULT_PLAYLIST } = require('waves-client-constants')
 const WavesSocket = require('waves-socket')
 const { TEST_PLAYLIST_NAME1: testPlaylistName1, TEST_PLAYLIST_NAME2: testPlaylistName2,
-        TEST_SEARCH: testSearch } = require('waves-test-data')
+        TEST_SEARCH: testSearch, TEST_TRACK1: baseTrack1, TEST_TRACK2: baseTrack2 } = require('waves-test-data')
+
+const track1 = {...baseTrack1, id: mongoid()}
+const track2 = {...baseTrack2, id: mongoid()}
+const library = {
+  [track1.id]: track1,
+  [track2.id]: track2
+}
 
 const actions = require('../../../src/tracks/playlists')
 
@@ -184,4 +192,21 @@ describe('#playlists()', () => {
     wsMock.verify()
   })
 
+  it('#playlistSort()', () => {
+    const name = testPlaylistName1
+    const sortKey = 'testSortKey'
+    const ascending = true
+    const thunk = actions.playlistSort(name, sortKey, ascending)
+
+    assert.isDefined(types.PLAYLIST_SORT)
+    const action = { type: types.PLAYLIST_SORT, library, name, sortKey, ascending }
+
+    const dispatchMock = sinon.mock()
+    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+
+    const getState = () => ({tracks: {library}})
+    thunk(dispatchMock, getState)
+
+    dispatchMock.verify()
+  })
 })

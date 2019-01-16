@@ -12,11 +12,17 @@ const WavesSocket = require('waves-socket')
 const { TEST_PLAYLIST_NAME1: testPlaylistName1, TEST_PLAYLIST_NAME2: testPlaylistName2,
         TEST_TRACK1: baseTrack1, TEST_TRACK2: baseTrack2 } = require('waves-test-data')
 
-const track1 = {...baseTrack1, id: mongoid()}
-const track2 = {...baseTrack2, id: mongoid()}
+const id1 = '5c3d93000000000000000000'
+const createdAt1 = '1547539200'
+const createAtPretty1 = '1/15/2019, 8:00:00 AM'
+const id2 = '5a5c5f800000000000000000'
+const createdAt2 = '1516003200'
+const createdAtPretty2 = '1/15/2018, 8:00:00 AM'
+const track1 = {...baseTrack1, id: id1}
+const track2 = {...baseTrack2, id: id2}
 const library = {
-  [track1.id]: track1,
-  [track2.id]: track2
+  [id1]: track1,
+  [id2]: track2
 }
 
 const actions = require('../../src/tracks')
@@ -245,7 +251,12 @@ describe('#tracks()', async () => {
     const update = [track2Copy]
     const updatedLibrary = {
       [track1.id]: track1,
-      [track2Copy.id]: {...track2Copy, title: 'Unknown title'}
+      [track2Copy.id]: {
+        ...track2Copy,
+        title: 'Unknown title',
+        createdAt: createdAt2,
+        createdAtPretty: createdAtPretty2
+      }
     }
     const thunk = actions.tracksUpdate(update)
 

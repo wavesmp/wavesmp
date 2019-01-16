@@ -9,7 +9,7 @@ constants.UPLOAD_PLAYLIST = '__upload'
 constants.TRACK_ID_ATTR = 'data-trackid'
 constants.PLAY_INDEX_ATTR = 'data-playindex'
 constants.PLAYLIST_NAME_ATTR = 'data-playlistname'
-constants.ALL_COLUMNS = ['Name', 'State', 'Time', 'Artist', 'Album', 'Genre']
+constants.ALL_COLUMNS = ['Name', 'State', 'Time', 'Artist', 'Album', 'Genre', 'Created At']
 
 constants.iconPlayColor = '#52CA19'
 constants.iconPauseColor = '#F17B10'
