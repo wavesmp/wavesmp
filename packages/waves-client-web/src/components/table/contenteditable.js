@@ -17,15 +17,18 @@ export default class ContentEditable extends React.Component {
   constructor(props) {
     super(props)
     this.spanRef = React.createRef();
+    this.state = { editing: false }
   }
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.html !== this.spanRef.current.innerHTML
+    return (!this.state.editing &&
+      htmlEscape(nextProps.html) !== this.spanRef.current.innerHTML)
   }
 
   componentDidUpdate() {
-    if (this.props.html !== this.spanRef.current.innerHTML) {
-       this.spanRef.current.innerHTML = this.props.html
+    const htmlEscaped = htmlEscape(this.props.html)
+    if (htmlEscaped !== this.spanRef.current.innerHTML) {
+      this.spanRef.current.innerHTML = htmlEscaped
     }
   }
 
@@ -49,10 +52,15 @@ export default class ContentEditable extends React.Component {
 
   emitChange = () => {
     const lastHtml = this.props.html.trim()
-    const html = this.spanRef.current.innerHTML.trim()
+    const html = htmlUnescape(this.spanRef.current.innerHTML.trim())
     if (html && html !== lastHtml) {
       this.props.onChange(html);
     }
+    this.setState({ editing: false })
+  }
+
+  onFocus = () => {
+    this.setState({ editing: true })
   }
 
   render() {
@@ -60,11 +68,30 @@ export default class ContentEditable extends React.Component {
     return (
       <span ref={this.spanRef}
             onBlur={this.emitChange}
+            onFocus={this.onFocus}
             onKeyDown={this.onKeyDown}
             onMouseDown={this.onMouseDown}
             contentEditable={editable}
             spellCheck='false'
-            dangerouslySetInnerHTML={{__html: html}}/>
+            dangerouslySetInnerHTML={{__html: htmlEscape(html)}}/>
     )
   }
+}
+
+// https://stackoverflow.com/questions/1219860/
+// html-encoding-lost-when-attribute-read-from-input-field
+// Quotes appear to be returned unescaped from innerHTML on
+// Chrome, so they are not included in this list
+function htmlEscape(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+function htmlUnescape(str){
+    return str
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&');
 }
