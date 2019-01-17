@@ -3,6 +3,7 @@ import React from 'react'
 import { modalTypes } from 'waves-client-constants'
 
 import ActionConfirm from './actionConfirm'
+import PlaylistCreate from './playlistCreate'
 import PlaylistSave from './playlistSave'
 import PlaylistSettings from './playlistSettings'
 import Settings from './settings'
@@ -13,6 +14,7 @@ import './index.css'
 
 const MODALS = {
   null: null,
+  [modalTypes.PLAYLIST_CREATE]: PlaylistCreate,
   [modalTypes.PLAYLIST_SAVE]: PlaylistSave,
   [modalTypes.ACTION_CONFIRM]: ActionConfirm,
   [modalTypes.SETTINGS]: Settings,

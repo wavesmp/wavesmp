@@ -192,6 +192,36 @@ describe('#playlists()', () => {
     wsMock.verify()
   })
 
+  it('#playlistCreate()', () => {
+    const dispatchMock = sinon.mock()
+    const ws = new WavesSocket({})
+    const wsMock = sinon.mock(ws)
+
+    const playlistName = testPlaylistName1
+    const addTracks = []
+
+    const thunk = actions.playlistCreate(playlistName)
+
+    assert.isDefined(types.PLAYLIST_ADD)
+    const action = {
+      type: types.PLAYLIST_ADD,
+      playlistName,
+      addTracks
+    }
+
+    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+
+    const wsExpect = wsMock.expects('sendAckedMessage')
+      .once()
+      .withExactArgs(types.PLAYLIST_ADD,
+        {playlistName, trackIds: addTracks})
+
+    thunk(dispatchMock, undefined, { ws })
+
+    dispatchMock.verify()
+    wsMock.verify()
+  })
+
   it('#playlistSort()', () => {
     const name = testPlaylistName1
     const sortKey = 'testSortKey'

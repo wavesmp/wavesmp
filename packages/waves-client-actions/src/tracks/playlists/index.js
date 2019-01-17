@@ -65,6 +65,15 @@ function playlistAdd(source, dest) {
   }
 }
 
+function playlistCreate(playlistName) {
+  return async (dispatch, getState, { ws }) => {
+    const addTracks = []
+    await ws.sendAckedMessage(
+      types.PLAYLIST_ADD, {playlistName, trackIds: addTracks})
+    dispatch({ type: types.PLAYLIST_ADD, playlistName, addTracks })
+  }
+}
+
 function playlistSort(name, sortKey, ascending) {
   return (dispatch, getState) => {
     const { tracks } = getState()
@@ -80,6 +89,7 @@ module.exports.playlistDelete = playlistDelete
 module.exports.playlistMove = playlistMove
 module.exports.playlistRemove = playlistRemove
 module.exports.playlistAdd = playlistAdd
+module.exports.playlistCreate = playlistCreate
 module.exports.playlistSort = playlistSort
 
 Object.assign(module.exports, require('./selection'))

@@ -21,6 +21,7 @@ constants.iconBackColor = '#4aa3df'
 
 constants.modalTypes = keyMirror({
   ACTION_CONFIRM: null,
+  PLAYLIST_CREATE: null,
   PLAYLIST_SAVE: null,
   PLAYLIST_SETTINGS: null,
   SETTINGS: null,
