@@ -124,8 +124,14 @@ class Server {
       ws.on('message', async msg => {
         try {
           msg = this.encoder.decode(msg)
-          const { type, data, reqId } = msg
+        } catch (err) {
+          log.error(`Error decoding message: ${err}`)
+          return
+        }
 
+        const { type, data, reqId } = msg
+
+        try {
           // Verify auth before processing message
           // TODO factor out constant actions?
           // TODO factor out error message creation?
@@ -172,8 +178,12 @@ class Server {
           await this.messageMap[type](ws, user, data, reqId)
 
         } catch (err) {
-          // TODO probably want to display type/user here...
-          log.error(`Error processing message: ${err}`)
+          const errString = err.toString()
+          // TODO probably want to display user here...
+          log.error(`Error processing message ${type}: ${errString}`)
+          if (reqId) {
+            this.sendMessage(ws, type, {err: errString}, reqId)
+          }
         }
       })
       ws.isAlive = true

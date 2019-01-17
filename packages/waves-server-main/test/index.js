@@ -120,6 +120,22 @@ describe('wavesServer', () => {
       ])
     })
 
+    it('playlist add error', async () => {
+      const playlistName = ''
+      const trackIds = []
+      const user = TEST_USER1
+
+      const storageMock = sinon.mock(storage)
+      const storageUserExpect = storageMock.expects('playlistAdd')
+        .once()
+        .throws('blank playlistName')
+
+      const data = { playlistName, trackIds }
+      await assertThrows('sendAckedMessage', wavesSocket.sendAckedMessage,
+        [types.PLAYLIST_ADD, data], 'Error: blank playlistName', wavesSocket)
+      storageMock.verify()
+    })
+
     it('playlist add', async () => {
       const playlistName = TEST_PLAYLIST_NAME1
       const trackIds = [mongoid()]
@@ -198,11 +214,11 @@ describe('wavesServer', () => {
     it('library track update', async () => {
       const user = TEST_USER1
       const id = TEST_TRACK_ID
-      const attr = 'testAttr'
-      const update = 'testUpdate'
+      const key = 'testKey'
+      const value = 'testValue'
 
       const expectedUpdate = {
-        [attr]: update,
+        [key]: value,
         idp: user.idp,
         idpId: user.idpId
       }
@@ -211,7 +227,7 @@ describe('wavesServer', () => {
         .once()
         .withArgs(user, id, expectedUpdate)
 
-      const data = { id, attr, update }
+      const data = { id, key, value }
       await wavesSocket.sendAckedMessage(types.LIBRARY_TRACK_UPDATE, data)
       storageMock.verify()
     })
