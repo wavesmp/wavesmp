@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import { applyMiddleware, createStore } from 'redux'
 import ReduxThunk from 'redux-thunk'
 
-import * as WavesActions from 'waves-client-actions'
 import Auth from 'waves-client-auth'
 import LocalState from 'waves-client-local-state'
 import rootReducer from 'waves-client-reducer'
