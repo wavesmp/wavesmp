@@ -10,9 +10,12 @@ const constants = yaml.safeLoad(fs.readFileSync('constants.yaml', 'utf8'));
 const stringReplacer = {
   loader: 'string-replace-loader',
   options: {
-    multiple: Object.entries(constants).map(([key, val]) => ({
+    multiple: Object.entries(constants).sort(([a], [b]) => {
+      return b.length - a.length
+    }).map(([key, val]) => ({
       search: key,
-      replace: val
+      replace: val,
+      flags: 'g'
     }))
   }
 }
@@ -34,10 +37,13 @@ const wpConfig = {
     rules: [
       {
         test: /\.js$/,
-        use: {
-          loader: 'babel-loader',
-          options: babelConfig
-        },
+        use: [
+          stringReplacer,
+          {
+            loader: 'babel-loader',
+            options: babelConfig
+          }
+        ],
         exclude: /node_modules/
       },
       { test: /\.css$/, use: ['style-loader', 'css-loader', stringReplacer] },

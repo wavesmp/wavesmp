@@ -5,6 +5,7 @@ import constants from 'waves-client-constants'
 import './index.css'
 import Column from './column'
 import PaginationButtons from './paginationButtons'
+import getDragCanvas from './dragbox'
 
 const CONTEXT_MENU_BUTTON = 2
 const DOUBLE_CLICK_THRESHOLD = 500
@@ -13,78 +14,23 @@ export default class Table extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = { editingPlayId: null, editingTitle: null }
+    this.dragGhost = null
 
-    this.dragInProgress = false
+    this.editOnMouseUpPlayId = null
+    this.editOnMouseUpTitle = null
+
+    this.clearOnMouseUpPlayId = null
+    this.clearOnMouseUpTrackId = null
+
     this.lastClickTime = 0
     this.lastClickPlayId = null
     this.lastClickWasForEdit = false
-    this.clearOnMouseUp = null
-    this.clearOnMouseUpTrackId = null
-    this.editOnMouseUp = false
-  }
-
-  /* Make rows draggable */
-  componentDidMount() {
-    const { draggable } = this.props
-    if (!draggable) {
-      return
-    }
-
-    // TODO might need to call destroy method on widget
-    // e.g. $( 'tr' ).draggable("destroy")
-    // See https://learn.jquery.com/jquery-ui/how-jquery-ui-works/
-    $( 'tr' ).draggable({
-      helper: (ev) => {
-        const selected = $('.common-table-row-selected')
-        const container = $('<table/>')
-        container.append(selected.clone())
-        this.dragInProgress = true
-        return container
-      },
-      cursorAt: {top: 5, left: 5},
-      cursor: 'move',
-      stack: 'table',
-      /* To allow for editing of row properties, disallow drag for span.
-       * Instead, drag can be used for track selection */
-      cancel: "span"
-    })
   }
 
   /* Handled by MouseDown instead */
   onContextMenu = ev => {
     ev.preventDefault()
-  }
-
-  // https://stackoverflow.com/questions/3805852/
-  // select-all-text-in-contenteditable-div-when-it-focus-click
-  selectContentEditable(el) {
-    const range = document.createRange();
-    range.selectNodeContents(el);
-
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-  }
-
-  onRowMouseUp = ev => {
-    const { actions, playlistName } = this.props
-    if (this.dragInProgress) {
-      this.dragInProgress = false
-      this.clearOnMouseUp = false
-      this.editOnMouseUp = false
-      return
-    }
-    if (this.clearOnMouseUp) {
-      actions.selectionClearAndAdd(playlistName, this.clearOnMouseUp, this.clearOnMouseUpTrackId)
-      this.clearOnMouseUp = false
-      this.clearOnMouseUpTrackId = false
-    }
-    if (this.editOnMouseUp) {
-      const el = ev.target
-      el.focus()
-      this.selectContentEditable(el)
-      this.editOnMouseUp = false
-    }
   }
 
   onRowMouseDown = ev => {
@@ -95,13 +41,6 @@ export default class Table extends React.Component {
     const clickWasForEdit = clickTarget.nodeName.toLowerCase() === 'span'
     if (clickWasForEdit && document.activeElement === clickTarget) {
       return
-    }
-    // TODO For some reason, span contenteditable is not blurred here,
-    // but it is being blurred when clicking outside of the table.
-    // Do it manually
-    if (document.activeElement) {
-      document.activeElement.blur()
-      getSelection().removeAllRanges()
     }
     /* Shift for select of consecutive elements
      * Alt for toggle of individually selected items
@@ -153,11 +92,12 @@ export default class Table extends React.Component {
       onRowDoubleClick(ev)
     } else {
       if (isSelected) {
-        this.clearOnMouseUp = itemPlayId
+        this.clearOnMouseUpPlayId = itemPlayId
         this.clearOnMouseUpTrackId = trackId
       }
       if (isSameRowClick && this.lastClickWasForEdit && clickWasForEdit) {
-        this.editOnMouseUp = true
+        this.editOnMouseUpPlayId = itemPlayId
+        this.editOnMouseUpTitle = clickTarget.getAttribute(constants.TITLE_ATTR)
       }
     }
     this.lastClickWasForEdit = clickWasForEdit
@@ -165,12 +105,64 @@ export default class Table extends React.Component {
     this.lastClickPlayId = itemPlayId
   }
 
+  /* After mousedown, either mouseup or dragstart is called (not both) */
+
+  onRowMouseUp = ev => {
+    const { actions, playlistName, transitions } = this.props
+    if (this.clearOnMouseUpPlayId) {
+      actions.selectionClearAndAdd(playlistName, this.clearOnMouseUpPlayId, this.clearOnMouseUpTrackId)
+      this.clearOnMouseUpPlayId = null
+      this.clearOnMouseUpTrackId = null
+    }
+    if (this.editOnMouseUpPlayId) {
+      if (transitions) {
+        this.setState({
+          editingPlayId: this.editOnMouseUpPlayId,
+          editingTitle: this.editOnMouseUpTitle
+        })
+      }
+      this.editOnMouseUpPlayId = null
+      this.editOnMouseUpTitle = null
+    }
+  }
+
+  onDragStart = ev => {
+    this.editOnMouseUpPlayId = null
+    this.editOnMouseUpTitle = null
+
+    this.clearOnMouseUpPlayId = null
+    this.clearOnMouseUpTrackId = null
+
+    const numSelected = Object.keys(this.props.selection).length
+    this.dragGhost = getDragCanvas(numSelected)
+
+    // 1/21/2019 - Must be appended to dom for chrome
+    // https://stackoverflow.com/questions/43790022/
+    // html5-draggable-setdragimage-doesnt-work-with-canvas-on-chrome
+    this.dragGhost.style.position = 'absolute'
+    this.dragGhost.style.left = '-100%'
+    document.body.append(this.dragGhost)
+
+    const { playlistName } = this.props
+    ev.dataTransfer.setData(constants.PLAYLIST_TYPE, playlistName)
+    ev.dataTransfer.setDragImage(this.dragGhost, 0, 0)
+  }
+
+  onDragEnd = ev => {
+    this.dragGhost.remove()
+    this.dragGhost = null
+  }
+
+  onBlur = () => {
+    this.setState({ editingPlayId: null, editingTitle: null })
+  }
+
   render() {
     const { location, actions, playId,
             sortKey, ascending, columns,
             isPlaying, rowsPerPage, transitions,
             selection, numItems, getDisplayItems,
-            onItemEdit } = this.props
+            onItemEdit, draggable } = this.props
 
     /* Pagination */
     const qp = new URLSearchParams(location.search)
@@ -211,15 +203,22 @@ export default class Table extends React.Component {
                        onContextMenu={this.onContextMenu}
                        data-trackid={sample.id}
                        data-playindex={sample.playId}
+                       draggable={draggable}
+                       onDragStart={this.onDragStart}
+                       onDragEnd={this.onDragEnd}
                        className={className}>
                {columns.map(column => (
                  <column.Component
                    key={column.title}
+                   title={column.title}
                    isPlaying={isPlaying}
                    onChange={onItemEdit}
+                   onBlur={this.onBlur}
                    playId={playId}
                    sample={sample}
-                   editable={transitions}/>
+                   editable={transitions &&
+                             this.state.editingPlayId === sample.playId &&
+                             this.state.editingTitle === column.title}/>
                 ))}
              </tr>
            })}

@@ -8,8 +8,11 @@ constants.UPLOAD_PLAYLIST = '__upload'
 
 constants.TRACK_ID_ATTR = 'data-trackid'
 constants.PLAY_INDEX_ATTR = 'data-playindex'
+constants.TITLE_ATTR = 'data-title'
 constants.PLAYLIST_NAME_ATTR = 'data-playlistname'
 constants.ALL_COLUMNS = ['Name', 'State', 'Time', 'Artist', 'Album', 'Genre', 'Created At']
+
+constants.PLAYLIST_TYPE = 'application/wp'
 
 constants.iconPlayColor = '#52CA19'
 constants.iconPauseColor = '#F17B10'

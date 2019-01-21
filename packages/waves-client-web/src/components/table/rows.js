@@ -23,7 +23,7 @@ export class Name extends React.Component {
   }
 
   render() {
-    const { sample, playId, isPlaying, editable } = this.props
+    const { sample, playId, isPlaying, editable, title, onBlur } = this.props
 
     let playPauseIcon
     let playPausePadding
@@ -42,8 +42,10 @@ export class Name extends React.Component {
     <td>
       {playPauseIcon}
       <ContentEditable onChange={this.emitChange}
+                       onBlur={onBlur}
                        editable={editable}
-                       html={sample.title}/>
+                       html={sample.title}
+                       title={title}/>
       {playPausePadding}
     </td>
     )
@@ -99,12 +101,14 @@ export class Artist extends React.Component {
   }
 
   render() {
-    const {sample, editable } = this.props
+    const {sample, editable, title, onBlur } = this.props
     return (
       <td>
         <ContentEditable onChange={this.emitChange}
+                         onBlur={onBlur}
                          editable={editable}
-                         html={sample.artist}/>
+                         html={sample.artist}
+                         title={title}/>
       </td>
     )
   }
@@ -117,12 +121,14 @@ export class Album extends React.Component {
   }
 
   render() {
-    const { sample, editable } = this.props
+    const { sample, editable, title, onBlur } = this.props
       return (
         <td>
           <ContentEditable onChange={this.emitChange}
+                           onBlur={onBlur}
                            editable={editable}
-                           html={sample.album}/>
+                           html={sample.album}
+                           title={title}/>
         </td>
       )
     }
@@ -135,12 +141,14 @@ export class Genre extends React.Component {
   }
 
   render() {
-    const { sample, editable } = this.props
+    const { sample, editable, title, onBlur } = this.props
     return (
       <td>
         <ContentEditable onChange={this.emitChange}
+                         onBlur={onBlur}
                          editable={editable}
-                         html={sample.genre}/>
+                         html={sample.genre}
+                         title={title}/>
       </td>
     )
   }

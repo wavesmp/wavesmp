@@ -1,14 +1,9 @@
 import React from 'react'
 
-// TODO look into using sth like
-// https://github.com/lovasoa/react-contenteditable/blob/master/src/react-contenteditable.js
-
 // TODO refactor const
 const ENTER_KEY_CODE = 13
 
-
 /**
- * ContentEditable with React is shit
  * Based on:
  * http://stackoverflow.com/questions/22677931/
  * react-js-onchange-event-for-contenteditable
@@ -17,18 +12,18 @@ export default class ContentEditable extends React.Component {
   constructor(props) {
     super(props)
     this.spanRef = React.createRef();
-    this.state = { editing: false }
   }
 
   shouldComponentUpdate(nextProps) {
-    return (!this.state.editing &&
-      htmlEscape(nextProps.html) !== this.spanRef.current.innerHTML)
+    return (
+      (this.props.editable !== nextProps.editable) ||
+      (!nextProps.editable &&
+       htmlEscape(nextProps.html) !== this.spanRef.current.innerHTML))
   }
 
-  componentDidUpdate() {
-    const htmlEscaped = htmlEscape(this.props.html)
-    if (htmlEscaped !== this.spanRef.current.innerHTML) {
-      this.spanRef.current.innerHTML = htmlEscaped
+  componentDidUpdate(prevProps) {
+    if (!prevProps.editable && this.props.editable) {
+      this.spanRef.current.focus()
     }
   }
 
@@ -41,38 +36,25 @@ export default class ContentEditable extends React.Component {
     }
   }
 
-  /* Default span contentEdiable behavior focuses on the element.
-   * Handle the focus in the parent instead. */
-  onMouseDown = ev => {
-    const clickTarget = ev.target
-    if (document.activeElement !== clickTarget) {
-      ev.preventDefault()
-    }
-  }
-
-  emitChange = () => {
+  onBlur = () => {
     const lastHtml = this.props.html.trim()
     const html = htmlUnescape(this.spanRef.current.innerHTML.trim())
     if (html && html !== lastHtml) {
       this.props.onChange(html);
     }
-    this.setState({ editing: false })
-  }
-
-  onFocus = () => {
-    this.setState({ editing: true })
+    this.props.onBlur()
   }
 
   render() {
-    const { editable, html } = this.props
+    const { editable, html, title } = this.props
     return (
       <span ref={this.spanRef}
-            onBlur={this.emitChange}
-            onFocus={this.onFocus}
+            onBlur={this.onBlur}
             onKeyDown={this.onKeyDown}
-            onMouseDown={this.onMouseDown}
             contentEditable={editable}
+            draggable={!editable}
             spellCheck='false'
+            data-title={title}
             dangerouslySetInnerHTML={{__html: htmlEscape(html)}}/>
     )
   }
