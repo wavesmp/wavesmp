@@ -6,6 +6,7 @@ const dropdown = require('./dropdown')
 const modal = require('./modal')
 const sidebar = require('./sidebar')
 const account = require('./account')
+const toasts = require('./toasts')
 const transitions = require('./transitions')
 
 
@@ -15,6 +16,7 @@ const combined = combineReducers({
   dropdown,
   modal,
   sidebar,
+  toasts,
   transitions,
   account
 })

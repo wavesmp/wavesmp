@@ -1,0 +1,41 @@
+.toasts-container {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.toast-container {
+  display: flex;
+  background-color: var(--toast-background-color);
+  margin-bottom: 10px;
+}
+
+.toast-bar {
+  width: 5px;
+}
+
+.toast-bar-success {
+  background-color: var(--toast-success-color);
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+}
+
+.toast-icon-container {
+  margin: 20px;
+}
+
+.toast-icon-container-success {
+  color: var(--toast-success-color);
+}
+
+.toast-text-container {
+  margin: 12px 5px;
+  color: var(--toast-text-color);
+}
+
+.toast-close {
+  margin: 20px 15px 20px 30px;
+}

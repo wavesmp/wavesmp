@@ -75,6 +75,16 @@
     "duration": 72.7,
     "source": "testUpdatedSource2"
   },
+  "TEST_TOAST1": {
+    "id": 1,
+    "type": "testType1",
+    "msg": "testMsg1"
+  },
+  "TEST_TOAST2": {
+    "id": 2,
+    "type": "testType2",
+    "msg": "testMsg2"
+  },
   "TEST_PLAYLIST_NAME1": "testPlaylistName1",
   "TEST_PLAYLIST_NAME2": "testPlaylistName2",
   "TEST_PLAYLIST_COPY_NAME1": "testPlaylistCopyName1",

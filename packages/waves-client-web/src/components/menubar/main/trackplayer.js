@@ -2,6 +2,7 @@ import React from 'react'
 
 import { bindActionCreators } from 'redux'
 import * as WavesActions from 'waves-client-actions'
+import { toastTypes } from 'waves-client-constants'
 import './trackplayer.css'
 
 class TrackInfo extends React.Component {
@@ -85,9 +86,9 @@ class RightButtons extends React.Component {
   onRepeatClick = ev => {
     const { playing, actions } = this.props
     const { repeat } = playing
-    const enabledOrDisabled = (repeat ? 'Dis' : 'En') + 'abled'
     actions.repeatToggle()
-    toastr.success('Repeat ' + enabledOrDisabled)
+    const msg = `Repeat ${repeat? 'Dis' : 'En'}abled`
+    actions.toastAdd({type: toastTypes.Success, msg})
   }
 
   render() {

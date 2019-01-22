@@ -192,7 +192,7 @@ describe('#playlists()', () => {
     wsMock.verify()
   })
 
-  it('#playlistCreate()', () => {
+  it('#playlistCreate()', async () => {
     const dispatchMock = sinon.mock()
     const ws = new WavesSocket({})
     const wsMock = sinon.mock(ws)
@@ -216,7 +216,7 @@ describe('#playlists()', () => {
       .withExactArgs(types.PLAYLIST_ADD,
         {playlistName, trackIds: addTracks})
 
-    thunk(dispatchMock, undefined, { ws })
+    await thunk(dispatchMock, undefined, { ws })
 
     dispatchMock.verify()
     wsMock.verify()

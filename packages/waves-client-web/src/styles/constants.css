@@ -36,4 +36,8 @@
   --trackslider-width: TRACKSLIDER_WIDTH;
   --trackplayer-background-color: TRACKSLIDER_BACKGROUND_COLOR;
   --trackplayer-border-color: TRACKSLIDER_BORDER_COLOR;
+
+  --toast-success-color: TOAST_SUCCESS_COLOR;
+  --toast-background-color: TOAST_BACKGROUND_COLOR;
+  --toast-text-color: TOAST_TEXT_COLOR;
 }

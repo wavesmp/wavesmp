@@ -48,6 +48,9 @@ const actionTypes = keyMirror({
   PLAYLIST_DELETE: null,
   PLAYLIST_MOVE: null,
 
+  TOAST_ADD: null,
+  TOAST_REMOVE: null,
+
   UPLOAD_TRACKS_UPDATE: null,
 })
 

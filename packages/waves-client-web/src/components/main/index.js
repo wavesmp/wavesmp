@@ -14,6 +14,7 @@ import ContextMenu from '../contextmenu'
 import Modal from '../modal'
 import NowPlaying from '../nowplaying'
 import Playlist from '../playlist'
+import Toasts from '../toasts'
 import Library from '../library'
 
 class MainApp extends React.Component {
@@ -52,7 +53,7 @@ class MainApp extends React.Component {
   render() {
     const { modal, sidebar, playlists, playing,
             actions, contextmenu, dropdown,
-            account, location, history } = this.props
+            account, location, history, toasts } = this.props
     const { user } = account
     if (!user) {
       return (
@@ -78,7 +79,7 @@ class MainApp extends React.Component {
                  userName={user.name}/>
         <ContextMenu contextmenu={contextmenu}/>
         <Modal modal={modal}/>
-        <div id='player'/>
+        <Toasts toasts={toasts}/>
       </div>
     )
   }
@@ -91,6 +92,7 @@ function mapStateToProps(state) {
     sidebar: state.sidebar,
     contextmenu: state.contextmenu,
     modal: state.modal,
+    toasts: state.toasts,
     account: state.account,
     dropdown: state.dropdown
   }

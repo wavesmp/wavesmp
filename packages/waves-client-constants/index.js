@@ -42,6 +42,10 @@ constants.dropdownTypes = keyMirror({
   NOTIFICATIONS: null,
 })
 
+constants.toastTypes = keyMirror({
+  Success: null,
+})
+
 constants.DROPDOWN_DATA_VALUE = 'dropdown'
 constants.MODAL_DATA_VALUE = 'modal'
 constants.TOGGLE_DATA_KEY = 'data-toggle'
