@@ -18,8 +18,6 @@ export default class MenuBar extends React.Component {
     const { actions, dropdown, playing, history, userName } = this.props
     const { isPlaying, track } = playing
 
-
-
     let trackSlider = null
     let trackPlayer = null
     let isPlayerVisible = track !== null
