@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { CSSTransitionGroup } from 'react-transition-group'
 import { Link } from 'react-router-dom'
 
 import './index.css'
@@ -36,21 +36,21 @@ export default class SideBar extends React.Component {
     }
     return (
       <span>
-        <ReactCSSTransitionGroup transitionName='mainbartransition'
+        <CSSTransitionGroup transitionName='mainbartransition'
                                  transitionEnterTimeout={2000}
                                  transitionLeaveTimeout={1000}>
           {mainBar}
-        </ReactCSSTransitionGroup>
-        <ReactCSSTransitionGroup transitionName='playlistbartransition'
+        </CSSTransitionGroup>
+        <CSSTransitionGroup transitionName='playlistbartransition'
                                  transitionEnterTimeout={2000}
                                  transitionLeaveTimeout={1000}>
           {playlistBar}
-        </ReactCSSTransitionGroup>
-        <ReactCSSTransitionGroup transitionName='playlistbartransition'
+        </CSSTransitionGroup>
+        <CSSTransitionGroup transitionName='playlistbartransition'
                                  transitionEnterTimeout={2000}
                                  transitionLeaveTimeout={1000}>
           {settingsBar}
-        </ReactCSSTransitionGroup>
+        </CSSTransitionGroup>
       </span>
     )
   }

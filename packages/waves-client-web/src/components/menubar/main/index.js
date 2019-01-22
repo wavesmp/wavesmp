@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { CSSTransitionGroup } from 'react-transition-group'
 import { Link } from 'react-router-dom'
 
 import './index.css'
@@ -51,11 +51,11 @@ export default class MenuBar extends React.Component {
             <img className={logoClassName} src={logoUrl}/>
             <span className={logoNameClassName}>WAVES</span>
           </Link>
-          <ReactCSSTransitionGroup transitionName='fade'
+          <CSSTransitionGroup transitionName='fade'
                                    transitionEnterTimeout={800}
                                    transitionLeaveTimeout={300}>
             {trackPlayer}
-          </ReactCSSTransitionGroup>
+          </CSSTransitionGroup>
           <Notifications actions={actions} dropdown={dropdown}/>
           <UserSettings
             actions={actions}
@@ -63,11 +63,11 @@ export default class MenuBar extends React.Component {
             history={history}
             userName={userName}/>
         </div>
-        <ReactCSSTransitionGroup transitionName='fade'
+        <CSSTransitionGroup transitionName='fade'
                                  transitionEnterTimeout={800}
                                  transitionLeaveTimeout={300}>
           {trackSlider}
-        </ReactCSSTransitionGroup>
+        </CSSTransitionGroup>
       </header>
     )
   }
