@@ -21,6 +21,10 @@
   background-color: var(--toast-success-color);
 }
 
+.toast-bar-error {
+  background-color: var(--toast-error-color);
+}
+
 .toast-content {
   display: flex;
   align-items: center;
@@ -32,6 +36,10 @@
 
 .toast-icon-container-success {
   color: var(--toast-success-color);
+}
+
+.toast-icon-container-error {
+  color: var(--toast-error-color);
 }
 
 .toast-text-container {

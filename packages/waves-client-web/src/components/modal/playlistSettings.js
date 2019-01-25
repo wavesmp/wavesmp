@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import constants from 'waves-client-constants'
+import { DEFAULT_PLAYLIST, toastTypes } from 'waves-client-constants'
 
 import { ModalHeader, ModalFooter, ModalWrapper } from './util'
 
@@ -23,27 +23,27 @@ class PlaylistSettingsModal extends React.Component {
 
   onAction = () => {
     const { playlistSaveName } = this.state
+    const { actions, playlists, playlistName, history } = this.props
     /* TODO better validation */
     if (playlistSaveName === '') {
-      toastr.error('Invalid playlist name')
+      actions.toastAdd({ type: toastTypes.Error, msg: 'Invalid playlist name' })
       return
     }
-    const { actions, playlists, playlistName, history } = this.props
     actions.playlistMove(playlistName, playlistSaveName)
     const { search } = playlists[playlistName]
     const to = {pathname: `/playlist/${playlistSaveName}`, search}
     history.push(to)
-    toastr.success('Renamed playlist')
+    actions.toastAdd({ type: toastTypes.Success, msg: 'Renamed playlist' })
     this.onClose()
   }
 
   onDelete = () => {
     const { actions, playlists, playlistName, history } = this.props
     actions.playlistDelete(playlistName)
-    const { search } = playlists[constants.DEFAULT_PLAYLIST]
+    const { search } = playlists[DEFAULT_PLAYLIST]
     const to = {pathname: '/', search}
     history.push(to)
-    toastr.success('Deleted playlist')
+    actions.toastAdd({ type: toastTypes.Success, msg: 'Deleted playlist' })
     this.onClose()
   }
 

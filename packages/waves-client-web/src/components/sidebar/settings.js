@@ -1,13 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { modalTypes } from 'waves-client-constants'
-
-function onUnsupportedFeatureClick(ev) {
-  toastr.error('This feature is coming soon!', 'Feature Unavailable')
-}
+import { modalTypes, toastTypes } from 'waves-client-constants'
 
 export default class SettingsBar extends React.Component {
+  onUnsupportedFeatureClick = () => {
+    const { actions } = this.props
+    actions.toastAdd({type: toastTypes.Error, msg: 'Feature Unavailable'})
+  }
+
   onBackClick = () => {
     const { actions } = this.props
     actions.sidebarModeSet('main')
@@ -39,19 +40,19 @@ export default class SettingsBar extends React.Component {
             </span>
           </li>
           <li className='sidebar-playlist'>
-            <span onClick={onUnsupportedFeatureClick}>
+            <span onClick={this.onUnsupportedFeatureClick}>
               <i className='fa-fw fa fa-lg fa-file-text'></i>
               <span>File name mismatches</span>
             </span>
           </li>
           <li className='sidebar-playlist'>
-            <span onClick={onUnsupportedFeatureClick}>
+            <span onClick={this.onUnsupportedFeatureClick}>
               <i className='fa-fw fa fa-lg fa-tags'></i>
               <span>Missing metadata</span>
             </span>
           </li>
           <li className='sidebar-playlist'>
-            <span onClick={onUnsupportedFeatureClick}>
+            <span onClick={this.onUnsupportedFeatureClick}>
               <i className='fa-fw fa fa-lg fa-file-o'></i>
               <span>Missing files</span>
             </span>
@@ -68,7 +69,7 @@ export default class SettingsBar extends React.Component {
             </span>
           </li>
           <li className='sidebar-playlist'>
-            <span onClick={onUnsupportedFeatureClick}>
+            <span onClick={this.onUnsupportedFeatureClick}>
               <i className='fa-fw fa fa-lg fa-sign-out'></i>
               <span>Sign out</span>
             </span>

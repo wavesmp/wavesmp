@@ -78,9 +78,9 @@ class RightButtons extends React.Component {
   onShuffleClick = ev => {
     const { playing, actions } = this.props
     const { shuffle } = playing
-    const enabledOrDisabled = (shuffle ? 'Dis' : 'En') + 'abled'
     actions.shuffleToggle()
-    toastr.success('Shuffle ' + enabledOrDisabled)
+    const msg = `Shuffle ${shuffle? 'Dis' : 'En'}abled`
+    actions.toastAdd({type: toastTypes.Success, msg})
   }
 
   onRepeatClick = ev => {

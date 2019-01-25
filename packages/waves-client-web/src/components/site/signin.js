@@ -1,13 +1,16 @@
 import React from 'react'
 
-import UserInput from './userInput'
+import { toastTypes } from 'waves-client-constants'
 
-function onUnsupportedClick(ev) {
-  toastr.error('This feature is coming soon!', 'Feature Unavailable')
-}
+import UserInput from './userInput'
 
 
 export default class SignIn extends React.Component {
+  onUnsupportedClick = () => {
+    const { actions } = this.props
+    actions.toastAdd({ type: toastTypes.Error, msg: 'Feature Unavailable' })
+  }
+
   // TODO think of err handling
   signIn = async () => {
     const { history, actions, location } = this.props
@@ -27,7 +30,7 @@ export default class SignIn extends React.Component {
         <h3>Start playing now</h3>
         <UserInput iconClass='fa-user-plus' placeholder='Email Address'/>
         <UserInput iconClass='fa-key' placeholder='Password'/>
-        <label className='btn btn-ok site-create-account-button' onClick={onUnsupportedClick}>Create Account</label>
+        <label className='btn btn-ok site-create-account-button' onClick={this.onUnsupportedClick}>Create Account</label>
         <div className='site-idp-separator'/>
         <p className='site-idp-separator-words'><strong>OR</strong></p>
         <div className='site-idp-separator'/>

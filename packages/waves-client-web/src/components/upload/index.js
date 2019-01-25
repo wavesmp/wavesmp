@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { UPLOAD_PLAYLIST as playlistName, modalTypes } from 'waves-client-constants'
+import { UPLOAD_PLAYLIST as playlistName, modalTypes, toastTypes } from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 
 import ContentPage from '../contentpage'
@@ -53,7 +53,8 @@ class Upload extends React.Component {
     if (ACCEPTED_FILE_TYPE_LIST.indexOf(f.type) > -1) {
       return true
     }
-    toastr.error(f.name, 'Invalid file type')
+    const { actions } = this.props
+    actions.toastAdd({ type: toastTypes.Error, msg: `${f.name}: Invalid file type` })
     return false
   }
 
@@ -82,7 +83,7 @@ class Upload extends React.Component {
     try {
       return await processTrack(file)
     } catch (err) {
-      toastr.error(err.toString(), `Failed to read track info: ${file.name}`)
+      actions.toastAdd({ type: toastTypes.Error, msg: `${f.name}: Failed to read track info: ${err}` })
       console.log(err)
       console.log(err.stack)
     }

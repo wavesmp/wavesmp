@@ -44,6 +44,7 @@ constants.dropdownTypes = keyMirror({
 
 constants.toastTypes = keyMirror({
   Success: null,
+  Error: null,
 })
 
 constants.DROPDOWN_DATA_VALUE = 'dropdown'

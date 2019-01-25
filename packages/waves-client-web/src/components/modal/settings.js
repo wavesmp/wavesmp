@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { ModalHeader, ModalFooter, ModalWrapper } from './util'
 
 import * as WavesActions from 'waves-client-actions'
-import { ALL_COLUMNS } from 'waves-client-constants'
+import { ALL_COLUMNS, toastTypes } from 'waves-client-constants'
 const COLUMN_NAME_ATTR = 'data-columnname'
 
 const TITLE = 'Account Settings'
@@ -29,7 +29,7 @@ class AccountSettingsModal extends React.Component {
     const { actions } = this.props
     /* TODO only apply changes if different */
     actions.accountSetSettings(columns, rowsPerPage)
-    toastr.success('Applied changes')
+    actions.toastAdd({ type: toastTypes.Success, msg: 'Applied changes' })
     this.onClose()
   }
 

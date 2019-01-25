@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { DEFAULT_PLAYLIST } from 'waves-client-constants'
+import { DEFAULT_PLAYLIST, toastTypes } from 'waves-client-constants'
 
 import { ModalHeader, ModalFooter, ModalWrapper } from './util'
 
@@ -27,15 +27,15 @@ class SavePlaylistModal extends React.Component {
   }
 
   onAction = () => {
+    const { actions } = this.props
     const { playlistSaveName } = this.state
     if (playlistSaveName === '') {
       /* TODO better validation */
-      toastr.error('Invalid playlist name')
+      actions.toastAdd({ type: toastTypes.Error, msg: 'Invalid playlist name' })
       return
     }
-    const { actions } = this.props
     actions.playlistCopy(DEFAULT_PLAYLIST, playlistSaveName)
-    toastr.success('Saved playlist')
+    actions.toastAdd({ type: toastTypes.Success, msg: 'Saved playlist' })
     this.onClose()
   }
 
