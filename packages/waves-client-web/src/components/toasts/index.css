@@ -1,5 +1,5 @@
 .toasts-container {
-  position: absolute;
+  position: fixed;
   top: 12px;
   right: 12px;
 }
@@ -8,10 +8,13 @@
   display: flex;
   background-color: var(--toast-background-color);
   margin-bottom: 10px;
+  border-radius: 5px;
 }
 
 .toast-bar {
   width: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .toast-bar-success {
