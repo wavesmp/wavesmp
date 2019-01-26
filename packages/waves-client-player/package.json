@@ -10,6 +10,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.5.3"
+    "bluebird": "^3.5.3",
+    "waves-client-errors": "^1.0.0"
   }
 }

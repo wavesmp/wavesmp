@@ -1,0 +1,12 @@
+{
+  "name": "waves-client-errors",
+  "version": "1.0.0",
+  "description": "Waves client errors",
+  "main": "index.js",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-client-errors.git"
+  },
+  "license": "ISC"
+}
