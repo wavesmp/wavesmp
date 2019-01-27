@@ -1,7 +1,7 @@
 import React from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
 
-import { toastTypes } from 'waves-client-constants'
+import { TOAST_ID_ATTR, toastTypes } from 'waves-client-constants'
 
 import './index.css'
 
@@ -11,6 +11,12 @@ const ICONS = {
 }
 
 export default class Toasts extends React.Component {
+  onCloseClick = (ev) => {
+    const { actions } = this.props
+    const toastId = parseInt(ev.currentTarget.getAttribute(TOAST_ID_ATTR))
+    actions.toastRemove(toastId)
+  }
+
   render() {
     const { toasts } = this.props
     return (
@@ -37,7 +43,9 @@ export default class Toasts extends React.Component {
                       {msg}
                     </div>
                   </div>
-                  <div className='toast-close'>
+                  <div className='toast-close'
+                       data-toast={toast.id}
+                       onClick={this.onCloseClick}>
                     <i className='fa fa-lg fa-times'/>
                   </div>
                 </div>

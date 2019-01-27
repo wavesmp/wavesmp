@@ -6,6 +6,7 @@ constants.DEFAULT_PLAYLIST = '__nowplaying'
 constants.FULL_PLAYLIST = '__library'
 constants.UPLOAD_PLAYLIST = '__upload'
 
+constants.TOAST_ID_ATTR = 'data-toast'
 constants.TRACK_ID_ATTR = 'data-trackid'
 constants.PLAY_INDEX_ATTR = 'data-playindex'
 constants.TITLE_ATTR = 'data-title'

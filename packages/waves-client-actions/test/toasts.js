@@ -14,7 +14,7 @@ describe('#toasts()', () => {
     const thunk = actions.toastAdd(toast)
 
     const firstAction = { type: types.TOAST_ADD, toast }
-    const secondAction = { type: types.TOAST_REMOVE }
+    const secondAction = { type: types.TOAST_REMOVE, id: toast.id }
 
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.twice()
@@ -34,6 +34,12 @@ describe('#toasts()', () => {
     dispatchMock.verify()
   })
 
+  it('#toastRemove()', () => {
+    const testId = 'testId'
+    assert.isDefined(types.TOAST_REMOVE)
+    const expectedAction = { type: types.TOAST_REMOVE, id: testId }
+    assert.deepEqual(actions.toastRemove(testId), expectedAction)
+  })
 })
 
 // TODO consider moving to util module

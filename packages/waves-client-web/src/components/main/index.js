@@ -79,7 +79,7 @@ class MainApp extends React.Component {
                  userName={user.name}/>
         <ContextMenu contextmenu={contextmenu}/>
         <Modal modal={modal}/>
-        <Toasts toasts={toasts}/>
+        <Toasts actions={actions} toasts={toasts}/>
       </div>
     )
   }

@@ -33,7 +33,7 @@ describe('#toasts()', () => {
 
   it('remove toast', () => {
     assert.isDefined(actionTypes.TOAST_REMOVE)
-    action = { type: actionTypes.TOAST_REMOVE }
+    action = { type: actionTypes.TOAST_REMOVE, id: toast1.id }
     state = assertNewState(toasts, state, action)
     assert.deepEqual(state, [toast2])
   })

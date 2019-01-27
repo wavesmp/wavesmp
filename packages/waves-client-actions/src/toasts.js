@@ -5,8 +5,12 @@ const DEFAULT_TIMEOUT = 3000
 let id = 0
 let cachedDispatch
 
-function toastRemove() {
-  cachedDispatch({ type: types.TOAST_REMOVE })
+function toastRemoveCached(id) {
+  cachedDispatch({ type: types.TOAST_REMOVE, id })
+}
+
+function toastRemove(id) {
+  return { type: types.TOAST_REMOVE, id }
 }
 
 function toastAdd(toast) {
@@ -14,8 +18,9 @@ function toastAdd(toast) {
     cachedDispatch = dispatch
     toast.id = ++id
     dispatch({ type: types.TOAST_ADD, toast })
-    setTimeout(toastRemove, toast.timeout || DEFAULT_TIMEOUT)
+    setTimeout(() => toastRemoveCached(toast.id), toast.timeout || DEFAULT_TIMEOUT)
   }
 }
 
 module.exports.toastAdd = toastAdd
+module.exports.toastRemove = toastRemove
