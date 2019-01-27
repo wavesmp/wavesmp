@@ -1,6 +1,9 @@
+const { assert } = require('chai')
 const mongoid = require('mongoid-js')
 const sinon = require('sinon')
 
+const types = require('waves-action-types')
+const { toastTypes } = require('waves-client-constants')
 const Player = require('waves-client-player')
 
 const actions = require('../../src/tracks/sideEffects')
@@ -19,6 +22,9 @@ describe('#sideEffects()', async () => {
   it('#download()', async () => {
     const player = new Player({})
 
+    const dispatchMock = sinon.mock()
+    const dispatchExpect = dispatchMock.once()
+
     const thunk = actions.download(track1.id)
 
     const playerMock = sinon.mock(player)
@@ -26,9 +32,22 @@ describe('#sideEffects()', async () => {
       .once().withExactArgs(track1)
 
     const tracks = { library }
-    thunk(undefined, () => ({ tracks }), { player })
+    await thunk(dispatchMock, () => ({ tracks }), { player })
+
+    const firstDisptachCall = dispatchExpect.firstCall
+    const firstCallArgs = firstDisptachCall.args
+    assert.lengthOf(firstCallArgs, 1)
+    const firstCallArg = firstCallArgs[0]
+    assert.lengthOf(Object.keys(firstCallArg), 2)
+    assert.strictEqual(firstCallArg.type, types.TOAST_ADD)
+    const firstCallToast = firstCallArg.toast
+    assert.lengthOf(Object.keys(firstCallToast), 3)
+    assert.strictEqual(firstCallToast.type, toastTypes.Success)
+    assert.strictEqual(firstCallToast.msg, 'Download started' )
+    assert.isNumber(firstCallToast.id)
 
     playerMock.verify()
+    dispatchMock.verify()
   })
 
 

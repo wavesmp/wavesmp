@@ -271,7 +271,6 @@ async function handleDeletePromises(promises, dispatch) {
 
 function tracksDelete() {
   return async (dispatch, getState, { player, ws }) => {
-    console.log('DELETING TRACKS ACTION')
     const { tracks } = getState()
     const { library, playing, playlists } = tracks
     const { selection } = playlists[FULL_PLAYLIST]
@@ -280,17 +279,10 @@ function tracksDelete() {
     const deleteIds = Object.values(selection)
     dispatch({ type: types.LIBRARY_TRACK_UPDATE, ids: deleteIds, key: 'state', value: 'pending' })
     const deleteTracks = deleteIds.map(deleteId => library[deleteId])
-    console.log('DELETING TRACKS')
     const deletePromises = await player.deleteTracks(deleteTracks)
     const result = await handleDeletePromises(deletePromises, dispatch)
-    console.log('DELETE RESULT')
-    console.log(result)
     const { deleted } = result
-    console.log('GOT DELETED')
-    console.log(deleted)
     const deletedIds = new Set(deleted.map(t => t.id))
-    console.log('GOT DELETED IDS')
-    console.log(deletedIds)
 
     try {
       await ws.sendAckedMessage(types.TRACKS_DELETE, { deleteIds: [...deletedIds] })
@@ -302,15 +294,12 @@ function tracksDelete() {
       return result
     }
 
-    console.log('CHECKING IF DELETE CURR TRACK')
     if (track && deletedIds.has(track.id)) {
       /* Pause before deleting from state. Otherwise,
        * track may update playing.currentTime before
        * it is deleted from state */
-      console.log('DELETED CURR TRACK!')
       player.pause()
     }
-    console.log('DISPATCH DELETE WITH IDS')
     console.log(deletedIds)
     dispatch({ type: types.TRACKS_DELETE, deleteIds: deletedIds })
 

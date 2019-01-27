@@ -5,7 +5,7 @@ const { URLSearchParams } = require('url')
 const sinon = require('sinon')
 
 const types = require('waves-action-types')
-const { DEFAULT_PLAYLIST, UPLOAD_PLAYLIST } = require('waves-client-constants')
+const { DEFAULT_PLAYLIST, UPLOAD_PLAYLIST, toastTypes } = require('waves-client-constants')
 const Player = require('waves-client-player')
 const { SEARCH_QUERY_KEY } = require('waves-client-selectors')
 const WavesSocket = require('waves-socket')
@@ -35,10 +35,17 @@ describe('#tracks()', async () => {
     const ws = new WavesSocket({})
     const player = new Player({})
 
+    assert.isDefined(types.TRACK_TOGGLE)
     const thunk = actions.trackToggle(track2.id, testPlaylistName2, testPlayId)
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once()
+    const dispatchExpect = dispatchMock.once().withExactArgs({
+      type: types.TRACK_TOGGLE,
+      playlistName: testPlaylistName2,
+      playId: testPlayId,
+      track: track2,
+      oldPlaylistName: testPlaylistName1
+    })
 
     const wsMock = sinon.mock(ws)
     const wsExpect = wsMock.expects('sendBestEffortMessage')
@@ -58,21 +65,6 @@ describe('#tracks()', async () => {
     dispatchMock.verify()
     playerMock.verify()
     wsMock.verify()
-
-    const dispatchFirstCall = dispatchExpect.firstCall
-    const dispatchArgs = dispatchFirstCall.args
-    assert.lengthOf(dispatchArgs, 1)
-    const dispatchArg = dispatchArgs[0]
-
-    assert.lengthOf(Object.keys(dispatchArg), 6)
-    assert.isDefined(types.TRACK_TOGGLE)
-    assert.strictEqual(dispatchArg.type, types.TRACK_TOGGLE)
-    assert.strictEqual(dispatchArg.playlistName, testPlaylistName2)
-    assert.strictEqual(dispatchArg.playId, testPlayId)
-    assert.deepEqual(dispatchArg.track, track2)
-    assert.strictEqual(dispatchArg.oldPlaylistName, testPlaylistName1)
-    const buffer = 100 // 0.1s
-    assert.closeTo(dispatchArg.startDate.getTime(), new Date().getTime(), buffer)
   })
 
   it('track toggle default playlist', async () => {
@@ -82,8 +74,15 @@ describe('#tracks()', async () => {
 
     const thunk = actions.trackToggle(track2.id, DEFAULT_PLAYLIST, testPlayId)
 
+    assert.isDefined(types.TRACK_TOGGLE)
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once()
+    const dispatchExpect = dispatchMock.once().withExactArgs({
+      type: types.TRACK_TOGGLE,
+      playlistName: DEFAULT_PLAYLIST,
+      playId: testPlayId,
+      track: track2,
+      oldPlaylistName: testPlaylistName1,
+    })
 
     const playerMock = sinon.mock(player)
     const playerExpect = playerMock.expects('trackToggle')
@@ -96,31 +95,22 @@ describe('#tracks()', async () => {
 
     dispatchMock.verify()
     playerMock.verify()
-
-    const dispatchFirstCall = dispatchExpect.firstCall
-    const dispatchArgs = dispatchFirstCall.args
-    assert.lengthOf(dispatchArgs, 1)
-    const dispatchArg = dispatchArgs[0]
-
-    assert.lengthOf(Object.keys(dispatchArg), 6)
-    assert.isDefined(types.TRACK_TOGGLE)
-    assert.strictEqual(dispatchArg.type, types.TRACK_TOGGLE)
-    assert.strictEqual(dispatchArg.playlistName, DEFAULT_PLAYLIST)
-    assert.strictEqual(dispatchArg.playId, testPlayId)
-    assert.deepEqual(dispatchArg.track, track2)
-    assert.strictEqual(dispatchArg.oldPlaylistName, testPlaylistName1)
-    const buffer = 100 // 0.1s
-    assert.closeTo(dispatchArg.startDate.getTime(), new Date().getTime(), buffer)
   })
 
   it('track next on playlist without search', async () => {
     const ws = new WavesSocket({})
     const player = new Player({})
+    const playlistName = testPlaylistName1
 
     const thunk = actions.trackNext(URLSearchParams)
 
+    assert.isDefined(types.TRACK_NEXT)
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once()
+    const dispatchExpect = dispatchMock.once().withExactArgs({
+      type: types.TRACK_NEXT,
+      nextTrack: {...track2, playId: '1'},
+      playlistName: playlistName,
+    })
 
     const wsMock = sinon.mock(ws)
     const wsExpect = wsMock.expects('sendBestEffortMessage')
@@ -134,7 +124,6 @@ describe('#tracks()', async () => {
       .once()
       .withExactArgs({...track2, playId: '1'}, isPlaying)
 
-    const playlistName = testPlaylistName1
     const playing = { playlist: playlistName, isPlaying, shuffle: false }
     const playlist = {
       tracks: [track1.id, track2.id],
@@ -148,19 +137,6 @@ describe('#tracks()', async () => {
     dispatchMock.verify()
     playerMock.verify()
     wsMock.verify()
-
-    const dispatchFirstCall = dispatchExpect.firstCall
-    const dispatchArgs = dispatchFirstCall.args
-    assert.lengthOf(dispatchArgs, 1)
-    const dispatchArg = dispatchArgs[0]
-
-    assert.lengthOf(Object.keys(dispatchArg), 4)
-    assert.isDefined(types.TRACK_NEXT)
-    assert.strictEqual(dispatchArg.type, types.TRACK_NEXT)
-    assert.deepEqual(dispatchArg.nextTrack, {...track2, playId: '1'})
-    assert.strictEqual(dispatchArg.playlistName, playlistName)
-    const buffer = 100 // 0.1s
-    assert.closeTo(dispatchArg.startDate.getTime(), new Date().getTime(), buffer)
   })
 
   it('track prev on default playlist with search', async () => {
@@ -171,6 +147,7 @@ describe('#tracks()', async () => {
     const track1Time = formatTime(track1Copy.duration * 1000)
     const expectedTrack1 = {...track1Copy, playId: '0', time: track1Time}
     const track2Copy = {...track2, title: searchString}
+    const playlistName = DEFAULT_PLAYLIST
 
     const libraryCopy = {
       [track1Copy.id]: track1Copy,
@@ -181,8 +158,13 @@ describe('#tracks()', async () => {
 
     const thunk = actions.trackPrevious(URLSearchParams)
 
+    assert.isDefined(types.TRACK_NEXT)
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once()
+    const dispatchExpect = dispatchMock.once().withExactArgs({
+      type: types.TRACK_NEXT,
+      nextTrack: expectedTrack1,
+      playlistName: playlistName,
+    })
 
     const isPlaying = true
     const playerMock = sinon.mock(player)
@@ -190,7 +172,6 @@ describe('#tracks()', async () => {
       .once()
       .withExactArgs(expectedTrack1, isPlaying)
 
-    const playlistName = DEFAULT_PLAYLIST
     const playing = { playlist: playlistName, isPlaying, shuffle: false }
     const playlist = {
       tracks: [track1Copy.id, track2Copy.id],
@@ -203,19 +184,6 @@ describe('#tracks()', async () => {
 
     dispatchMock.verify()
     playerMock.verify()
-
-    const dispatchFirstCall = dispatchExpect.firstCall
-    const dispatchArgs = dispatchFirstCall.args
-    assert.lengthOf(dispatchArgs, 1)
-    const dispatchArg = dispatchArgs[0]
-
-    assert.lengthOf(Object.keys(dispatchArg), 4)
-    assert.isDefined(types.TRACK_NEXT)
-    assert.strictEqual(dispatchArg.type, types.TRACK_NEXT)
-    assert.deepEqual(dispatchArg.nextTrack, expectedTrack1)
-    assert.strictEqual(dispatchArg.playlistName, playlistName)
-    const buffer = 100 // 0.1s
-    assert.closeTo(dispatchArg.startDate.getTime(), new Date().getTime(), buffer)
   })
 
   it('trackUploadsUpdate()', async () => {
@@ -275,9 +243,14 @@ describe('#tracks()', async () => {
     const ws = new WavesSocket({})
 
     const sourceType = 's3'
-    const playing = { track: track1 }
+    const fileName1 = 'testFileName1'
+    const fileName2 = 'testFileName2'
+    const playing = { track: {...track1, file: { name: fileName1 } } }
     const library = null
-    const uploads = { [track1.id]: track1, [track2.id]: track2 }
+    const uploads = {
+      [track1.id]: {...track1, file: { name: fileName1 } },
+      [track2.id]: {...track2, file: { name: fileName2 } }
+    }
     const uploadValues = Object.values(uploads)
     const getState = () => ({tracks: {uploads, playing, library}})
 
@@ -286,7 +259,7 @@ describe('#tracks()', async () => {
     const playerMock = sinon.mock(player)
     const playerUploadExpect = playerMock.expects('upload')
       .once().withExactArgs(sourceType, uploadValues)
-      .returns({uploaded: uploadValues})
+      .returns(uploadValues.map(uploadValue => Promise.resolve(uploadValue)))
 
     assert.isDefined(types.TRACKS_UPDATE)
     const wsMock = sinon.mock(ws)
@@ -299,7 +272,7 @@ describe('#tracks()', async () => {
       .once().withExactArgs()
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.exactly(4)
+    const dispatchExpect = dispatchMock.exactly(6)
 
     await thunk(dispatchMock, getState, { player, ws })
 
@@ -321,16 +294,42 @@ describe('#tracks()', async () => {
       value: 0
     }))
 
+    assert.isDefined(types.TOAST_ADD)
+    const thirdDisptachCall = dispatchExpect.thirdCall
+    const thirdCallArgs = thirdDisptachCall.args
+    assert.lengthOf(thirdCallArgs, 1)
+    const thirdCallArg = thirdCallArgs[0]
+    assert.lengthOf(Object.keys(thirdCallArg), 2)
+    assert.strictEqual(thirdCallArg.type, types.TOAST_ADD)
+    const thirdCallToast = thirdCallArg.toast
+    assert.lengthOf(Object.keys(thirdCallToast), 3)
+    assert.strictEqual(thirdCallToast.type, toastTypes.Success)
+    assert.strictEqual(thirdCallToast.msg, `Uploaded ${fileName1}`)
+    assert.isNumber(thirdCallToast.id)
+
+    assert.isDefined(types.TOAST_ADD)
+    const fourthDisptachCall = dispatchExpect.getCall(3)
+    const fourthCallArgs = fourthDisptachCall.args
+    assert.lengthOf(fourthCallArgs, 1)
+    const fourthCallArg = fourthCallArgs[0]
+    assert.lengthOf(Object.keys(fourthCallArg), 2)
+    assert.strictEqual(fourthCallArg.type, types.TOAST_ADD)
+    const fourthCallToast = fourthCallArg.toast
+    assert.lengthOf(Object.keys(fourthCallToast), 3)
+    assert.strictEqual(fourthCallToast.type, toastTypes.Success)
+    assert.strictEqual(fourthCallToast.msg, `Uploaded ${fileName2}`)
+    assert.isNumber(fourthCallToast.id)
+
     assert.isDefined(types.TRACK_UPLOADS_DELETE)
     const uploadedIds = new Set(uploadIds)
-    const thirdDisptachCall = dispatchExpect.thirdCall
-    assert.isTrue(thirdDisptachCall.calledWithExactly({
+    const fifthDisptachCall = dispatchExpect.getCall(4)
+    assert.isTrue(fifthDisptachCall.calledWithExactly({
       type: types.TRACK_UPLOADS_DELETE,
       deleteIds: uploadedIds
     }))
 
-    const fourthDisptachCall = dispatchExpect.getCall(3)
-    assert.isTrue(fourthDisptachCall.calledWithExactly({
+    const sixthDisptachCall = dispatchExpect.getCall(5)
+    assert.isTrue(sixthDisptachCall.calledWithExactly({
       type: types.TRACKS_UPDATE,
       libraryById: uploads
     }))
