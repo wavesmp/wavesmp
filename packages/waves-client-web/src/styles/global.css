@@ -124,6 +124,7 @@ table.modal-table th {
   right: 0px;
   left: 0px;
   transition: top 0.8s cubic-bezier(.02, .01, .47, 1);
+  bottom: 0px;
 }
 
 tr td {
