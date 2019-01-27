@@ -8,7 +8,8 @@ const DEFAULT_LOCAL_CONFIG = {
   columns: ['Name', 'State', 'Time', 'Artist', 'Genre'],
   rowsPerPage: 25,
   lastIdp: '',
-  machineId: ObjectID.getMachineID()
+  machineId: ObjectID.getMachineID(),
+  theme: 'light'
 }
 
 

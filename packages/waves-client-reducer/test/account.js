@@ -14,7 +14,7 @@ describe('#account()', () => {
   it('initial state', () => {
     state = assertNewState(account, undefined, UNKNOWN_ACTION)
     assert.isObject(state)
-    assert.lengthOf(Object.keys(state), 4)
+    assert.lengthOf(Object.keys(state), 5)
     const { columns, rowsPerPage, user, fetchingUser } = state
     assert.strictEqual(columns, null)
     assert.strictEqual(rowsPerPage, null)
@@ -27,7 +27,7 @@ describe('#account()', () => {
     state = assertNewState(account, state, action)
 
     assert.isObject(state)
-    assert.lengthOf(Object.keys(state), 4)
+    assert.lengthOf(Object.keys(state), 5)
     assert.strictEqual(state.user, user)
     assert.strictEqual(state.fetchingUser, false)
   })
@@ -35,13 +35,15 @@ describe('#account()', () => {
   it('set account settings', () => {
     const columns = ['Name', 'Title']
     const rowsPerPage = 50
-    action = { type: actionTypes.ACCOUNT_SET_SETTINGS, columns, rowsPerPage }
+    const theme = 'testTheme'
+    action = { type: actionTypes.ACCOUNT_SET_SETTINGS, columns, rowsPerPage, theme }
     state = assertNewState(account, state, action)
 
     assert.isObject(state)
-    assert.lengthOf(Object.keys(state), 4)
+    assert.lengthOf(Object.keys(state), 5)
     assert.strictEqual(state.columns, columns)
     assert.strictEqual(state.rowsPerPage, rowsPerPage)
+    assert.strictEqual(state.theme, theme)
   })
 
   it('set account fetchingUser', () => {

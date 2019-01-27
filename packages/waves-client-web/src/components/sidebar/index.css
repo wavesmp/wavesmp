@@ -18,7 +18,6 @@
   color: var(--sidebar-icons-color);
   font-size: 14px;
   text-align: center;
-  background: var(--sidebar-color);
   display: block;
   cursor: pointer;
   white-space: nowrap;
@@ -26,6 +25,7 @@
 }
 
 #sidebar-container .sidebar-active {
+  /* Active matches body-color to look pressed */
   background-color: var(--body-color);
   color: var(--sidebar-color-active-icon);
   pointer-events: none;
@@ -46,7 +46,7 @@
 #sidebar-container>ul>li>a:hover,
 #sidebar-container>ul>li>span:hover {
   background: var(--sidebar-color-hover);
-  color: #fff;
+  color: var(--sidebar-icons-color-hover)
 }
 
 #sidebar-container.sidebar-container-wide>ul>li>a,

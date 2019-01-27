@@ -14,9 +14,9 @@ const ACTION = 'Save'
 class AccountSettingsModal extends React.Component {
   constructor(props) {
     super(props)
-    const { rowsPerPage } = this.props
+    const { rowsPerPage, theme } = this.props
     const columns = new Set(this.props.columns)
-    this.state = { rowsPerPage, columns }
+    this.state = { rowsPerPage, columns, theme }
   }
 
   onClose = () => {
@@ -25,10 +25,10 @@ class AccountSettingsModal extends React.Component {
   }
 
   onAction = () => {
-    const { rowsPerPage, columns } = this.state
+    const { rowsPerPage, columns, theme } = this.state
     const { actions } = this.props
     /* TODO only apply changes if different */
-    actions.accountSetSettings(columns, rowsPerPage)
+    actions.accountSetSettings(columns, rowsPerPage, theme)
     actions.toastAdd({ type: toastTypes.Success, msg: 'Applied changes' })
     this.onClose()
   }
@@ -36,6 +36,13 @@ class AccountSettingsModal extends React.Component {
   onRowsPerPageChange = ev => {
     const rowsPerPage = parseInt(ev.target.value)
     this.setState({ rowsPerPage })
+  }
+
+  onThemeChange = ev => {
+    const theme = ev.target.value
+    console.log('SELECTED THEME')
+    console.log(theme)
+    this.setState({ theme })
   }
 
   addColumn = ev => {
@@ -53,7 +60,7 @@ class AccountSettingsModal extends React.Component {
   }
 
   render() {
-    const { columns, rowsPerPage } = this.state
+    const { columns, rowsPerPage, theme } = this.state
     const hiddenColumns = ALL_COLUMNS.filter(x => !columns.has(x))
     const activeColumns = ALL_COLUMNS.filter(x => columns.has(x))
     return (
@@ -93,17 +100,30 @@ class AccountSettingsModal extends React.Component {
                   </ul>
               </div>
             </div>
-            <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
-              <label>Rows Per Page:</label>
-              <div style={{width: '25%'}}>
-                <select value={rowsPerPage}
-                        onChange={this.onRowsPerPageChange}
-                        className='form-input'>
-                  <option value='10'>10</option>
-                  <option value='25'>25</option>
-                  <option value='50'>50</option>
-                  <option value='100'>100</option>
-                </select>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <div style={{width: '50%', marginLeft: '25px'}}>
+                <label>Theme:</label>
+                <div style={{width: '25%'}}>
+                  <select value={theme}
+                          onChange={this.onThemeChange}
+                          className='form-input'>
+                    <option value='light'>Light</option>
+                    <option value='dark'>Dark</option>
+                  </select>
+                </div>
+              </div>
+              <div style={{width: '50%', marginLeft: '25px'}}>
+                <label>Rows Per Page:</label>
+                <div style={{width: '25%'}}>
+                  <select value={rowsPerPage}
+                          onChange={this.onRowsPerPageChange}
+                          className='form-input'>
+                    <option value='10'>10</option>
+                    <option value='25'>25</option>
+                    <option value='50'>50</option>
+                    <option value='100'>100</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -122,6 +142,7 @@ function mapStateToProps(state) {
   return {
     columns: state.account.columns,
     rowsPerPage: state.account.rowsPerPage,
+    theme: state.account.theme
   }
 }
 

@@ -5,7 +5,8 @@ const initialState = {
   rowsPerPage: null,
   user: null,
   /* Application starts by fetching user */
-  fetchingUser: true
+  fetchingUser: true,
+  theme: 'light'
 }
 
 function account(state = initialState, action) {
@@ -15,8 +16,8 @@ function account(state = initialState, action) {
       return {...state, user, fetchingUser: false }
     }
     case actionTypes.ACCOUNT_SET_SETTINGS: {
-      const { columns, rowsPerPage } = action
-      return {...state, columns, rowsPerPage }
+      const { columns, rowsPerPage, theme } = action
+      return {...state, columns, rowsPerPage, theme }
     }
     case actionTypes.ACCOUNT_SET_FETCHING_USER: {
       const { fetchingUser } = action

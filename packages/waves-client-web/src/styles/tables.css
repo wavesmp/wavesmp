@@ -40,7 +40,7 @@ table {
 .table>tbody>tr>th:first-child,
 .table>thead>tr>td:first-child,
 .table>thead>tr>th:first-child {
-  border-top: 1px solid var(--table-color-border);
+  border-top: 1px solid var(--separator-color);
   font-size: 14px;
   padding-top: 3px;
 }
@@ -73,7 +73,7 @@ table {
   .table>tbody>tr>th:last-child,
   .table>thead>tr>td:last-child,
   .table>thead>tr>th:last-child {
-    border-top: 1px solid var(--table-color-border);
+    border-top: 1px solid var(--separator-color);
     font-size: 14px;
     padding: 8px;
   }
@@ -95,7 +95,7 @@ table {
 }
 
 .table>thead>tr>th {
-  border-bottom: 2px solid var(--table-color-border);
+  border-bottom: 2px solid var(--separator-color);
 }
 
 .modal-table>thead>tr>th {

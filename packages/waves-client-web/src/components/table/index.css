@@ -6,7 +6,7 @@
   background-color: var(--selected-color);
   border-color: var(--selected-color-border);
   border-style: solid;
-  color: #fff;
+  color: var(--title-color);
 }
 
 .table>tbody>tr.common-table-row-selected>td:first-child {

@@ -27,7 +27,7 @@
 }
 
 .site-login-separator {
-  border-bottom: 1px solid var(--table-color-border);
+  border-bottom: 1px solid var(--separator-color);
   padding-bottom: 25px;
   display: inline-block;
   margin-top: 10px;
@@ -67,7 +67,7 @@
 
 .site-main-browser {
   width: 100%;
-  border: 5px solid var(--table-color-border);
+  border: 5px solid var(--separator-color);
   border-radius: 10px;
 }
 
@@ -86,15 +86,15 @@
 
 /* TODO add spacing to player menu bar? */
 .site-main-browser-bar {
-  background-color: var(--table-color-border);
-  border-bottom: 3px solid var(--table-color-border);
+  background-color: var(--separator-color);
+  border-bottom: 3px solid var(--separator-color);
 }
 
 .site-idp-separator {
   height: 5px;
   width: 45%;
   display: inline-block;
-  border-top: 1px solid var(--table-color-border);
+  border-top: 1px solid var(--separator-color);
 }
 
 .site-idp-separator-words {

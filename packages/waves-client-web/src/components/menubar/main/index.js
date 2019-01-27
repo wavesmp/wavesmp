@@ -7,7 +7,7 @@ import Notifications from './notifications'
 import TrackPlayer from './trackplayer'
 import TrackSlider from './trackslider'
 import UserSettings from './userSettings'
-import logoUrl from '../common/logo-wide.svg'
+import LogoSvg from '../common/logo-wide.svg'
 
 const DEFAULT_APP_PATH = '/nowplaying'
 let prevPlayerVisible = false
@@ -48,7 +48,7 @@ export default class MenuBar extends React.Component {
       <header className='menubar-main-header'>
         <div className='menubar-main-container'>
           <Link to={DEFAULT_APP_PATH}>
-            <img className={logoClassName} src={logoUrl}/>
+            <LogoSvg className={logoClassName}/>
             <span className={logoNameClassName}>WAVES</span>
           </Link>
           <CSSTransitionGroup transitionName='fade'

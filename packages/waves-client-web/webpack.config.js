@@ -1,11 +1,8 @@
-const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
-const yaml = require('js-yaml')
 
 const babelConfig = require('./babel.config')
-
-const constants = yaml.safeLoad(fs.readFileSync('constants.yaml', 'utf8'));
+const constants = require('./buildConstants')
 
 const stringReplacer = {
   loader: 'string-replace-loader',
@@ -47,8 +44,7 @@ const wpConfig = {
         exclude: /node_modules/
       },
       { test: /\.css$/, use: ['style-loader', 'css-loader', stringReplacer] },
-      { test: /\.png$/, use: 'file-loader' },
-      { test: /\.svg$/, use: 'file-loader' }
+      { test: /\.png$/, use: 'file-loader' }
     ]
   },
 

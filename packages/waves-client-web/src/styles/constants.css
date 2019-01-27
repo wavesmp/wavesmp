@@ -1,44 +1,103 @@
 :root {
-  /* Old light theme */
-  --main-theme-color: MAIN_THEME_COLOR;
-  --body-color-old: BODY_COLOR_OLD;
-  --body-background-color-old: BODY_BACKGROUND_COLOR_OLD;
-
-  --menubar-color: MENUBAR_COLOR;
   --menubar-height: MENUBAR_HEIGHT;
-
-  --sidebar-color: SIDEBAR_COLOR;
-  --sidebar-color-hover: SIDEBAR_COLOR_HOVER;
-  --sidebar-color-active-icon: SIDEBAR_COLOR_ACTIVE_ICON;
-  --sidebar-icons-color: SIDEBAR_ICONS_COLOR;
   --sidebar-width: SIDEBAR_WIDTH;
   --playlistbar-width: PLAYLISTBAR_WIDTH;
   --transitionbar-width: calc((var(--sidebar-width) + var(--playlistbar-width)) / 2);
-
-  --body-color: BODY_COLOR;
-
-  --smalltext-color: SMALLTEXT_COLOR;
-
-  --table-color-hover: TABLE_COLOR_HOVER;
-  --table-color-border: TABLE_COLOR_BORDER;
-  --input-background-color: INPUT_BACKGROUND_COLOR;
-  --input-icon-color: INPUT_ICON_COLOR;
-
-  --button-primary-color: BUTTON_PRIMARY_COLOR;
-
-  --selected-color: SELECTED_COLOR;
-  --selected-color-border: SELECTED_COLOR_BORDER;
-
-  --dropdown-color: DROPDOWN_COLOR;
-  --dropdown-color-light: DROPDOWN_COLOR_LIGHT;
-  --dropdown-selected-border-color: DROPDOWN_SELECTED_BORDER_COLOR;
-
   --trackslider-width: TRACKSLIDER_WIDTH;
-  --trackplayer-background-color: TRACKSLIDER_BACKGROUND_COLOR;
-  --trackplayer-border-color: TRACKSLIDER_BORDER_COLOR;
+}
 
-  --toast-success-color: TOAST_SUCCESS_COLOR;
-  --toast-error-color: TOAST_ERROR_COLOR;
-  --toast-background-color: TOAST_BACKGROUND_COLOR;
-  --toast-text-color: TOAST_TEXT_COLOR;
+:root.theme-dark {
+  --body-color: DARK_BODY_COLOR;
+  --title-color: DARK_TITLE_COLOR;
+  --modal-title-color: DARK_MODAL_TITLE_COLOR;
+  --separator-color: DARK_SEPARATOR_COLOR;
+
+  --menubar-color: DARK_MENUBAR_COLOR;
+
+  --sidebar-color: DARK_SIDEBAR_COLOR;
+  --sidebar-color-hover: DARK_SIDEBAR_COLOR_HOVER;
+  --sidebar-color-active-icon: DARK_SIDEBAR_COLOR_ACTIVE_ICON;
+  --sidebar-icons-color: DARK_SIDEBAR_ICONS_COLOR;
+  --sidebar-icons-color-hover: DARK_SIDEBAR_ICONS_COLOR_HOVER;
+
+  --text-color: DARK_TEXT_COLOR;
+
+  --modal-close-btn-border: DARK_MODAL_CLOSE_BTN_BORDER;
+  --modal-close-btn-hover-color: DARK_MODAL_CLOSE_BTN_HOVER_COLOR;
+  --modal-close-btn-hover-border-color: DARK_MODAL_CLOSE_BTN_HOVER_BORDER_COLOR;
+
+  --table-color-hover: DARK_TABLE_COLOR_HOVER;
+  --input-background-color: DARK_INPUT_BACKGROUND_COLOR;
+  --input-icon-color: DARK_INPUT_ICON_COLOR;
+
+  --button-primary-color: DARK_BUTTON_PRIMARY_COLOR;
+
+  --selected-color: DARK_SELECTED_COLOR;
+  --selected-color-border: DARK_SELECTED_COLOR_BORDER;
+
+  --modal-background-color: DARK_MODAL_BACKGROUND_COLOR;
+  --upload-border-color: DARK_MODAL_BACKGROUND_COLOR;
+
+  --dropdown-color: DARK_DROPDOWN_COLOR;
+  --dropdown-color-light: DARK_DROPDOWN_COLOR_LIGHT;
+  --dropdown-selected-border-color: DARK_DROPDOWN_SELECTED_BORDER_COLOR;
+
+  --trackplayer-background-color: DARK_TRACKSLIDER_BACKGROUND_COLOR;
+  --trackplayer-border-color: DARK_TRACKSLIDER_BORDER_COLOR;
+
+  --toast-success-color: DARK_TOAST_SUCCESS_COLOR;
+  --toast-error-color: DARK_TOAST_ERROR_COLOR;
+  --toast-background-color: DARK_TOAST_BACKGROUND_COLOR;
+  --toast-text-color: DARK_TOAST_TEXT_COLOR;
+
+  --active-page-color: DARK_ACTIVE_PAGE_COLOR;
+  --active-page-background-color: DARK_ACTIVE_PAGE_BACKGROUND_COLOR;
+}
+
+:root.theme-light {
+  --body-color: LIGHT_BODY_COLOR;
+  --title-color: LIGHT_TITLE_COLOR;
+  --modal-title-color: LIGHT_MODAL_TITLE_COLOR;
+  --separator-color: LIGHT_SEPARATOR_COLOR;
+
+  --menubar-color: LIGHT_MENUBAR_COLOR;
+
+  --sidebar-color: LIGHT_SIDEBAR_COLOR;
+  --sidebar-color-hover: LIGHT_SIDEBAR_COLOR_HOVER;
+  --sidebar-color-active-icon: LIGHT_SIDEBAR_COLOR_ACTIVE_ICON;
+  --sidebar-icons-color: LIGHT_SIDEBAR_ICONS_COLOR;
+  --sidebar-icons-color-hover: LIGHT_SIDEBAR_ICONS_COLOR_HOVER;
+
+  --text-color: LIGHT_TEXT_COLOR;
+
+  --modal-close-btn-border: LIGHT_MODAL_CLOSE_BTN_BORDER;
+  --modal-close-btn-hover-color: LIGHT_MODAL_CLOSE_BTN_HOVER_COLOR;
+  --modal-close-btn-hover-border-color: LIGHT_MODAL_CLOSE_BTN_HOVER_BORDER_COLOR;
+
+  --table-color-hover: LIGHT_TABLE_COLOR_HOVER;
+  --input-background-color: LIGHT_INPUT_BACKGROUND_COLOR;
+  --input-icon-color: LIGHT_INPUT_ICON_COLOR;
+
+  --button-primary-color: LIGHT_BUTTON_PRIMARY_COLOR;
+
+  --selected-color: LIGHT_SELECTED_COLOR;
+  --selected-color-border: LIGHT_SELECTED_COLOR_BORDER;
+
+  --modal-background-color: LIGHT_MODAL_BACKGROUND_COLOR;
+  --upload-border-color: LIGHT_MODAL_BACKGROUND_COLOR;
+
+  --dropdown-color: LIGHT_DROPDOWN_COLOR;
+  --dropdown-color-light: LIGHT_DROPDOWN_COLOR_LIGHT;
+  --dropdown-selected-border-color: LIGHT_DROPDOWN_SELECTED_BORDER_COLOR;
+
+  --trackplayer-background-color: LIGHT_TRACKSLIDER_BACKGROUND_COLOR;
+  --trackplayer-border-color: LIGHT_TRACKSLIDER_BORDER_COLOR;
+
+  --toast-success-color: LIGHT_TOAST_SUCCESS_COLOR;
+  --toast-error-color: LIGHT_TOAST_ERROR_COLOR;
+  --toast-background-color: LIGHT_TOAST_BACKGROUND_COLOR;
+  --toast-text-color: LIGHT_TOAST_TEXT_COLOR;
+
+  --active-page-color: LIGHT_ACTIVE_PAGE_COLOR;
+  --active-page-background-color: LIGHT_ACTIVE_PAGE_BACKGROUND_COLOR;
 }

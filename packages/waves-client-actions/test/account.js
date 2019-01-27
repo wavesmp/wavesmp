@@ -23,20 +23,24 @@ describe('#account()', () => {
   })
 
   it('#accountSetSettings()', () => {
+    const mockDoc = { documentElement: {} }
+    global.document = mockDoc
+
     const localStorage = new LocalStorage(LOCAL_STORAGE_PATH)
     const localState = new LocalState(localStorage)
 
     const columns = new Set(['title', 'artist', 'genre'])
     const rowsPerPage = 25
-    const thunk = actions.accountSetSettings(columns, rowsPerPage)
+    const theme = 'testTheme'
+    const thunk = actions.accountSetSettings(columns, rowsPerPage, theme)
 
-    const action = { type: types.ACCOUNT_SET_SETTINGS, columns, rowsPerPage }
+    const action = { type: types.ACCOUNT_SET_SETTINGS, columns, rowsPerPage, theme }
 
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs(action)
 
     const localStateMock = sinon.mock(localState)
-    const localStateExpect = localStateMock.expects('setItem').twice()
+    const localStateExpect = localStateMock.expects('setItem').thrice()
 
     thunk(dispatchMock, undefined, {localState})
 
@@ -47,6 +51,12 @@ describe('#account()', () => {
     const secondLocalStateCall = localStateExpect.secondCall
     assert.isTrue(secondLocalStateCall.calledWithExactly(
       'rowsPerPage', rowsPerPage))
+
+    const thirdLocalStateCall = localStateExpect.thirdCall
+    assert.isTrue(thirdLocalStateCall.calledWithExactly(
+      'theme', theme))
+
+    assert.strictEqual(mockDoc.documentElement.className, 'theme-testTheme')
 
     dispatchMock.verify()
     localStateMock.verify()

@@ -3,9 +3,8 @@
   height: 200px;
   border-width: 2px;
   margin-bottom: 20px;
-  color: var(--smalltext-color);
   border-style: dashed;
-  border-color: var(--dropdown-color);
+  border-color: var(--upload-border-color);
   line-height: 200px;
   text-align: center
 }

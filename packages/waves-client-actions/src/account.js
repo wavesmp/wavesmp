@@ -4,11 +4,13 @@ function accountSetFetchingUser(fetchingUser) {
   return { type: types.ACCOUNT_SET_FETCHING_USER, fetchingUser }
 }
 
-function accountSetSettings(columns, rowsPerPage) {
+function accountSetSettings(columns, rowsPerPage, theme) {
+  document.documentElement.className = `theme-${theme}`
   return (dispatch, getState, { localState }) => {
-    dispatch({ type: types.ACCOUNT_SET_SETTINGS, columns, rowsPerPage })
+    dispatch({ type: types.ACCOUNT_SET_SETTINGS, columns, rowsPerPage, theme })
     localState.setItem('columns', [...columns.keys()])
     localState.setItem('rowsPerPage', rowsPerPage)
+    localState.setItem('theme', theme)
   }
 }
 

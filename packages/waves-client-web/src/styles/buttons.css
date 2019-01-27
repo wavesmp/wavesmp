@@ -172,18 +172,17 @@ a.btn.disabled {
   border-color: #2e6da4;
 }
 .btn-dropdown {
-  color: var(--smalltext-color);
   background-color: transparent;
-  border-color: var(--smalltext-color);
+  border-color: var(--modal-close-btn-border);
   border-style: solid;
   border-width: 1px;
   margin: 5px;
 }
 
 .btn-dropdown:hover {
-  color: var(--dropdown-color-light);
-  border-color: #7F7A7A;
-  background-color: var(--smalltext-color);
+  color: var(--modal-close-btn-hover-color);
+  border-color: var(--modal-close-btn-hover-border-color);
+  background-color: var(--modal-close-btn-border);
 }
 
 .btn-delete {

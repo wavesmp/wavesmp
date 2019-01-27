@@ -47,11 +47,12 @@ export default async (store, ws, player, localState) => {
   })
 
   /* When localStorage is loaded, update the state */
-  const [ columns, rowsPerPage, lastIdp, machineId ] = await Promise.all([
+  const [ columns, rowsPerPage, lastIdp, machineId, theme ] = await Promise.all([
     localState.getItem('columns'),
     localState.getItem('rowsPerPage'),
     localState.getItem('lastIdp'),
-    localState.getItem('machineId')
+    localState.getItem('machineId'),
+    localState.getItem('theme')
   ])
   if (lastIdp) {
     store.dispatch(WavesActions.tryAutoLogin(lastIdp))
@@ -59,6 +60,6 @@ export default async (store, ws, player, localState) => {
     // fetchingUser initially true
     store.dispatch(WavesActions.accountSetFetchingUser(false))
   }
-  store.dispatch(WavesActions.accountSetSettings(new Set(columns), rowsPerPage))
+  store.dispatch(WavesActions.accountSetSettings(new Set(columns), rowsPerPage, theme))
   ObjectID.setMachineID(machineId)
 }

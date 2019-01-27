@@ -1,6 +1,6 @@
-
 .menubar-main-header {
   min-height: var(--menubar-height);
+  /* Needed to hide content in case user scrolls up */
   background: var(--menubar-color);
   position: fixed;
   width: 100%;
@@ -28,7 +28,7 @@
 }
 
 .menubar-profile-link>a {
-  color: #fff;
+  color: var(--title-color);
 }
 
 .menubar-settings-list {
@@ -55,11 +55,13 @@
 .menubar-main-logo {
   display: inline;
   width: 102px;
+  height: auto;
   position: relative;
   top: 14px;
   left: 36px;
   opacity: 1;
   transform: scaleX(1);
+  fill: var(--title-color);
 }
 
 .menubar-main-logo.menubar-player-visible.menubar-transition {
@@ -107,7 +109,7 @@
   left: 180px;
   width: auto;
   height: auto;
-  color: #fff;
+  color: var(--title-color);
   font-size: 14px;
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-weight: 800;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import './index.css'
 import GithubCorner from './githubCorner'
-import logoUrl from '../common/logo-wide.svg'
+import LogoSvg from '../common/logo-wide.svg'
 
 const SITE_PATH = '/'
 
@@ -13,7 +13,7 @@ export default class MenuBar extends React.Component {
     return (
       <header>
         <Link to={SITE_PATH} className='menubar-site-logos'>
-          <img className='menubar-site-logo' src={logoUrl}/>
+          <LogoSvg className='menubar-site-logo'/>
           <span className='menubar-site-logo-name'>WAVES</span>
         </Link>
         <GithubCorner/>
