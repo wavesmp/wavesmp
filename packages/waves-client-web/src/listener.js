@@ -18,6 +18,10 @@ export default async (store, ws, player, localState) => {
     store.dispatch(WavesActions.playingTimeUpdate(currentTime))
   })
 
+  player.setOnToastAdd(toast => {
+    store.dispatch(WavesActions.toastAdd(toast))
+  })
+
   /* Recieve data from server */
   ws.setOnLibraryUpdate(lib => {
     store.dispatch(WavesActions.tracksUpdate(lib))

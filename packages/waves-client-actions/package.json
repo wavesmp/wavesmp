@@ -14,8 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "waves-action-types": "^1.0.0",
+    "waves-client-errors": "^1.0.0",
     "waves-client-constants": "^1.0.0",
-    "waves-client-selectors": "^1.0.0"
+    "waves-client-selectors": "^1.0.0",
+    "waves-client-player": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -27,7 +29,6 @@
     "sinon": "^7.2.2",
     "waves-client-auth": "^1.0.0",
     "waves-client-local-state": "^1.0.0",
-    "waves-client-player": "^1.0.0",
     "waves-socket": "^1.0.0",
     "waves-test-data": "^1.0.0"
   }

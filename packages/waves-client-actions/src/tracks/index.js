@@ -1,6 +1,9 @@
 const types = require('waves-action-types')
-const { DEFAULT_PLAYLIST, FULL_PLAYLIST, UPLOAD_PLAYLIST } = require('waves-client-constants')
+const { DEFAULT_PLAYLIST, FULL_PLAYLIST, UPLOAD_PLAYLIST, toastTypes } = require('waves-client-constants')
 const { getOrCreatePlaylistSelectors } = require('waves-client-selectors')
+const { UploadError } = require('waves-client-errors')
+
+const { toastAdd } = require('../toasts')
 
 function trackToggle(id, playlistName, playId) {
   return (dispatch, getState, { player, ws }) => {
@@ -16,8 +19,7 @@ function trackToggle(id, playlistName, playId) {
       playlistName,
       playId,
       track,
-      oldPlaylistName,
-      startDate: new Date()
+      oldPlaylistName
     })
 
     /* By default, playing a track adds it to the default playlist.
@@ -30,33 +32,32 @@ function trackToggle(id, playlistName, playId) {
 }
 
 function trackNext(URLSearchParams) {
-  return (dispatch, getState, { player, ws }) => {
-    _trackNext(dispatch, getState, URLSearchParams, player, ws, false)
+  return async (dispatch, getState, { player, ws }) => {
+    await _trackNext(dispatch, getState, URLSearchParams, player, ws, false)
   }
 }
 
 function trackPrevious(URLSearchParams) {
-  return (dispatch, getState, { player, ws }) => {
-    _trackNext(dispatch, getState, URLSearchParams, player, ws, true)
+  return async (dispatch, getState, { player, ws }) => {
+    await _trackNext(dispatch, getState, URLSearchParams, player, ws, true)
   }
 }
 
 function trackEnded(URLSearchParams) {
-  return (dispatch, getState, { player, ws }) => {
+  return async (dispatch, getState, { player, ws }) => {
     const { tracks } = getState()
     const { playing } = tracks
     const { repeat } = playing
 
     if (repeat) {
       player.repeat()
-      dispatch({ type: types.PLAYING_TRACK_REPEAT, startDate: new Date() })
     } else {
-      _trackNext(dispatch, getState, URLSearchParams, player, ws, false)
+      await _trackNext(dispatch, getState, URLSearchParams, player, ws, false)
     }
   }
 }
 
-function _trackNext(dispatch, getState, URLSearchParams, player, ws, prev) {
+async function _trackNext(dispatch, getState, URLSearchParams, player, ws, prev) {
   const { tracks } = getState()
   const { library, playing, playlists, uploads } = tracks
   const { playlist: playlistName, isPlaying, shuffle } = playing
@@ -125,18 +126,21 @@ function _trackNext(dispatch, getState, URLSearchParams, player, ws, prev) {
     }
   }
 
-  if (nextTrack) {
-    player.trackNext(nextTrack, isPlaying)
-  }
   dispatch({
     type: types.TRACK_NEXT,
     nextTrack,
-    playlistName,
-    startDate: new Date()
+    playlistName
   })
   if (nextTrack && shouldAddToDefaultPlaylist(playlistName)) {
     ws.sendBestEffortMessage(
       types.PLAYLIST_ADD, {playlistName: DEFAULT_PLAYLIST, trackIds: [nextTrack.id]})
+  }
+  if (nextTrack) {
+    try {
+      await player.trackNext(nextTrack, isPlaying)
+    } catch (err) {
+      toastAdd({ type: toastTypes.Error, msg: err.toString() })(dispatch)
+    }
   }
 }
 
@@ -157,6 +161,34 @@ function tracksUpdate(update) {
   }
 }
 
+async function handleUploadPromises(promises, dispatch) {
+  const uploaded = []
+  const uploadErrs = []
+  await Promise.all(promises.map(async promise => {
+    try {
+      const track = await promise
+      const { file } = track
+      delete track.file
+      toastAdd({ type: toastTypes.Success, msg: `Uploaded ${file.name}` })(dispatch)
+      uploaded.push(track)
+    } catch (err) {
+      if (err instanceof UploadError) {
+        toastAdd({ type: toastTypes.Error, msg: `${err.track.file.name}: ${err.cause}` })(dispatch)
+        console.log('Track upload failure')
+        console.log(err)
+        console.log(err.cause)
+      } else {
+        // Should not be reached. Here temporarily
+        toastAdd({ type: toastTypes.Error, msg: err.toString() })
+        console.log('Expected upload error but got:')
+        console.log(err)
+      }
+      uploadErrs.push(err)
+    }
+  }))
+  return { uploaded, uploadErrs }
+}
+
 function tracksUpload(trackSource) {
   return async (dispatch, getState, { player, ws }) => {
     const { tracks } = getState()
@@ -166,24 +198,28 @@ function tracksUpload(trackSource) {
     dispatch({ type: types.UPLOAD_TRACKS_UPDATE, ids: uploadIds, key: 'state', value: 'uploading' })
     dispatch({ type: types.UPLOAD_TRACKS_UPDATE, ids: uploadIds, key: 'uploadProgress', value: 0 })
     const uploadValues = Object.values(uploads)
-    const resp = await player.upload(trackSource, uploadValues)
-    const { errors, uploaded } = resp
+    const uploadPromises = await player.upload(trackSource, uploadValues)
+    const result = await handleUploadPromises(uploadPromises, dispatch)
+    const { uploaded } = result
     try {
       await ws.sendAckedMessage(types.TRACKS_UPDATE, {tracks: uploaded})
-    } catch (err) {
+    } catch (serverErr) {
       console.log('Failed to upload tracks to server')
-      console.log(err)
-      toastr.error(err, 'Upload Failure')
-      errors.push({err})
-      return resp
+      console.log(serverErr)
+      toastAdd({ type: toastTypes.Error, msg: `Upload failure: ${serverErr}` })(dispatch)
+      result.serverErr = serverErr
+      return result
     }
     const uploadedIds = new Set(uploaded.map(t => t.id))
-    dispatch({ type: types.TRACK_UPLOADS_DELETE, deleteIds: uploadedIds })
     if (track && uploadedIds.has(track.id)) {
+      /* Pause before deleting from state. Otherwise,
+       * track may update playing.currentTime before
+       * it is deleted from state */
       player.pause()
     }
+    dispatch({ type: types.TRACK_UPLOADS_DELETE, deleteIds: uploadedIds })
     tracksUpdate(uploaded)(dispatch, getState)
-    return resp
+    return result
   }
 }
 
@@ -196,8 +232,46 @@ function shouldAddToDefaultPlaylist(playlistName) {
   return playlistName !== DEFAULT_PLAYLIST && playlistName != UPLOAD_PLAYLIST
 }
 
+function handleDeleteErr(err, dispatch) {
+  const { track, code, message } = err
+  const name = track.title || track.artist || track.album || track.genre
+  toastAdd({ type: toastTypes.Error, msg: `${name}: ${message}` })(dispatch)
+  console.log(`Failed to delete track ${name}: ${code} - ${message}`)
+}
+
+async function handleDeletePromises(promises, dispatch) {
+  const allDeleted = []
+  const allDeleteErrs = []
+  const serverErrs = []
+  await Promise.all(promises.map(async promise => {
+    try {
+      const { deleted, deleteErrs } = await promise
+      Array.prototype.push.apply(allDeleted, deleted)
+      Array.prototype.push.apply(allDeleteErrs, deleteErrs)
+
+      for (const err of deleteErrs) {
+        handleDeleteErr(err, dispatch)
+      }
+      for (const track of deleted) {
+        toastAdd({ type: toastTypes.Success, msg: `Deleted ${name}` })(dispatch)
+      }
+    } catch (err) {
+      serverErrs.push(err)
+      toastAdd({ type: toastTypes.Error, msg: `Delete failure: ${err}` })(dispatch)
+      console.log('Error deleting from server:')
+      console.log(err)
+    }
+  }))
+  return {
+    deleted: allDeleted,
+    deleteErrs: allDeleteErrs,
+    serverErrs
+  }
+}
+
 function tracksDelete() {
   return async (dispatch, getState, { player, ws }) => {
+    console.log('DELETING TRACKS ACTION')
     const { tracks } = getState()
     const { library, playing, playlists } = tracks
     const { selection } = playlists[FULL_PLAYLIST]
@@ -206,25 +280,41 @@ function tracksDelete() {
     const deleteIds = Object.values(selection)
     dispatch({ type: types.LIBRARY_TRACK_UPDATE, ids: deleteIds, key: 'state', value: 'pending' })
     const deleteTracks = deleteIds.map(deleteId => library[deleteId])
-    const resp = await player.deleteTracks(deleteTracks)
-    const { deleted, errors } = resp
+    console.log('DELETING TRACKS')
+    const deletePromises = await player.deleteTracks(deleteTracks)
+    const result = await handleDeletePromises(deletePromises, dispatch)
+    console.log('DELETE RESULT')
+    console.log(result)
+    const { deleted } = result
+    console.log('GOT DELETED')
+    console.log(deleted)
     const deletedIds = new Set(deleted.map(t => t.id))
+    console.log('GOT DELETED IDS')
+    console.log(deletedIds)
 
-    dispatch({ type: types.TRACKS_DELETE, deleteIds: deletedIds })
     try {
       await ws.sendAckedMessage(types.TRACKS_DELETE, { deleteIds: [...deletedIds] })
     } catch (err) {
+      toastAdd({ type: toastTypes.Error, msg: `Delete failure: ${err}` })(dispatch)
+      result.serverErrs.push(err)
       console.log('Failed to delete tracks from server')
       console.log(err)
-      toastr.error(err, 'Delete Failure')
-      errors.push(err)
+      return result
     }
 
+    console.log('CHECKING IF DELETE CURR TRACK')
     if (track && deletedIds.has(track.id)) {
+      /* Pause before deleting from state. Otherwise,
+       * track may update playing.currentTime before
+       * it is deleted from state */
+      console.log('DELETED CURR TRACK!')
       player.pause()
     }
+    console.log('DISPATCH DELETE WITH IDS')
+    console.log(deletedIds)
+    dispatch({ type: types.TRACKS_DELETE, deleteIds: deletedIds })
 
-    return resp
+    return result
   }
 }
 

@@ -46,6 +46,13 @@ class Player {
     }
   }
 
+  setOnToastAdd(onToastAdd) {
+    for (const source in this.players) {
+      const player = this.players[source]
+      player.setOnToastAdd(onToastAdd)
+    }
+  }
+
   async trackNext(track, isPlaying) {
     this.pause()
     this.track = track
@@ -77,12 +84,12 @@ class Player {
     this.players[this.track.source].play()
   }
 
-  download(track) {
-    this.players[track.source].download(track)
+  async download(track) {
+    await this.players[track.source].download(track)
   }
 
-  async upload(trackSource, uploads) {
-    return await this.players[trackSource].upload(uploads)
+  upload(trackSource, uploads) {
+    return this.players[trackSource].upload(uploads)
   }
 
   _getTracksBySource(tracks) {
@@ -97,23 +104,16 @@ class Player {
   }
 
   /* Delete the tracks. Does not return items in the given order.
-   * Does not throw. Errors returned. */
+   * Does not throw or block. */
   async deleteTracks(tracks) {
     const tracksBySource = this._getTracksBySource(tracks)
     const promises = []
-    const allDeleted = []
-    const allErrors = []
     for (const source in tracksBySource) {
       const sourceTracks = tracksBySource[source]
       const sourcePromise = this.players[source].deleteTracks(sourceTracks)
       promises.push(sourcePromise)
     }
-
-    for (const {deleted, errors} of await Promise.all(promises)) {
-      Array.prototype.push.apply(allDeleted, deleted)
-      Array.prototype.push.apply(allErrors, errors)
-    }
-    return {deleted: allDeleted, errors: allErrors}
+    return promises
   }
 }
 

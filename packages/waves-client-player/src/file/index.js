@@ -16,6 +16,10 @@ class FilePlayer {
     // No local upload supported
   }
 
+  setOnToastAdd(onToastAdd) {
+    // No use case for this currently
+  }
+
   setOnTimeUpdate(onTimeUpdate) {
     this.stream.addEventListener('timeupdate', () => {
       onTimeUpdate(this.stream.currentTime)
@@ -36,7 +40,7 @@ class FilePlayer {
 
   async play() {
     if (!this.loaded) {
-      await this.load()
+      this.load()
     }
     this.stream.play();
   }
@@ -49,21 +53,13 @@ class FilePlayer {
     this.stream.currentTime = pos
   }
 
-  async load() {
+  load() {
     if (!this.trackUrl) {
       this.trackUrl = URL.createObjectURL(this.track.file)
     }
     this.stream.src = this.trackUrl
     this.stream.currentTime = 0
     this.loaded = true
-  }
-
-  async download(track) {
-    toastr.error('Local file download not supported')
-  }
-
-  async upload(uploads) {
-    toastr.error('Local file upload not supported')
   }
 }
 

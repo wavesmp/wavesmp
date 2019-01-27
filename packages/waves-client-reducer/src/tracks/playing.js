@@ -50,7 +50,7 @@ function reducerPlaying(playing = initialPlaying, action) {
     }
 
     case actionTypes.TRACK_TOGGLE: {
-      const { playlistName, track, startDate } = action
+      const { playlistName, track } = action
       return {
         ...playing,
         isPlaying: true,

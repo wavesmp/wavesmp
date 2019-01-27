@@ -1,5 +1,7 @@
 const Promise = require('bluebird')
 
+const MAX_DELETE_KEYS = 1000
+
 class S3Client {
   constructor({ regionName, bucketName, roleArn, providerId }) {
     this.regionName = regionName
@@ -68,6 +70,7 @@ class S3Client {
   }
 
   // picture has format (string) and data (Uint8Array) attributes
+  // TODO not used at the moment
   putImage(trackId, picture) {
     const { data, format } = picture
     const objKey = this.baseUrl + trackId + '.' + format
@@ -101,7 +104,11 @@ class S3Client {
     })
   }
 
-  deleteTracks(tracks) {
+  async deleteTracks(tracks) {
+    if (tracks.length > MAX_DELETE_KEYS) {
+      /* According to aws-sdk-js docs, there is an upper limit */
+      throw new Error(`Cannot delete more than ${MAX_DELETE_KEYS} at a time`)
+    }
     const keyToTrack = {}
     for (const track of tracks) {
       keyToTrack[this.baseUrl + track.id + '.mp3'] = track
@@ -112,25 +119,16 @@ class S3Client {
       }
     }
 
-    // AWS.deleteObjects does not support promise:
-    // https://github.com/aws/aws-sdk-js/issues/1008
-    return new Promise((resolve, reject) => {
-      this.bucket.deleteObjects(params, (err, data) => {
-        if (err) {
-            reject(err)
-            return
-        }
-        for (const err of data.Errors) {
-          err.track = keyToTrack[err.Key]
-          err.code = err.Code
-          err.message = err.Message
-        }
-        resolve({
-          deleted: data.Deleted.map(({Key}) => keyToTrack[Key]),
-          errors: data.Errors
-        })
-      })
-    })
+    const data = await this.bucket.deleteObjects(params).promise()
+    for (const err of data.Errors) {
+      err.track = keyToTrack[err.Key]
+      err.code = err.Code
+      err.message = err.Message
+    }
+    return {
+      deleted: data.Deleted.map(({Key}) => keyToTrack[Key]),
+      deleteErrs: data.Errors
+    }
   }
 
 }

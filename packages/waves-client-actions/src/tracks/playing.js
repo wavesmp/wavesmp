@@ -1,4 +1,7 @@
 const types = require('waves-action-types')
+const { toastTypes } = require('waves-client-constants')
+
+const { toastAdd } = require('../toasts')
 
 function pause() {
   return (dispatch, getState, { player }) => {
@@ -8,9 +11,15 @@ function pause() {
 }
 
 function play() {
-  return (dispatch, getState, { player }) => {
-    player.play()
-    dispatch({ type: types.PLAYING_PLAY })
+  return async (dispatch, getState, { player }) => {
+    try {
+      dispatch({ type: types.PLAYING_PLAY })
+      await player.play()
+    } catch (err) {
+      toastAdd({ type: toastTypes.Error, msg: err.toString() })(dispatch)
+      console.log('Failed to start playing')
+      console.log(err)
+    }
   }
 }
 

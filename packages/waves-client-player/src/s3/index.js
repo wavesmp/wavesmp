@@ -1,5 +1,8 @@
 const Promise = require('bluebird')
 
+const { toastTypes } = require('waves-client-constants')
+const { UploadError } = require('waves-client-errors')
+
 const S3Client = require('./client')
 
 const STREAM_ERROR_RETRIES = 1
@@ -31,6 +34,10 @@ class S3Player {
     this.client.setOnUploadProgress(onUploadProgress)
   }
 
+  setOnToastAdd(onToastAdd) {
+    this.onToastAdd = onToastAdd
+  }
+
   async trackNext(track, isPlaying) {
     this.track = track
     this.loaded = false
@@ -50,22 +57,30 @@ class S3Player {
       this.streamErrorRetries -= 1
       const { currentTime } = this.stream
       console.log(`Retrying playback at time ${currentTime}`)
-      await this.load()
-      this.seek(currentTime)
-      await this.stream.play()
-      return
+      try {
+        await this.load()
+        this.seek(currentTime)
+        await this.stream.play(true)
+        return
+      } catch (err) {
+        this.onToastAdd({ type: toastTypes.Error, msg: `Stream error: ${err}` })
+        console.log('Error attempting to reload and play')
+        console.log(err)
+      }
     }
-    toastr.error(err.message, 'Stream Failure')
+    this.onToastAdd({ type: toastTypes.Error, msg: `Stream error: ${err.message}` })
     console.log('Unexpected stream error')
     console.log(`message: ${err.message}`)
     console.log(`code: ${err.code}`)
   }
 
-  async play() {
+  async play(isRetry) {
     if (!this.loaded) {
       await this.load()
     }
-    this.streamErrorRetries = STREAM_ERROR_RETRIES
+    if (!isRetry) {
+      this.streamErrorRetries = STREAM_ERROR_RETRIES
+    }
     await this.stream.play();
   }
 
@@ -80,91 +95,42 @@ class S3Player {
   async load() {
     // Ideally, we could call bucket.getObject directly, but it's simpler
     // to get the url and stream it using <Audio>.src = <url>
-    try {
-      const url = await this.client.getSignedUrl(this.track.id)
-      this.stream.src = url
-      this.stream.currentTime = 0
-      this.loaded = true
-    } catch (err) {
-      toastr.error(err.toString(), 'S3 Failure')
-    }
+    const url = await this.client.getSignedUrl(this.track.id)
+    this.stream.src = url
+    this.stream.currentTime = 0
+    this.loaded = true
   }
 
   async download(track) {
     // Fetch the link for the track and download it programmatically
-    try {
-      const url = await this.client.getSignedUrl(track.id)
-      downloadFile(url)
-    } catch (err) {
-      toastr.error(err.toString(), 'S3 Failure')
-    }
+    const url = await this.client.getSignedUrl(track.id)
+    downloadFile(url)
   }
 
-  async upload(uploads) {
-    uploads = await Promise.all(uploads.map(this._upload, this))
-    const uploaded = []
-    const errors = []
-    for (const upload of uploads) {
-      if (upload.err) {
-        errors.push(upload)
-      } else {
-        uploaded.push(upload)
-      }
-    }
-    return { errors, uploaded }
+  /* Return array of promises, so caller can handle
+   * errors as they arrive */
+  upload(uploads) {
+    return uploads.map(this._upload, this)
   }
 
   /* Upload to s3. Convert tracks to s3 track. */
   async _upload(track) {
-    const { file, picture } = track
+    /* Make a copy. In upload failure case, original
+     * 'file' track remains intact */
+    // TODO remove hardcoded s3
+    track = {...track, source: 's3'}
     try {
-      track = {...track}
-      track.source = 's3'
-      delete track.file
-      delete track.picture
-
-
-      if (picture) {
-        // TODO this is not used
-        await this.putImage(track.id, picture)
-        track.image = picture.format
-      }
-
-      await this.client.putTrack(track.id, file)
-      toastr.success(file.name, 'Uploaded file')
+      await this.client.putTrack(track.id, track.file)
       return track
     } catch (err) {
-      toastr.error(err, 'Upload Failure')
-      console.log(`Failed to upload file ${file.name}`)
-      console.log(err)
-      track.err = err
-      return track
+      throw new UploadError(track, cause)
     }
   }
 
   async deleteTracks(tracks) {
-    try {
-      const resp = await this.client.deleteTracks(tracks)
-      const { deleted, errors } = resp
-      for (const err of errors) {
-        const { track, message } = err
-        const msg = `Delete failed: ${message}`
-        toastr.error(`${track.artist} - ${track.title}`, msg)
-        console.log(msg)
-        console.log(err)
-      }
-      for (const track of deleted) {
-        toastr.success(`${track.artist} - ${track.title}`, 'Track deleted')
-      }
-      return resp
-    } catch (err) {
-      const msg = 'Failed to delete from S3'
-      toastr.error(err.toString(), msg)
-      console.log(msg)
-      console.log(err)
-      return {deleted: [], errors: [err]}
-    }
+    return await this.client.deleteTracks(tracks)
   }
+
 }
 
 // TODO move this to a util function if we want to keep it long term
@@ -172,11 +138,11 @@ class S3Player {
 // Taken from https://github.com/PixelsCommander/Download-File-JS
 function downloadFile(url) {
   //Creating new link node.
-  var link = document.createElement('a');
+  const link = document.createElement('a');
   link.href = url;
 
   //Dispatching click event.
-   var e = document.createEvent('MouseEvents');
+   const e = document.createEvent('MouseEvents');
    e.initEvent('click', true, true);
    link.dispatchEvent(e);
 }
