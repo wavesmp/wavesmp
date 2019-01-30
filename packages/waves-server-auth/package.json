@@ -12,6 +12,6 @@
   "dependencies": {
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
-    "waves-server-logger": "^1.0.0"
+    "waves-server-logger": "file:../waves-server-logger"
   }
 }

@@ -12,20 +12,6 @@
     "url": "git@github.com:wavesmp/waves-client-web.git"
   },
   "license": "ISC",
-  "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-class-properties": "^7.3.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.5",
-    "babel-plugin-inline-react-svg": "^1.0.1",
-    "css-loader": "^2.1.0",
-    "file-loader": "^3.0.1",
-    "string-replace-loader": "^2.1.1",
-    "style-loader": "^0.23.1",
-    "webpack": "^4.29.0",
-    "webpack-cli": "^3.2.1"
-  },
   "dependencies": {
     "bluebird": "^3.5.3",
     "bson-objectid": "^1.2.4",
@@ -38,13 +24,13 @@
     "react-transition-group": "^1.2.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.2.0",
-    "waves-client-actions": "^1.0.0",
-    "waves-client-auth": "^1.0.0",
-    "waves-client-constants": "^1.0.0",
-    "waves-client-local-state": "^1.0.0",
-    "waves-client-player": "^1.0.0",
-    "waves-client-reducer": "^1.0.0",
-    "waves-client-selectors": "^1.0.0",
-    "waves-socket": "^1.0.0"
+    "waves-client-actions": "file:../waves-client-actions",
+    "waves-client-auth": "file:../waves-client-auth",
+    "waves-client-constants": "file:../waves-client-constants",
+    "waves-client-local-state": "file:../waves-client-local-state",
+    "waves-client-player": "file:../waves-client-player",
+    "waves-client-reducer": "file:../waves-client-reducer",
+    "waves-client-selectors": "file:../waves-client-selectors",
+    "waves-socket": "file:../waves-socket"
   }
 }

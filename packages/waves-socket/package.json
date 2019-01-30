@@ -10,7 +10,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "waves-action-types": "^1.0.0",
-    "waves-encoder": "^1.0.0"
+    "waves-action-types": "file:../waves-action-types",
+    "waves-encoder": "file:../waves-encoder"
   }
 }

@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.3",
-    "waves-client-constants": "^1.0.0",
-    "waves-client-errors": "^1.0.0"
+    "waves-client-constants": "file:../waves-client-constants",
+    "waves-client-errors": "file:../waves-client-errors"
   }
 }

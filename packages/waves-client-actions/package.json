@@ -13,23 +13,16 @@
   },
   "license": "ISC",
   "dependencies": {
-    "waves-action-types": "^1.0.0",
-    "waves-client-errors": "^1.0.0",
-    "waves-client-constants": "^1.0.0",
-    "waves-client-selectors": "^1.0.0"
+    "waves-action-types": "file:../waves-action-types",
+    "waves-client-constants": "file:../waves-client-constants",
+    "waves-client-errors": "file:../waves-client-errors",
+    "waves-client-selectors": "file:../waves-client-selectors"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "format-duration": "^1.3.1",
-    "mocha": "^5.2.0",
-    "mongoid-js": "^1.1.3",
-    "node-localstorage": "^1.3.1",
-    "nyc": "^13.1.0",
-    "sinon": "^7.2.2",
-    "waves-client-auth": "^1.0.0",
-    "waves-client-local-state": "^1.0.0",
-    "waves-client-player": "^1.0.0",
-    "waves-socket": "^1.0.0",
-    "waves-test-data": "^1.0.0"
+    "waves-client-auth": "file:../waves-client-auth",
+    "waves-client-local-state": "file:../waves-client-local-state",
+    "waves-client-player": "file:../waves-client-player",
+    "waves-socket": "file:../waves-socket",
+    "waves-test-data": "file:../waves-test-data"
   }
 }

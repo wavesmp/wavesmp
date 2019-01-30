@@ -12,21 +12,16 @@
   "dependencies": {
     "bluebird": "^3.5.3",
     "commander": "^2.19.0",
-    "waves-action-types": "^1.0.0",
-    "waves-encoder": "^1.0.0",
-    "waves-server-auth": "^1.0.0",
-    "waves-server-db": "^1.0.0",
-    "waves-server-logger": "^1.0.0",
+    "waves-action-types": "file:../waves-action-types",
+    "waves-encoder": "file:../waves-encoder",
+    "waves-server-auth": "file:../waves-server-auth",
+    "waves-server-db": "file:../waves-server-db",
+    "waves-server-logger": "file:../waves-server-logger",
     "ws": "^6.1.2"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^5.0.5",
-    "mongoid-js": "^1.1.3",
-    "nyc": "^13.1.0",
-    "sinon": "^7.2.2",
-    "waves-socket": "^1.0.0",
-    "waves-test-data": "^1.0.0",
-    "waves-test-util": "^1.0.0"
+    "waves-socket": "file:../waves-socket",
+    "waves-test-data": "file:../waves-test-data",
+    "waves-test-util": "file:../waves-test-util"
   }
 }
