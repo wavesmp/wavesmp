@@ -40,8 +40,6 @@ class AccountSettingsModal extends React.Component {
 
   onThemeChange = ev => {
     const theme = ev.target.value
-    console.log('SELECTED THEME')
-    console.log(theme)
     this.setState({ theme })
   }
 
