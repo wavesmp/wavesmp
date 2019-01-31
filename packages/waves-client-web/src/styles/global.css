@@ -183,12 +183,6 @@ table input[type="checkbox"] {
   top: -2px;
 }
 
-#player {
-  position: fixed;
-  bottom: 0px;
-  right: 0px;
-}
-
 /* Fade effects for ReactCSSTransitionsGroup */
 .fade-enter {
   opacity: 0.01;
