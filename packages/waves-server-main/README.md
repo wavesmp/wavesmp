@@ -1,5 +1,6 @@
 waves-server-main
 =================
+Websocket server for the Waves client
 
 Configuring the Server
 ======================
@@ -8,4 +9,4 @@ Configuring the Server
 
 Running the Sever
 =================
-- Run `./run.sh`
+- Run `num run start`
