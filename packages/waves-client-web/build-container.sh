@@ -18,13 +18,16 @@ REPO_DIR="$(readlink -f "$(dirname "${0}")")"
 cd "${REPO_DIR}"
 
 CONTAINER_NAME="$(basename "${REPO_DIR}")"
+TOP_DIR="$(readlink -f "${REPO_DIR}/../..")"
 BUILD_DIR=build
 
 # Clean
 rm -rf "${BUILD_DIR}"
 
 # Build
-./npm.sh run build
+cd "${TOP_DIR}"
+npm run build
+cd "${REPO_DIR}"
 
 # Copy static assets
 cp src/index.html \
