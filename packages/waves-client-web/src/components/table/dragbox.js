@@ -1,4 +1,4 @@
-export default function getDragCanvas(numSelected) {
+export default function getDragCanvas(numSelected, theme) {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
 
@@ -8,12 +8,12 @@ export default function getDragCanvas(numSelected) {
   ctx.fillStyle = 'DRAG_BOX_BORDER_COLOR'
   fillRoundRect(ctx, 0, 0, DRAG_BOX_WIDTH, DRAG_BOX_HEIGHT, DRAG_BOX_BORDER_RADIUS)
 
-  ctx.fillStyle = 'DRAG_BOX_BACKGROUND_COLOR'
+  ctx.fillStyle = getBackgroundColor(theme)
   ctx.fillRect(DRAG_BOX_BORDER_WIDTH, DRAG_BOX_BORDER_WIDTH,
                DRAG_BOX_WIDTH - 2 * DRAG_BOX_BORDER_WIDTH,
                DRAG_BOX_HEIGHT - 2 * DRAG_BOX_BORDER_WIDTH)
 
-  ctx.fillStyle = 'white'
+  ctx.fillStyle = getTextColor(theme)
   ctx.textBaseline = 'middle'
 
   ctx.font = '17px/1.42857143 "Open Sans", sans-serif'
@@ -42,3 +42,18 @@ function fillRoundRect(ctx, x, y, width, height, radius) {
 
   ctx.fill()
 }
+
+function getBackgroundColor(theme) {
+  if (theme === 'dark') {
+    return 'DARK_DRAG_BOX_BACKGROUND_COLOR'
+  }
+  return 'LIGHT_DRAG_BOX_BACKGROUND_COLOR'
+}
+
+function getTextColor(theme) {
+  if (theme === 'dark') {
+    return 'DARK_DRAG_BOX_TEXT_COLOR'
+  }
+  return 'LIGHT_DRAG_BOX_TEXT_COLOR'
+}
+

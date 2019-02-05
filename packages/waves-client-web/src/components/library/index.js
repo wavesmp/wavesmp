@@ -85,7 +85,7 @@ class Library extends React.Component {
     const { actions, playing, sidebar, playlist,
             rowsPerPage, transitions, location, history,
             searchItems, routerSearchString, routerOrder,
-            routerSortKey, playlistSearchString, columns } = this.props
+            routerSortKey, playlistSearchString, columns, theme } = this.props
     let playId, selection, sortKey, ascending
     let playlistLoaded = false
     let numItems
@@ -126,6 +126,7 @@ class Library extends React.Component {
         isPlayerVisible={playing.track !== null}
         isPlaying={playing.isPlaying}
         location={location}
+        theme={theme}
         transitions={transitions}
         noDataMsg={NO_DATA_MSG}
         numItems={numItems}
@@ -156,7 +157,7 @@ function mapStateToProps(state, ownProps) {
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
   const { search } = ownProps.location
-  const { rowsPerPage } = account
+  const { rowsPerPage, theme } = account
   const columns = libraryColumns.filter(c => account.columns.has(c.title))
 
   return {
@@ -172,6 +173,7 @@ function mapStateToProps(state, ownProps) {
     rowsPerPage,
     columns,
     sidebar,
+    theme,
     transitions
   }
 }

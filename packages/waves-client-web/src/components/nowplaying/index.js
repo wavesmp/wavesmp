@@ -112,7 +112,7 @@ class NowPlaying extends React.Component {
     const { playlist, actions, playing, sidebar,
             rowsPerPage, transitions, location, history,
             playlistSearchString, routerSearchString,
-            searchItems, columns } = this.props
+            searchItems, columns, theme } = this.props
     let playId, selection
     let playlistLoaded = false
     let numItems
@@ -139,6 +139,7 @@ class NowPlaying extends React.Component {
         isPlayerVisible={playing.track !== null}
         isPlaying={playing.isPlaying}
         location={location}
+        theme={theme}
         transitions={transitions}
         noDataMsg={NO_DATA_MSG}
         numItems={numItems}
@@ -166,7 +167,7 @@ function mapStateToProps(state, ownProps) {
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
   const { search } = ownProps.location
-  const { rowsPerPage } = account
+  const { rowsPerPage, theme } = account
   const columns = playlistColumns.filter(c => account.columns.has(c.title))
 
   return {
@@ -180,6 +181,7 @@ function mapStateToProps(state, ownProps) {
     columns,
     rowsPerPage,
     sidebar,
+    theme,
     transitions
   }
 }

@@ -134,7 +134,7 @@ export default class Table extends React.Component {
     this.clearOnMouseUpTrackId = null
 
     const numSelected = Object.keys(this.props.selection).length
-    this.dragGhost = getDragCanvas(numSelected)
+    this.dragGhost = getDragCanvas(numSelected, this.props.theme)
 
     // 1/21/2019 - Must be appended to dom for chrome
     // https://stackoverflow.com/questions/43790022/
