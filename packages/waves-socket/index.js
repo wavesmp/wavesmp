@@ -90,20 +90,6 @@ class WavesSocket {
       console.log(err.stack)
     }
   }
-
-  // // TODO is this unused?
-  // libraryImport(track, convertToMp3) {
-  //   const type = 'libraryImport'
-  //   const data = {track, convertToMp3}
-  //   this.sendBestEffortMessage(type, data)
-  // }
-
-  // libraryDelete(selection) {
-  //   const type = 'libraryDelete'
-  //   const data = selection
-  //   this.sendBestEffortMessage(type, data)
-  // }
-
 }
 
 module.exports = WavesSocket
