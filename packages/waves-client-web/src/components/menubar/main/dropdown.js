@@ -27,8 +27,8 @@ export default class Dropdown extends React.Component {
     return (
       <ul className='menubar-dropdown-menu'>
         {header && this.renderDropdownHeader()}
-        {items && items.map(({text, classes, onClick}) => (
-          <li>
+        {items && items.map(({text, classes, onClick}, i) => (
+          <li key={i}>
             <a className='menubar-dropdown-link' href='javascript:'
                onClick={onClick}>
                {text}<span className={classes}/>
