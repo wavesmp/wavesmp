@@ -30,6 +30,7 @@ function signIn(idp) {
     if (user) {
       localState.setItem('lastIdp', idp)
     }
+    return user
   }
 }
 
