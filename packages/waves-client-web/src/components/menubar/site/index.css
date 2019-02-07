@@ -9,10 +9,11 @@
 .menubar-site-logo {
   width: 102px;
   height: auto;
+  fill: var(--title-color);
 }
 
 .menubar-site-logo-name {
-  color: #fff;
+  color: var(--title-color);
   font-weight: 800;
   font-style: italic;
   transform: scaleX(2.0);
