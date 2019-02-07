@@ -27,42 +27,24 @@
 }
 
 .site-login-separator {
-  border-bottom: 1px solid var(--separator-color);
-  padding-bottom: 25px;
-  display: inline-block;
-  margin-top: 10px;
+  height: 1px;
+  background-color: var(--separator-color);
 }
 
-.site-input-box {
-  margin-top: 19px;
+.site-google-button {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
 }
 
-/* TODO watch the width on this
- *      can cause icon to move up */
-.site-input-box input {
-  width: 100%;
-  background-color: var(--input-background-color);
-  color: #fff;
-  border: 1px solid var(--input-background-color);
+.site-google-login-img {
   border-radius: 4px;
 }
 
-.site-input-icon {
-  position: relative;
-  top: 0px;
-  left: 10px;
-}
-
-.site-input {
-  line-height: 35px;
-  padding-left: 43px;
-  margin-left: -25px;
-}
-
-.site-create-account-button {
+.site-google-login-text {
   width: 100%;
-  margin: 0px;
-  margin-top: 18px;
+  cursor: pointer;
 }
 
 .site-main-browser {
@@ -84,12 +66,13 @@
   margin-left: 5px;
 }
 
-/* TODO add spacing to player menu bar? */
+/* TODO move out and add spacing to player menu bar? */
 .site-main-browser-bar {
   background-color: var(--separator-color);
   border-bottom: 3px solid var(--separator-color);
 }
 
+/*
 .site-idp-separator {
   height: 5px;
   width: 45%;
@@ -104,13 +87,4 @@
   display: inline-block;
   font-size: 13px;
 }
-
-.site-google-login-img {
-  margin-left: 1px;
-  position: relative;
-}
-
-.site-google-login-button {
-  margin-left: -33px;
-  margin-top: 0px;
-}
+*/
