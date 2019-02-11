@@ -37,12 +37,14 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
     _getRouterQueryParams
   )
 
-  /* router search string */
+  /* router search string
+   * Ensure empty string is returned. Otherwise, input component
+   * may think it's uncontrolled */
   function _getRouterSearchString(qp) {
     if (!qp) {
-      return null
+      return ''
     }
-    return qp.get(SEARCH_QUERY_KEY)
+    return qp.get(SEARCH_QUERY_KEY) || ''
   }
 
   const getRouterSearchString = createSelector(
@@ -85,10 +87,10 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
   /* playlist search string */
   function _getPlaylistSearchString(playlist){
     if (!playlist || !playlist.search) {
-      return null
+      return ''
     }
     const qp = new URLSearchParams(playlist.search)
-    return qp.get(SEARCH_QUERY_KEY)
+    return qp.get(SEARCH_QUERY_KEY) || ''
   }
 
   const getPlaylistSearchString = createSelector(
