@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './userInput.css'
+
 
 export default class UserInput extends React.Component {
   render() {

@@ -1,0 +1,27 @@
+.site-input-box {
+  margin-top: 19px;
+}
+
+/* TODO watch the width on this
+ *      can cause icon to move up */
+.site-input-box input {
+  width: 100%;
+  background-color: var(--input-background-color);
+  color: #fff;
+  border: 1px solid var(--input-background-color);
+  border-radius: 4px;
+}
+
+.site-input-icon {
+  position: relative;
+  top: 0px;
+  left: 10px;
+}
+
+.site-input {
+  line-height: 35px;
+  padding-left: 43px;
+  margin-left: -25px;
+}
+
+
