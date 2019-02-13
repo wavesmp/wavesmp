@@ -19,20 +19,19 @@ export default class Column extends React.Component {
     if (sortKey === attribute) {
       if (ascending) {
         qp.set('order', 'desc')
-        iconClass ='fa-sort-asc'
+        iconClass ='fa fa-sort-asc table-sortable'
       } else {
         qp.set('order', 'asc')
-        iconClass = 'fa-sort-desc'
+        iconClass = 'fa fa-sort-desc table-sortable'
       }
     } else {
       qp.set('sortKey', attribute)
-      iconClass = 'fa-sort'
+      iconClass = 'fa fa-sort table-sortable'
     }
 
     return (
       <Link to={{pathname, search: `${qp}`}}>
-        <i className={'fa ' + iconClass}
-           style={{marginLeft: '8px', color: '#fff'}}></i>
+        <i className={iconClass}></i>
       </Link>
     )
   }

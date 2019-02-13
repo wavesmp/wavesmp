@@ -34,3 +34,8 @@
     display: table-cell;
   }
 }
+
+.table-sortable {
+  margin-left: 8px;
+  color: var(--title-color);
+}

@@ -328,11 +328,15 @@ function sortPlaylist(tracks, library, sortKey, ascending, oldPlayId) {
   const oldPlayIndex = getPlayIndex(oldPlayId)
   const oldTrack = oldPlayIndex != null && tracks[oldPlayIndex]
 
-  tracks.sort((a, b) => {
-    const valueA = (library[a][sortKey] || '').toLowerCase()
-    const valueB = (library[b][sortKey] || '').toLowerCase()
-    return factor * valueA.localeCompare(valueB)
-  })
+  if (sortKey === 'duration') {
+    tracks.sort((a, b) => factor * (library[a][sortKey] - library[b][sortKey]))
+  } else {
+    tracks.sort((a, b) => {
+      const valueA = (library[a][sortKey] || '').toLowerCase()
+      const valueB = (library[b][sortKey] || '').toLowerCase()
+      return factor * valueA.localeCompare(valueB)
+    })
+  }
 
   if (oldTrack) {
     // Possible to binary search here

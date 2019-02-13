@@ -18,7 +18,7 @@ export const playlistColumns = [
   },
   {
     title: 'Time',
-    attribute: 'time',
+    attribute: 'duration',
     Component: Time
   },
   {
@@ -43,7 +43,12 @@ export const playlistColumns = [
   }
 ]
 export const libraryColumns = clonePlaylistColumns()
-libraryColumns.forEach(column => { column.sortable = true })
+libraryColumns.forEach(column => {
+  // TODO code smell? may be better to duplicate list
+  if (column.attribute !== 'FIXME') {
+    column.sortable = true
+  }
+})
 
 // TODO consider using jquery func
 function clonePlaylistColumns() {
