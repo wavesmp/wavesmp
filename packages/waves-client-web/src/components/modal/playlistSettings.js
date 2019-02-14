@@ -41,7 +41,7 @@ class PlaylistSettingsModal extends React.Component {
     const { actions, playlists, playlistName, history } = this.props
     actions.playlistDelete(playlistName)
     const { search } = playlists[DEFAULT_PLAYLIST]
-    const to = {pathname: '/', search}
+    const to = {pathname: '/nowplaying', search}
     history.push(to)
     actions.toastAdd({ type: toastTypes.Success, msg: 'Deleted playlist' })
     this.onClose()

@@ -1,12 +1,12 @@
 const { combineReducers } = require('redux')
 
-const tracks = require('./tracks')
+const account = require('./account')
 const contextmenu = require('./contextmenu')
 const dropdown = require('./dropdown')
 const modal = require('./modal')
 const sidebar = require('./sidebar')
-const account = require('./account')
 const toasts = require('./toasts')
+const tracks = require('./tracks')
 const transitions = require('./transitions')
 
 

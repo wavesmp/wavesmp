@@ -5,10 +5,6 @@ function playlistsUpdate(update) {
   return { type: types.PLAYLISTS_UPDATE, update }
 }
 
-function playlistSearchUpdate(name, search) {
-  return { type: types.PLAYLIST_SEARCH_UPDATE, name, search }
-}
-
 function playlistCopy(src, dest) {
   return (dispatch, getState, { ws }) => {
     dispatch({ type: types.PLAYLIST_COPY, src, dest })
@@ -74,22 +70,12 @@ function playlistCreate(playlistName) {
   }
 }
 
-function playlistSort(name, sortKey, ascending) {
-  return (dispatch, getState) => {
-    const { tracks } = getState()
-    const { library } = tracks
-    dispatch({ type: types.PLAYLIST_SORT, library, name, sortKey, ascending })
-  }
-}
-
 module.exports.playlistsUpdate = playlistsUpdate
-module.exports.playlistSearchUpdate = playlistSearchUpdate
 module.exports.playlistCopy = playlistCopy
 module.exports.playlistDelete = playlistDelete
 module.exports.playlistMove = playlistMove
 module.exports.playlistRemove = playlistRemove
 module.exports.playlistAdd = playlistAdd
 module.exports.playlistCreate = playlistCreate
-module.exports.playlistSort = playlistSort
 
 Object.assign(module.exports, require('./selection'))

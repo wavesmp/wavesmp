@@ -3,7 +3,11 @@ import Promise from 'bluebird'
 
 import * as WavesActions from 'waves-client-actions'
 
-export default async (store, ws, player, localState) => {
+export default async (store, ws, player, localState, history) => {
+  history.listen(location => {
+    store.dispatch(WavesActions.routerChange(location))
+  })
+
   /* When track ends, update the state */
   player.setOnTrackEnded(() => {
     store.dispatch(WavesActions.trackEnded(URLSearchParams))

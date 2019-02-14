@@ -64,9 +64,6 @@ async function _trackNext(dispatch, getState, URLSearchParams, player, ws, prev)
   const playlist = playlists[playlistName]
   const { playId, search } = playlist
 
-  // TODO The playlist.search and location.search should ideally be in sync.
-  // Currently, they are synced in the render() method, but there should
-  // be a better way
   const { getSearchItems } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const searchItems = getSearchItems(tracks, search)
 

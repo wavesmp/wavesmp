@@ -84,35 +84,19 @@ class Library extends React.Component {
   render() {
     const { actions, playing, sidebar, playlist,
             rowsPerPage, transitions, location, history,
-            searchItems, routerSearchString, routerOrder,
-            routerSortKey, playlistSearchString, columns, theme } = this.props
+            searchItems, routerSearchString,
+            columns, theme } = this.props
     let playId, selection, sortKey, ascending
     let playlistLoaded = false
     let numItems
     if (playlist) {
-      let shouldUpdateSearch = false; // Wow, need newline here. otherwise parsed as func
-
       ({ ascending, playId, sortKey, selection } = playlist)
       playlistLoaded = true
-      if (routerSearchString != playlistSearchString) {
-        shouldUpdateSearch = true
-      }
       if (routerSearchString) {
         numItems = searchItems.length
       } else {
         numItems = playlist.tracks.length
       }
-
-      if ((routerSortKey && sortKey !== routerSortKey) ||
-          (routerOrder && ('asc' === routerOrder) !== ascending)) {
-        // TODO we may want to make this async if it takes too long
-        actions.playlistSort(playlistName, routerSortKey, 'asc' === routerOrder)
-        shouldUpdateSearch = true
-      }
-      if (shouldUpdateSearch) {
-        actions.playlistSearchUpdate(playlistName, location.search)
-      }
-
     }
     return (
       <TablePage
@@ -149,10 +133,7 @@ class Library extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   const { getRouterSearchString,
-          getRouterOrder,
-          getRouterSortKey,
           getPlaylist,
-          getPlaylistSearchString,
           getSearchItems } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
@@ -164,10 +145,7 @@ function mapStateToProps(state, ownProps) {
     playlist: getPlaylist(tracks),
     defaultPlaylistSearch: getDefaultPlaylistSearch(tracks),
     searchItems: getSearchItems(tracks, search),
-    playlistSearchString: getPlaylistSearchString(tracks),
     routerSearchString: getRouterSearchString(undefined, search),
-    routerOrder: getRouterOrder(undefined, search),
-    routerSortKey: getRouterSortKey(undefined, search),
     library,
     playing,
     rowsPerPage,

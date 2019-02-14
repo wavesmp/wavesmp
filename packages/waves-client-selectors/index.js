@@ -9,6 +9,9 @@ const ORDER_QUERY_KEY = 'order'
 const SEARCH_QUERY_KEY = 'search'
 const SORT_KEY_QUERY_KEY = 'sortKey'
 
+const DEFAULT_ASCENDING = true
+const DEFAULT_SORT_KEY = 'title'
+
 const getLibrary = tracks => tracks.library
 const getPlaylists = tracks => tracks.playlists
 
@@ -38,6 +41,12 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
   )
 
   /* router search string
+   *
+   * Router search string is directly used in the view, but router
+   * ascending and sort key values are dispatched in an action
+   * because, when a track list is sorted, the play id may change,
+   * which needs an update to the store.
+   *
    * Ensure empty string is returned. Otherwise, input component
    * may think it's uncontrolled */
   function _getRouterSearchString(qp) {
@@ -52,31 +61,36 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
     _getRouterSearchString
   )
 
-  /* router order  */
-  function _getRouterOrder(qp) {
+  /* router ascending  */
+  function _getRouterAscending(qp) {
     if (!qp) {
-      return null
+      return DEFAULT_ASCENDING
     }
-    return qp.get(ORDER_QUERY_KEY)
+    const order = qp.get(ORDER_QUERY_KEY)
+    if (order) {
+      return order === 'asc'
+    }
+    return DEFAULT_ASCENDING
   }
 
-  const getRouterOrder = createSelector(
+   const getRouterAscending = createSelector(
     [getRouterQueryParams],
-    _getRouterOrder
+    _getRouterAscending
   )
 
-  /* router order  */
+   /* router sort key  */
   function _getRouterSortKey(qp) {
     if (!qp) {
-      return null
+      return DEFAULT_SORT_KEY
     }
-    return qp.get(SORT_KEY_QUERY_KEY)
+    return qp.get(SORT_KEY_QUERY_KEY) || DEFAULT_SORT_KEY
   }
 
-  const getRouterSortKey = createSelector(
+   const getRouterSortKey = createSelector(
     [getRouterQueryParams],
     _getRouterSortKey
   )
+
 
   /* playlist selector */
   const getPlaylist = createSelector(
@@ -85,19 +99,6 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
   )
 
   /* playlist search string */
-  function _getPlaylistSearchString(playlist){
-    if (!playlist || !playlist.search) {
-      return ''
-    }
-    const qp = new URLSearchParams(playlist.search)
-    return qp.get(SEARCH_QUERY_KEY) || ''
-  }
-
-  const getPlaylistSearchString = createSelector(
-    [getPlaylist],
-    _getPlaylistSearchString
-  )
-
   /* playlist tracks */
   const getPlaylistTracks = createSelector(
     [getPlaylist],
@@ -118,7 +119,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
   }
 
   const getDisplayItems = createSelector(
-    [getPlaylistTracks, tracks => tracks.library, getRouterSearchString],
+    [getPlaylistTracks, getLibrary, getRouterSearchString],
     _getDisplayItems
   )
 
@@ -134,11 +135,10 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
     _getSearchItems
   )
   return {
-    getRouterSearchString,
-    getRouterOrder,
-    getRouterSortKey,
     getPlaylist,
-    getPlaylistSearchString,
+    getRouterAscending,
+    getRouterSearchString,
+    getRouterSortKey,
     getSearchItems
   }
 }
@@ -187,3 +187,6 @@ module.exports.getDefaultPlaylistSearch = getDefaultPlaylistSearch
 module.exports.SORT_KEY_QUERY_KEY = SORT_KEY_QUERY_KEY
 module.exports.SEARCH_QUERY_KEY = SEARCH_QUERY_KEY
 module.exports.ORDER_QUERY_KEY = ORDER_QUERY_KEY
+
+module.exports.DEFAULT_ASCENDING = DEFAULT_ASCENDING
+module.exports.DEFAULT_SORT_KEY = DEFAULT_SORT_KEY

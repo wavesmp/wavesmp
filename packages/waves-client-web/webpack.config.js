@@ -18,8 +18,8 @@ const stringReplacer = {
 }
 
 const wpConfig = {
-  // mode: 'development',
-  mode: 'production',
+  mode: 'development',
+  // mode: 'production',
 
   entry: path.join(__dirname, 'src', 'index.js'),
 

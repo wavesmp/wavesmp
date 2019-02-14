@@ -14,9 +14,17 @@ const reducerSelection = require('./selection')
  */
 const initialPlaylists = null
 
+/* Search/sort may have been specified before playlist
+ * has even loaded. Cache values until load time */
+const initialPlaylistsSearch = {}
+const initialPlaylistsSortKey = {}
+const initialPlaylistsAscending = {}
+
 function addPlaylistDefaults(playlist) {
+  const { name } = playlist
   playlist.selection = {},
-  playlist.search = ''
+  playlist.search = initialPlaylistsSearch[name] || ''
+  delete initialPlaylistsSearch[name]
   playlist.playId = null
 }
 
@@ -24,9 +32,15 @@ function addPlaylistDefaults(playlist) {
 function getDefaultLibraryPlaylist() {
   const playlist = {
     name: FULL_PLAYLIST,
-    sortKey: 'title',
-    ascending: true
+    sortKey: initialPlaylistsSortKey[FULL_PLAYLIST] || 'title',
   }
+  if (FULL_PLAYLIST in initialPlaylistsAscending) {
+    playlist.ascending = initialPlaylistsAscending[FULL_PLAYLIST]
+    delete initialPlaylistsAscending[FULL_PLAYLIST]
+  } else {
+    playlist.ascending = true
+  }
+  delete initialPlaylistsSortKey[FULL_PLAYLIST]
   addPlaylistDefaults(playlist)
   return playlist
 }
@@ -109,12 +123,27 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.PLAYLIST_SEARCH_UPDATE: {
       const { name, search } = action
+      if (!playlists || !(name in playlists)) {
+        initialPlaylistsSearch[name] = search
+        return playlists
+      }
       const playlist = playlists[name]
+      if (search === playlist.search) {
+        return playlists
+      }
       return {...playlists, [name]: {...playlist, search}}
     }
     case actionTypes.PLAYLIST_SORT: {
       const { library, name, sortKey, ascending } = action
+      if (!library || !playlists || !(name in playlists)) {
+        initialPlaylistsAscending[name] = ascending
+        initialPlaylistsSortKey[name] = sortKey
+        return playlists
+      }
       const playlist = playlists[name]
+      if (sortKey === playlist.sortKey && ascending === playlist.ascending) {
+        return playlists
+      }
       const { playId: oldPlayId } = playlist
       const tracks = [...playlist.tracks]
 

@@ -1,7 +1,9 @@
+import { createBrowserHistory } from 'history'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Router } from 'react-router'
+import { Switch } from 'react-router-dom'
 import { applyMiddleware, createStore } from 'redux'
 import ReduxThunk from 'redux-thunk'
 
@@ -20,6 +22,7 @@ import { PublicRoute, PrivateRoute } from './components/routes'
 import { googleAuthOpts, s3Opts, server } from './config'
 import storeListener from './listener'
 
+const history = createBrowserHistory()
 const ws = new WavesSocket(new WebSocket(server))
 const auth = new Auth({google: googleAuthOpts})
 const player = new Player({s3: s3Opts, file: undefined})
@@ -33,7 +36,7 @@ const store = createStore(rootReducer, reduxMiddleware)
 
 render((
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <Switch>
         <PublicRoute path='/' exact={true} component={Site}/>
         <PrivateRoute path='/' component={MainApp}/>
@@ -44,6 +47,6 @@ render((
   document.getElementById('app'))
 
 /* Objects need store access for dispatching on events
- * e.g. When player track ends, storage is available.
+ * e.g. When player track ends, storage is available, location change.
  * Independent from component lifecycle */
-storeListener(store, ws, player, localState)
+storeListener(store, ws, player, localState, history)

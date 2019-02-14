@@ -86,17 +86,13 @@ class Playlist extends React.Component {
   render() {
     const { playlist, playlistName, playing, actions, sidebar,
             rowsPerPage, transitions, location, history,
-            playlistSearchString, routerSearchString,
-            searchItems, columns, theme } = this.props
+            routerSearchString, searchItems, columns, theme } = this.props
     let playId, selection
     let playlistLoaded = false
     let numItems
     if (playlist) {
       ({ playId, selection } = playlist)
       playlistLoaded = true
-      if (routerSearchString != playlistSearchString) {
-        actions.playlistSearchUpdate(playlistName, location.search)
-      }
       if (routerSearchString) {
         numItems = searchItems.length
       } else {
@@ -139,7 +135,6 @@ function mapStateToProps(state, ownProps) {
   const playlistName = ownProps.match.params.playlist
   const { getRouterSearchString,
           getPlaylist,
-          getPlaylistSearchString,
           getSearchItems } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
@@ -149,7 +144,6 @@ function mapStateToProps(state, ownProps) {
 
   return {
     playlist: getPlaylist(tracks),
-    playlistSearchString: getPlaylistSearchString(tracks),
     routerSearchString: getRouterSearchString(undefined, search),
     libraryPlaylistSearch: getLibraryPlaylistSearch(tracks),
     defaultPlaylistSearch: getDefaultPlaylistSearch(tracks),

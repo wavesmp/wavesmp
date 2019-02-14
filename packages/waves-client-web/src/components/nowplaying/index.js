@@ -111,15 +111,11 @@ class NowPlaying extends React.Component {
   render() {
     const { playlist, actions, playing, sidebar,
             rowsPerPage, transitions, location, history,
-            playlistSearchString, routerSearchString,
-            searchItems, columns, theme } = this.props
+            routerSearchString, searchItems, columns, theme } = this.props
     let playId, selection
     let playlistLoaded = false
     let numItems
     if (playlist) {
-      if (routerSearchString != playlistSearchString) {
-        actions.playlistSearchUpdate(playlistName, location.search)
-      }
       ({ playId, selection } = playlist)
       playlistLoaded = true
       if (routerSearchString) {
@@ -162,7 +158,6 @@ class NowPlaying extends React.Component {
 function mapStateToProps(state, ownProps) {
   const { getRouterSearchString,
           getPlaylist,
-          getPlaylistSearchString,
           getSearchItems } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
@@ -172,7 +167,6 @@ function mapStateToProps(state, ownProps) {
 
   return {
     playlist: getPlaylist(tracks),
-    playlistSearchString: getPlaylistSearchString(tracks),
     routerSearchString: getRouterSearchString(undefined, search),
     libraryPlaylistSearch: getLibraryPlaylistSearch(tracks),
     searchItems: getSearchItems(tracks, search),

@@ -26,18 +26,6 @@ describe('#playlists()', () => {
     assert.deepEqual(actions.playlistsUpdate(update), action)
   })
 
-  it('#playlistSearchUpdate()', () => {
-    const action = {
-      type: types.PLAYLIST_SEARCH_UPDATE,
-      name: testPlaylistName1,
-      search: testSearch
-    }
-    assert.isDefined(types.PLAYLIST_SEARCH_UPDATE)
-    const actualAction = actions.playlistSearchUpdate(
-      testPlaylistName1, testSearch)
-    assert.deepEqual(actualAction, action)
-  })
-
   it('#playlistCopy()', () => {
     const ws = new WavesSocket({})
 
@@ -222,21 +210,4 @@ describe('#playlists()', () => {
     wsMock.verify()
   })
 
-  it('#playlistSort()', () => {
-    const name = testPlaylistName1
-    const sortKey = 'testSortKey'
-    const ascending = true
-    const thunk = actions.playlistSort(name, sortKey, ascending)
-
-    assert.isDefined(types.PLAYLIST_SORT)
-    const action = { type: types.PLAYLIST_SORT, library, name, sortKey, ascending }
-
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
-
-    const getState = () => ({tracks: {library}})
-    thunk(dispatchMock, getState)
-
-    dispatchMock.verify()
-  })
 })

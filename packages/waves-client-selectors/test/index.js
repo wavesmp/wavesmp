@@ -13,7 +13,9 @@ const { getDefaultPlaylistSearch,
         getOrCreatePlaylistSelectors,
         SEARCH_QUERY_KEY,
         SORT_KEY_QUERY_KEY,
-        ORDER_QUERY_KEY } = require('../')
+        ORDER_QUERY_KEY,
+        DEFAULT_ASCENDING,
+        DEFAULT_SORT_KEY } = require('../')
 
 
 const track1 = {...baseTrack1, id: mongoid()}
@@ -85,7 +87,7 @@ describe('waves-client-selectors', () => {
   describe('#getOrCreatePlaylistSelectors()', () => {
 
     const { getRouterSearchString,
-            getRouterOrder,
+            getRouterAscending,
             getRouterSortKey,
             getPlaylist,
             getPlaylistSearchString,
@@ -120,42 +122,43 @@ describe('waves-client-selectors', () => {
 
     })
 
-    describe('#getPlaylistSearchString()', () => {
-
-      it('dummy search string', () => {
-        const expectedSearchString = 'dummy'
-        const playlist = {search: `foo=bar&search=${expectedSearchString}&hi=bye`}
-        const playlists = {
-          [testPlaylistName]: playlist
-        }
-        const tracks = { playlists }
-        const actualSearchString = getPlaylistSearchString(tracks)
-        assert.strictEqual(expectedSearchString, actualSearchString)
+    describe('router values', () => {
+      it(`${SEARCH_QUERY_KEY} default value`, () => {
+        assert.strictEqual(getRouterSearchString(null, ''), '')
       })
 
+      it(`${ORDER_QUERY_KEY} default value`, () => {
+        assert.strictEqual(getRouterAscending(null, ''), DEFAULT_ASCENDING)
+      })
+
+      it(`${SORT_KEY_QUERY_KEY} default value`, () => {
+        assert.strictEqual(getRouterSortKey(null, ''), DEFAULT_SORT_KEY)
+      })
+
+      it(`${SEARCH_QUERY_KEY} value`, () => {
+        const expectedParam = 'dummy'
+        const search = `foo=bar&${SEARCH_QUERY_KEY}=${expectedParam}&hi=bye`
+        assert.strictEqual(getRouterSearchString(null, search), expectedParam)
+      })
+
+      it(`${ORDER_QUERY_KEY} true value`, () => {
+        const param = 'asc'
+        const search = `foo=bar&${ORDER_QUERY_KEY}=${param}&hi=bye`
+        assert.strictEqual(getRouterAscending(null, search), true)
+      })
+
+      it(`${ORDER_QUERY_KEY} false value`, () => {
+        const param = 'desc'
+        const search = `foo=bar&${ORDER_QUERY_KEY}=${param}&hi=bye`
+        assert.strictEqual(getRouterAscending(null, search), false)
+      })
+
+      it(`${SORT_KEY_QUERY_KEY} value`, () => {
+        const expectedParam = 'dummy'
+        const search = `foo=bar&${SORT_KEY_QUERY_KEY}=${expectedParam}&hi=bye`
+        assert.strictEqual(getRouterSortKey(null, search), expectedParam)
+      })
     })
-
-    const queryKeys = [SEARCH_QUERY_KEY, ORDER_QUERY_KEY, SORT_KEY_QUERY_KEY ]
-    const getRouterParamFuncs = [getRouterSearchString, getRouterOrder, getRouterSortKey]
-    for (const [queryKey, getRouterParam] of zip(queryKeys, getRouterParamFuncs)) {
-      describe(`get router param ${queryKey}`, () => {
-
-        it('empty param', () => {
-          const search = ''
-          const routerParam = getRouterParam(null, search)
-          assert.isNull(routerParam)
-        })
-
-        it(`dummy ${queryKey}`, () => {
-          const expectedParam = 'dummy'
-          const search = `foo=bar&${queryKey}=${expectedParam}&hi=bye`
-          const routerParam = getRouterParam(null, search)
-          assert.strictEqual(routerParam, expectedParam)
-        })
-
-      })
-
-    }
 
     describe('#getSearchItems()', () => {
       it('search has 0 hits', () => {
