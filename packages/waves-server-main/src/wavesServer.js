@@ -15,7 +15,9 @@ class Server {
     this.encoder = new Encoder()
 
     this.listenPromise = new Promise((resolve, reject) => {
-      this.wss = new WebSocket.Server({ port }, err => err ? reject(err) : resolve())
+      this.wss = new WebSocket.Server(
+        { port, perMessageDeflate: true },
+        err => err ? reject(err) : resolve())
     })
 
     this.onConnection = this.onConnection.bind(this)

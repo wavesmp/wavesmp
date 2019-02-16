@@ -23,5 +23,9 @@
     "waves-socket": "file:../waves-socket",
     "waves-test-data": "file:../waves-test-data",
     "waves-test-util": "file:../waves-test-util"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.1",
+    "utf-8-validate": "^5.0.2"
   }
 }
