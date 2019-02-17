@@ -1,8 +1,8 @@
 # Redirect naked url to www subdomain
 server {
   server_name __HOST__;
-  listen [::]:80 http2;
-  listen 80 http2;
+  listen [::]:80;
+  listen 80;
   # TODO should I redirect to https instead?
   return 301 $scheme://www.__HOST__$request_uri;
 }
@@ -10,8 +10,8 @@ server {
 # Redirect to https
 server {
   server_name www.__HOST__;
-  listen [::]:80 http2;
-  listen 80 http2;
+  listen [::]:80;
+  listen 80;
   return 301 https://$host$request_uri;
 }
 
