@@ -21,7 +21,8 @@ class S3Client {
     this.bucket.config.credentials = new AWS.WebIdentityCredentials({
       ProviderId: this.providerId,
       RoleArn: this.roleArn,
-      WebIdentityToken: token});
+      WebIdentityToken: token
+    })
 
     this.baseUrl = idp + '/' + idpId + '/'
   }
@@ -29,7 +30,7 @@ class S3Client {
   getSignedUrl(trackId) {
     const objKey = this.baseUrl + trackId + '.mp3'
     const params = {
-      Key: objKey,
+      Key: objKey
       // TODO these are probably used for put...
       // ContentType: file.type,
       // Body: file,
@@ -41,8 +42,8 @@ class S3Client {
     return new Promise((resolve, reject) => {
       this.bucket.getSignedUrl('getObject', params, (err, url) => {
         if (err) {
-            reject(err)
-            return
+          reject(err)
+          return
         }
         resolve(url)
       })
@@ -62,7 +63,7 @@ class S3Client {
 
     req.on('httpUploadProgress', progress => {
       const { loaded, total } = progress
-      const percentage = Math.round(loaded / total * 100)
+      const percentage = Math.round((loaded / total) * 100)
       this.onUploadProgress(trackId, percentage)
     })
 
@@ -115,7 +116,7 @@ class S3Client {
     }
     const params = {
       Delete: {
-        Objects: Object.keys(keyToTrack).map(Key => ({Key}))
+        Objects: Object.keys(keyToTrack).map(Key => ({ Key }))
       }
     }
 
@@ -126,11 +127,10 @@ class S3Client {
       err.message = err.Message
     }
     return {
-      deleted: data.Deleted.map(({Key}) => keyToTrack[Key]),
+      deleted: data.Deleted.map(({ Key }) => keyToTrack[Key]),
       deleteErrs: data.Errors
     }
   }
-
 }
 
 module.exports = S3Client

@@ -51,7 +51,7 @@ const actionTypes = keyMirror({
   TOAST_ADD: null,
   TOAST_REMOVE: null,
 
-  UPLOAD_TRACKS_UPDATE: null,
+  UPLOAD_TRACKS_UPDATE: null
 })
 
 module.exports = actionTypes

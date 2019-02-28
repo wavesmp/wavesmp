@@ -4,9 +4,6 @@ import { dropdownTypes, toastTypes } from 'waves-client-constants'
 
 import Dropdown from './dropdown'
 
-
-
-
 export default class Notifications extends React.Component {
   iconClasses = 'fa fa-lg fa-globe'
 
@@ -36,20 +33,20 @@ export default class Notifications extends React.Component {
   onUnsupportedClick = () => {
     const { actions } = this.props
     const msg = 'Feature Unavailable'
-    actions.toastAdd({type: toastTypes.Error, msg})
+    actions.toastAdd({ type: toastTypes.Error, msg })
   }
 
   render() {
     const { actions, dropdown } = this.props
     return (
-        <Dropdown
-          actions={actions}
-          dropdown={dropdown}
-          dropdownName={dropdownTypes.NOTIFICATIONS}
-          iconClasses={this.iconClasses}
-          header={this.header}
-          items={this.items}
-        />
+      <Dropdown
+        actions={actions}
+        dropdown={dropdown}
+        dropdownName={dropdownTypes.NOTIFICATIONS}
+        iconClasses={this.iconClasses}
+        header={this.header}
+        items={this.items}
+      />
     )
   }
 }

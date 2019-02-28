@@ -4,34 +4,34 @@ const mongoid = require('mongoid-js')
 const { URLSearchParams } = require('url')
 
 const { DEFAULT_PLAYLIST, FULL_PLAYLIST } = require('waves-client-constants')
-const { TEST_SEARCH: testSearch,
-        TEST_PLAYLIST_NAME1: testPlaylistName,
-        TEST_TRACK1: baseTrack1, TEST_TRACK2: baseTrack2 } = require('waves-test-data')
+const {
+  TEST_SEARCH: testSearch,
+  TEST_PLAYLIST_NAME1: testPlaylistName,
+  TEST_TRACK1: baseTrack1,
+  TEST_TRACK2: baseTrack2
+} = require('waves-test-data')
 
-const { getDefaultPlaylistSearch,
-        getLibraryPlaylistSearch,
-        getOrCreatePlaylistSelectors,
-        SEARCH_QUERY_KEY,
-        SORT_KEY_QUERY_KEY,
-        ORDER_QUERY_KEY,
-        DEFAULT_ASCENDING,
-        DEFAULT_SORT_KEY } = require('../')
+const {
+  getDefaultPlaylistSearch,
+  getLibraryPlaylistSearch,
+  getOrCreatePlaylistSelectors,
+  SEARCH_QUERY_KEY,
+  SORT_KEY_QUERY_KEY,
+  ORDER_QUERY_KEY,
+  DEFAULT_ASCENDING,
+  DEFAULT_SORT_KEY
+} = require('../')
 
-
-const track1 = {...baseTrack1, id: mongoid()}
-const track2 = {...baseTrack2, id: mongoid()}
+const track1 = { ...baseTrack1, id: mongoid() }
+const track2 = { ...baseTrack2, id: mongoid() }
 
 const library = {
   [track1.id]: track1,
   [track2.id]: track2
 }
 
-
 describe('waves-client-selectors', () => {
-  const playlistNames = [
-    DEFAULT_PLAYLIST,
-    FULL_PLAYLIST
-  ]
+  const playlistNames = [DEFAULT_PLAYLIST, FULL_PLAYLIST]
   const getPlaylistSearchFuncs = [
     getDefaultPlaylistSearch,
     getLibraryPlaylistSearch
@@ -80,21 +80,20 @@ describe('waves-client-selectors', () => {
         const search = getPlaylistSearch(tracks)
         assert.strictEqual(search, testSearch)
       })
-
     })
   }
 
   describe('#getOrCreatePlaylistSelectors()', () => {
-
-    const { getRouterSearchString,
-            getRouterAscending,
-            getRouterSortKey,
-            getPlaylist,
-            getPlaylistSearchString,
-            getSearchItems } = getOrCreatePlaylistSelectors(testPlaylistName, URLSearchParams)
+    const {
+      getRouterSearchString,
+      getRouterAscending,
+      getRouterSortKey,
+      getPlaylist,
+      getPlaylistSearchString,
+      getSearchItems
+    } = getOrCreatePlaylistSelectors(testPlaylistName, URLSearchParams)
 
     describe('#getPlaylist()', () => {
-
       it('playlists is null', () => {
         const tracks = {
           playlists: null
@@ -119,7 +118,6 @@ describe('waves-client-selectors', () => {
         const actualPlaylist = getPlaylist(tracks)
         assert.strictEqual(actualPlaylist, playlist)
       })
-
     })
 
     describe('router values', () => {
@@ -177,10 +175,10 @@ describe('waves-client-selectors', () => {
       it('search has a hit', () => {
         const searchString = 'thisisaveryspecificsearchstring'
 
-        const track1Copy = {...track1}
+        const track1Copy = { ...track1 }
         track1Copy.title = searchString
 
-        const libraryCopy = {...library, [track1Copy.id]: track1Copy}
+        const libraryCopy = { ...library, [track1Copy.id]: track1Copy }
 
         const search = `${SEARCH_QUERY_KEY}=${searchString}`
         const playlists = {

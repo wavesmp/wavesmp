@@ -14,8 +14,9 @@ export default async (store, ws, player, localState, history) => {
   })
 
   player.setOnUploadProgress((trackId, progress) => {
-    store.dispatch(WavesActions.uploadInfoUpdate(
-      trackId, 'uploadProgress', progress))
+    store.dispatch(
+      WavesActions.uploadInfoUpdate(trackId, 'uploadProgress', progress)
+    )
   })
 
   player.setOnTimeUpdate(currentTime => {
@@ -38,20 +39,20 @@ export default async (store, ws, player, localState, history) => {
   // TODO should this really be called transitions?
   // What if other things rely on 768px
   /* Listen for media queries to prevent transitions */
-  enquire.register("only screen and (min-width: 768px)", {
+  enquire.register('only screen and (min-width: 768px)', {
     /* On big screens, enable sidebar transitions */
     match: () => {
       store.dispatch(WavesActions.transitionMainSet(true))
     },
-   /* When going from small to big screen (big format change),
-    * disable sidebar transitions. Sidebar snaps into place */
+    /* When going from small to big screen (big format change),
+     * disable sidebar transitions. Sidebar snaps into place */
     unmatch: () => {
       store.dispatch(WavesActions.transitionMainSet(false))
     }
   })
 
   /* When localStorage is loaded, update the state */
-  const [ columns, rowsPerPage, lastIdp, machineId, theme ] = await Promise.all([
+  const [columns, rowsPerPage, lastIdp, machineId, theme] = await Promise.all([
     localState.getItem('columns'),
     localState.getItem('rowsPerPage'),
     localState.getItem('lastIdp'),
@@ -64,6 +65,8 @@ export default async (store, ws, player, localState, history) => {
     // fetchingUser initially true
     store.dispatch(WavesActions.accountSetFetchingUser(false))
   }
-  store.dispatch(WavesActions.accountSetSettings(new Set(columns), rowsPerPage, theme))
+  store.dispatch(
+    WavesActions.accountSetSettings(new Set(columns), rowsPerPage, theme)
+  )
   ObjectID.setMachineID(machineId)
 }

@@ -9,50 +9,72 @@ import SettingsBar from './settings'
 
 export default class SideBar extends React.Component {
   render() {
-    const { actions, playing,
-            playlists, sidebar, location,
-            userName } = this.props
+    const {
+      actions,
+      playing,
+      playlists,
+      sidebar,
+      location,
+      userName
+    } = this.props
     let isPlayerVisible = playing.track !== null
     let playlistBar = null
     let mainBar = null
     let settingsBar = null
     if (sidebar === 'playlist') {
-      playlistBar = <PlaylistBar key={0}
-                                 isPlayerVisible={isPlayerVisible}
-                                 actions={actions}
-                                 playlists={playlists}/>
+      playlistBar = (
+        <PlaylistBar
+          key={0}
+          isPlayerVisible={isPlayerVisible}
+          actions={actions}
+          playlists={playlists}
+        />
+      )
     } else if (sidebar === 'settings') {
       // TODO probably want to use hamburger menu for small screens
-      settingsBar = <SettingsBar key={0}
-                                 isPlayerVisible={isPlayerVisible}
-                                 actions={actions}
-                                 userName={userName}/>
+      settingsBar = (
+        <SettingsBar
+          key={0}
+          isPlayerVisible={isPlayerVisible}
+          actions={actions}
+          userName={userName}
+        />
+      )
     } else {
-      mainBar = <MainBar key={0}
-                         actions={actions}
-                         isPlayerVisible={isPlayerVisible}
-                         playlists={playlists}
-                         location={location}/>
+      mainBar = (
+        <MainBar
+          key={0}
+          actions={actions}
+          isPlayerVisible={isPlayerVisible}
+          playlists={playlists}
+          location={location}
+        />
+      )
     }
     return (
       <span>
-        <CSSTransitionGroup transitionName='mainbartransition'
-                                 transitionEnterTimeout={2000}
-                                 transitionLeaveTimeout={1000}>
+        <CSSTransitionGroup
+          transitionName='mainbartransition'
+          transitionEnterTimeout={2000}
+          transitionLeaveTimeout={1000}
+        >
           {mainBar}
         </CSSTransitionGroup>
-        <CSSTransitionGroup transitionName='playlistbartransition'
-                                 transitionEnterTimeout={2000}
-                                 transitionLeaveTimeout={1000}>
+        <CSSTransitionGroup
+          transitionName='playlistbartransition'
+          transitionEnterTimeout={2000}
+          transitionLeaveTimeout={1000}
+        >
           {playlistBar}
         </CSSTransitionGroup>
-        <CSSTransitionGroup transitionName='playlistbartransition'
-                                 transitionEnterTimeout={2000}
-                                 transitionLeaveTimeout={1000}>
+        <CSSTransitionGroup
+          transitionName='playlistbartransition'
+          transitionEnterTimeout={2000}
+          transitionLeaveTimeout={1000}
+        >
           {settingsBar}
         </CSSTransitionGroup>
       </span>
     )
   }
 }
-

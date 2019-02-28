@@ -1,5 +1,9 @@
 const actionTypes = require('waves-action-types')
-const { DEFAULT_PLAYLIST, FULL_PLAYLIST, UPLOAD_PLAYLIST } = require('waves-client-constants')
+const {
+  DEFAULT_PLAYLIST,
+  FULL_PLAYLIST,
+  UPLOAD_PLAYLIST
+} = require('waves-client-constants')
 
 const reducerSelection = require('./selection')
 
@@ -22,8 +26,8 @@ const initialPlaylistsAscending = {}
 
 function addPlaylistDefaults(playlist) {
   const { name } = playlist
-  playlist.selection = {},
-  playlist.search = initialPlaylistsSearch[name] || ''
+  ;(playlist.selection = {}),
+    (playlist.search = initialPlaylistsSearch[name] || '')
   delete initialPlaylistsSearch[name]
   playlist.playId = null
 }
@@ -32,7 +36,7 @@ function addPlaylistDefaults(playlist) {
 function getDefaultLibraryPlaylist() {
   const playlist = {
     name: FULL_PLAYLIST,
-    sortKey: initialPlaylistsSortKey[FULL_PLAYLIST] || 'title',
+    sortKey: initialPlaylistsSortKey[FULL_PLAYLIST] || 'title'
   }
   if (FULL_PLAYLIST in initialPlaylistsAscending) {
     playlist.ascending = initialPlaylistsAscending[FULL_PLAYLIST]
@@ -74,21 +78,26 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const libraryPlaylistTracks = Object.keys(libraryById)
       let libraryPlaylist
       if (playlists && playlists[FULL_PLAYLIST]) {
-        libraryPlaylist = {...playlists[FULL_PLAYLIST]}
+        libraryPlaylist = { ...playlists[FULL_PLAYLIST] }
       } else {
         libraryPlaylist = getDefaultLibraryPlaylist()
       }
       const { sortKey, ascending, playId: oldPlayId } = libraryPlaylist
       const playId = sortPlaylist(
-        libraryPlaylistTracks, libraryById, sortKey, ascending, oldPlayId)
+        libraryPlaylistTracks,
+        libraryById,
+        sortKey,
+        ascending,
+        oldPlayId
+      )
       libraryPlaylist.tracks = libraryPlaylistTracks
       libraryPlaylist.playId = playId
 
-      return {...playlists, [FULL_PLAYLIST]: libraryPlaylist}
+      return { ...playlists, [FULL_PLAYLIST]: libraryPlaylist }
     }
     case actionTypes.PLAYLISTS_UPDATE: {
       const { update } = action
-      let playlistsUpdate = {...playlists}
+      let playlistsUpdate = { ...playlists }
 
       for (const playlist of update) {
         addPlaylistDefaults(playlist)
@@ -103,12 +112,12 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     case actionTypes.TRACK_TOGGLE: {
       const { oldPlaylistName, playlistName, playId, track } = action
       const { id, source } = track
-      const playlistsUpdate = {...playlists}
+      const playlistsUpdate = { ...playlists }
 
       /* Remove play id from old playlist, if it exists*/
       const oldPlaylist = playlistsUpdate[oldPlaylistName]
       if (oldPlaylist) {
-        playlistsUpdate[oldPlaylistName] = {...oldPlaylist, playId: null}
+        playlistsUpdate[oldPlaylistName] = { ...oldPlaylist, playId: null }
       }
 
       return trackNext(playlistsUpdate, playlistName, source, id, playId)
@@ -119,7 +128,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         return playlists
       }
       const { playId, source, id } = nextTrack
-      return trackNext({...playlists}, playlistName, source, id, playId)
+      return trackNext({ ...playlists }, playlistName, source, id, playId)
     }
     case actionTypes.PLAYLIST_SEARCH_UPDATE: {
       const { name, search } = action
@@ -131,7 +140,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       if (search === playlist.search) {
         return playlists
       }
-      return {...playlists, [name]: {...playlist, search}}
+      return { ...playlists, [name]: { ...playlist, search } }
     }
     case actionTypes.PLAYLIST_SORT: {
       const { library, name, sortKey, ascending } = action
@@ -147,10 +156,16 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const { playId: oldPlayId } = playlist
       const tracks = [...playlist.tracks]
 
-      const playId = sortPlaylist(tracks, library, sortKey, ascending, oldPlayId)
+      const playId = sortPlaylist(
+        tracks,
+        library,
+        sortKey,
+        ascending,
+        oldPlayId
+      )
       return {
         ...playlists,
-        [name]: {...playlist, sortKey, ascending, tracks, playId}
+        [name]: { ...playlist, sortKey, ascending, tracks, playId }
       }
     }
     case actionTypes.TRACK_UPLOADS_UPDATE: {
@@ -163,11 +178,11 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       if (playlistName in playlists) {
         const playlist = playlists[playlistName]
         const { tracks } = playlist
-        playlistUpdate = {...playlist, tracks: [...tracks, ...addTracks]}
+        playlistUpdate = { ...playlist, tracks: [...tracks, ...addTracks] }
       } else {
         playlistUpdate = {
           name: playlistName,
-          tracks: addTracks,
+          tracks: addTracks
         }
         addPlaylistDefaults(playlistUpdate)
       }
@@ -186,7 +201,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const { playId } = playlist
       let playIndex = getPlayIndex(playId)
       const tracks = [...playlist.tracks]
-      const selection = {...playlist.selection}
+      const selection = { ...playlist.selection }
 
       for (let i = tracks.length - 1; i >= 0; i -= 1) {
         const trackId = tracks[i]
@@ -212,7 +227,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
           ...playlist,
           selection,
           tracks,
-          playId: playIndex != null ? (playIndex + '') : null
+          playId: playIndex != null ? playIndex + '' : null
         }
       }
     }
@@ -222,11 +237,11 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       if (playlistName in playlists) {
         const playlist = playlists[playlistName]
         const { tracks } = playlist
-        playlistUpdate = {...playlist, tracks: [...tracks, ...addTracks]}
+        playlistUpdate = { ...playlist, tracks: [...tracks, ...addTracks] }
       } else {
         playlistUpdate = {
           name: playlistName,
-          tracks: addTracks,
+          tracks: addTracks
         }
         addPlaylistDefaults(playlistUpdate)
       }
@@ -238,7 +253,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.PLAYLIST_MOVE: {
       const { src, dest } = action
-      const playlistsUpdate = {...playlists}
+      const playlistsUpdate = { ...playlists }
       playlistsUpdate[dest] = {
         ...playlists[src],
         name: dest
@@ -267,7 +282,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
           ...playlist,
           tracks,
           selection: {},
-          playId: playIndex != null ? ((playIndex - playIndexOffset) + '') : null
+          playId: playIndex != null ? playIndex - playIndexOffset + '' : null
         }
       }
     }
@@ -279,7 +294,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.PLAYLIST_DELETE: {
       const { playlistName } = action
-      const playlistsUpdate = {...playlists}
+      const playlistsUpdate = { ...playlists }
       delete playlistsUpdate[playlistName]
       if (!playlistsUpdate[DEFAULT_PLAYLIST]) {
         playlistsUpdate[DEFAULT_PLAYLIST] = getDefaultPlaylist()
@@ -319,8 +334,8 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
           playlistsUpdate[playlistName] = {
             ...playlist,
             tracks: filteredTracks,
-            playId: playIndex != null ? ((playIndex - playIndexOffset) + '') : null,
-            selection: {...selection}
+            playId: playIndex != null ? playIndex - playIndexOffset + '' : null,
+            selection: { ...selection }
           }
         } else {
           playlistsUpdate[playlistName] = playlist
@@ -348,7 +363,7 @@ function trackNext(playlistsUpdate, playlistName, source, id, playId) {
   }
 
   /* Update playlist play id */
-  playlistsUpdate[playlistName] = {...playlistsUpdate[playlistName], playId}
+  playlistsUpdate[playlistName] = { ...playlistsUpdate[playlistName], playId }
   return playlistsUpdate
 }
 

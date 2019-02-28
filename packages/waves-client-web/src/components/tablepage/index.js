@@ -6,13 +6,21 @@ import Table from '../table'
 
 export default class TablePage extends React.Component {
   render() {
-    const { title, sidebar, isPlayerVisible,
-            transitions, ...other } = this.props
+    const {
+      title,
+      sidebar,
+      isPlayerVisible,
+      transitions,
+      ...other
+    } = this.props
     return (
       <ContentPage
-          title={title} sidebar={sidebar} isPlayerVisible={isPlayerVisible}
-          transitions={transitions}>
-        <TablePageData {...other} transitions={transitions}/>
+        title={title}
+        sidebar={sidebar}
+        isPlayerVisible={isPlayerVisible}
+        transitions={transitions}
+      >
+        <TablePageData {...other} transitions={transitions} />
       </ContentPage>
     )
   }
@@ -20,14 +28,28 @@ export default class TablePage extends React.Component {
 
 class TablePageData extends React.Component {
   render() {
-    const { noDataMsg, buttons, location, routerSearchString,
-            onSettingsClick, history, playlistLoaded,
-            numItems, ...other } = this.props
+    const {
+      noDataMsg,
+      buttons,
+      location,
+      routerSearchString,
+      onSettingsClick,
+      history,
+      playlistLoaded,
+      numItems,
+      ...other
+    } = this.props
 
     if (!playlistLoaded) {
       return (
-        <p style={{marginTop: '100px', marginBottom: '100px', textAlign: 'center'}}>
-          <i className="fa fa-spinner fa-pulse fa-5x"></i>
+        <p
+          style={{
+            marginTop: '100px',
+            marginBottom: '100px',
+            textAlign: 'center'
+          }}
+        >
+          <i className='fa fa-spinner fa-pulse fa-5x' />
         </p>
       )
     }
@@ -35,33 +57,48 @@ class TablePageData extends React.Component {
       if (routerSearchString) {
         return (
           <div>
-            <TableMenuBar buttons={buttons}
-                          location={location}
-                          routerSearchString={routerSearchString}
-                          onSettingsClick={onSettingsClick}
-                          history={history}/>
-            <div className='clearfix'></div>
-            <h3 style={{marginTop: '100px', marginBottom: '100px', textAlign: 'center'}}>
+            <TableMenuBar
+              buttons={buttons}
+              location={location}
+              routerSearchString={routerSearchString}
+              onSettingsClick={onSettingsClick}
+              history={history}
+            />
+            <div className='clearfix' />
+            <h3
+              style={{
+                marginTop: '100px',
+                marginBottom: '100px',
+                textAlign: 'center'
+              }}
+            >
               No data
             </h3>
           </div>
         )
       }
       return (
-        <h3 style={{marginTop: '100px', marginBottom: '100px', textAlign: 'center'}}>
+        <h3
+          style={{
+            marginTop: '100px',
+            marginBottom: '100px',
+            textAlign: 'center'
+          }}
+        >
           {noDataMsg}
         </h3>
       )
     }
     return (
       <React.Fragment>
-        <TableMenuBar buttons={buttons}
-                      location={location}
-                      routerSearchString={routerSearchString}
-                      onSettingsClick={onSettingsClick}
-                      history={history}/>
-        <Table {...other} location={location}
-                          numItems={numItems}/>
+        <TableMenuBar
+          buttons={buttons}
+          location={location}
+          routerSearchString={routerSearchString}
+          onSettingsClick={onSettingsClick}
+          history={history}
+        />
+        <Table {...other} location={location} numItems={numItems} />
       </React.Fragment>
     )
   }

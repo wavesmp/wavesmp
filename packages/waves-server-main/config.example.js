@@ -1,9 +1,7 @@
 module.exports = {
-    auth: {
-        google: {
-            clientIds: [
-                'REPLACE_ME'
-            ]
-        }
+  auth: {
+    google: {
+      clientIds: ['REPLACE_ME']
     }
+  }
 }

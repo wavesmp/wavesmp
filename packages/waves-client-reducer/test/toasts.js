@@ -37,5 +37,4 @@ describe('#toasts()', () => {
     state = assertNewState(toasts, state, action)
     assert.deepEqual(state, [toast2])
   })
-
 })

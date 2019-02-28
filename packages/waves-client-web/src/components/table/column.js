@@ -19,7 +19,7 @@ export default class Column extends React.Component {
     if (sortKey === attribute) {
       if (ascending) {
         qp.set('order', 'desc')
-        iconClass ='fa fa-sort-asc table-sortable'
+        iconClass = 'fa fa-sort-asc table-sortable'
       } else {
         qp.set('order', 'asc')
         iconClass = 'fa fa-sort-desc table-sortable'
@@ -30,8 +30,8 @@ export default class Column extends React.Component {
     }
 
     return (
-      <Link to={{pathname, search: `${qp}`}}>
-        <i className={iconClass}></i>
+      <Link to={{ pathname, search: `${qp}` }}>
+        <i className={iconClass} />
       </Link>
     )
   }

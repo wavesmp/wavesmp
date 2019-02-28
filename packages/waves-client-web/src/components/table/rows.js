@@ -6,14 +6,18 @@ import constants from 'waves-client-constants'
 import ContentEditable from './contenteditable'
 
 const PLAY_ICON = (
-  <i className='fa fa-lg fa-play'
-     style={{'marginRight' : '10px', 'color': '#52CA19'}}></i>
+  <i
+    className='fa fa-lg fa-play'
+    style={{ marginRight: '10px', color: '#52CA19' }}
+  />
 )
 const PAUSE_ICON = (
-  <i className='fa fa-lg fa-pause'
-     style={{'marginRight' : '10px', 'color': '#F17B10'}}></i>
+  <i
+    className='fa fa-lg fa-pause'
+    style={{ marginRight: '10px', color: '#F17B10' }}
+  />
 )
-const PLAY_PAUSE_PADDING = <span style={{paddingRight: '25px'}}/>
+const PLAY_PAUSE_PADDING = <span style={{ paddingRight: '25px' }} />
 // TODO avoid hardcoding attributes (e.g. 'title') here
 
 export class Name extends React.Component {
@@ -39,22 +43,24 @@ export class Name extends React.Component {
       playPausePadding = PLAY_PAUSE_PADDING
     }
     return (
-    <td>
-      {playPauseIcon}
-      <ContentEditable onChange={this.emitChange}
-                       onBlur={onBlur}
-                       editable={editable}
-                       html={sample.title}
-                       title={title}/>
-      {playPausePadding}
-    </td>
+      <td>
+        {playPauseIcon}
+        <ContentEditable
+          onChange={this.emitChange}
+          onBlur={onBlur}
+          editable={editable}
+          html={sample.title}
+          title={title}
+        />
+        {playPausePadding}
+      </td>
     )
   }
 }
 
 export class State extends React.Component {
   renderIcon(iconClasses) {
-    return <i className={`fa fa-lg ${iconClasses}`}></i>
+    return <i className={`fa fa-lg ${iconClasses}`} />
   }
 
   renderRow() {
@@ -66,11 +72,7 @@ export class State extends React.Component {
       case 'pending':
         return this.renderIcon('fa-spinner fa-pulse')
       case 'uploading':
-        return (
-          <React.Fragment>
-            {`${sample.uploadProgress}%`}
-          </React.Fragment>
-        )
+        return <React.Fragment>{`${sample.uploadProgress}%`}</React.Fragment>
       default:
         return this.renderIcon('fa-check-circle common-table-status-ok')
     }
@@ -78,9 +80,7 @@ export class State extends React.Component {
 
   render() {
     return (
-      <td className='common-columns-small-screen-hide'>
-        {this.renderRow()}
-      </td>
+      <td className='common-columns-small-screen-hide'>{this.renderRow()}</td>
     )
   }
 }
@@ -88,9 +88,7 @@ export class State extends React.Component {
 export class Time extends React.Component {
   render() {
     const { sample } = this.props
-    return (
-      <td className='common-columns-small-screen-hide'>{sample.time}</td>
-    )
+    return <td className='common-columns-small-screen-hide'>{sample.time}</td>
   }
 }
 
@@ -101,14 +99,16 @@ export class Artist extends React.Component {
   }
 
   render() {
-    const {sample, editable, title, onBlur } = this.props
+    const { sample, editable, title, onBlur } = this.props
     return (
       <td>
-        <ContentEditable onChange={this.emitChange}
-                         onBlur={onBlur}
-                         editable={editable}
-                         html={sample.artist}
-                         title={title}/>
+        <ContentEditable
+          onChange={this.emitChange}
+          onBlur={onBlur}
+          editable={editable}
+          html={sample.artist}
+          title={title}
+        />
       </td>
     )
   }
@@ -122,16 +122,18 @@ export class Album extends React.Component {
 
   render() {
     const { sample, editable, title, onBlur } = this.props
-      return (
-        <td>
-          <ContentEditable onChange={this.emitChange}
-                           onBlur={onBlur}
-                           editable={editable}
-                           html={sample.album}
-                           title={title}/>
-        </td>
-      )
-    }
+    return (
+      <td>
+        <ContentEditable
+          onChange={this.emitChange}
+          onBlur={onBlur}
+          editable={editable}
+          html={sample.album}
+          title={title}
+        />
+      </td>
+    )
+  }
 }
 
 export class Genre extends React.Component {
@@ -144,11 +146,13 @@ export class Genre extends React.Component {
     const { sample, editable, title, onBlur } = this.props
     return (
       <td>
-        <ContentEditable onChange={this.emitChange}
-                         onBlur={onBlur}
-                         editable={editable}
-                         html={sample.genre}
-                         title={title}/>
+        <ContentEditable
+          onChange={this.emitChange}
+          onBlur={onBlur}
+          editable={editable}
+          html={sample.genre}
+          title={title}
+        />
       </td>
     )
   }
@@ -158,7 +162,9 @@ export class CreatedAt extends React.Component {
   render() {
     const { sample } = this.props
     return (
-      <td className='common-columns-small-screen-hide'>{sample.createdAtPretty}</td>
+      <td className='common-columns-small-screen-hide'>
+        {sample.createdAtPretty}
+      </td>
     )
   }
 }

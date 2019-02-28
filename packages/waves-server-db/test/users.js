@@ -2,8 +2,12 @@ const { assert } = require('chai')
 const zip = require('lodash.zip')
 
 const { assertThrows, generateString } = require('waves-test-util')
-const { TEST_USER1, TEST_USER2,
-        TEST_USER1_UPDATE, TEST_USER2_UPDATE } = require('waves-test-data')
+const {
+  TEST_USER1,
+  TEST_USER2,
+  TEST_USER1_UPDATE,
+  TEST_USER2_UPDATE
+} = require('waves-test-data')
 
 const { MAX_STRING_LENGTH } = require('../models')
 
@@ -49,12 +53,12 @@ module.exports = getStorage => {
     })
 
     it('Updated fields cannot be empty', async () => {
-      const user = {...TEST_USER1, ...TEST_USER1_UPDATE}
+      const user = { ...TEST_USER1, ...TEST_USER1_UPDATE }
       await testFieldsNotEmpty(getStorage, user)
     })
 
     it('Updated Fields have max length', async () => {
-      const user = {...TEST_USER1, ...TEST_USER1_UPDATE}
+      const user = { ...TEST_USER1, ...TEST_USER1_UPDATE }
       await testFieldsMaxLength(getStorage, user)
     })
 
@@ -70,7 +74,10 @@ module.exports = getStorage => {
 
     it('Update users', async () => {
       /* Update test objects */
-      for (const [testUser, testUserUpdate] of zip(TEST_USERS, TEST_USER_UPDATES)) {
+      for (const [testUser, testUserUpdate] of zip(
+        TEST_USERS,
+        TEST_USER_UPDATES
+      )) {
         Object.assign(testUser, testUserUpdate)
         const { idp, idpId, email, name } = testUser
         const user = await getStorage().getUser(idp, idpId, email, name)
@@ -81,7 +88,10 @@ module.exports = getStorage => {
     })
 
     it('Get updated users', async () => {
-      for (const [testUser, testUserUpdate] of zip(TEST_USERS, TEST_USER_UPDATES)) {
+      for (const [testUser, testUserUpdate] of zip(
+        TEST_USERS,
+        TEST_USER_UPDATES
+      )) {
         const { idp, idpId } = testUser
         const user = await getStorage().getUserInternal(idp, idpId)
         for (const attr in testUser) {
@@ -92,7 +102,6 @@ module.exports = getStorage => {
         }
       }
     })
-
   })
 }
 
@@ -100,8 +109,7 @@ async function testFieldsNotEmpty(getStorage, user) {
   for (const attr in user) {
     for (const emptyVal of [null, undefined, '']) {
       const msg = `ValidationError: ${attr}: user ${attr} is required`
-      await testUserCreateInvalidValue(
-        getStorage, user, attr, emptyVal, msg)
+      await testUserCreateInvalidValue(getStorage, user, attr, emptyVal, msg)
     }
   }
 }
@@ -109,22 +117,20 @@ async function testFieldsNotEmpty(getStorage, user) {
 async function testFieldsMaxLength(getStorage, user) {
   for (const attr in user) {
     const overVal = generateString(MAX_STRING_LENGTH + 1)
-    const msg = (
+    const msg =
       `ValidationError: ${attr}: ` +
       `Path \`${attr}\` (\`${overVal}\`) ` +
       `is longer than the maximum ` +
-      `allowed length (${MAX_STRING_LENGTH}).`)
+      `allowed length (${MAX_STRING_LENGTH}).`
 
-    await testUserCreateInvalidValue(
-      getStorage, user, attr, overVal, msg)
+    await testUserCreateInvalidValue(getStorage, user, attr, overVal, msg)
   }
 }
 
 async function testUserCreateInvalidValue(getStorage, user, attr, val, msg) {
-  const userCopy = {...user}
+  const userCopy = { ...user }
   userCopy[attr] = val
-  const {idp, idpId, email, name } = userCopy
+  const { idp, idpId, email, name } = userCopy
   const args = [idp, idpId, email, name]
   await assertThrows('getUser', getStorage().getUser, args, msg)
 }
-

@@ -2,19 +2,26 @@ const { assert } = require('chai')
 const mongoid = require('mongoid-js')
 
 const actionTypes = require('waves-action-types')
-const { DEFAULT_PLAYLIST, FULL_PLAYLIST, UPLOAD_PLAYLIST } = require('waves-client-constants')
+const {
+  DEFAULT_PLAYLIST,
+  FULL_PLAYLIST,
+  UPLOAD_PLAYLIST
+} = require('waves-client-constants')
 
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
-const { TEST_TRACK1: baseTrack1, TEST_TRACK2: baseTrack2,
-        TEST_PLAYLIST_NAME1: playlistName1, TEST_PLAYLIST_NAME2: playlistName2,
-        TEST_TRACK1_UPDATE: update1,
-        TEST_SEARCH: testSearch } = require('waves-test-data')
+const {
+  TEST_TRACK1: baseTrack1,
+  TEST_TRACK2: baseTrack2,
+  TEST_PLAYLIST_NAME1: playlistName1,
+  TEST_PLAYLIST_NAME2: playlistName2,
+  TEST_TRACK1_UPDATE: update1,
+  TEST_SEARCH: testSearch
+} = require('waves-test-data')
 
 const playlists = require('../../../src/tracks/playlists')
 
-const track1 = {...baseTrack1, id: mongoid()}
-const track2 = {...baseTrack2, id: mongoid()}
-
+const track1 = { ...baseTrack1, id: mongoid() }
+const track2 = { ...baseTrack2, id: mongoid() }
 
 const libraryById = {
   [track1.id]: track1,
@@ -121,7 +128,7 @@ describe('#playlists()', () => {
     action = {
       type: actionTypes.TRACK_NEXT,
       playlistName: FULL_PLAYLIST,
-      nextTrack: {...track1, playId: '0'}
+      nextTrack: { ...track1, playId: '0' }
     }
     state = assertNewState(playlists, state, action)
 
@@ -336,5 +343,4 @@ describe('#playlists()', () => {
     assert.isUndefined(state[playlistName])
     assert.lengthOf(Object.keys(state), 3)
   })
-
 })

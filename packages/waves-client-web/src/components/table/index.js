@@ -11,7 +11,6 @@ const CONTEXT_MENU_BUTTON = 2
 const DOUBLE_CLICK_THRESHOLD = 500
 
 export default class Table extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = { editingPlayId: null, editingTitle: null }
@@ -34,8 +33,14 @@ export default class Table extends React.Component {
   }
 
   onRowMouseDown = ev => {
-    const { actions, onRowDoubleClick, onContextMenu,
-            playlistName, playId, selection } = this.props
+    const {
+      actions,
+      onRowDoubleClick,
+      onContextMenu,
+      playlistName,
+      playId,
+      selection
+    } = this.props
 
     const clickTarget = ev.target
     const clickWasForEdit = clickTarget.nodeName.toLowerCase() === 'span'
@@ -62,7 +67,12 @@ export default class Table extends React.Component {
       if (Object.keys(selection).length === 0) {
         actions.selectionAdd(playlistName, itemPlayId, trackId)
       } else {
-        actions.selectionRange(playlistName, this.lastClickPlayId, itemPlayId, this.displayItems)
+        actions.selectionRange(
+          playlistName,
+          this.lastClickPlayId,
+          itemPlayId,
+          this.displayItems
+        )
       }
       this.lastClickPlayId = itemPlayId
       return
@@ -77,13 +87,14 @@ export default class Table extends React.Component {
     if (isContextMenu) {
       /* In case we selected a new item at click time,
        * the operation is on a single item. */
-      const bulk = isSelected && (Object.keys(selection).length > 1)
+      const bulk = isSelected && Object.keys(selection).length > 1
       onContextMenu(ev, itemPlayId, trackId, bulk, playlistName, playId)
       ev.preventDefault()
       return
     }
     const isSameRowClick = this.lastClickPlayId === itemPlayId
-    const isSingleClick = new Date() - this.lastClickTime > DOUBLE_CLICK_THRESHOLD
+    const isSingleClick =
+      new Date() - this.lastClickTime > DOUBLE_CLICK_THRESHOLD
     const isDoubleClick = isSameRowClick && !isSingleClick
 
     /* A single click on a selected item should clear other items.
@@ -110,7 +121,11 @@ export default class Table extends React.Component {
   onRowMouseUp = ev => {
     const { actions, playlistName, transitions } = this.props
     if (this.clearOnMouseUpPlayId) {
-      actions.selectionClearAndAdd(playlistName, this.clearOnMouseUpPlayId, this.clearOnMouseUpTrackId)
+      actions.selectionClearAndAdd(
+        playlistName,
+        this.clearOnMouseUpPlayId,
+        this.clearOnMouseUpTrackId
+      )
       this.clearOnMouseUpPlayId = null
       this.clearOnMouseUpTrackId = null
     }
@@ -158,11 +173,22 @@ export default class Table extends React.Component {
   }
 
   render() {
-    const { location, actions, playId,
-            sortKey, ascending, columns,
-            isPlaying, rowsPerPage, transitions,
-            selection, numItems, getDisplayItems,
-            onItemEdit, draggable } = this.props
+    const {
+      location,
+      actions,
+      playId,
+      sortKey,
+      ascending,
+      columns,
+      isPlaying,
+      rowsPerPage,
+      transitions,
+      selection,
+      numItems,
+      getDisplayItems,
+      onItemEdit,
+      draggable
+    } = this.props
 
     /* Pagination */
     const qp = new URLSearchParams(location.search)
@@ -186,48 +212,62 @@ export default class Table extends React.Component {
           <thead>
             <tr>
               {columns.map(column => (
-                <Column key={column.title} column={column} sortKey={sortKey}
-                        ascending={ascending} location={location}/>
+                <Column
+                  key={column.title}
+                  column={column}
+                  sortKey={sortKey}
+                  ascending={ascending}
+                  location={location}
+                />
               ))}
             </tr>
           </thead>
           <tbody>
-          {this.displayItems.map((sample, index) => {
-            let className = ''
-            if (sample.playId in selection) {
-              className = 'common-table-row-selected'
-            }
-            return <tr key={index + sample.id}
-                       onMouseDown={this.onRowMouseDown}
-                       onMouseUp={this.onRowMouseUp}
-                       onContextMenu={this.onContextMenu}
-                       data-trackid={sample.id}
-                       data-playindex={sample.playId}
-                       draggable={draggable}
-                       onDragStart={this.onDragStart}
-                       onDragEnd={this.onDragEnd}
-                       className={className}>
-               {columns.map(column => (
-                 <column.Component
-                   key={column.title}
-                   title={column.title}
-                   isPlaying={isPlaying}
-                   onChange={onItemEdit}
-                   onBlur={this.onBlur}
-                   playId={playId}
-                   sample={sample}
-                   editable={transitions &&
-                             this.state.editingPlayId === sample.playId &&
-                             this.state.editingTitle === column.title}/>
-                ))}
-             </tr>
-           })}
+            {this.displayItems.map((sample, index) => {
+              let className = ''
+              if (sample.playId in selection) {
+                className = 'common-table-row-selected'
+              }
+              return (
+                <tr
+                  key={index + sample.id}
+                  onMouseDown={this.onRowMouseDown}
+                  onMouseUp={this.onRowMouseUp}
+                  onContextMenu={this.onContextMenu}
+                  data-trackid={sample.id}
+                  data-playindex={sample.playId}
+                  draggable={draggable}
+                  onDragStart={this.onDragStart}
+                  onDragEnd={this.onDragEnd}
+                  className={className}
+                >
+                  {columns.map(column => (
+                    <column.Component
+                      key={column.title}
+                      title={column.title}
+                      isPlaying={isPlaying}
+                      onChange={onItemEdit}
+                      onBlur={this.onBlur}
+                      playId={playId}
+                      sample={sample}
+                      editable={
+                        transitions &&
+                        this.state.editingPlayId === sample.playId &&
+                        this.state.editingTitle === column.title
+                      }
+                    />
+                  ))}
+                </tr>
+              )
+            })}
           </tbody>
         </table>
-        <PaginationButtons currentPage={currentPage}
-                           lastPage={lastPage}
-                           location={location}
-                           actions={actions}/>
+        <PaginationButtons
+          currentPage={currentPage}
+          lastPage={lastPage}
+          location={location}
+          actions={actions}
+        />
       </div>
     )
   }

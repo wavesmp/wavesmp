@@ -33,7 +33,14 @@ export class ModalHeader extends React.Component {
 
 export class ModalFooter extends React.Component {
   render() {
-    const { deleteTitle, onDelete, actionTitle, onAction, onClose, disabled } = this.props
+    const {
+      deleteTitle,
+      onDelete,
+      actionTitle,
+      onAction,
+      onClose,
+      disabled
+    } = this.props
     return (
       <div className='modal-footer'>
         <button
@@ -41,26 +48,35 @@ export class ModalFooter extends React.Component {
           disabled={disabled}
           className='btn btn-dropdown'
           onClick={onClose}
-          style={{float: 'right'}}>Close</button>
+          style={{ float: 'right' }}
+        >
+          Close
+        </button>
 
-        { deleteTitle && onDelete &&
+        {deleteTitle && onDelete && (
           <button
             type='button'
             disabled={disabled}
             className='btn btn-delete'
-            style={{float: actionTitle && onAction ? 'left': 'right'}}
-            onClick={onDelete}>{deleteTitle}</button>
-        }
+            style={{ float: actionTitle && onAction ? 'left' : 'right' }}
+            onClick={onDelete}
+          >
+            {deleteTitle}
+          </button>
+        )}
 
-        { actionTitle && onAction &&
+        {actionTitle && onAction && (
           <button
             type='button'
             disabled={disabled}
             className='btn btn-primary'
-            style={{float: 'right'}}
-            onClick={onAction}>{actionTitle}</button>
-        }
-        <div className='clearfix'></div>
+            style={{ float: 'right' }}
+            onClick={onAction}
+          >
+            {actionTitle}
+          </button>
+        )}
+        <div className='clearfix' />
       </div>
     )
   }

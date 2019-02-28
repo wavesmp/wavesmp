@@ -1,4 +1,4 @@
-const ObjectID = require("bson-objectid")
+const ObjectID = require('bson-objectid')
 const Promise = require('bluebird')
 
 const { storageInit } = require('./storageInit')
@@ -12,7 +12,6 @@ const DEFAULT_LOCAL_CONFIG = {
   theme: 'light'
 }
 
-
 /* Exposes get/set methods that sit above the
  * web storage APIs */
 class LocalState {
@@ -21,9 +20,9 @@ class LocalState {
     this.storage = storage
   }
 
-  async setItem(key, val){
+  async setItem(key, val) {
     this.config[key] = val
-    this.storage.setItem(CONFIG_KEY, JSON.stringify(this.config));
+    this.storage.setItem(CONFIG_KEY, JSON.stringify(this.config))
   }
 
   async getItem(key) {
@@ -33,7 +32,6 @@ class LocalState {
   async keys() {
     return Object.keys(this.config)
   }
-
 }
 
 module.exports = LocalState

@@ -30,8 +30,7 @@ class WavesSocket {
     this.ws.onopen = this.onOpen.bind(this)
     this.ws.onmessage = this.onMessage.bind(this)
 
-    this.messageMap = {
-    }
+    this.messageMap = {}
   }
 
   setOnLibraryUpdate(onLibraryUpdate) {
@@ -59,11 +58,11 @@ class WavesSocket {
   }
 
   async sendAckedMessage(type, data) {
-    return await this.ackMsgr.send(this.ws, {type, data})
+    return await this.ackMsgr.send(this.ws, { type, data })
   }
 
   sendBestEffortMessage(type, data) {
-    this.bestEffortMsgr.send(this.ws, {type, data})
+    this.bestEffortMsgr.send(this.ws, { type, data })
   }
 
   onMessage(ev) {
@@ -83,7 +82,6 @@ class WavesSocket {
       }
 
       console.log(`Unexpected server message: ${type}`)
-
     } catch (err) {
       console.log(`Error processing message: ${err}`)
       console.log(err)

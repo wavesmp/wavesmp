@@ -6,12 +6,22 @@ export default function getDragCanvas(numSelected, theme) {
   canvas.height = DRAG_BOX_HEIGHT
 
   ctx.fillStyle = 'DRAG_BOX_BORDER_COLOR'
-  fillRoundRect(ctx, 0, 0, DRAG_BOX_WIDTH, DRAG_BOX_HEIGHT, DRAG_BOX_BORDER_RADIUS)
+  fillRoundRect(
+    ctx,
+    0,
+    0,
+    DRAG_BOX_WIDTH,
+    DRAG_BOX_HEIGHT,
+    DRAG_BOX_BORDER_RADIUS
+  )
 
   ctx.fillStyle = getBackgroundColor(theme)
-  ctx.fillRect(DRAG_BOX_BORDER_WIDTH, DRAG_BOX_BORDER_WIDTH,
-               DRAG_BOX_WIDTH - 2 * DRAG_BOX_BORDER_WIDTH,
-               DRAG_BOX_HEIGHT - 2 * DRAG_BOX_BORDER_WIDTH)
+  ctx.fillRect(
+    DRAG_BOX_BORDER_WIDTH,
+    DRAG_BOX_BORDER_WIDTH,
+    DRAG_BOX_WIDTH - 2 * DRAG_BOX_BORDER_WIDTH,
+    DRAG_BOX_HEIGHT - 2 * DRAG_BOX_BORDER_WIDTH
+  )
 
   ctx.fillStyle = getTextColor(theme)
   ctx.textBaseline = 'middle'
@@ -23,7 +33,6 @@ export default function getDragCanvas(numSelected, theme) {
   ctx.fillText(`Add ${numSelected} tracks`, 60, 25)
   return canvas
 }
-
 
 // Based on: https://stackoverflow.com/questions/1255512/
 // how-to-draw-a-rounded-rectangle-on-html-canvas
@@ -56,4 +65,3 @@ function getTextColor(theme) {
   }
   return 'LIGHT_DRAG_BOX_TEXT_COLOR'
 }
-

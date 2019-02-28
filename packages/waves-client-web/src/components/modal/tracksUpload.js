@@ -17,10 +17,10 @@ class TracksUploadModal extends React.Component {
 
   onUpload = async () => {
     const { actions } = this.props
-    this.setState({uploading: true})
+    this.setState({ uploading: true })
     // TODO removed hardcoded s3
     const { uploadErrs, serverErr } = await actions.tracksUpload('s3')
-    this.setState({uploading: false})
+    this.setState({ uploading: false })
     return uploadErrs.length === 0 && !serverErr
   }
 
@@ -35,31 +35,31 @@ class TracksUploadModal extends React.Component {
             <thead>
               <tr>
                 {columns.map(column => (
-                  <th key={column.title}>
-                    {column.title}
-                  </th>
+                  <th key={column.title}>{column.title}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-            {tracks.map((track, i) => {
-              const sample = {
-                ...uploads[track],
-                time: formatTime(1000 * uploads[track].duration),
-                playId: i + ''
-              }
-              return (
-                <tr key={track}>
-                  {columns.map(column => (
-                     <column.Component
-                       key={column.title}
-                       isPlaying={isPlaying}
-                       playId={playId}
-                       sample={sample}
-                       editable={false}/>
-                  ))}
-                </tr>
-            )})}
+              {tracks.map((track, i) => {
+                const sample = {
+                  ...uploads[track],
+                  time: formatTime(1000 * uploads[track].duration),
+                  playId: i + ''
+                }
+                return (
+                  <tr key={track}>
+                    {columns.map(column => (
+                      <column.Component
+                        key={column.title}
+                        isPlaying={isPlaying}
+                        playId={playId}
+                        sample={sample}
+                        editable={false}
+                      />
+                    ))}
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>
@@ -121,4 +121,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(TracksUploadModal)
-

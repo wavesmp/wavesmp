@@ -2,14 +2,17 @@ const { assert } = require('chai')
 const mongoid = require('mongoid-js')
 
 const actionTypes = require('waves-action-types')
-const { TEST_TRACK1: baseTrack1, TEST_TRACK2: baseTrack2,
-        TEST_PLAYLIST_NAME1: playlistName1 } = require('waves-test-data')
+const {
+  TEST_TRACK1: baseTrack1,
+  TEST_TRACK2: baseTrack2,
+  TEST_PLAYLIST_NAME1: playlistName1
+} = require('waves-test-data')
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
 
 const playing = require('../../src/tracks/playing')
 
-const track1 = {...baseTrack1, id: mongoid()}
-const track2 = {...baseTrack2, id: mongoid()}
+const track1 = { ...baseTrack1, id: mongoid() }
+const track2 = { ...baseTrack2, id: mongoid() }
 
 describe('#playing()', () => {
   let state
@@ -103,7 +106,7 @@ describe('#playing()', () => {
   it('empty track next', () => {
     const action = {
       type: actionTypes.TRACK_NEXT,
-      nextTrack: null,
+      nextTrack: null
     }
     state = assertNewState(playing, state, action)
     assert.isFalse(state.isPlaying)
@@ -136,5 +139,4 @@ describe('#playing()', () => {
       currentTime: 0
     })
   })
-
 })

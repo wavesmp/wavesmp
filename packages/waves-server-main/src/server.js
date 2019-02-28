@@ -11,10 +11,13 @@ const baseConfig = require('./baseConfig')
 const WavesServer = require('./wavesServer')
 
 function parseConfig() {
-  args.version('1.0.0')
-    .option('-c, --config-file [FILE]',
-            'path to the JSON config file [config.js]',
-            '../config.js')
+  args
+    .version('1.0.0')
+    .option(
+      '-c, --config-file [FILE]',
+      'path to the JSON config file [config.js]',
+      '../config.js'
+    )
     .parse(process.argv)
 
   const { configFile } = args
@@ -22,7 +25,7 @@ function parseConfig() {
   try {
     const overrideConfig = require(configFile)
     log.debug(`Using config file: ${configFile}`)
-    return {...baseConfig, ...overrideConfig}
+    return { ...baseConfig, ...overrideConfig }
   } catch (e) {
     if (e.code !== 'MODULE_NOT_FOUND') {
       throw e
@@ -34,7 +37,6 @@ function parseConfig() {
 }
 
 async function main() {
-
   try {
     const config = parseConfig()
 
@@ -46,14 +48,13 @@ async function main() {
     log.debug('Created wavesServer')
 
     await wavesServer.start()
-    log.info('Launched Waves server successfully');
+    log.info('Launched Waves server successfully')
   } catch (e) {
     log.error('Error starting server')
-    log.error(e);
-    log.error(e.stack);
-    throw e;
+    log.error(e)
+    log.error(e.stack)
+    throw e
   }
-
 }
 
 main()

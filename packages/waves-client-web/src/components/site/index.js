@@ -10,16 +10,15 @@ import Preview from './preview'
 import MenuBar from '../menubar/site'
 import Toasts from '../toasts'
 
-
 class Site extends React.Component {
   render() {
     const { actions, location, history, toasts } = this.props
     return (
       <React.Fragment>
-        <MenuBar/>
-        <SignIn actions={actions} location={location} history={history}/>
-        <Preview/>
-        <Toasts actions={actions} toasts={toasts}/>
+        <MenuBar />
+        <SignIn actions={actions} location={location} history={history} />
+        <Preview />
+        <Toasts actions={actions} toasts={toasts} />
       </React.Fragment>
     )
   }

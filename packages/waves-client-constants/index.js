@@ -11,7 +11,15 @@ constants.TRACK_ID_ATTR = 'data-trackid'
 constants.PLAY_INDEX_ATTR = 'data-playindex'
 constants.TITLE_ATTR = 'data-title'
 constants.PLAYLIST_NAME_ATTR = 'data-playlistname'
-constants.ALL_COLUMNS = ['Name', 'State', 'Time', 'Artist', 'Album', 'Genre', 'Created At']
+constants.ALL_COLUMNS = [
+  'Name',
+  'State',
+  'Time',
+  'Artist',
+  'Album',
+  'Genre',
+  'Created At'
+]
 
 constants.PLAYLIST_TYPE = 'application/wp'
 
@@ -30,22 +38,22 @@ constants.modalTypes = keyMirror({
   PLAYLIST_SETTINGS: null,
   SETTINGS: null,
   TRACKS_DELETE: null,
-  TRACKS_UPLOAD: null,
+  TRACKS_UPLOAD: null
 })
 
 constants.contextmenuTypes = keyMirror({
   TRACK: null,
-  PLAYLIST_ADD: null,
+  PLAYLIST_ADD: null
 })
 
 constants.dropdownTypes = keyMirror({
   USER_SETTINGS: null,
-  NOTIFICATIONS: null,
+  NOTIFICATIONS: null
 })
 
 constants.toastTypes = keyMirror({
   Success: null,
-  Error: null,
+  Error: null
 })
 
 constants.DROPDOWN_DATA_VALUE = 'dropdown'

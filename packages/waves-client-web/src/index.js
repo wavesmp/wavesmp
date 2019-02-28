@@ -24,27 +24,27 @@ import storeListener from './listener'
 
 const history = createBrowserHistory()
 const ws = new WavesSocket(new WebSocket(server))
-const auth = new Auth({google: googleAuthOpts})
-const player = new Player({s3: s3Opts, file: undefined})
+const auth = new Auth({ google: googleAuthOpts })
+const player = new Player({ s3: s3Opts, file: undefined })
 const localState = new LocalState(localStorage)
 
 const reduxMiddleware = applyMiddleware(
   /* Include extra args for side effects */
-  ReduxThunk.withExtraArgument({localState, player, ws, auth})
+  ReduxThunk.withExtraArgument({ localState, player, ws, auth })
 )
 const store = createStore(rootReducer, reduxMiddleware)
 
-render((
+render(
   <Provider store={store}>
     <Router history={history}>
       <Switch>
-        <PublicRoute path='/' exact={true} component={Site}/>
-        <PrivateRoute path='/' component={MainApp}/>
+        <PublicRoute path='/' exact={true} component={Site} />
+        <PrivateRoute path='/' component={MainApp} />
       </Switch>
     </Router>
-  </Provider>
-  ),
-  document.getElementById('app'))
+  </Provider>,
+  document.getElementById('app')
+)
 
 /* Objects need store access for dispatching on events
  * e.g. When player track ends, storage is available, location change.

@@ -10,8 +10,7 @@ const actionTypes = require('waves-action-types')
  *   }
  * ]
  */
-const initialState = [
-]
+const initialState = []
 
 function contextmenu(state = initialState, action) {
   switch (action.type) {

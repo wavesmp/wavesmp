@@ -2,69 +2,89 @@ import React from 'react'
 
 import constants from 'waves-client-constants'
 
-
 export const LibraryDelete = createContextMenuItem(
   <React.Fragment>
-    <i style={{color: constants.iconDeleteColor}} className='fa fa-lg fa-trash-o'></i>
+    <i
+      style={{ color: constants.iconDeleteColor }}
+      className='fa fa-lg fa-trash-o'
+    />
     &nbsp;&nbsp;Delete
   </React.Fragment>
 )
 
 export const PlaylistRemove = createContextMenuItem(
   <React.Fragment>
-    <i style={{color: constants.iconRemoveColor}} className='fa fa-lg fa-times'></i>
+    <i
+      style={{ color: constants.iconRemoveColor }}
+      className='fa fa-lg fa-times'
+    />
     &nbsp;&nbsp;Remove
   </React.Fragment>
 )
 
 export const Download = createContextMenuItem(
   <React.Fragment>
-    <i style={{color: constants.iconDownloadColor}}
-       className='fa fa-lg fa-download'></i>
+    <i
+      style={{ color: constants.iconDownloadColor }}
+      className='fa fa-lg fa-download'
+    />
     &nbsp;&nbsp;Download
   </React.Fragment>
 )
 
 export const PlaylistAdd = createContextMenuItem(
   <React.Fragment>
-    <i style={{color: constants.iconAddColor}} className='fa fa-lg fa-plus-circle'></i>
+    <i
+      style={{ color: constants.iconAddColor }}
+      className='fa fa-lg fa-plus-circle'
+    />
     &nbsp;&nbsp;Add to Playlist...
   </React.Fragment>
 )
 
 export const Back = createContextMenuItem(
   <React.Fragment>
-    <i style={{color: constants.iconBackColor}}
-       className='fa fa-lg fa-chevron-circle-left'></i>
+    <i
+      style={{ color: constants.iconBackColor }}
+      className='fa fa-lg fa-chevron-circle-left'
+    />
     &nbsp;&nbsp;Back
   </React.Fragment>
 )
 
 export const NowPlayingAdd = createContextMenuItem(
   <React.Fragment>
-    <i style={{color: constants.iconAddColor}} className='fa fa-lg fa-plus'></i>
+    <i style={{ color: constants.iconAddColor }} className='fa fa-lg fa-plus' />
     &nbsp;&nbsp;Add to Now Playing
   </React.Fragment>
 )
 
-
 export const Play = createContextMenuItem(
   <React.Fragment>
-    <i style={{color: constants.iconPlayColor}} className='fa fa-lg fa-play'></i>
+    <i
+      style={{ color: constants.iconPlayColor }}
+      className='fa fa-lg fa-play'
+    />
     &nbsp;&nbsp;Play
   </React.Fragment>
 )
 
 export const Pause = createContextMenuItem(
   <React.Fragment>
-    <i style={{color: constants.iconPauseColor}} className='fa fa-lg fa-pause'></i>
+    <i
+      style={{ color: constants.iconPauseColor }}
+      className='fa fa-lg fa-pause'
+    />
     &nbsp;&nbsp;Pause
   </React.Fragment>
 )
 
 export const PlayResume = createContextMenuItem(
   <React.Fragment>
-    <i style={{color: constants.iconPlayColor}} className='fa fa-lg fa-play-circle'></i>
+    <i
+      style={{ color: constants.iconPlayColor }}
+      className='fa fa-lg fa-play-circle'
+    />
     &nbsp;&nbsp;Resume
   </React.Fragment>
 )
@@ -75,7 +95,7 @@ function createContextMenuItem(Component) {
       const { onClick } = this.props
       return (
         <li className='btn btn-default contextmenu-item' onClick={onClick}>
-            {Component}
+          {Component}
         </li>
       )
     }
@@ -88,25 +108,12 @@ export class PlaylistAddItem extends React.Component {
     const { onClick, title } = this.props
     return (
       <li className='btn btn-default contextmenu-item' onClick={onClick}>
-        <i className='fa fa-lg fa-list'></i>
+        <i className='fa fa-lg fa-list' />
         &nbsp;&nbsp;{title}
       </li>
     )
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //
 //
@@ -164,8 +171,6 @@ export class PlaylistAddItem extends React.Component {
 //   <i style={{color: constants.iconDownloadColor}} className='fa fa-lg fa-file-audio-o'></i>
 //   &nbsp;&nbsp;Import as MP3
 // </div>)
-
-
 
 // function unsupportedFeature() {
 //   toastr.error('Upgrade to PRO to unlock!', 'Feature Unavailable')

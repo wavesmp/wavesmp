@@ -8,7 +8,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { UPLOAD_PLAYLIST as playlistName, modalTypes, toastTypes } from 'waves-client-constants'
+import {
+  UPLOAD_PLAYLIST as playlistName,
+  modalTypes,
+  toastTypes
+} from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 
 import ContentPage from '../contentpage'
@@ -31,16 +35,16 @@ class Upload extends React.Component {
 
   onUpload = async () => {
     const { actions } = this.props
-    actions.modalSet({type: modalTypes.TRACKS_UPLOAD})
+    actions.modalSet({ type: modalTypes.TRACKS_UPLOAD })
   }
 
   onDragEnter = ev => {
-    this.setState({dragging: true})
+    this.setState({ dragging: true })
     ev.preventDefault()
   }
 
   onDragLeave = ev => {
-    this.setState({dragging: false})
+    this.setState({ dragging: false })
   }
 
   // Needed preventDefault on dragenter, dragover, and ondrop events
@@ -54,17 +58,21 @@ class Upload extends React.Component {
       return true
     }
     const { actions } = this.props
-    actions.toastAdd({ type: toastTypes.Error, msg: `${f.name}: Invalid file type` })
+    actions.toastAdd({
+      type: toastTypes.Error,
+      msg: `${f.name}: Invalid file type`
+    })
     return false
   }
 
   onDrop = ev => {
     ev.preventDefault()
-    this.setState({dragging: false})
+    this.setState({ dragging: false })
     // files (type FileList) is not an array, so can't use map.
     // Use Array.from(arrayLikeObj, mapFn) as a workaround
-    const files = Array.from(ev.dataTransfer.files)
-      .filter(this.validateDropFileType)
+    const files = Array.from(ev.dataTransfer.files).filter(
+      this.validateDropFileType
+    )
 
     if (files.length === 0) {
       return
@@ -83,7 +91,10 @@ class Upload extends React.Component {
     try {
       return await processTrack(file)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: `${f.name}: Failed to read track info: ${err}` })
+      actions.toastAdd({
+        type: toastTypes.Error,
+        msg: `${f.name}: Failed to read track info: ${err}`
+      })
       console.log(err)
       console.log(err.stack)
     }
@@ -93,7 +104,9 @@ class Upload extends React.Component {
   processFiles = async files => {
     // files (type FileList) is not an array, so can't use map.
     // Use Array.from(arrayLikeObj, mapFn) as a workaround
-    const newUploads = await Promise.all(Array.from(files, this.wrapProcessTrack))
+    const newUploads = await Promise.all(
+      Array.from(files, this.wrapProcessTrack)
+    )
     const validNewUploads = newUploads.filter(upload => upload != null)
 
     // TODO remove me
@@ -113,7 +126,7 @@ class Upload extends React.Component {
     for (let i = startIndex; i < stopIndex && i < length; i += 1) {
       const track = uploads[tracks[i]]
       const time = formatTime(1000 * track.duration)
-      displayItems.push({...track, time, playId: i + ''})
+      displayItems.push({ ...track, time, playId: i + '' })
     }
     return displayItems
   }
@@ -171,33 +184,42 @@ class Upload extends React.Component {
     // TODO add progress bar?
     return (
       <ContentPage
-          title={'Upload Files'}
-          sidebar={sidebar}
-          isPlayerVisible={playing.track !== null}
-          transitions={transitions}>
+        title={'Upload Files'}
+        sidebar={sidebar}
+        isPlayerVisible={playing.track !== null}
+        transitions={transitions}
+      >
         <div>
-          <h4 style={{marginTop: '15px'}}>Select files from your computer</h4>
+          <h4 style={{ marginTop: '15px' }}>Select files from your computer</h4>
           <form>
             <div>
-              <input type='file'
+              <input
+                type='file'
                 className='upload-file-input'
                 name='uploads[]'
-                multiple accept={ACCEPTED_FILE_TYPES}
-                onChange={this.onFileSelect}/>
+                multiple
+                accept={ACCEPTED_FILE_TYPES}
+                onChange={this.onFileSelect}
+              />
               <button
                 type='button'
                 className='btn btn-sm btn-primary'
                 disabled={uploads == null || this.state.uploading}
-                onClick={this.onUpload}>{this.state.uploading ? 'Uploading' : 'Upload files'}</button>
+                onClick={this.onUpload}
+              >
+                {this.state.uploading ? 'Uploading' : 'Upload files'}
+              </button>
             </div>
           </form>
 
           <h4>Or drag and drop files below</h4>
-          <div className={dropZoneClass}
-              onDragEnter={this.onDragEnter}
-              onDragLeave={this.onDragLeave}
-              onDragOver={this.onDragOver}
-              onDrop={this.onDrop}>
+          <div
+            className={dropZoneClass}
+            onDragEnter={this.onDragEnter}
+            onDragLeave={this.onDragLeave}
+            onDragOver={this.onDragOver}
+            onDrop={this.onDrop}
+          >
             Just drag and drop files here
           </div>
           {uploads}
@@ -208,7 +230,10 @@ class Upload extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { getPlaylist } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
+  const { getPlaylist } = getOrCreatePlaylistSelectors(
+    playlistName,
+    URLSearchParams
+  )
   const { account, sidebar, transitions, tracks } = state
   const { library, playing, uploads } = tracks
   return {

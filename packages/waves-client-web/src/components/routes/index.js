@@ -8,16 +8,21 @@ class PrivateRoute extends React.Component {
     const { account, component: Component, ...rest } = this.props
     const { user } = account
     return (
-      <Route {...rest} render={props => (
-        user ? (
-          <Component {...props}/>
-        ) : (
-          <Redirect to={{
-            pathname: '/',
-            state: { from: props.location }
-          }}/>
-        )
-      )}/>
+      <Route
+        {...rest}
+        render={props =>
+          user ? (
+            <Component {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: '/',
+                state: { from: props.location }
+              }}
+            />
+          )
+        }
+      />
     )
   }
 }
@@ -28,22 +33,27 @@ class PublicRoute extends React.Component {
     const { account, component: Component, ...rest } = this.props
     const { fetchingUser, user } = account
     return (
-      <Route {...rest} render={ props => {
-        if (fetchingUser) {
-          return (
-            <div className='absolute-center'>
-              <i className='fa fa-spinner fa-pulse'
-                 style={{fontSize: '150px'}}></i>
-            </div>
-          )
-        }
-        if (user) {
-          const defaultFrom = { from: { pathname: '/nowplaying' } }
-          const { from } = props.location.state || defaultFrom
-          return <Redirect to={from}/>
-        }
-        return <Component {...props}/>
-      }}/>
+      <Route
+        {...rest}
+        render={props => {
+          if (fetchingUser) {
+            return (
+              <div className='absolute-center'>
+                <i
+                  className='fa fa-spinner fa-pulse'
+                  style={{ fontSize: '150px' }}
+                />
+              </div>
+            )
+          }
+          if (user) {
+            const defaultFrom = { from: { pathname: '/nowplaying' } }
+            const { from } = props.location.state || defaultFrom
+            return <Redirect to={from} />
+          }
+          return <Component {...props} />
+        }}
+      />
     )
   }
 }

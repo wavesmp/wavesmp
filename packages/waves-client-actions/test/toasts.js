@@ -7,7 +7,6 @@ const { TEST_TOAST1: toast1, TEST_TOAST2: toast2 } = require('waves-test-data')
 const actions = require('../src/toasts')
 
 describe('#toasts()', () => {
-
   it('toastAdd', async () => {
     const timeout = 10
     const toast = { ...toast1, timeout }
@@ -24,12 +23,10 @@ describe('#toasts()', () => {
     await sleep(timeout + 1)
 
     const firstDispatchCall = dispatchExpect.firstCall
-    assert.isTrue(firstDispatchCall.calledWithExactly(
-      firstAction))
+    assert.isTrue(firstDispatchCall.calledWithExactly(firstAction))
 
     const secondDispatchCall = dispatchExpect.secondCall
-    assert.isTrue(secondDispatchCall.calledWithExactly(
-      secondAction))
+    assert.isTrue(secondDispatchCall.calledWithExactly(secondAction))
 
     dispatchMock.verify()
   })
@@ -44,5 +41,5 @@ describe('#toasts()', () => {
 
 // TODO consider moving to util module
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms))
 }

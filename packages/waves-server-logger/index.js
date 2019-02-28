@@ -1,4 +1,4 @@
-const winston = require('winston');
+const winston = require('winston')
 
 const log = winston.createLogger({
   level: 'debug',
@@ -6,9 +6,7 @@ const log = winston.createLogger({
     winston.format.colorize(),
     winston.format.simple()
   ),
-  transports: [
-    new winston.transports.Console()
-  ]
-});
+  transports: [new winston.transports.Console()]
+})
 
 module.exports = log

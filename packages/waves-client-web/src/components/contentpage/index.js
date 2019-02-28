@@ -5,8 +5,13 @@ import './index.css'
 
 export default class ContentPage extends React.Component {
   render() {
-    const { title, sidebar, isPlayerVisible,
-            transitions, ...other } = this.props
+    const {
+      title,
+      sidebar,
+      isPlayerVisible,
+      transitions,
+      ...other
+    } = this.props
     let className
     if (transitions) {
       className = 'mainpage-container-transition '
@@ -25,11 +30,10 @@ export default class ContentPage extends React.Component {
     return (
       <div className={className}>
         <div className='contentpage-panel'>
-          <PageHeader title={title}/>
+          <PageHeader title={title} />
           {this.props.children}
         </div>
       </div>
     )
   }
 }
-

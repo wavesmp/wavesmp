@@ -2,14 +2,17 @@ const { assert } = require('chai')
 const mongoid = require('mongoid-js')
 
 const actionTypes = require('waves-action-types')
-const { TEST_TRACK1: baseTrack1, TEST_TRACK2: baseTrack2,
-        TEST_TRACK1_UPDATE: update1 } = require('waves-test-data')
+const {
+  TEST_TRACK1: baseTrack1,
+  TEST_TRACK2: baseTrack2,
+  TEST_TRACK1_UPDATE: update1
+} = require('waves-test-data')
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
 
 const uploads = require('../../src/tracks/uploads')
 
-const track1 = {...baseTrack1, id: mongoid()}
-const track2 = {...baseTrack2, id: mongoid()}
+const track1 = { ...baseTrack1, id: mongoid() }
+const track2 = { ...baseTrack2, id: mongoid() }
 const update = [track1, track2]
 const updateLib = {
   [track1.id]: track1,
@@ -51,5 +54,4 @@ describe('#uploads()', () => {
     }
     assert.deepEqual(state, expectedState)
   })
-
 })

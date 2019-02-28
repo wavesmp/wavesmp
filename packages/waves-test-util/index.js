@@ -7,8 +7,7 @@ function generateString(n) {
 async function _assertThrows(fnName, fn, args, errFn, errVal, thisArg) {
   try {
     await fn.apply(thisArg, args)
-    assert.isTrue(false,
-      `Did not throw when expecting ${fnName} to fail`)
+    assert.isTrue(false, `Did not throw when expecting ${fnName} to fail`)
   } catch (err) {
     const actualErrVal = errFn(err)
     assert.strictEqual(actualErrVal, errVal)
@@ -33,4 +32,4 @@ module.exports.generateString = generateString
 module.exports.assertThrows = assertThrows
 module.exports.assertThrowsMessage = assertThrowsMessage
 module.exports.assertNewState = assertNewState
-module.exports.UNKNOWN_ACTION = {type: 'UNKNOWN_ACTION'}
+module.exports.UNKNOWN_ACTION = { type: 'UNKNOWN_ACTION' }

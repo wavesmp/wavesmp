@@ -73,12 +73,12 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
     return DEFAULT_ASCENDING
   }
 
-   const getRouterAscending = createSelector(
+  const getRouterAscending = createSelector(
     [getRouterQueryParams],
     _getRouterAscending
   )
 
-   /* router sort key  */
+  /* router sort key  */
   function _getRouterSortKey(qp) {
     if (!qp) {
       return DEFAULT_SORT_KEY
@@ -86,23 +86,22 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
     return qp.get(SORT_KEY_QUERY_KEY) || DEFAULT_SORT_KEY
   }
 
-   const getRouterSortKey = createSelector(
+  const getRouterSortKey = createSelector(
     [getRouterQueryParams],
     _getRouterSortKey
   )
 
-
   /* playlist selector */
   const getPlaylist = createSelector(
     [getPlaylists],
-    playlists => (playlists && playlists[playlistName])
+    playlists => playlists && playlists[playlistName]
   )
 
   /* playlist search string */
   /* playlist tracks */
   const getPlaylistTracks = createSelector(
     [getPlaylist],
-    playlist => (playlist && playlist.tracks)
+    playlist => playlist && playlist.tracks
   )
 
   /* playlist display items */
@@ -114,7 +113,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
     return tracks.map((track, i) => {
       const libTrack = library[track]
       const time = formatTime(1000 * libTrack.duration)
-      return {...libTrack, time, playId: i + ''}
+      return { ...libTrack, time, playId: i + '' }
     })
   }
 
@@ -146,10 +145,10 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
 /* library playlist search */
 const getLibraryPlaylist = createSelector(
   [getPlaylists],
-  playlists => (playlists && playlists[FULL_PLAYLIST])
+  playlists => playlists && playlists[FULL_PLAYLIST]
 )
 
-function _getLibraryPlaylistSearch(playlist){
+function _getLibraryPlaylistSearch(playlist) {
   if (!playlist) {
     return null
   }
@@ -164,10 +163,10 @@ const getLibraryPlaylistSearch = createSelector(
 /* default playlist search string */
 const getDefaultPlaylist = createSelector(
   [getPlaylists],
-  playlists => (playlists && playlists[DEFAULT_PLAYLIST])
+  playlists => playlists && playlists[DEFAULT_PLAYLIST]
 )
 
-function _getDefaultPlaylistSearch(playlist){
+function _getDefaultPlaylistSearch(playlist) {
   if (!playlist) {
     return null
   }
@@ -178,7 +177,6 @@ const getDefaultPlaylistSearch = createSelector(
   [getDefaultPlaylist],
   _getDefaultPlaylistSearch
 )
-
 
 module.exports.getOrCreatePlaylistSelectors = getOrCreatePlaylistSelectors
 module.exports.getLibraryPlaylistSearch = getLibraryPlaylistSearch

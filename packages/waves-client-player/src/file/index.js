@@ -42,11 +42,11 @@ class FilePlayer {
     if (!this.loaded) {
       this.load()
     }
-    this.stream.play();
+    this.stream.play()
   }
 
   pause() {
-    this.stream.pause();
+    this.stream.pause()
   }
 
   seek(pos) {

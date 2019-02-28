@@ -7,18 +7,16 @@ import LogoSvg from '../common/logo-wide.svg'
 
 const SITE_PATH = '/'
 
-
 export default class MenuBar extends React.Component {
   render() {
     return (
       <header>
         <Link to={SITE_PATH} className='menubar-site-logos'>
-          <LogoSvg className='menubar-site-logo'/>
+          <LogoSvg className='menubar-site-logo' />
           <span className='menubar-site-logo-name'>WAVES</span>
         </Link>
-        <GithubCorner/>
+        <GithubCorner />
       </header>
     )
   }
 }
-

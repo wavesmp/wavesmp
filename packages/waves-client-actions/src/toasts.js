@@ -18,7 +18,10 @@ function toastAdd(toast) {
     cachedDispatch = dispatch
     toast.id = ++id
     dispatch({ type: types.TOAST_ADD, toast })
-    setTimeout(() => toastRemoveCached(toast.id), toast.timeout || DEFAULT_TIMEOUT)
+    setTimeout(
+      () => toastRemoveCached(toast.id),
+      toast.timeout || DEFAULT_TIMEOUT
+    )
   }
 }
 

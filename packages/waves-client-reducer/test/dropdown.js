@@ -29,5 +29,4 @@ describe('#dropdown()', () => {
 
     assert.isNull(state)
   })
-
 })

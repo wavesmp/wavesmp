@@ -15,7 +15,7 @@ function reducerLibrary(library = initialLibrary, action) {
     case actionTypes.TRACKS_DELETE: {
       const { deleteIds } = action
 
-      const libraryUpdate = {...library}
+      const libraryUpdate = { ...library }
       for (const deleteId of deleteIds) {
         delete libraryUpdate[deleteId]
       }
@@ -23,7 +23,7 @@ function reducerLibrary(library = initialLibrary, action) {
     }
     case actionTypes.LIBRARY_TRACK_UPDATE: {
       const { ids, key, value } = action
-      const libraryUpdate = {...library}
+      const libraryUpdate = { ...library }
       for (const id of ids) {
         libraryUpdate[id] = { ...library[id], [key]: value }
       }
@@ -35,4 +35,3 @@ function reducerLibrary(library = initialLibrary, action) {
 }
 
 module.exports = reducerLibrary
-

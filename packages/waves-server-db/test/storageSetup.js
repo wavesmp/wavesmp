@@ -11,7 +11,7 @@ const DB_CONTAINER_CMD = ['mongod', '--port', DB_CONTAINER_PORT]
 
 class StorageSetup {
   constructor() {
-    this.docker = new Docker({Promise})
+    this.docker = new Docker({ Promise })
     this.storage = null
 
     this.getStorage = this.getStorage.bind(this)
@@ -47,7 +47,7 @@ class StorageSetup {
     })
 
     const url = `mongodb://localhost:${DB_CONTAINER_PORT}/waves`
-    const dbConf = {url}
+    const dbConf = { url }
     this.storage = new Storage(dbConf)
     await this.storage.connect()
   }
@@ -60,12 +60,12 @@ class StorageSetup {
 
   async cleanTestDb() {
     const containers = await this.docker.listContainers()
-    const dbContainers = containers.filter(
-      c => c.Names.indexOf('/' + DB_CONTAINER_NAME) > -1
-    ).map(
-      /* Create container entity. Does not query API */
-      c => this.docker.getContainer(c.Id)
-    )
+    const dbContainers = containers
+      .filter(c => c.Names.indexOf('/' + DB_CONTAINER_NAME) > -1)
+      .map(
+        /* Create container entity. Does not query API */
+        c => this.docker.getContainer(c.Id)
+      )
 
     await Promise.all(dbContainers.map(stopAndRemove))
   }
@@ -73,7 +73,6 @@ class StorageSetup {
   getStorage() {
     return this.storage
   }
-
 }
 
 function stopAndRemove(c) {

@@ -20,5 +20,4 @@ describe('#transitions()', () => {
     state = assertNewState(transitions, state, action)
     assert.isTrue(state)
   })
-
 })

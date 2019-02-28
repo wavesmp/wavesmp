@@ -6,7 +6,7 @@ function reducerUploads(state = initialState, action) {
   switch (action.type) {
     case actionTypes.TRACK_UPLOADS_UPDATE: {
       const { update } = action
-      const newState = {...state}
+      const newState = { ...state }
       for (const upload of update) {
         newState[upload.id] = upload
       }
@@ -14,7 +14,7 @@ function reducerUploads(state = initialState, action) {
     }
     case actionTypes.TRACK_UPLOADS_DELETE: {
       const { deleteIds } = action
-      const newState = {...state}
+      const newState = { ...state }
       for (deleteId of deleteIds) {
         delete newState[deleteId]
       }
@@ -22,9 +22,9 @@ function reducerUploads(state = initialState, action) {
     }
     case actionTypes.UPLOAD_TRACKS_UPDATE: {
       const { ids, key, value } = action
-      const newState = {...state}
+      const newState = { ...state }
       for (const id of ids) {
-        newState[id] = {...state[id], [key]: value}
+        newState[id] = { ...state[id], [key]: value }
       }
       return newState
     }

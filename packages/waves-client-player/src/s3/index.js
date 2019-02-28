@@ -68,7 +68,10 @@ class S3Player {
         console.log(err)
       }
     }
-    this.onToastAdd({ type: toastTypes.Error, msg: `Stream error: ${err.message}` })
+    this.onToastAdd({
+      type: toastTypes.Error,
+      msg: `Stream error: ${err.message}`
+    })
     console.log('Unexpected stream error')
     console.log(`message: ${err.message}`)
     console.log(`code: ${err.code}`)
@@ -81,11 +84,11 @@ class S3Player {
     if (!isRetry) {
       this.streamErrorRetries = STREAM_ERROR_RETRIES
     }
-    await this.stream.play();
+    await this.stream.play()
   }
 
   pause() {
-    this.stream.pause();
+    this.stream.pause()
   }
 
   seek(pos) {
@@ -118,7 +121,7 @@ class S3Player {
     /* Make a copy. In upload failure case, original
      * 'file' track remains intact */
     // TODO remove hardcoded s3
-    track = {...track, source: 's3'}
+    track = { ...track, source: 's3' }
     try {
       await this.client.putTrack(track.id, track.file)
       return track
@@ -130,7 +133,6 @@ class S3Player {
   async deleteTracks(tracks) {
     return await this.client.deleteTracks(tracks)
   }
-
 }
 
 // TODO move this to a util function if we want to keep it long term
@@ -138,13 +140,13 @@ class S3Player {
 // Taken from https://github.com/PixelsCommander/Download-File-JS
 function downloadFile(url) {
   //Creating new link node.
-  const link = document.createElement('a');
-  link.href = url;
+  const link = document.createElement('a')
+  link.href = url
 
   //Dispatching click event.
-   const e = document.createEvent('MouseEvents');
-   e.initEvent('click', true, true);
-   link.dispatchEvent(e);
+  const e = document.createEvent('MouseEvents')
+  e.initEvent('click', true, true)
+  link.dispatchEvent(e)
 }
 
 module.exports = S3Player

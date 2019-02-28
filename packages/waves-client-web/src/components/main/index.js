@@ -4,8 +4,11 @@ import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 
 import * as WavesActions from 'waves-client-actions'
-import { TOGGLE_DATA_KEY, DROPDOWN_DATA_VALUE,
-         MODAL_DATA_VALUE } from 'waves-client-constants'
+import {
+  TOGGLE_DATA_KEY,
+  DROPDOWN_DATA_VALUE,
+  MODAL_DATA_VALUE
+} from 'waves-client-constants'
 
 import SideBar from '../sidebar'
 import MenuBar from '../menubar/main'
@@ -38,48 +41,63 @@ class MainApp extends React.Component {
       actions.contextmenuReset()
     }
 
-    if (dropdown && !this.ancestorHasAttribute(
-        target, TOGGLE_DATA_KEY, DROPDOWN_DATA_VALUE)) {
+    if (
+      dropdown &&
+      !this.ancestorHasAttribute(target, TOGGLE_DATA_KEY, DROPDOWN_DATA_VALUE)
+    ) {
       actions.dropdownSet(null)
     }
 
-    if (modal && !this.ancestorHasAttribute(
-        target, TOGGLE_DATA_KEY, MODAL_DATA_VALUE)) {
+    if (
+      modal &&
+      !this.ancestorHasAttribute(target, TOGGLE_DATA_KEY, MODAL_DATA_VALUE)
+    ) {
       actions.modalSet(null)
     }
-
   }
 
   render() {
-    const { modal, sidebar, playlists, playing,
-            actions, contextmenu, dropdown,
-            account, location, history, toasts } = this.props
+    const {
+      modal,
+      sidebar,
+      playlists,
+      playing,
+      actions,
+      contextmenu,
+      dropdown,
+      account,
+      location,
+      history,
+      toasts
+    } = this.props
     const { user } = account
     if (!user) {
-      return (
-        null
-      )
+      return null
     }
     return (
       <div onClick={this.onClick}>
-        <Route path='/nowplaying' component={NowPlaying}/>
-        <Route path='/library' component={Library}/>
-        <Route path='/upload' component={Upload}/>
-        <Route path='/playlist/:playlist' component={Playlist}/>
-        <SideBar actions={actions}
-                 sidebar={sidebar}
-                 playlists={playlists}
-                 playing={playing}
-                 location={location}
-                 userName={user.name}/>
-        <MenuBar actions={actions}
-                 dropdown={dropdown}
-                 playing={playing}
-                 history={history}
-                 userName={user.name}/>
-        <ContextMenu contextmenu={contextmenu}/>
-        <Modal modal={modal}/>
-        <Toasts actions={actions} toasts={toasts}/>
+        <Route path='/nowplaying' component={NowPlaying} />
+        <Route path='/library' component={Library} />
+        <Route path='/upload' component={Upload} />
+        <Route path='/playlist/:playlist' component={Playlist} />
+        <SideBar
+          actions={actions}
+          sidebar={sidebar}
+          playlists={playlists}
+          playing={playing}
+          location={location}
+          userName={user.name}
+        />
+        <MenuBar
+          actions={actions}
+          dropdown={dropdown}
+          playing={playing}
+          history={history}
+          userName={user.name}
+        />
+        <ContextMenu contextmenu={contextmenu} />
+        <Modal modal={modal} />
+        <Toasts actions={actions} toasts={toasts} />
       </div>
     )
   }

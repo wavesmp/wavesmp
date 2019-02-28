@@ -24,7 +24,6 @@ class BestEffortMessenger {
       this.messages.push(data)
     }
   }
-
 }
 
 module.exports = BestEffortMessenger

@@ -6,7 +6,7 @@ import { modalTypes, toastTypes } from 'waves-client-constants'
 export default class SettingsBar extends React.Component {
   onUnsupportedFeatureClick = () => {
     const { actions } = this.props
-    actions.toastAdd({type: toastTypes.Error, msg: 'Feature Unavailable'})
+    actions.toastAdd({ type: toastTypes.Error, msg: 'Feature Unavailable' })
   }
 
   onBackClick = () => {
@@ -16,7 +16,7 @@ export default class SettingsBar extends React.Component {
 
   onSettingsClick = () => {
     const { actions } = this.props
-    actions.modalSet({type: modalTypes.SETTINGS})
+    actions.modalSet({ type: modalTypes.SETTINGS })
   }
 
   render() {
@@ -30,8 +30,8 @@ export default class SettingsBar extends React.Component {
         <ul className='nav'>
           <li>
             <span onClick={this.onBackClick}>
-              <i className='fa-fw fa fa-lg fa-arrow-left'></i>
-              <span style={{padding: '0px 15px'}}>Back</span>
+              <i className='fa-fw fa fa-lg fa-arrow-left' />
+              <span style={{ padding: '0px 15px' }}>Back</span>
             </span>
           </li>
           <li className='sidebar-playlist'>
@@ -41,19 +41,19 @@ export default class SettingsBar extends React.Component {
           </li>
           <li className='sidebar-playlist'>
             <span onClick={this.onUnsupportedFeatureClick}>
-              <i className='fa-fw fa fa-lg fa-file-text'></i>
+              <i className='fa-fw fa fa-lg fa-file-text' />
               <span>File name mismatches</span>
             </span>
           </li>
           <li className='sidebar-playlist'>
             <span onClick={this.onUnsupportedFeatureClick}>
-              <i className='fa-fw fa fa-lg fa-tags'></i>
+              <i className='fa-fw fa fa-lg fa-tags' />
               <span>Missing metadata</span>
             </span>
           </li>
           <li className='sidebar-playlist'>
             <span onClick={this.onUnsupportedFeatureClick}>
-              <i className='fa-fw fa fa-lg fa-file-o'></i>
+              <i className='fa-fw fa fa-lg fa-file-o' />
               <span>Missing files</span>
             </span>
           </li>
@@ -64,13 +64,13 @@ export default class SettingsBar extends React.Component {
           </li>
           <li className='sidebar-playlist'>
             <span onClick={this.onSettingsClick}>
-              <i className='fa-fw fa fa-lg fa-cog'></i>
+              <i className='fa-fw fa fa-lg fa-cog' />
               <span>Account Settings</span>
             </span>
           </li>
           <li className='sidebar-playlist'>
             <span onClick={this.onUnsupportedFeatureClick}>
-              <i className='fa-fw fa fa-lg fa-sign-out'></i>
+              <i className='fa-fw fa fa-lg fa-sign-out' />
               <span>Sign out</span>
             </span>
           </li>

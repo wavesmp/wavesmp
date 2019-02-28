@@ -2,13 +2,11 @@ import Promise from 'bluebird'
 import ObjectID from 'bson-objectid'
 const musicmetadata = require('musicmetadata')
 
-
 /* Given the raw file to be uploaded,
  * return file metadata in an object. */
 export default function processTrack(file) {
   return new Promise((resolve, reject) => {
-
-    musicmetadata(file, {duration: true}, (err, metadata) => {
+    musicmetadata(file, { duration: true }, (err, metadata) => {
       if (err) {
         reject(err)
         return
@@ -57,16 +55,15 @@ function addMissingTags(item) {
     } else {
       if (!item.title) {
         item.title = fileName.trim()
-        item.artist = item.artist || (`Unknown artist`)
+        item.artist = item.artist || `Unknown artist`
       } else {
         item.artist = fileName.trim()
-        item.title = item.title || (`Unknown title`)
+        item.title = item.title || `Unknown title`
       }
     }
-
   }
   const tag = 'genre'
-  item[tag] = item[tag] || (`Unknown ${tag}`)
+  item[tag] = item[tag] || `Unknown ${tag}`
 }
 
 function trimFileExt(name) {

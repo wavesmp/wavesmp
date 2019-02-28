@@ -18,12 +18,8 @@ class TrackInfo extends React.Component {
     }
     return (
       <div className='trackplayer trackplayer-info'>
-        <p className='trackplayer-info-title'>
-          {trackTitle}
-        </p>
-        <p className='trackplayer-info-artist'>
-          {trackArtist}
-        </p>
+        <p className='trackplayer-info-title'>{trackTitle}</p>
+        <p className='trackplayer-info-artist'>{trackArtist}</p>
       </div>
     )
   }
@@ -46,28 +42,33 @@ class LeftButtons extends React.Component {
     let playOrPauseClass
     let onPlayPauseClick
     if (isPlaying) {
-      playOrPauseClass = "fa fa-lg fa-pause trackplayer-buttons"
+      playOrPauseClass = 'fa fa-lg fa-pause trackplayer-buttons'
       onPlayPauseClick = actions.pause
-
     } else {
-      playOrPauseClass = "fa fa-lg fa-play trackplayer-buttons"
+      playOrPauseClass = 'fa fa-lg fa-play trackplayer-buttons'
       onPlayPauseClick = actions.play
     }
     return (
-      <div className='trackplayer' style={{transform: 'translate(-160px, 0)', width: '160px'}}>
-        <span style={{float: 'left', marginLeft: '20px', marginTop: '9px'}}>
-          <i className="fa fa-backward trackplayer-buttons"
-             onClick={this.onTrackPrevious} style={{marginTop: '0px',
-                                               marginLeft: '5px',
-                                               marginRight: '5px'}}></i>
-          <i className={playOrPauseClass} onClick={onPlayPauseClick}
-                                          style={{marginTop: '10px',
-                                                  marginLeft: '5px',
-                                                  marginRight: '5px'}}></i>
-          <i className="fa fa-forward trackplayer-buttons"
-             onClick={this.onTrackNext} style={{marginTop: '0px',
-                                              marginLeft: '5px',
-                                              marginRight: '5px'}}></i>
+      <div
+        className='trackplayer'
+        style={{ transform: 'translate(-160px, 0)', width: '160px' }}
+      >
+        <span style={{ float: 'left', marginLeft: '20px', marginTop: '9px' }}>
+          <i
+            className='fa fa-backward trackplayer-buttons'
+            onClick={this.onTrackPrevious}
+            style={{ marginTop: '0px', marginLeft: '5px', marginRight: '5px' }}
+          />
+          <i
+            className={playOrPauseClass}
+            onClick={onPlayPauseClick}
+            style={{ marginTop: '10px', marginLeft: '5px', marginRight: '5px' }}
+          />
+          <i
+            className='fa fa-forward trackplayer-buttons'
+            onClick={this.onTrackNext}
+            style={{ marginTop: '0px', marginLeft: '5px', marginRight: '5px' }}
+          />
         </span>
       </div>
     )
@@ -79,16 +80,16 @@ class RightButtons extends React.Component {
     const { playing, actions } = this.props
     const { shuffle } = playing
     actions.shuffleToggle()
-    const msg = `Shuffle ${shuffle? 'Dis' : 'En'}abled`
-    actions.toastAdd({type: toastTypes.Success, msg})
+    const msg = `Shuffle ${shuffle ? 'Dis' : 'En'}abled`
+    actions.toastAdd({ type: toastTypes.Success, msg })
   }
 
   onRepeatClick = ev => {
     const { playing, actions } = this.props
     const { repeat } = playing
     actions.repeatToggle()
-    const msg = `Repeat ${repeat? 'Dis' : 'En'}abled`
-    actions.toastAdd({type: toastTypes.Success, msg})
+    const msg = `Repeat ${repeat ? 'Dis' : 'En'}abled`
+    actions.toastAdd({ type: toastTypes.Success, msg })
   }
 
   render() {
@@ -105,18 +106,20 @@ class RightButtons extends React.Component {
       shuffleButtonClass += ' trackplayer-button-activated'
     }
     return (
-      <div className='trackplayer' style={{width: '160px'}}>
-        <span style={{float: 'right', marginRight: '32px', marginTop: '15px'}}>
-          <i className={shuffleButtonClass}
-             onClick={this.onShuffleClick}
-             style={{marginTop: '0px',
-                     marginLeft: '5px',
-                     marginRight: '5px'}}></i>
-          <i className={repeatButtonClass}
-             onClick={this.onRepeatClick}
-             style={{marginTop: '0px',
-                     marginLeft: '5px',
-                     marginRight: '5px'}}></i>
+      <div className='trackplayer' style={{ width: '160px' }}>
+        <span
+          style={{ float: 'right', marginRight: '32px', marginTop: '15px' }}
+        >
+          <i
+            className={shuffleButtonClass}
+            onClick={this.onShuffleClick}
+            style={{ marginTop: '0px', marginLeft: '5px', marginRight: '5px' }}
+          />
+          <i
+            className={repeatButtonClass}
+            onClick={this.onRepeatClick}
+            style={{ marginTop: '0px', marginLeft: '5px', marginRight: '5px' }}
+          />
         </span>
       </div>
     )
@@ -129,9 +132,9 @@ export default class TrackPlayer extends React.Component {
     const { track } = playing
     return (
       <React.Fragment>
-        <TrackInfo trackTitle={track.title} trackArtist={track.artist}/>
-        <LeftButtons playing={playing} actions={actions}/>
-        <RightButtons playing={playing} actions={actions}/>
+        <TrackInfo trackTitle={track.title} trackArtist={track.artist} />
+        <LeftButtons playing={playing} actions={actions} />
+        <RightButtons playing={playing} actions={actions} />
       </React.Fragment>
     )
   }

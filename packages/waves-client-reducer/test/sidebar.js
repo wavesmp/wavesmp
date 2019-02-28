@@ -22,4 +22,3 @@ describe('#sidebar()', () => {
     assert.strictEqual(state, 'mode')
   })
 })
-

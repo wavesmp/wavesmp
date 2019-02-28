@@ -9,7 +9,6 @@ const toasts = require('./toasts')
 const tracks = require('./tracks')
 const transitions = require('./transitions')
 
-
 const combined = combineReducers({
   tracks,
   contextmenu,

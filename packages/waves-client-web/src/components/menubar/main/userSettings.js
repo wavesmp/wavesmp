@@ -13,7 +13,7 @@ export default class UserSettings extends React.Component {
 
   onAccountSettingsClick = () => {
     const { actions } = this.props
-    actions.modalSet({type: modalTypes.SETTINGS})
+    actions.modalSet({ type: modalTypes.SETTINGS })
   }
 
   items = [
@@ -39,14 +39,14 @@ export default class UserSettings extends React.Component {
   render() {
     const { actions, dropdown } = this.props
     return (
-        <Dropdown
-          actions={actions}
-          dropdown={dropdown}
-          dropdownName={dropdownTypes.USER_SETTINGS}
-          iconClasses={this.iconClasses}
-          header={this.header}
-          items={this.items}
-        />
+      <Dropdown
+        actions={actions}
+        dropdown={dropdown}
+        dropdownName={dropdownTypes.USER_SETTINGS}
+        iconClasses={this.iconClasses}
+        header={this.header}
+        items={this.items}
+      />
     )
   }
 }

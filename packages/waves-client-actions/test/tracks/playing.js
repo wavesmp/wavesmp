@@ -7,18 +7,19 @@ const Player = require('waves-client-player')
 const actions = require('../../src/tracks/playing')
 
 describe('#playing()', () => {
-
   it('#pause()', () => {
     const player = new Player({})
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock.expects('pause').once().withExactArgs()
+    const playerExpect = playerMock
+      .expects('pause')
+      .once()
+      .withExactArgs()
 
     const dispatchMock = sinon.mock()
     assert.isDefined(types.PLAYING_PAUSE)
     const dispatchExpect = dispatchMock.once().withExactArgs({
       type: types.PLAYING_PAUSE
     })
-
 
     const thunk = actions.pause()
     thunk(dispatchMock, undefined, { player })
@@ -30,7 +31,10 @@ describe('#playing()', () => {
   it('#play()', () => {
     const player = new Player({})
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock.expects('play').once().withExactArgs()
+    const playerExpect = playerMock
+      .expects('play')
+      .once()
+      .withExactArgs()
 
     const dispatchMock = sinon.mock()
     assert.isDefined(types.PLAYING_PLAY)
@@ -49,7 +53,10 @@ describe('#playing()', () => {
     const newTime = 3
     const player = new Player({})
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock.expects('seek').once().withExactArgs(newTime)
+    const playerExpect = playerMock
+      .expects('seek')
+      .once()
+      .withExactArgs(newTime)
 
     const dispatchMock = sinon.mock()
     assert.isDefined(types.PLAYING_TIME_UPDATE)
@@ -76,5 +83,4 @@ describe('#playing()', () => {
     const action = { type: types.PLAYING_SHUFFLE_TOGGLE }
     assert.deepEqual(actions.shuffleToggle(), action)
   })
-
 })

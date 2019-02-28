@@ -12,11 +12,10 @@ const CONTEXT_MENUS = {
   [contextmenuTypes.PLAYLIST_ADD]: PlaylistAdd
 }
 
-const EMPTY_MENU = <menu className='contextmenu'/>
+const EMPTY_MENU = <menu className='contextmenu' />
 
 /* Context menu used is used for table rows */
 export default class ContextMenu extends React.Component {
-
   render() {
     const { contextmenu } = this.props
     const numMenus = contextmenu.length
@@ -34,7 +33,7 @@ export default class ContextMenu extends React.Component {
     }
     return (
       <menu className='contextmenu contextmenu-active' style={style}>
-        <Component {...props}/>
+        <Component {...props} />
       </menu>
     )
   }

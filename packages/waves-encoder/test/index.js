@@ -30,16 +30,15 @@ describe('Encoder', () => {
 
     it('should encode and decode an object type', () => {
       const payload = {
-        'int': 2,
-        'string': 'foo',
-        'obj': {'nested': 'obj'},
-        'arr': ['foo', 'bar', {'nestedarrobj': 'obj'}]
+        int: 2,
+        string: 'foo',
+        obj: { nested: 'obj' },
+        arr: ['foo', 'bar', { nestedarrobj: 'obj' }]
       }
       const encoded = encoder.encode(payload)
       assert.typeOf(encoded, 'string')
       const decoded = encoder.decode(encoded)
       assert.deepEqual(payload, decoded)
     })
-
   })
 })

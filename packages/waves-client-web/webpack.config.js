@@ -7,13 +7,15 @@ const constants = require('./buildConstants')
 const stringReplacer = {
   loader: 'string-replace-loader',
   options: {
-    multiple: Object.entries(constants).sort(([a], [b]) => {
-      return b.length - a.length
-    }).map(([key, val]) => ({
-      search: key,
-      replace: val,
-      flags: 'g'
-    }))
+    multiple: Object.entries(constants)
+      .sort(([a], [b]) => {
+        return b.length - a.length
+      })
+      .map(([key, val]) => ({
+        search: key,
+        replace: val,
+        flags: 'g'
+      }))
   }
 }
 
@@ -53,7 +55,6 @@ const wpConfig = {
   node: {
     fs: 'empty'
   }
-
 }
 
 module.exports = wpConfig

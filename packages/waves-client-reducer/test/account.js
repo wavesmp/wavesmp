@@ -36,7 +36,12 @@ describe('#account()', () => {
     const columns = ['Name', 'Title']
     const rowsPerPage = 50
     const theme = 'testTheme'
-    action = { type: actionTypes.ACCOUNT_SET_SETTINGS, columns, rowsPerPage, theme }
+    action = {
+      type: actionTypes.ACCOUNT_SET_SETTINGS,
+      columns,
+      rowsPerPage,
+      theme
+    }
     state = assertNewState(account, state, action)
 
     assert.isObject(state)
@@ -54,5 +59,4 @@ describe('#account()', () => {
     assert.isObject(state)
     assert.strictEqual(state.fetchingUser, fetchingUser)
   })
-
 })

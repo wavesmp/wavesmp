@@ -13,15 +13,15 @@ function account(state = initialState, action) {
   switch (action.type) {
     case actionTypes.ACCOUNT_LOGIN: {
       const { user } = action
-      return {...state, user, fetchingUser: false }
+      return { ...state, user, fetchingUser: false }
     }
     case actionTypes.ACCOUNT_SET_SETTINGS: {
       const { columns, rowsPerPage, theme } = action
-      return {...state, columns, rowsPerPage, theme }
+      return { ...state, columns, rowsPerPage, theme }
     }
     case actionTypes.ACCOUNT_SET_FETCHING_USER: {
       const { fetchingUser } = action
-      return {...state, fetchingUser }
+      return { ...state, fetchingUser }
     }
     default:
       return state

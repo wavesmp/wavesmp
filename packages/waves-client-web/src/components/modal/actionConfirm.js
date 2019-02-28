@@ -27,15 +27,20 @@ class ActionConfirmModal extends React.Component {
   }
 
   render() {
-    const { deleteTitle, actionTitle, message, title, additionalRow, disabled } = this.props
+    const {
+      deleteTitle,
+      actionTitle,
+      message,
+      title,
+      additionalRow,
+      disabled
+    } = this.props
     return (
       <ModalWrapper>
-        <ModalHeader title={title} onClose={this.onClose}/>
+        <ModalHeader title={title} onClose={this.onClose} />
         <div className='modal-body'>
           <div>
-              <span style={{marginTop: '6px'}}>
-                {message}
-              </span>
+            <span style={{ marginTop: '6px' }}>{message}</span>
           </div>
           {additionalRow}
         </div>
@@ -46,15 +51,15 @@ class ActionConfirmModal extends React.Component {
           onAction={this.onAction}
           deleteTitle={deleteTitle}
           onDelete={this.onDelete}
-          onClose={this.onClose}/>
+          onClose={this.onClose}
+        />
       </ModalWrapper>
     )
   }
 }
 
 function mapStateToProps(state) {
-  return {
-  }
+  return {}
 }
 
 function mapDispatchToProps(dispatch) {

@@ -12,21 +12,20 @@ export default class TrackSlider extends React.Component {
   }
 
   onMouseDown = ev => {
-    this.setState({seeking: true})
+    this.setState({ seeking: true })
   }
 
   onChange = ev => {
-    this.setState({seekingValue: ev.currentTarget.value})
+    this.setState({ seekingValue: ev.currentTarget.value })
   }
 
   onMouseUp = ev => {
     const { actions, playing } = this.props
     const { track } = playing
     const { duration } = track
-    this.setState({seeking: false})
+    this.setState({ seeking: false })
     actions.seek(ev.target.value * duration)
   }
-
 
   getValue() {
     if (this.state.seeking) {
@@ -42,12 +41,17 @@ export default class TrackSlider extends React.Component {
   render() {
     const value = this.getValue()
     return (
-        <input type="range" min="0.0" max="1.0" step='0.001'
-               value={value}
-               onMouseDown={this.onMouseDown}
-               onMouseUp={this.onMouseUp}
-               onChange={this.onChange}
-               className='trackslider'/>
+      <input
+        type='range'
+        min='0.0'
+        max='1.0'
+        step='0.001'
+        value={value}
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
+        onChange={this.onChange}
+        className='trackslider'
+      />
     )
   }
 }

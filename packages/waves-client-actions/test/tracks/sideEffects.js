@@ -8,17 +8,19 @@ const Player = require('waves-client-player')
 
 const actions = require('../../src/tracks/sideEffects')
 
-const { TEST_TRACK1: baseTrack1, TEST_TRACK2: baseTrack2 } = require('waves-test-data')
+const {
+  TEST_TRACK1: baseTrack1,
+  TEST_TRACK2: baseTrack2
+} = require('waves-test-data')
 
-const track1 = {...baseTrack1, id: mongoid()}
-const track2 = {...baseTrack2, id: mongoid()}
+const track1 = { ...baseTrack1, id: mongoid() }
+const track2 = { ...baseTrack2, id: mongoid() }
 const library = {
   [track1.id]: track1,
   [track2.id]: track2
 }
 
 describe('#sideEffects()', async () => {
-
   it('#download()', async () => {
     const player = new Player({})
 
@@ -28,8 +30,10 @@ describe('#sideEffects()', async () => {
     const thunk = actions.download(track1.id)
 
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock.expects('download')
-      .once().withExactArgs(track1)
+    const playerExpect = playerMock
+      .expects('download')
+      .once()
+      .withExactArgs(track1)
 
     const tracks = { library }
     await thunk(dispatchMock, () => ({ tracks }), { player })
@@ -43,12 +47,10 @@ describe('#sideEffects()', async () => {
     const firstCallToast = firstCallArg.toast
     assert.lengthOf(Object.keys(firstCallToast), 3)
     assert.strictEqual(firstCallToast.type, toastTypes.Success)
-    assert.strictEqual(firstCallToast.msg, 'Download started' )
+    assert.strictEqual(firstCallToast.msg, 'Download started')
     assert.isNumber(firstCallToast.id)
 
     playerMock.verify()
     dispatchMock.verify()
   })
-
-
 })

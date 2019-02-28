@@ -3,10 +3,16 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { DEFAULT_PLAYLIST, FULL_PLAYLIST as playlistName,
-         contextmenuTypes } from 'waves-client-constants'
+import {
+  DEFAULT_PLAYLIST,
+  FULL_PLAYLIST as playlistName,
+  contextmenuTypes
+} from 'waves-client-constants'
 import * as WavesActions from 'waves-client-actions'
-import { getOrCreatePlaylistSelectors, getDefaultPlaylistSearch } from 'waves-client-selectors'
+import {
+  getOrCreatePlaylistSelectors,
+  getDefaultPlaylistSearch
+} from 'waves-client-selectors'
 
 import { onRowDoubleClick } from '../playlist/tableActions'
 import { libraryColumns } from '../table/columns'
@@ -14,7 +20,6 @@ import TablePage from '../tablepage'
 
 const TITLE = 'Library'
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
-
 
 class Library extends React.Component {
   getDisplayItems = (startIndex, stopIndex) => {
@@ -31,10 +36,9 @@ class Library extends React.Component {
     for (let i = startIndex; i < stopIndex && i < length; i += 1) {
       const track = library[tracks[i]]
       const time = formatTime(1000 * track.duration)
-      displayItems.push({...track, time, playId: i + ''})
+      displayItems.push({ ...track, time, playId: i + '' })
     }
     return displayItems
-
   }
 
   onNowPlayingClick = () => {
@@ -82,15 +86,25 @@ class Library extends React.Component {
   }
 
   render() {
-    const { actions, playing, sidebar, playlist,
-            rowsPerPage, transitions, location, history,
-            searchItems, routerSearchString,
-            columns, theme } = this.props
+    const {
+      actions,
+      playing,
+      sidebar,
+      playlist,
+      rowsPerPage,
+      transitions,
+      location,
+      history,
+      searchItems,
+      routerSearchString,
+      columns,
+      theme
+    } = this.props
     let playId, selection, sortKey, ascending
     let playlistLoaded = false
     let numItems
     if (playlist) {
-      ({ ascending, playId, sortKey, selection } = playlist)
+      ;({ ascending, playId, sortKey, selection } = playlist)
       playlistLoaded = true
       if (routerSearchString) {
         numItems = searchItems.length
@@ -132,9 +146,11 @@ class Library extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { getRouterSearchString,
-          getPlaylist,
-          getSearchItems } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
+  const {
+    getRouterSearchString,
+    getPlaylist,
+    getSearchItems
+  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
   const { search } = ownProps.location

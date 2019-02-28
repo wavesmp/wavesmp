@@ -1,6 +1,6 @@
 const { assert } = require('chai')
 const { LocalStorage } = require('node-localstorage')
-const ObjectID = require("bson-objectid")
+const ObjectID = require('bson-objectid')
 
 const LocalState = require('../src')
 const { CONFIG_KEY } = require('../src/storageInit')
@@ -35,7 +35,10 @@ describe('waves-client-local-state', async () => {
 
     assert.lengthOf(localStorage, 1)
     assert.strictEqual(localStorage.key(0), CONFIG_KEY)
-    assert.deepEqual(JSON.parse(localStorage.getItem(CONFIG_KEY)), expectedConfig)
+    assert.deepEqual(
+      JSON.parse(localStorage.getItem(CONFIG_KEY)),
+      expectedConfig
+    )
 
     const localStateKeys = await localState.keys()
     assert.lengthOf(localStateKeys, 5)
@@ -67,7 +70,10 @@ describe('waves-client-local-state', async () => {
 
     assert.lengthOf(localStorage, 1)
     assert.strictEqual(localStorage.key(0), CONFIG_KEY)
-    assert.deepEqual(JSON.parse(localStorage.getItem(CONFIG_KEY)), defaultConfig)
+    assert.deepEqual(
+      JSON.parse(localStorage.getItem(CONFIG_KEY)),
+      defaultConfig
+    )
 
     const localStateKeys = await localState.keys()
     assert.lengthOf(localStateKeys, 5)
@@ -109,5 +115,4 @@ describe('waves-client-local-state', async () => {
     assert.strictEqual(actualTheme, newTheme)
     localStorage._deleteLocation()
   })
-
 })

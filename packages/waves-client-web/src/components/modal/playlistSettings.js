@@ -31,7 +31,7 @@ class PlaylistSettingsModal extends React.Component {
     }
     actions.playlistMove(playlistName, playlistSaveName)
     const { search } = playlists[playlistName]
-    const to = {pathname: `/playlist/${playlistSaveName}`, search}
+    const to = { pathname: `/playlist/${playlistSaveName}`, search }
     history.push(to)
     actions.toastAdd({ type: toastTypes.Success, msg: 'Renamed playlist' })
     this.onClose()
@@ -41,7 +41,7 @@ class PlaylistSettingsModal extends React.Component {
     const { actions, playlists, playlistName, history } = this.props
     actions.playlistDelete(playlistName)
     const { search } = playlists[DEFAULT_PLAYLIST]
-    const to = {pathname: '/nowplaying', search}
+    const to = { pathname: '/nowplaying', search }
     history.push(to)
     actions.toastAdd({ type: toastTypes.Success, msg: 'Deleted playlist' })
     this.onClose()
@@ -57,25 +57,32 @@ class PlaylistSettingsModal extends React.Component {
     const { playlistSaveName } = this.state
     return (
       <ModalWrapper>
-        <ModalHeader title={TITLE} onClose={this.onClose}/>
+        <ModalHeader title={TITLE} onClose={this.onClose} />
 
-          <div className='modal-body'>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <label style={{marginLeft: '15px', marginRight: '25px'}}>Name</label>
-              <div style={{width: '100%', marginRight: '15px'}}>
-                <input className='form-input' value={playlistSaveName}
-                       placeholder={playlistName} onInput={this.onInput}/>
-              </div>
-              <div className='clearfix'/>
+        <div className='modal-body'>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label style={{ marginLeft: '15px', marginRight: '25px' }}>
+              Name
+            </label>
+            <div style={{ width: '100%', marginRight: '15px' }}>
+              <input
+                className='form-input'
+                value={playlistSaveName}
+                placeholder={playlistName}
+                onInput={this.onInput}
+              />
             </div>
+            <div className='clearfix' />
           </div>
+        </div>
 
         <ModalFooter
           actionTitle={ACTION}
           onAction={this.onAction}
           onClose={this.onClose}
           deleteTitle='Delete'
-          onDelete={this.onDelete}/>
+          onDelete={this.onDelete}
+        />
       </ModalWrapper>
     )
   }
@@ -83,7 +90,7 @@ class PlaylistSettingsModal extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    playlists: state.tracks.playlists,
+    playlists: state.tracks.playlists
   }
 }
 

@@ -26,7 +26,7 @@ class AckMessenger {
     this.reqId += 1
 
     data = this.encoder.encode(data)
-    this.ackMessages[reqId] = {data}
+    this.ackMessages[reqId] = { data }
 
     let sentPromise
     if (ws.readyState === ws.OPEN) {
@@ -73,7 +73,6 @@ class AckMessenger {
       ackMessage.receivedResolve(data)
     }
   }
-
 }
 
 module.exports = AckMessenger

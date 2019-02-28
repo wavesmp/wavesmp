@@ -9,7 +9,13 @@ function selectionClearAndAdd(name, playId, trackId) {
 }
 
 function selectionRange(name, startPlayId, endPlayId, displayItems) {
-  return { type: types.SELECTION_RANGE, name, startPlayId, endPlayId, displayItems }
+  return {
+    type: types.SELECTION_RANGE,
+    name,
+    startPlayId,
+    endPlayId,
+    displayItems
+  }
 }
 
 function selectionRemove(name, playId) {

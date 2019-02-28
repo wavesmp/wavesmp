@@ -2,7 +2,6 @@
  * Constants to be replaced in source files
  */
 
-
 // Old light theme
 // MAIN_THEME_COLOR: '#4AA3DF',
 // BODY_COLOR_OLD: '#555',
@@ -15,7 +14,6 @@ const grayBackground = '#e6e6e6'
 const white = '#fff'
 
 module.exports = {
-
   MENUBAR_HEIGHT: '65px',
   SIDEBAR_WIDTH: '70px',
   PLAYLISTBAR_WIDTH: '140px',
@@ -124,6 +122,5 @@ module.exports = {
   LIGHT_TRACKSLIDER_BORDER_COLOR: '#ccc',
 
   LIGHT_ACTIVE_PAGE_BACKGROUND_COLOR: '#eee',
-  LIGHT_ACTIVE_PAGE_COLOR: '#333',
+  LIGHT_ACTIVE_PAGE_COLOR: '#333'
 }
-

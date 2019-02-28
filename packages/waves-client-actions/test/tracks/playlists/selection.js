@@ -5,14 +5,16 @@ const types = require('waves-action-types')
 const actions = require('../../../src/tracks/playlists/selection')
 
 describe('#selection()', () => {
-
   it('#selectionAdd()', () => {
     assert.isDefined(types.SELECTION_ADD)
     const name = 'testName'
     const playId = 'testPlayId'
     const trackId = 'testTrackId'
     const expectedAction = { type: types.SELECTION_ADD, name, playId, trackId }
-    assert.deepEqual(actions.selectionAdd(name, playId, trackId), expectedAction)
+    assert.deepEqual(
+      actions.selectionAdd(name, playId, trackId),
+      expectedAction
+    )
   })
 
   it('#selectionClearAndAdd()', () => {
@@ -26,7 +28,10 @@ describe('#selection()', () => {
       playId,
       trackId
     }
-    assert.deepEqual(actions.selectionClearAndAdd(name, playId, trackId), expectedAction)
+    assert.deepEqual(
+      actions.selectionClearAndAdd(name, playId, trackId),
+      expectedAction
+    )
   })
 
   it('#selectionRange()', () => {
@@ -43,7 +48,11 @@ describe('#selection()', () => {
       displayItems
     }
     const actualAction = actions.selectionRange(
-      name, startPlayId, endPlayId, displayItems)
+      name,
+      startPlayId,
+      endPlayId,
+      displayItems
+    )
     assert.deepEqual(actualAction, expectedAction)
   })
 
@@ -54,5 +63,4 @@ describe('#selection()', () => {
     const expectedAction = { type: types.SELECTION_REMOVE, name, playId }
     assert.deepEqual(actions.selectionRemove(name, playId), expectedAction)
   })
-
 })

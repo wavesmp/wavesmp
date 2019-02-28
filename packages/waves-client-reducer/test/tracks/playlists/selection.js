@@ -18,7 +18,7 @@ describe('#selection()', () => {
       trackId: 'trackId0'
     }
     state = assertNewState(selection[action.type], state, action)
-    assert.deepEqual(state.selection, {'0': 'trackId0'})
+    assert.deepEqual(state.selection, { '0': 'trackId0' })
   })
 
   it('selection add', () => {
@@ -80,7 +80,6 @@ describe('#selection()', () => {
       trackId: 'trackId5'
     }
     state = assertNewState(selection[action.type], state, action)
-    assert.deepEqual(state.selection, {'5': 'trackId5'})
+    assert.deepEqual(state.selection, { '5': 'trackId5' })
   })
-
 })

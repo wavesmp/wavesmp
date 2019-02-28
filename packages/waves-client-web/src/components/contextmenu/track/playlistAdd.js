@@ -20,13 +20,19 @@ class PlaylistAdd extends React.Component {
     const items = []
 
     for (const playlist in playlists) {
-      if (playlist === constants.DEFAULT_PLAYLIST ||
-          playlist === constants.FULL_PLAYLIST) {
+      if (
+        playlist === constants.DEFAULT_PLAYLIST ||
+        playlist === constants.FULL_PLAYLIST
+      ) {
         continue
       }
-      items.push(<PlaylistAddItem key={playlist} title={playlist} onClick={
-        ev => actions.playlistAdd(currentPlaylist, playlist)
-      }/>)
+      items.push(
+        <PlaylistAddItem
+          key={playlist}
+          title={playlist}
+          onClick={ev => actions.playlistAdd(currentPlaylist, playlist)}
+        />
+      )
     }
 
     return items
@@ -35,7 +41,7 @@ class PlaylistAdd extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Back onClick={this.onBackClick}/>
+        <Back onClick={this.onBackClick} />
         {this.getPlaylistAddItems()}
       </React.Fragment>
     )

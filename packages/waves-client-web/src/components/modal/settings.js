@@ -63,59 +63,72 @@ class AccountSettingsModal extends React.Component {
     const activeColumns = ALL_COLUMNS.filter(x => columns.has(x))
     return (
       <ModalWrapper>
-        <ModalHeader title={TITLE} onClose={this.onClose}/>
+        <ModalHeader title={TITLE} onClose={this.onClose} />
 
         <div className='modal-body'>
           <div>
-
-            <div style={{display: 'flex'}}>
-              <div style={{width: '50%', marginLeft: '25px'}}>
-                  <label style={{marginTop: '6px'}}>Hidden Columns</label>
-                  <ul className='menubar-settings-list'>
-                    {hiddenColumns.map((sample, index) => (
-                      <li key={sample}
-                          className='menubar-settings-list-item'
-                          data-columnname={sample}
-                          onClick={this.addColumn}>
-                        <i style={{color: '#19B698'}} className='fa fa-lg fa-plus'></i>
-                        &nbsp;&nbsp;{sample}
-                      </li>
-                     ))}
-                  </ul>
+            <div style={{ display: 'flex' }}>
+              <div style={{ width: '50%', marginLeft: '25px' }}>
+                <label style={{ marginTop: '6px' }}>Hidden Columns</label>
+                <ul className='menubar-settings-list'>
+                  {hiddenColumns.map((sample, index) => (
+                    <li
+                      key={sample}
+                      className='menubar-settings-list-item'
+                      data-columnname={sample}
+                      onClick={this.addColumn}
+                    >
+                      <i
+                        style={{ color: '#19B698' }}
+                        className='fa fa-lg fa-plus'
+                      />
+                      &nbsp;&nbsp;{sample}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div style={{width: '50%', marginLeft: '25px'}}>
-                  <label style={{marginTop: '6px'}}>Active Columns</label>
-                  <ul className='menubar-settings-list'>
-                    {activeColumns.map((sample, index) => (
-                      <li key={sample}
-                          className='menubar-settings-list-item'
-                          data-columnname={sample}
-                          onClick={this.removeColumn}>
-                        <i style={{color: '#C11313'}} className='fa fa-lg fa-times'></i>
-                        &nbsp;&nbsp;{sample}
-                      </li>
-                     ))}
-                  </ul>
+              <div style={{ width: '50%', marginLeft: '25px' }}>
+                <label style={{ marginTop: '6px' }}>Active Columns</label>
+                <ul className='menubar-settings-list'>
+                  {activeColumns.map((sample, index) => (
+                    <li
+                      key={sample}
+                      className='menubar-settings-list-item'
+                      data-columnname={sample}
+                      onClick={this.removeColumn}
+                    >
+                      <i
+                        style={{ color: '#C11313' }}
+                        className='fa fa-lg fa-times'
+                      />
+                      &nbsp;&nbsp;{sample}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <div style={{width: '50%', marginLeft: '25px'}}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ width: '50%', marginLeft: '25px' }}>
                 <label>Theme:</label>
-                <div style={{width: '25%'}}>
-                  <select value={theme}
-                          onChange={this.onThemeChange}
-                          className='form-input'>
+                <div style={{ width: '25%' }}>
+                  <select
+                    value={theme}
+                    onChange={this.onThemeChange}
+                    className='form-input'
+                  >
                     <option value='light'>Light</option>
                     <option value='dark'>Dark</option>
                   </select>
                 </div>
               </div>
-              <div style={{width: '50%', marginLeft: '25px'}}>
+              <div style={{ width: '50%', marginLeft: '25px' }}>
                 <label>Rows Per Page:</label>
-                <div style={{width: '25%'}}>
-                  <select value={rowsPerPage}
-                          onChange={this.onRowsPerPageChange}
-                          className='form-input'>
+                <div style={{ width: '25%' }}>
+                  <select
+                    value={rowsPerPage}
+                    onChange={this.onRowsPerPageChange}
+                    className='form-input'
+                  >
                     <option value='10'>10</option>
                     <option value='25'>25</option>
                     <option value='50'>50</option>
@@ -130,7 +143,8 @@ class AccountSettingsModal extends React.Component {
         <ModalFooter
           actionTitle={ACTION}
           onAction={this.onAction}
-          onClose={this.onClose}/>
+          onClose={this.onClose}
+        />
       </ModalWrapper>
     )
   }

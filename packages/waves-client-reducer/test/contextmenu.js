@@ -3,7 +3,10 @@ const { assert } = require('chai')
 const actionTypes = require('waves-action-types')
 
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
-const { TEST_CONTEXTMENU1: menu1, TEST_CONTEXTMENU2: menu2 } = require('waves-test-data')
+const {
+  TEST_CONTEXTMENU1: menu1,
+  TEST_CONTEXTMENU2: menu2
+} = require('waves-test-data')
 
 const contextmenu = require('../src/contextmenu')
 

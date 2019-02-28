@@ -14,7 +14,6 @@ let prevPlayerVisible = false
 
 export default class MenuBar extends React.Component {
   render() {
-
     const { actions, dropdown, playing, history, userName } = this.props
     const { isPlaying, track } = playing
 
@@ -24,52 +23,54 @@ export default class MenuBar extends React.Component {
     let logoClassName = 'menubar-main-logo'
     let logoNameClassName = 'menubar-main-logo-name'
     if (isPlayerVisible) {
-        /* Avoid transition when trackplayer takes entire space. */
-        if (!prevPlayerVisible &&
-            !window.matchMedia('only screen and (min-width: 516px)').matches) {
-            setTimeout(() => this.forceUpdate(), 0)
-        } else {
-          logoClassName += ' menubar-transition'
-          logoNameClassName += ' menubar-transition'
-        }
+      /* Avoid transition when trackplayer takes entire space. */
+      if (
+        !prevPlayerVisible &&
+        !window.matchMedia('only screen and (min-width: 516px)').matches
+      ) {
+        setTimeout(() => this.forceUpdate(), 0)
+      } else {
+        logoClassName += ' menubar-transition'
+        logoNameClassName += ' menubar-transition'
+      }
 
-        prevPlayerVisible = true
-        logoClassName += ' menubar-player-visible'
-        logoNameClassName += ' menubar-player-visible'
-        trackSlider = <TrackSlider actions={actions}
-                                   playing={playing}
-                                   key={0}/>
-        trackPlayer = <TrackPlayer actions={actions}
-                                   playing={playing}
-                                   key={0}/>
+      prevPlayerVisible = true
+      logoClassName += ' menubar-player-visible'
+      logoNameClassName += ' menubar-player-visible'
+      trackSlider = <TrackSlider actions={actions} playing={playing} key={0} />
+      trackPlayer = <TrackPlayer actions={actions} playing={playing} key={0} />
     }
 
     return (
       <header className='menubar-main-header'>
         <div className='menubar-main-container'>
           <Link to={DEFAULT_APP_PATH}>
-            <LogoSvg className={logoClassName}/>
+            <LogoSvg className={logoClassName} />
             <span className={logoNameClassName}>WAVES</span>
           </Link>
-          <CSSTransitionGroup transitionName='fade'
-                                   transitionEnterTimeout={800}
-                                   transitionLeaveTimeout={300}>
+          <CSSTransitionGroup
+            transitionName='fade'
+            transitionEnterTimeout={800}
+            transitionLeaveTimeout={300}
+          >
             {trackPlayer}
           </CSSTransitionGroup>
-          <Notifications actions={actions} dropdown={dropdown}/>
+          <Notifications actions={actions} dropdown={dropdown} />
           <UserSettings
             actions={actions}
             dropdown={dropdown}
             history={history}
-            userName={userName}/>
+            userName={userName}
+          />
         </div>
-        <CSSTransitionGroup transitionName='fade'
-                                 transitionEnterTimeout={800}
-                                 transitionLeaveTimeout={300}>
+        <CSSTransitionGroup
+          transitionName='fade'
+          transitionEnterTimeout={800}
+          transitionLeaveTimeout={300}
+        >
           {trackSlider}
         </CSSTransitionGroup>
       </header>
     )
   }
 }
-

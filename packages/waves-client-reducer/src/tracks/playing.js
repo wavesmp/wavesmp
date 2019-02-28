@@ -26,16 +26,16 @@ function reducerPlaying(playing = initialPlaying, action) {
     }
 
     case actionTypes.PLAYING_SHUFFLE_TOGGLE: {
-        return {...playing, shuffle: !playing.shuffle, repeat: false}
+      return { ...playing, shuffle: !playing.shuffle, repeat: false }
     }
 
     case actionTypes.PLAYING_REPEAT_TOGGLE: {
-      return {...playing, repeat: !playing.repeat, shuffle: false}
+      return { ...playing, repeat: !playing.repeat, shuffle: false }
     }
 
     case actionTypes.PLAYING_TIME_UPDATE: {
       const { currentTime } = action
-      return {...playing, currentTime }
+      return { ...playing, currentTime }
     }
 
     case actionTypes.TRACK_NEXT: {
@@ -46,7 +46,7 @@ function reducerPlaying(playing = initialPlaying, action) {
           track: nextTrack
         }
       }
-      return {...playing, isPlaying: false}
+      return { ...playing, isPlaying: false }
     }
 
     case actionTypes.TRACK_TOGGLE: {
@@ -63,7 +63,7 @@ function reducerPlaying(playing = initialPlaying, action) {
       const { deleteIds } = action
       const { track } = playing
       if (track && deleteIds.has(track.id)) {
-        return {...initialPlaying}
+        return { ...initialPlaying }
       }
       return playing
     }
@@ -71,7 +71,7 @@ function reducerPlaying(playing = initialPlaying, action) {
       const { deleteIds } = action
       const { track } = playing
       if (track && deleteIds.has(track.id)) {
-        return {...initialPlaying}
+        return { ...initialPlaying }
       }
       return playing
     }

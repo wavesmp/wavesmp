@@ -6,7 +6,6 @@ const { TEST_CONTEXTMENU1: menu } = require('waves-test-data')
 const actions = require('../src/contextmenu')
 
 describe('#contextmenu()', () => {
-
   it('#contextmenuReset()', () => {
     assert.isDefined(types.CONTEXTMENU_RESET)
     const expectedAction = { type: types.CONTEXTMENU_RESET }

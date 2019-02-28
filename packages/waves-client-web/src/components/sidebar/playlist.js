@@ -17,7 +17,7 @@ export default class PlaylistBar extends React.Component {
 
   onNewPlaylistClick = () => {
     const { actions } = this.props
-    actions.modalSet({type: constants.modalTypes.PLAYLIST_CREATE})
+    actions.modalSet({ type: constants.modalTypes.PLAYLIST_CREATE })
   }
 
   onNewPlaylistDrop = ev => {
@@ -34,7 +34,9 @@ export default class PlaylistBar extends React.Component {
     const playlistName = ev.dataTransfer.getData(constants.PLAYLIST_TYPE)
     if (playlistName) {
       ev.preventDefault()
-      console.log(`TODO implement me. Dropped to existing playlist: ${playlistName}`)
+      console.log(
+        `TODO implement me. Dropped to existing playlist: ${playlistName}`
+      )
       // actions.playlistAdd(...)
     }
   }
@@ -42,9 +44,10 @@ export default class PlaylistBar extends React.Component {
   render() {
     const { playlists, isPlayerVisible } = this.props
     const playlistObjs = Object.values(playlists).filter(
-      p => (p.name !== constants.DEFAULT_PLAYLIST &&
-            p.name !== constants.FULL_PLAYLIST &&
-            p.name !== constants.UPLOAD_PLAYLIST)
+      p =>
+        p.name !== constants.DEFAULT_PLAYLIST &&
+        p.name !== constants.FULL_PLAYLIST &&
+        p.name !== constants.UPLOAD_PLAYLIST
     )
     let className = 'sidebar-container-wide'
     if (isPlayerVisible) {
@@ -55,26 +58,35 @@ export default class PlaylistBar extends React.Component {
         <ul className='nav'>
           <li>
             <span onClick={this.onBackClick}>
-              <i className='fa-fw fa fa-lg fa-arrow-left'></i>
-              <span style={{padding: '0px 15px'}}>Back</span>
+              <i className='fa-fw fa fa-lg fa-arrow-left' />
+              <span style={{ padding: '0px 15px' }}>Back</span>
             </span>
           </li>
           <li className='sidebar-playlist' data-playlistname={'__new'}>
-            <span onClick={this.onNewPlaylistClick}
-                  onDragOver={this.onDragOver}
-                  onDrop={this.onNewPlaylistDrop}>
-              <i className='fa-fw fa fa-lg fa-plus'></i>
+            <span
+              onClick={this.onNewPlaylistClick}
+              onDragOver={this.onDragOver}
+              onDrop={this.onNewPlaylistDrop}
+            >
+              <i className='fa-fw fa fa-lg fa-plus' />
               <span>New Playlist</span>
             </span>
           </li>
           {playlistObjs.map(playlist => (
-            <li key={playlist.name} className='sidebar-playlist'
-                data-playlistname={playlist.name}>
-              <Link to={{pathname: `/playlist/${playlist.name}`,
-                         search: playlist.search}}
-                    onDragOver={this.onDragOver}
-                    onDrop={this.onPlaylistDrop}>
-                <i className='fa-fw fa fa-lg fa-list'></i>
+            <li
+              key={playlist.name}
+              className='sidebar-playlist'
+              data-playlistname={playlist.name}
+            >
+              <Link
+                to={{
+                  pathname: `/playlist/${playlist.name}`,
+                  search: playlist.search
+                }}
+                onDragOver={this.onDragOver}
+                onDrop={this.onPlaylistDrop}
+              >
+                <i className='fa-fw fa fa-lg fa-list' />
                 <span>{playlist.name}</span>
               </Link>
             </li>

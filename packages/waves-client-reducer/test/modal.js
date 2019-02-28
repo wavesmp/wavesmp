@@ -29,5 +29,4 @@ describe('#modal()', () => {
 
     assert.isNull(state)
   })
-
 })

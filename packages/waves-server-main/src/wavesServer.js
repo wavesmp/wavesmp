@@ -7,7 +7,6 @@ const log = require('waves-server-logger')
 
 const HEARTBEAT_INTERVAL = 25000
 
-
 class Server {
   constructor(port, storage, auth) {
     this.storage = storage
@@ -15,9 +14,9 @@ class Server {
     this.encoder = new Encoder()
 
     this.listenPromise = new Promise((resolve, reject) => {
-      this.wss = new WebSocket.Server(
-        { port, perMessageDeflate: true },
-        err => err ? reject(err) : resolve())
+      this.wss = new WebSocket.Server({ port, perMessageDeflate: true }, err =>
+        err ? reject(err) : resolve()
+      )
     })
 
     this.onConnection = this.onConnection.bind(this)
@@ -90,9 +89,11 @@ class Server {
       [types.TRACKS_UPDATE]: async (ws, user, data, reqId) => {
         const { tracks } = data
         log.info('Importing tracks to library', tracks)
-        await Promise.all(tracks.map(t =>
-          ({...t, idp: user.idp, idpId: user.idpId})
-        ).map(this.storage.addTrack))
+        await Promise.all(
+          tracks
+            .map(t => ({ ...t, idp: user.idp, idpId: user.idpId }))
+            .map(this.storage.addTrack)
+        )
         if (reqId) {
           this.sendMessage(ws, types.TRACKS_UPDATE, {}, reqId)
         }
@@ -143,7 +144,7 @@ class Server {
               log.error(errMsg)
 
               if (reqId) {
-                const resp = {err: errMsg}
+                const resp = { err: errMsg }
                 this.sendMessage(ws, type, resp, reqId)
               }
 
@@ -154,37 +155,35 @@ class Server {
             try {
               user = await this.auth.login(idp, token)
             } catch (err) {
-              const resp = {err: err.toString()}
+              const resp = { err: err.toString() }
               if (reqId) {
                 this.sendMessage(ws, type, resp, reqId)
               }
               return
             }
 
-
             //const { idp, idpId, email, name } = user
             const { idpId, email, name } = user
             log.info('Client logged in:', name)
             await this.storage.getUser(idp, idpId, email, name)
             log.info('SENDING USER DATA')
-            this.sendMessage(ws, type, {...user}, reqId)
+            this.sendMessage(ws, type, { ...user }, reqId)
 
             const library = await this.storage.getLibrary(user)
             this.sendMessage(ws, types.TRACKS_UPDATE, library)
 
             const playlists = await this.storage.getPlaylists(user)
-            this.sendMessage(ws, types.PLAYLISTS_UPDATE, playlists);
+            this.sendMessage(ws, types.PLAYLISTS_UPDATE, playlists)
             return
           }
 
           await this.messageMap[type](ws, user, data, reqId)
-
         } catch (err) {
           const errString = err.toString()
           // TODO probably want to display user here...
           log.error(`Error processing message ${type}: ${errString}`)
           if (reqId) {
-            this.sendMessage(ws, type, {err: errString}, reqId)
+            this.sendMessage(ws, type, { err: errString }, reqId)
           }
         }
       })
@@ -194,7 +193,6 @@ class Server {
       ws.on('error', this.onError)
       ws.on('ping', this.onPing)
       ws.on('pong', this.onPong)
-
     } catch (err) {
       const errMsg = `Error handling "connection" event: ${err}`
       log.error(errMsg)
@@ -226,7 +224,7 @@ class Server {
        * with an optional err attribute if there was an error */
       throw new Error('Cannot send empty data')
     }
-    const raw = {type, data}
+    const raw = { type, data }
     if (reqId) {
       raw.reqId = reqId
     }
@@ -248,10 +246,9 @@ class Server {
 
   close() {
     return new Promise((resolve, reject) => {
-      this.wss.close(err => err ? reject(err) : resolve())
+      this.wss.close(err => (err ? reject(err) : resolve()))
     })
   }
-
 }
 
-module.exports = Server;
+module.exports = Server

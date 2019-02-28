@@ -4,10 +4,17 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { DEFAULT_PLAYLIST, FULL_PLAYLIST,
-         modalTypes, contextmenuTypes } from 'waves-client-constants'
-import { getOrCreatePlaylistSelectors, getLibraryPlaylistSearch,
-         getDefaultPlaylistSearch} from 'waves-client-selectors'
+import {
+  DEFAULT_PLAYLIST,
+  FULL_PLAYLIST,
+  modalTypes,
+  contextmenuTypes
+} from 'waves-client-constants'
+import {
+  getOrCreatePlaylistSelectors,
+  getLibraryPlaylistSearch,
+  getDefaultPlaylistSearch
+} from 'waves-client-selectors'
 
 import TablePage from '../tablepage'
 import { playlistColumns } from '../table/columns'
@@ -30,7 +37,7 @@ class Playlist extends React.Component {
     for (let i = startIndex; i < stopIndex && i < length; i += 1) {
       const track = library[tracks[i]]
       const time = formatTime(1000 * track.duration)
-      displayItems.push({...track, time, playId: i + ''})
+      displayItems.push({ ...track, time, playId: i + '' })
     }
     return displayItems
   }
@@ -59,7 +66,10 @@ class Playlist extends React.Component {
 
   onSettingsClick = () => {
     const { actions, playlistName } = this.props
-    actions.modalSet({type: modalTypes.PLAYLIST_SETTINGS, props: {playlistName}})
+    actions.modalSet({
+      type: modalTypes.PLAYLIST_SETTINGS,
+      props: { playlistName }
+    })
   }
 
   onItemEdit = (id, attr, update) => {
@@ -84,14 +94,26 @@ class Playlist extends React.Component {
   }
 
   render() {
-    const { playlist, playlistName, playing, actions, sidebar,
-            rowsPerPage, transitions, location, history,
-            routerSearchString, searchItems, columns, theme } = this.props
+    const {
+      playlist,
+      playlistName,
+      playing,
+      actions,
+      sidebar,
+      rowsPerPage,
+      transitions,
+      location,
+      history,
+      routerSearchString,
+      searchItems,
+      columns,
+      theme
+    } = this.props
     let playId, selection
     let playlistLoaded = false
     let numItems
     if (playlist) {
-      ({ playId, selection } = playlist)
+      ;({ playId, selection } = playlist)
       playlistLoaded = true
       if (routerSearchString) {
         numItems = searchItems.length
@@ -133,9 +155,11 @@ class Playlist extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   const playlistName = ownProps.match.params.playlist
-  const { getRouterSearchString,
-          getPlaylist,
-          getSearchItems } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
+  const {
+    getRouterSearchString,
+    getPlaylist,
+    getSearchItems
+  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
   const { search } = ownProps.location

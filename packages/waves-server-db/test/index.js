@@ -7,7 +7,7 @@ describe('Storage', () => {
   const storageSetup = new StorageSetup()
   const { getStorage } = storageSetup
 
-  before(async function () {
+  before(async function() {
     this.timeout(10000)
     await storageSetup.before()
   })
@@ -21,5 +21,4 @@ describe('Storage', () => {
   after(async () => {
     await storageSetup.after()
   })
-
 })

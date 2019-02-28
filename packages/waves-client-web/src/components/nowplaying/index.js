@@ -4,9 +4,16 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { DEFAULT_PLAYLIST as playlistName,
-         FULL_PLAYLIST, modalTypes, contextmenuTypes } from 'waves-client-constants'
-import { getOrCreatePlaylistSelectors, getLibraryPlaylistSearch } from 'waves-client-selectors'
+import {
+  DEFAULT_PLAYLIST as playlistName,
+  FULL_PLAYLIST,
+  modalTypes,
+  contextmenuTypes
+} from 'waves-client-constants'
+import {
+  getOrCreatePlaylistSelectors,
+  getLibraryPlaylistSearch
+} from 'waves-client-selectors'
 
 import TablePage from '../tablepage'
 import { playlistColumns } from '../table/columns'
@@ -29,10 +36,9 @@ class NowPlaying extends React.Component {
     for (let i = startIndex; i < stopIndex && i < length; i += 1) {
       const track = library[tracks[i]]
       const time = formatTime(1000 * track.duration)
-      displayItems.push({...track, time, playId: i + ''})
+      displayItems.push({ ...track, time, playId: i + '' })
     }
     return displayItems
-
   }
 
   onLibraryClick = () => {
@@ -53,12 +59,12 @@ class NowPlaying extends React.Component {
       message: `This will clear the ${TITLE} playlist. Are you sure?`,
       onDelete: this.onDelete
     }
-    actions.modalSet({type: modalTypes.ACTION_CONFIRM, props})
+    actions.modalSet({ type: modalTypes.ACTION_CONFIRM, props })
   }
 
   onPlaylistSave = () => {
     const { actions } = this.props
-    actions.modalSet({type: modalTypes.PLAYLIST_SAVE})
+    actions.modalSet({ type: modalTypes.PLAYLIST_SAVE })
   }
 
   defaultButtons = [
@@ -109,14 +115,25 @@ class NowPlaying extends React.Component {
   }
 
   render() {
-    const { playlist, actions, playing, sidebar,
-            rowsPerPage, transitions, location, history,
-            routerSearchString, searchItems, columns, theme } = this.props
+    const {
+      playlist,
+      actions,
+      playing,
+      sidebar,
+      rowsPerPage,
+      transitions,
+      location,
+      history,
+      routerSearchString,
+      searchItems,
+      columns,
+      theme
+    } = this.props
     let playId, selection
     let playlistLoaded = false
     let numItems
     if (playlist) {
-      ({ playId, selection } = playlist)
+      ;({ playId, selection } = playlist)
       playlistLoaded = true
       if (routerSearchString) {
         numItems = searchItems.length
@@ -156,9 +173,11 @@ class NowPlaying extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { getRouterSearchString,
-          getPlaylist,
-          getSearchItems } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
+  const {
+    getRouterSearchString,
+    getPlaylist,
+    getSearchItems
+  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
   const { search } = ownProps.location

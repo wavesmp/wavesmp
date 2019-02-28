@@ -54,8 +54,7 @@ libraryColumns.forEach(column => {
 function clonePlaylistColumns() {
   const clonedColumns = []
   for (let i = 0; i < playlistColumns.length; i += 1) {
-    clonedColumns.push({...playlistColumns[i]})
+    clonedColumns.push({ ...playlistColumns[i] })
   }
   return clonedColumns
 }
-

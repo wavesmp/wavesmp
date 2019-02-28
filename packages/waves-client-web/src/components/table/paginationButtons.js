@@ -17,7 +17,8 @@ export default class PaginationButtons extends React.Component {
     /* Handle the case where there are less than HALF_MAX_PAGINATION_BUTTONS
      * to the right of the current page */
     if (lastPage - currentPage < HALF_MAX_PAGINATION_BUTTONS) {
-      paginationStartIndex -= HALF_MAX_PAGINATION_BUTTONS - (lastPage - currentPage)
+      paginationStartIndex -=
+        HALF_MAX_PAGINATION_BUTTONS - (lastPage - currentPage)
     }
 
     /* Handle the cases where we are at the start of the pagination, or
@@ -57,23 +58,29 @@ export default class PaginationButtons extends React.Component {
       <div className='text-center'>
         <ul className='pagination'>
           <li>
-            <Link to={{pathname, search: prevSearch}}
-                  className={previousPageClass}>
-              <i className='fa fa-chevron-left'></i>
+            <Link
+              to={{ pathname, search: prevSearch }}
+              className={previousPageClass}
+            >
+              <i className='fa fa-chevron-left' />
             </Link>
           </li>
           {paginationButtons.map(sample => (
             <li key={sample.pageNum}>
-              <Link to={{pathname, search: sample.search}}
-                    className={sample.className}>
+              <Link
+                to={{ pathname, search: sample.search }}
+                className={sample.className}
+              >
                 {sample.pageNum}
               </Link>
             </li>
-           ))}
+          ))}
           <li>
-            <Link to={{pathname, search: nextSearch}}
-                  className={nextPageClass}>
-              <i className='fa fa-chevron-right'></i>
+            <Link
+              to={{ pathname, search: nextSearch }}
+              className={nextPageClass}
+            >
+              <i className='fa fa-chevron-right' />
             </Link>
           </li>
         </ul>

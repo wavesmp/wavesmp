@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 
-const { Track, Playlist, User, trackFromObject, validatePlaylistTrackIds } = require('./models')
+const {
+  Track,
+  Playlist,
+  User,
+  trackFromObject,
+  validatePlaylistTrackIds
+} = require('./models')
 
 class Storage {
   constructor(conf) {
@@ -17,26 +23,28 @@ class Storage {
 
   /* Get user. For internal testing only. */
   async getUserInternal(idp, idpId) {
-    const user = {idp, idpId}
+    const user = { idp, idpId }
     return await User.findOne(user)
   }
 
   /* Used to get, create, or update user */
   async getUser(idp, idpId, email, name) {
-    const user = {idp, idpId, email, name}
-    const dbUser = await User.findOneAndUpdate(
-        {idp, idpId}, user,
-        {upsert: true, new: true, runValidators: true})
+    const user = { idp, idpId, email, name }
+    const dbUser = await User.findOneAndUpdate({ idp, idpId }, user, {
+      upsert: true,
+      new: true,
+      runValidators: true
+    })
     return user
   }
 
   async getLibrary({ idp, idpId }) {
-    const dbTracks = await Track.find({idp, idpId})
+    const dbTracks = await Track.find({ idp, idpId })
     return dbTracks.map(t => t.toObject())
   }
 
   async getPlaylists({ idp, idpId }) {
-    const dbPlaylists = await Playlist.find({idp, idpId})
+    const dbPlaylists = await Playlist.find({ idp, idpId })
     return dbPlaylists.map(p => p.toObject())
   }
 
@@ -45,9 +53,12 @@ class Storage {
     await Track.create(track)
   }
 
-  async updateTrack({idp, idpId}, _id, trackUpdate) {
+  async updateTrack({ idp, idpId }, _id, trackUpdate) {
     const track = await Track.findOneAndUpdate(
-        {_id, idp, idpId}, trackUpdate, {runValidators: true})
+      { _id, idp, idpId },
+      trackUpdate,
+      { runValidators: true }
+    )
     if (!track) {
       throw new Error(`Cannot update track. Unknown id: ${_id}`)
     }
@@ -57,22 +68,22 @@ class Storage {
     /* Validate track id here, since they are added incrementally */
     validatePlaylistTrackIds(trackIds, name)
     const { idp, idpId } = user
-    const playlistQuery = {name, idp, idpId}
+    const playlistQuery = { name, idp, idpId }
     const dbPlaylist = await Playlist.findOne(playlistQuery)
 
     if (dbPlaylist) {
       const { tracks } = dbPlaylist
       tracks.push(...trackIds)
-      await Playlist.findOneAndUpdate(playlistQuery, {tracks})
+      await Playlist.findOneAndUpdate(playlistQuery, { tracks })
     } else {
-      const playlist = {idp, idpId, name, tracks: trackIds}
+      const playlist = { idp, idpId, name, tracks: trackIds }
       await Playlist.create(playlist)
     }
   }
 
   async playlistRemove(user, name, indexes) {
     const { idp, idpId } = user
-    const playlistQuery = {idp, idpId, name}
+    const playlistQuery = { idp, idpId, name }
 
     const dbPlaylist = await Playlist.findOne(playlistQuery)
 
@@ -84,25 +95,27 @@ class Storage {
 
     for (const index of indexes) {
       if (index < 0 || index >= tracks.length) {
-        throw new Error(`Playlist index ${index} out of range for playlist ${name}`)
+        throw new Error(
+          `Playlist index ${index} out of range for playlist ${name}`
+        )
       }
 
       tracks.splice(index, 1)
     }
 
-    await Playlist.findOneAndUpdate(playlistQuery, {tracks})
+    await Playlist.findOneAndUpdate(playlistQuery, { tracks })
   }
 
   async playlistCopy(user, name, destName) {
     const { idp, idpId } = user
-    const query = {idp, idpId, name}
+    const query = { idp, idpId, name }
 
     const dbPlaylist = await Playlist.findOne(query)
     if (!dbPlaylist) {
       throw new Error(`Cannot copy unknown playlist: ${name}`)
     }
 
-    const destQuery = {idp, idpId, name: destName}
+    const destQuery = { idp, idpId, name: destName }
     const destDbPlaylist = await Playlist.findOne(destQuery)
     if (destDbPlaylist) {
       throw new Error(`Cannot copy to existing playlist: ${destName}`)
@@ -121,14 +134,16 @@ class Storage {
 
   async playlistMove(user, name, destName) {
     const { idp, idpId } = user
-    const destQuery = {idp, idpId, name: destName}
+    const destQuery = { idp, idpId, name: destName }
     const destDbPlaylist = await Playlist.findOne(destQuery)
     if (destDbPlaylist) {
       throw new Error(`Cannot move to existing playlist: ${destName}`)
     }
 
     const updated = await Playlist.findOneAndUpdate(
-        {name, idp, idpId}, {name: destName})
+      { name, idp, idpId },
+      { name: destName }
+    )
     if (!updated) {
       throw new Error(`Cannot move unknown playlist: ${name}`)
     }
@@ -136,7 +151,7 @@ class Storage {
 
   async deletePlaylist(user, name) {
     const { idp, idpId } = user
-    const removed = await Playlist.findOneAndRemove({name, idp, idpId})
+    const removed = await Playlist.findOneAndRemove({ name, idp, idpId })
     if (!removed) {
       throw new Error(`Cannot remove unknown playlist: ${name}`)
     }
@@ -145,9 +160,12 @@ class Storage {
   async deleteTracks(user, trackIds) {
     const { idp, idpId } = user
     // TODO do resps need to be handled?
-    await Track.remove({ idp, idpId, _id : { $in: trackIds } })
+    await Track.remove({ idp, idpId, _id: { $in: trackIds } })
     await Playlist.update(
-      {idp, idpId}, {$pull: { tracks: { $in: trackIds }}}, {multi: true})
+      { idp, idpId },
+      { $pull: { tracks: { $in: trackIds } } },
+      { multi: true }
+    )
   }
 }
 

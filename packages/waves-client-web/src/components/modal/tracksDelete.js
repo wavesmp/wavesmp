@@ -17,9 +17,9 @@ class TracksDeleteModal extends React.Component {
 
   onDelete = async () => {
     const { actions } = this.props
-    this.setState({deleting: true})
+    this.setState({ deleting: true })
     const { deleteErrs, serverErrs } = await actions.tracksDelete()
-    this.setState({deleting: false})
+    this.setState({ deleting: false })
     return deleteErrs.length === 0 && serverErrs.length === 0
   }
 
@@ -38,30 +38,30 @@ class TracksDeleteModal extends React.Component {
             <thead>
               <tr>
                 {columns.map(column => (
-                  <th key={column.title}>
-                    {column.title}
-                  </th>
+                  <th key={column.title}>{column.title}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-            {itemPlayIds.map(itemPlayId => {
-              // TODO refactor with Library
-              let sample = library[selection[itemPlayId]]
-              const time = formatTime(1000 * sample.duration)
-              sample = {...sample, time, playId: itemPlayId + ''}
-              return (
-                <tr key={itemPlayId}>
-                  {columns.map(column => (
-                     <column.Component
-                       key={column.title}
-                       isPlaying={isPlaying}
-                       playId={playId}
-                       sample={sample}
-                       editable={false}/>
-                  ))}
-                </tr>
-            )})}
+              {itemPlayIds.map(itemPlayId => {
+                // TODO refactor with Library
+                let sample = library[selection[itemPlayId]]
+                const time = formatTime(1000 * sample.duration)
+                sample = { ...sample, time, playId: itemPlayId + '' }
+                return (
+                  <tr key={itemPlayId}>
+                    {columns.map(column => (
+                      <column.Component
+                        key={column.title}
+                        isPlaying={isPlaying}
+                        playId={playId}
+                        sample={sample}
+                        editable={false}
+                      />
+                    ))}
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>

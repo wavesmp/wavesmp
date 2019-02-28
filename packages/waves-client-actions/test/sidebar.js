@@ -5,7 +5,6 @@ const types = require('waves-action-types')
 const actions = require('../src/sidebar')
 
 describe('#sidebar()', () => {
-
   it('#sidebarSet()', () => {
     // TODO modes should be enumerated somewhere
     const mode = 'testMode'
@@ -13,5 +12,4 @@ describe('#sidebar()', () => {
     const expectedAction = { type: types.SIDEBAR_MODE_SET, mode }
     assert.deepEqual(actions.sidebarModeSet(mode), expectedAction)
   })
-
 })

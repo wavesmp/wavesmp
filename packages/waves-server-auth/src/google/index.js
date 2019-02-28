@@ -6,7 +6,7 @@ const LOGIN_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='
 const IDP = 'google'
 
 class Auth {
-  constructor({clientIds}) {
+  constructor({ clientIds }) {
     this.clientIds = clientIds
   }
 
@@ -32,7 +32,7 @@ class Auth {
       throw new Error(errMsg)
     }
 
-    return {idp: IDP, idpId: sub, name, email}
+    return { idp: IDP, idpId: sub, name, email }
   }
 }
 

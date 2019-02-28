@@ -36,8 +36,8 @@ export default class Modal extends React.Component {
     const Component = MODALS[type]
     return (
       <React.Fragment>
-        <div className='fixed-full-page modal-backdrop'/>
-        <Component {...props}/>
+        <div className='fixed-full-page modal-backdrop' />
+        <Component {...props} />
       </React.Fragment>
     )
   }

@@ -1,6 +1,5 @@
 const gInit = require('./googleInit')
 
-
 class Google {
   constructor(authOpts) {
     this.gInit = gInit(authOpts)
@@ -31,7 +30,7 @@ class Google {
     const gUser = gAuth.currentUser.get()
     const gAuthResp = gUser.getAuthResponse()
     const token = gAuthResp.id_token
-    return {token}
+    return { token }
   }
 }
 

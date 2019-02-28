@@ -43,32 +43,36 @@ class SavePlaylistModal extends React.Component {
     const { playlistSaveName } = this.state
     return (
       <ModalWrapper>
-        <ModalHeader title={TITLE} onClose={this.onClose}/>
+        <ModalHeader title={TITLE} onClose={this.onClose} />
 
         <div className='modal-body'>
-          <div style={{display: 'flex', alignItems: 'center'}}>
-            <label style={{marginLeft: '15px', marginRight: '25px'}}>Name</label>
-            <div style={{width: '100%', marginRight: '15px'}}>
-              <input className='form-input'
-                     value={playlistSaveName}
-                     onInput={this.onInput}/>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label style={{ marginLeft: '15px', marginRight: '25px' }}>
+              Name
+            </label>
+            <div style={{ width: '100%', marginRight: '15px' }}>
+              <input
+                className='form-input'
+                value={playlistSaveName}
+                onInput={this.onInput}
+              />
             </div>
-            <div className='clearfix'/>
+            <div className='clearfix' />
           </div>
         </div>
 
         <ModalFooter
           actionTitle={ACTION}
           onAction={this.onAction}
-          onClose={this.onClose}/>
+          onClose={this.onClose}
+        />
       </ModalWrapper>
     )
   }
 }
 
 function mapStateToProps(state) {
-  return {
-  }
+  return {}
 }
 
 function mapDispatchToProps(dispatch) {

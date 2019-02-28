@@ -4,14 +4,16 @@ const mongoid = require('mongoid-js')
 const actionTypes = require('waves-action-types')
 
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
-const { TEST_TRACK1: baseTrack1, TEST_TRACK2: baseTrack2,
-        TEST_TRACK1_UPDATE: update1 } = require('waves-test-data')
+const {
+  TEST_TRACK1: baseTrack1,
+  TEST_TRACK2: baseTrack2,
+  TEST_TRACK1_UPDATE: update1
+} = require('waves-test-data')
 
 const library = require('../../src/tracks/library')
 
-const track1 = {...baseTrack1, id: mongoid()}
-const track2 = {...baseTrack2, id: mongoid()}
-
+const track1 = { ...baseTrack1, id: mongoid() }
+const track2 = { ...baseTrack2, id: mongoid() }
 
 const libraryById = {
   [track1.id]: track1,
@@ -39,7 +41,7 @@ describe('#library()', () => {
       deleteIds: new Set([track2.id])
     }
     state = assertNewState(library, state, action)
-    assert.deepEqual(state, {[track1.id]: track1})
+    assert.deepEqual(state, { [track1.id]: track1 })
   })
 
   it('library track update', () => {
@@ -51,7 +53,6 @@ describe('#library()', () => {
       value: update1[key]
     }
     state = assertNewState(library, state, action)
-    assert.deepEqual(state, {[track1.id]: {...track1, [key]: update1[key]}})
+    assert.deepEqual(state, { [track1.id]: { ...track1, [key]: update1[key] } })
   })
-
 })
