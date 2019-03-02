@@ -18,6 +18,7 @@ module.exports = {
     /* null for google */
     providerId: null
   },
+  defaultTrackSource: 's3',
   /* Waves websocket server url */
   server: 'wss://www.HOST_NAME/ws'
 }

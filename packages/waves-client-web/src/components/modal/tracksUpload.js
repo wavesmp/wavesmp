@@ -18,8 +18,7 @@ class TracksUploadModal extends React.Component {
   onUpload = async () => {
     const { actions } = this.props
     this.setState({ uploading: true })
-    // TODO removed hardcoded s3
-    const { uploadErrs, serverErr } = await actions.tracksUpload('s3')
+    const { uploadErrs, serverErr } = await actions.tracksUpload()
     this.setState({ uploading: false })
     return uploadErrs.length === 0 && !serverErr
   }

@@ -19,13 +19,13 @@ import MainApp from './components/main'
 import Site from './components/site'
 import { PublicRoute, PrivateRoute } from './components/routes'
 
-import { googleAuthOpts, s3Opts, server } from './config'
+import { googleAuthOpts, s3Opts, server, defaultTrackSource } from './config'
 import storeListener from './listener'
 
 const history = createBrowserHistory()
 const ws = new WavesSocket(new WebSocket(server))
 const auth = new Auth({ google: googleAuthOpts })
-const player = new Player({ s3: s3Opts, file: undefined })
+const player = new Player({ s3: s3Opts, file: undefined, defaultTrackSource })
 const localState = new LocalState(localStorage)
 
 const reduxMiddleware = applyMiddleware(

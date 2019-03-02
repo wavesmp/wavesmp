@@ -8,6 +8,9 @@ const sourceTypeToClass = {
 
 class Player {
   constructor(sourceTypes) {
+    this.defaultTrackSource = sourceTypes.defaultTrackSource
+    delete sourceTypes.defaultTrackSource
+
     this.players = {}
     for (const sourceType in sourceTypes) {
       const sourceTypeArgs = sourceTypes[sourceType]
@@ -89,6 +92,9 @@ class Player {
   }
 
   upload(trackSource, uploads) {
+    if (!trackSource) {
+      trackSource = this.defaultTrackSource
+    }
     return this.players[trackSource].upload(uploads)
   }
 
