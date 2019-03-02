@@ -6,6 +6,7 @@ import * as WavesActions from 'waves-client-actions'
 import { DEFAULT_PLAYLIST, toastTypes } from 'waves-client-constants'
 
 import { ModalHeader, ModalFooter, ModalWrapper } from './util'
+import { isPlaylistNameValid } from '../../util'
 
 const TITLE = 'Save Playlist'
 const ACTION = 'Save'
@@ -29,8 +30,7 @@ class SavePlaylistModal extends React.Component {
   onAction = () => {
     const { actions } = this.props
     const { playlistSaveName } = this.state
-    if (playlistSaveName === '') {
-      /* TODO better validation */
+    if (!isPlaylistNameValid(playlistSaveName)) {
       actions.toastAdd({ type: toastTypes.Error, msg: 'Invalid playlist name' })
       return
     }
