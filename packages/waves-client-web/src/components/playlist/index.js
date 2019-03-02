@@ -43,7 +43,6 @@ class Playlist extends React.PureComponent {
     return displayItems
   }
 
-  /* TODO use constant for routes / titles? */
   onLibraryClick = () => {
     const { libraryPlaylistSearch, history } = this.props
     history.push({ pathname: routes.library, search: libraryPlaylistSearch })
