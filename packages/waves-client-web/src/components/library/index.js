@@ -43,7 +43,7 @@ class Library extends React.PureComponent {
 
   onNowPlayingClick = () => {
     const { history, defaultPlaylistSearch } = this.props
-    const to = { pathname: '/nowplaying', search: defaultPlaylistSearch }
+    const to = { pathname: routes.nowplaying, search: defaultPlaylistSearch }
     history.push(to)
   }
 

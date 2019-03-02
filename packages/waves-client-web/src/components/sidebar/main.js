@@ -24,13 +24,13 @@ export default class MainBar extends React.PureComponent {
     const menuBarItems = [
       {
         name: 'Now Playing',
-        pathname: '/nowplaying',
+        pathname: constants.routes.nowplaying,
         playlistName: constants.DEFAULT_PLAYLIST,
         className: 'fa-fw fa fa-lg fa-headphones'
       },
       {
         name: 'Library',
-        pathname: '/library',
+        pathname: constants.routes.library,
         playlistName: constants.FULL_PLAYLIST,
         className: 'fa-fw fa fa-lg fa-book'
       }
@@ -55,9 +55,9 @@ export default class MainBar extends React.PureComponent {
           <li>
             <Link
               className={
-                location.pathname === '/upload' ? 'sidebar-active' : ''
+                location.pathname === constants.routes.upload ? 'sidebar-active' : ''
               }
-              to='/upload'
+              to={constants.routes.upload}
             >
               <i className='fa-fw fa fa-lg fa-cloud-upload' />
             </Link>

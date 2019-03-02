@@ -2,6 +2,8 @@ import React from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
 import { Link } from 'react-router-dom'
 
+import { routes } from 'waves-client-constants'
+
 import './index.css'
 import Notifications from './notifications'
 import TrackPlayer from './trackplayer'
@@ -9,7 +11,6 @@ import TrackSlider from './trackslider'
 import UserSettings from './userSettings'
 import LogoSvg from '../common/logo-wide.svg'
 
-const DEFAULT_APP_PATH = '/nowplaying'
 let prevPlayerVisible = false
 
 export default class MenuBar extends React.PureComponent {
@@ -44,7 +45,7 @@ export default class MenuBar extends React.PureComponent {
     return (
       <header className='menubar-main-header'>
         <div className='menubar-main-container'>
-          <Link to={DEFAULT_APP_PATH}>
+          <Link to={routes.defaultRoute}>
             <LogoSvg className={logoClassName} />
             <span className={logoNameClassName}>WAVES</span>
           </Link>

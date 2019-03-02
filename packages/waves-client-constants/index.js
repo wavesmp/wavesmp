@@ -56,6 +56,14 @@ constants.toastTypes = keyMirror({
   Error: null
 })
 
+constants.routes = {
+  defaultRoute: '/nowplaying',
+  nowplaying: '/nowplaying',
+  library: '/library',
+  upload: '/upload',
+  playlist: '/playlist/:playlist'
+}
+
 constants.DROPDOWN_DATA_VALUE = 'dropdown'
 constants.MODAL_DATA_VALUE = 'modal'
 constants.TOGGLE_DATA_KEY = 'data-toggle'

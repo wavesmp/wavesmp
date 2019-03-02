@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { toastTypes } from 'waves-client-constants'
+import { routes, toastTypes } from 'waves-client-constants'
 
 import UserInput from './userInput'
 
@@ -14,7 +14,7 @@ export default class SignIn extends React.PureComponent {
     const { history, actions, location } = this.props
     try {
       const user = await actions.signIn('google')
-      const from = location.state.from || { pathname: '/nowplaying' }
+      const from = location.state.from || { pathname: routes.defaultRoute }
       history.push(from)
     } catch (err) {
       // TODO standardize errors across providers

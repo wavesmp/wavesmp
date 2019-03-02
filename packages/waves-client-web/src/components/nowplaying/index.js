@@ -8,7 +8,8 @@ import {
   DEFAULT_PLAYLIST as playlistName,
   FULL_PLAYLIST,
   modalTypes,
-  contextmenuTypes
+  contextmenuTypes,
+  routes
 } from 'waves-client-constants'
 import {
   getOrCreatePlaylistSelectors,
@@ -43,7 +44,7 @@ class NowPlaying extends React.PureComponent {
 
   onLibraryClick = () => {
     const { history, libraryPlaylistSearch } = this.props
-    history.push({ pathname: '/library', search: libraryPlaylistSearch })
+    history.push({ pathname: routes.library, search: libraryPlaylistSearch })
   }
 
   onDelete = () => {

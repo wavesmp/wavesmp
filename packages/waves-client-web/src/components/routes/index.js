@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 
+import { routes } from 'waves-client-constants'
+
 /* Redirect to main site if not authenticated */
 class PrivateRoute extends React.PureComponent {
   render() {
@@ -47,7 +49,7 @@ class PublicRoute extends React.PureComponent {
             )
           }
           if (user) {
-            const defaultFrom = { from: { pathname: '/nowplaying' } }
+            const defaultFrom = { from: { pathname: routes.defaultRoute } }
             const { from } = props.location.state || defaultFrom
             return <Redirect to={from} />
           }

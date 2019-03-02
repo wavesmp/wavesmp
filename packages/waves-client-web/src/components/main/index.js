@@ -7,7 +7,8 @@ import * as WavesActions from 'waves-client-actions'
 import {
   TOGGLE_DATA_KEY,
   DROPDOWN_DATA_VALUE,
-  MODAL_DATA_VALUE
+  MODAL_DATA_VALUE,
+  routes
 } from 'waves-client-constants'
 
 import SideBar from '../sidebar'
@@ -76,10 +77,10 @@ class MainApp extends React.PureComponent {
     }
     return (
       <div onClick={this.onClick}>
-        <Route path='/nowplaying' component={NowPlaying} />
-        <Route path='/library' component={Library} />
-        <Route path='/upload' component={Upload} />
-        <Route path='/playlist/:playlist' component={Playlist} />
+        <Route path={routes.nowplaying} component={NowPlaying} />
+        <Route path={routes.library} component={Library} />
+        <Route path={routes.upload} component={Upload} />
+        <Route path={routes.playlist} component={Playlist} />
         <SideBar
           actions={actions}
           sidebar={sidebar}
