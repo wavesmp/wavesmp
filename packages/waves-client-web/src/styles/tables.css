@@ -45,7 +45,10 @@ table {
   padding-top: 3px;
 }
 
-/* TODO move .modal-table out */
+table.modal-table th {
+  color: var(--modal-title-color);
+}
+
 .modal-table>tbody>tr>td:first-child,
 .modal-table>tbody>tr>th:first-child,
 .modal-table>thead>tr>td:first-child,

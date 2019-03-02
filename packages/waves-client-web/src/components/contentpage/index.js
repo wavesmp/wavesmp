@@ -14,18 +14,18 @@ export default class ContentPage extends React.PureComponent {
     } = this.props
     let className
     if (transitions) {
-      className = 'mainpage-container-transition '
+      className = 'contentpage-container-transition '
     } else {
       className = ''
     }
-    className += 'mainpage-container mainpage-container-'
+    className += 'contentpage-container contentpage-container-'
     if (sidebar !== 'main') {
       className += 'wide'
     } else {
       className += 'narrow'
     }
     if (isPlayerVisible) {
-      className += ' mainpage-container-player-visible'
+      className += ' contentpage-container-player-visible'
     }
     return (
       <div className={className}>

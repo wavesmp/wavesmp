@@ -109,22 +109,6 @@ table th {
   color: var(--title-color);
 }
 
-table.modal-table th {
-  color: var(--modal-title-color);
-}
-
-/* Below are iffy. TODO should improve */
-/* action button icons should be the same as the theme color */
-
-.mainpage-container {
-  top: var(--menubar-height);
-  position: absolute;
-  right: 0px;
-  left: 0px;
-  transition: top 0.8s cubic-bezier(.02, .01, .47, 1);
-  bottom: 0px;
-}
-
 tr td {
   display: block;
 }
@@ -133,24 +117,7 @@ thead {
   display: none;
 }
 
-/* TODO move to mainpage? */
-.mainpage-container.mainpage-container-player-visible {
-  top: calc(var(--menubar-height) + var(--trackslider-width));
-}
-
 @media only screen and (min-width: 768px) {
-  .mainpage-container-narrow {
-    left: calc(var(--sidebar-width) - 5px);
-  }
-
-  .mainpage-container-wide {
-    left: calc(var(--playlistbar-width) - 5px);
-  }
-
-  .mainpage-container-transition {
-    transition: left 2s cubic-bezier(.02, .01, .47, 1), top 0.8s cubic-bezier(.02, .01, .47, 1);
-  }
-
   thead {
     display: table-header-group;
   }
