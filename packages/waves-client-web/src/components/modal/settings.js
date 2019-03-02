@@ -27,7 +27,6 @@ class AccountSettingsModal extends React.Component {
   onAction = () => {
     const { rowsPerPage, columns, theme } = this.state
     const { actions } = this.props
-    /* TODO only apply changes if different */
     actions.accountSetSettings(columns, rowsPerPage, theme)
     actions.toastAdd({ type: toastTypes.Success, msg: 'Applied changes' })
     this.onClose()

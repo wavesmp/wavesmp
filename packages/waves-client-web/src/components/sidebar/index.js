@@ -31,7 +31,6 @@ export default class SideBar extends React.Component {
         />
       )
     } else if (sidebar === 'settings') {
-      // TODO probably want to use hamburger menu for small screens
       settingsBar = (
         <SettingsBar
           key={0}

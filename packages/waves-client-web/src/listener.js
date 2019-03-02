@@ -36,8 +36,6 @@ export default async (store, ws, player, localState, history) => {
     store.dispatch(WavesActions.playlistsUpdate(playlists))
   })
 
-  // TODO should this really be called transitions?
-  // What if other things rely on 768px
   /* Listen for media queries to prevent transitions */
   enquire.register('only screen and (min-width: 768px)', {
     /* On big screens, enable sidebar transitions */

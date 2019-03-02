@@ -117,7 +117,6 @@
   transition: transform 1000ms ease;
 }
 
-/* TODO probably want to move to hamburger menu eventually */
 @media only screen and (min-width: 516px) {
   .nav>li.sidebar-profile-link {
     display: none;

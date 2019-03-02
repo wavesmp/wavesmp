@@ -2,8 +2,6 @@
   margin-top: 19px;
 }
 
-/* TODO watch the width on this
- *      can cause icon to move up */
 .site-input-box input {
   width: 100%;
   background-color: var(--input-background-color);

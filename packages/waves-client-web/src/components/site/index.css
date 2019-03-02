@@ -66,25 +66,7 @@
   margin-left: 5px;
 }
 
-/* TODO move out and add spacing to player menu bar? */
 .site-main-browser-bar {
   background-color: var(--separator-color);
   border-bottom: 3px solid var(--separator-color);
 }
-
-/*
-.site-idp-separator {
-  height: 5px;
-  width: 45%;
-  display: inline-block;
-  border-top: 1px solid var(--separator-color);
-}
-
-.site-idp-separator-words {
-  text-align: center;
-  margin: 20px 0px;
-  width: 10%;
-  display: inline-block;
-  font-size: 13px;
-}
-*/
