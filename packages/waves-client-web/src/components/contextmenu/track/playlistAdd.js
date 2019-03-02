@@ -6,6 +6,7 @@ import * as WavesActions from 'waves-client-actions'
 import constants from 'waves-client-constants'
 
 import { Back, PlaylistAddItem } from './items'
+import { isInternalPlaylist } from '../../../util'
 
 class PlaylistAdd extends React.Component {
   onBackClick = ev => {
@@ -15,22 +16,24 @@ class PlaylistAdd extends React.Component {
     ev.stopPropagation()
   }
 
+  onPlaylistAdd = playlist => {
+    const { currentPlaylist } = this.props
+    actions.playlistAdd(currentPlaylist, playlist)
+  }
+
   getPlaylistAddItems() {
-    const { actions, playlists, currentPlaylist } = this.props
+    const { actions, playlists } = this.props
     const items = []
 
     for (const playlist in playlists) {
-      if (
-        playlist === constants.DEFAULT_PLAYLIST ||
-        playlist === constants.FULL_PLAYLIST
-      ) {
+      if (isInternalPlaylist(playlist)) {
         continue
       }
       items.push(
         <PlaylistAddItem
           key={playlist}
-          title={playlist}
-          onClick={ev => actions.playlistAdd(currentPlaylist, playlist)}
+          name={playlist}
+          onPlaylistAdd={this.onPlaylistAdd}
         />
       )
     }

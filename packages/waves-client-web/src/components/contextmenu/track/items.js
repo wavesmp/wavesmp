@@ -102,14 +102,18 @@ function createContextMenuItem(Component) {
   }
 }
 
-// TODO PlaylistAdd item accepts a name.. try to refactor with other components
 export class PlaylistAddItem extends React.Component {
+  onClick = () => {
+    const { name, onPlaylistAdd } = this.props
+    onPlaylistAdd(name)
+  }
+
   render() {
-    const { onClick, title } = this.props
+    const { name } = this.props
     return (
-      <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <li className='btn btn-default contextmenu-item' onClick={this.onClick}>
         <i className='fa fa-lg fa-list' />
-        &nbsp;&nbsp;{title}
+        &nbsp;&nbsp;{name}
       </li>
     )
   }
