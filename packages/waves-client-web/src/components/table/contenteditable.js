@@ -1,7 +1,6 @@
 import React from 'react'
 
-// TODO refactor const
-const ENTER_KEY_CODE = 13
+import { ENTER_KEY_CODE } from 'waves-client-constants'
 
 /**
  * Based on:

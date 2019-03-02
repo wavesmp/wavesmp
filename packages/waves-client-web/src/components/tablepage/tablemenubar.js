@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { ENTER_KEY_CODE } from 'waves-client-constants'
+
 import Buttons from './buttons'
 import './tablemenubar.css'
-
-const ENTER_KEY_CODE = 13
 
 export default class TableMenuBar extends React.PureComponent {
   constructor(props) {
