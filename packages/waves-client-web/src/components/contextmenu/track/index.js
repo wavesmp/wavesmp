@@ -16,7 +16,7 @@ import {
   LibraryDelete
 } from './items'
 
-class Track extends React.Component {
+class Track extends React.PureComponent {
   getPlayOrPauseAction() {
     const {
       actions,

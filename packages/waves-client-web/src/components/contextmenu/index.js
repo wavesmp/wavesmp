@@ -15,7 +15,7 @@ const CONTEXT_MENUS = {
 const EMPTY_MENU = <menu className='contextmenu' />
 
 /* Context menu used is used for table rows */
-export default class ContextMenu extends React.Component {
+export default class ContextMenu extends React.PureComponent {
   render() {
     const { contextmenu } = this.props
     const numMenus = contextmenu.length

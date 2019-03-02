@@ -2,7 +2,7 @@ import React from 'react'
 
 import './pageheader.css'
 
-export default class PageHeader extends React.Component {
+export default class PageHeader extends React.PureComponent {
   render() {
     const { title } = this.props
     return (

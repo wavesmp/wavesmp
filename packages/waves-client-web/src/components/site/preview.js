@@ -2,7 +2,7 @@ import React from 'react'
 
 import wmpImgUrl from './wmp.png'
 
-export default class Preview extends React.Component {
+export default class Preview extends React.PureComponent {
   render() {
     return (
       <div className='site-main-right'>

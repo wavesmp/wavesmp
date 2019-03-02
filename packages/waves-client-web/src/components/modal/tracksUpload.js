@@ -9,7 +9,7 @@ import { UPLOAD_PLAYLIST as playlistName } from 'waves-client-constants'
 import ActionConfirmModal from './actionConfirm'
 import { playlistColumns } from '../table/columns'
 
-class TracksUploadModal extends React.Component {
+class TracksUploadModal extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { uploading: false }

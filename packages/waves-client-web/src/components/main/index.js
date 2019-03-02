@@ -20,7 +20,7 @@ import Playlist from '../playlist'
 import Toasts from '../toasts'
 import Library from '../library'
 
-class MainApp extends React.Component {
+class MainApp extends React.PureComponent {
   ancestorHasAttribute(node, key, val) {
     /* document object does not have parent node.
      * Can't just check for node here, since document

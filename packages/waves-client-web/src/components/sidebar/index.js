@@ -7,7 +7,7 @@ import MainBar from './main'
 import PlaylistBar from './playlist'
 import SettingsBar from './settings'
 
-export default class SideBar extends React.Component {
+export default class SideBar extends React.PureComponent {
   render() {
     const {
       actions,

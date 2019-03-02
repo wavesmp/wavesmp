@@ -6,7 +6,7 @@ import * as WavesActions from 'waves-client-actions'
 
 import { ModalHeader, ModalFooter, ModalWrapper } from './util'
 
-class ActionConfirmModal extends React.Component {
+class ActionConfirmModal extends React.PureComponent {
   onClose = () => {
     const { actions } = this.props
     actions.modalSet(null)

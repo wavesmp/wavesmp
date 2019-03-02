@@ -2,7 +2,7 @@ import React from 'react'
 
 import { MODAL_DATA_VALUE } from 'waves-client-constants'
 
-export class ModalWrapper extends React.Component {
+export class ModalWrapper extends React.PureComponent {
   render() {
     const { children } = this.props
     return (
@@ -17,7 +17,7 @@ export class ModalWrapper extends React.Component {
   }
 }
 
-export class ModalHeader extends React.Component {
+export class ModalHeader extends React.PureComponent {
   render() {
     const { title, onClose } = this.props
     return (
@@ -31,7 +31,7 @@ export class ModalHeader extends React.Component {
   }
 }
 
-export class ModalFooter extends React.Component {
+export class ModalFooter extends React.PureComponent {
   render() {
     const {
       deleteTitle,

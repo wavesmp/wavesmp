@@ -8,7 +8,7 @@ const ENTER_KEY_CODE = 13
  * http://stackoverflow.com/questions/22677931/
  * react-js-onchange-event-for-contenteditable
  */
-export default class ContentEditable extends React.Component {
+export default class ContentEditable extends React.PureComponent {
   constructor(props) {
     super(props)
     this.spanRef = React.createRef()

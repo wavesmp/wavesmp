@@ -23,7 +23,7 @@ const MODALS = {
   [modalTypes.TRACKS_UPLOAD]: TracksUpload
 }
 
-export default class Modal extends React.Component {
+export default class Modal extends React.PureComponent {
   render() {
     const { modal } = this.props
     if (!modal) {

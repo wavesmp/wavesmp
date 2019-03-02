@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 
 /* Redirect to main site if not authenticated */
-class PrivateRoute extends React.Component {
+class PrivateRoute extends React.PureComponent {
   render() {
     const { account, component: Component, ...rest } = this.props
     const { user } = account
@@ -28,7 +28,7 @@ class PrivateRoute extends React.Component {
 }
 
 /* Redirect to main app if authenticated */
-class PublicRoute extends React.Component {
+class PublicRoute extends React.PureComponent {
   render() {
     const { account, component: Component, ...rest } = this.props
     const { fetchingUser, user } = account

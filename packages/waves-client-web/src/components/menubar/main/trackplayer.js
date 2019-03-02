@@ -5,7 +5,7 @@ import * as WavesActions from 'waves-client-actions'
 import { toastTypes } from 'waves-client-constants'
 import './trackplayer.css'
 
-class TrackInfo extends React.Component {
+class TrackInfo extends React.PureComponent {
   render() {
     let { trackTitle, trackArtist } = this.props
     const maxTitleLength = 21
@@ -25,7 +25,7 @@ class TrackInfo extends React.Component {
   }
 }
 
-class LeftButtons extends React.Component {
+class LeftButtons extends React.PureComponent {
   onTrackNext = () => {
     const { actions } = this.props
     actions.trackNext(URLSearchParams)
@@ -75,7 +75,7 @@ class LeftButtons extends React.Component {
   }
 }
 
-class RightButtons extends React.Component {
+class RightButtons extends React.PureComponent {
   onShuffleClick = ev => {
     const { playing, actions } = this.props
     const { shuffle } = playing
@@ -126,7 +126,7 @@ class RightButtons extends React.Component {
   }
 }
 
-export default class TrackPlayer extends React.Component {
+export default class TrackPlayer extends React.PureComponent {
   render() {
     const { playing, actions } = this.props
     const { track } = playing

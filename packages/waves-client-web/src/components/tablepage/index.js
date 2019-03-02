@@ -4,7 +4,7 @@ import ContentPage from '../contentpage'
 import TableMenuBar from './tablemenubar'
 import Table from '../table'
 
-export default class TablePage extends React.Component {
+export default class TablePage extends React.PureComponent {
   render() {
     const {
       title,
@@ -26,7 +26,7 @@ export default class TablePage extends React.Component {
   }
 }
 
-class TablePageData extends React.Component {
+class TablePageData extends React.PureComponent {
   render() {
     const {
       noDataMsg,

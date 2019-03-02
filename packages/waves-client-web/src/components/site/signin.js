@@ -4,7 +4,7 @@ import { toastTypes } from 'waves-client-constants'
 
 import UserInput from './userInput'
 
-export default class SignIn extends React.Component {
+export default class SignIn extends React.PureComponent {
   onUnsupportedClick = () => {
     const { actions } = this.props
     actions.toastAdd({ type: toastTypes.Error, msg: 'Feature Unavailable' })

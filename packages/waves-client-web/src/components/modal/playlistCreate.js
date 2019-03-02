@@ -10,7 +10,7 @@ import { ModalHeader, ModalFooter, ModalWrapper } from './util'
 const TITLE = 'Create Playlist'
 const ACTION = 'Create'
 
-class CreatePlaylistModal extends React.Component {
+class CreatePlaylistModal extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { name: '' }

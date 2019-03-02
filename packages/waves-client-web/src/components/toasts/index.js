@@ -10,7 +10,7 @@ const ICONS = {
   [toastTypes.Error]: 'fa fa-lg fa-2x fa-exclamation-triangle'
 }
 
-export default class Toasts extends React.Component {
+export default class Toasts extends React.PureComponent {
   onCloseClick = ev => {
     const { actions } = this.props
     const toastId = parseInt(ev.currentTarget.getAttribute(TOAST_ID_ATTR))

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import constants from 'waves-client-constants'
 
-export default class MainBar extends React.Component {
+export default class MainBar extends React.PureComponent {
   onPlaylistClick = () => {
     const { actions } = this.props
     actions.sidebarModeSet('playlist')
@@ -73,7 +73,7 @@ export default class MainBar extends React.Component {
   }
 }
 
-class PlaylistLink extends React.Component {
+class PlaylistLink extends React.PureComponent {
   render() {
     const { pathname, playlist, location, className } = this.props
     const activeClassName =

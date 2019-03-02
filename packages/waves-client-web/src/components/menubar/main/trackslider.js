@@ -2,7 +2,7 @@ import React from 'react'
 
 import './trackslider.css'
 
-export default class TrackSlider extends React.Component {
+export default class TrackSlider extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {

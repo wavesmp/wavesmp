@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default class Column extends React.Component {
+export default class Column extends React.PureComponent {
   // TODO want to make column title click-able, but bootstrap a class
   // gets in the way
   getSortIcon() {

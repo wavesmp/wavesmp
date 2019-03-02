@@ -90,7 +90,7 @@ export const PlayResume = createContextMenuItem(
 )
 
 function createContextMenuItem(Component) {
-  return class extends React.Component {
+  return class extends React.PureComponent {
     render() {
       const { onClick } = this.props
       return (
@@ -102,7 +102,7 @@ function createContextMenuItem(Component) {
   }
 }
 
-export class PlaylistAddItem extends React.Component {
+export class PlaylistAddItem extends React.PureComponent {
   onClick = () => {
     const { name, onPlaylistAdd } = this.props
     onPlaylistAdd(name)

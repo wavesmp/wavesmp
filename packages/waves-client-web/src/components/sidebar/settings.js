@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { modalTypes, toastTypes } from 'waves-client-constants'
 
-export default class SettingsBar extends React.Component {
+export default class SettingsBar extends React.PureComponent {
   onUnsupportedFeatureClick = () => {
     const { actions } = this.props
     actions.toastAdd({ type: toastTypes.Error, msg: 'Feature Unavailable' })

@@ -4,7 +4,7 @@ import { dropdownTypes, toastTypes } from 'waves-client-constants'
 
 import Dropdown from './dropdown'
 
-export default class Notifications extends React.Component {
+export default class Notifications extends React.PureComponent {
   iconClasses = 'fa fa-lg fa-globe'
 
   header = {

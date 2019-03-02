@@ -20,7 +20,7 @@ const PAUSE_ICON = (
 const PLAY_PAUSE_PADDING = <span style={{ paddingRight: '25px' }} />
 // TODO avoid hardcoding attributes (e.g. 'title') here
 
-export class Name extends React.Component {
+export class Name extends React.PureComponent {
   emitChange = update => {
     const { onChange, sample } = this.props
     onChange(sample.id, 'title', update)
@@ -58,7 +58,7 @@ export class Name extends React.Component {
   }
 }
 
-export class State extends React.Component {
+export class State extends React.PureComponent {
   renderIcon(iconClasses) {
     return <i className={`fa fa-lg ${iconClasses}`} />
   }
@@ -85,14 +85,14 @@ export class State extends React.Component {
   }
 }
 
-export class Time extends React.Component {
+export class Time extends React.PureComponent {
   render() {
     const { sample } = this.props
     return <td className='common-columns-small-screen-hide'>{sample.time}</td>
   }
 }
 
-export class Artist extends React.Component {
+export class Artist extends React.PureComponent {
   emitChange = update => {
     const { onChange, sample } = this.props
     onChange(sample.id, 'artist', update)
@@ -114,7 +114,7 @@ export class Artist extends React.Component {
   }
 }
 
-export class Album extends React.Component {
+export class Album extends React.PureComponent {
   emitChange = update => {
     const { onChange, sample } = this.props
     onChange(sample.id, 'album', update)
@@ -136,7 +136,7 @@ export class Album extends React.Component {
   }
 }
 
-export class Genre extends React.Component {
+export class Genre extends React.PureComponent {
   emitChange = update => {
     const { onChange, sample } = this.props
     onChange(sample.id, 'genre', update)
@@ -158,7 +158,7 @@ export class Genre extends React.Component {
   }
 }
 
-export class CreatedAt extends React.Component {
+export class CreatedAt extends React.PureComponent {
   render() {
     const { sample } = this.props
     return (

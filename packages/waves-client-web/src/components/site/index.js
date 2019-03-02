@@ -10,7 +10,7 @@ import Preview from './preview'
 import MenuBar from '../menubar/site'
 import Toasts from '../toasts'
 
-class Site extends React.Component {
+class Site extends React.PureComponent {
   render() {
     const { actions, location, history, toasts } = this.props
     return (

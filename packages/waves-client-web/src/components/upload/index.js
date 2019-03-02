@@ -27,7 +27,7 @@ import './index.css'
 const ACCEPTED_FILE_TYPES = 'audio/mp3,audio/mpeg'
 const ACCEPTED_FILE_TYPE_LIST = ['audio/mp3', 'audio/mpeg']
 
-class Upload extends React.Component {
+class Upload extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { dragging: false, uploading: false }

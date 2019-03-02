@@ -22,7 +22,7 @@ import { onRowDoubleClick } from './tableActions'
 
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
 
-class Playlist extends React.Component {
+class Playlist extends React.PureComponent {
   getDisplayItems = (startIndex, stopIndex) => {
     const { routerSearchString, searchItems, library, playlist } = this.props
 

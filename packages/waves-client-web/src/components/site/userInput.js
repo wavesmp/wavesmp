@@ -2,7 +2,7 @@ import React from 'react'
 
 import './userInput.css'
 
-export default class UserInput extends React.Component {
+export default class UserInput extends React.PureComponent {
   render() {
     let iconClass =
       'fa fa-lg fa-fw common-tablemenubar-input-icon site-input-icon '

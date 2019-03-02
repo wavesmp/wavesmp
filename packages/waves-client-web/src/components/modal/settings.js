@@ -11,7 +11,7 @@ const COLUMN_NAME_ATTR = 'data-columnname'
 const TITLE = 'Account Settings'
 const ACTION = 'Save'
 
-class AccountSettingsModal extends React.Component {
+class AccountSettingsModal extends React.PureComponent {
   constructor(props) {
     super(props)
     const { rowsPerPage, theme } = this.props

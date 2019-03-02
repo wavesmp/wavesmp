@@ -10,7 +10,7 @@ import getDragCanvas from './dragbox'
 const CONTEXT_MENU_BUTTON = 2
 const DOUBLE_CLICK_THRESHOLD = 500
 
-export default class Table extends React.Component {
+export default class Table extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { editingPlayId: null, editingTitle: null }

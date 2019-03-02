@@ -12,7 +12,7 @@ import LogoSvg from '../common/logo-wide.svg'
 const DEFAULT_APP_PATH = '/nowplaying'
 let prevPlayerVisible = false
 
-export default class MenuBar extends React.Component {
+export default class MenuBar extends React.PureComponent {
   render() {
     const { actions, dropdown, playing, history, userName } = this.props
     const { isPlaying, track } = playing

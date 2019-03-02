@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import GithubCornerSvg from './github-corner-right.svg'
 
-export default class GithubCorner extends React.Component {
+export default class GithubCorner extends React.PureComponent {
   render() {
     return (
       <a

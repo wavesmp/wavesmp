@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import constants from 'waves-client-constants'
 
-export default class PlaylistBar extends React.Component {
+export default class PlaylistBar extends React.PureComponent {
   onBackClick = () => {
     const { actions } = this.props
     actions.sidebarModeSet('main')

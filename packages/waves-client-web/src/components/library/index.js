@@ -21,7 +21,7 @@ import TablePage from '../tablepage'
 const TITLE = 'Library'
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
 
-class Library extends React.Component {
+class Library extends React.PureComponent {
   getDisplayItems = (startIndex, stopIndex) => {
     const { routerSearchString, playlist, searchItems, library } = this.props
 

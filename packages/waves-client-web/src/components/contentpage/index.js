@@ -3,7 +3,7 @@ import React from 'react'
 import PageHeader from './pageheader'
 import './index.css'
 
-export default class ContentPage extends React.Component {
+export default class ContentPage extends React.PureComponent {
   render() {
     const {
       title,

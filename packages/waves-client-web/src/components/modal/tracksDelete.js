@@ -9,7 +9,7 @@ import { FULL_PLAYLIST } from 'waves-client-constants'
 import ActionConfirmModal from './actionConfirm'
 import { libraryColumns } from '../table/columns'
 
-class TracksDeleteModal extends React.Component {
+class TracksDeleteModal extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { deleting: false }

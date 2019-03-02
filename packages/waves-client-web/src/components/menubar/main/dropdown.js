@@ -2,7 +2,7 @@ import React from 'react'
 
 import { DROPDOWN_DATA_VALUE } from 'waves-client-constants'
 
-export default class Dropdown extends React.Component {
+export default class Dropdown extends React.PureComponent {
   onIconClick = () => {
     const { actions, dropdown, dropdownName } = this.props
     if (dropdown === dropdownName) {

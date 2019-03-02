@@ -7,7 +7,7 @@ import LogoSvg from '../common/logo-wide.svg'
 
 const SITE_PATH = '/'
 
-export default class MenuBar extends React.Component {
+export default class MenuBar extends React.PureComponent {
   render() {
     return (
       <header>

@@ -8,7 +8,7 @@ const MAX_PAGINATION_BUTTONS = 5
 const HALF_MAX_PAGINATION_BUTTONS = 2
 
 // TODO logic here is good candidate for testing
-export default class PaginationButtons extends React.Component {
+export default class PaginationButtons extends React.PureComponent {
   render() {
     const { currentPage, lastPage, location } = this.props
     const { pathname } = location

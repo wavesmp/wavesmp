@@ -8,7 +8,7 @@ import constants from 'waves-client-constants'
 import { Back, PlaylistAddItem } from './items'
 import { isInternalPlaylist } from '../../../util'
 
-class PlaylistAdd extends React.Component {
+class PlaylistAdd extends React.PureComponent {
   onBackClick = ev => {
     const { actions } = this.props
     actions.contextmenuBack()

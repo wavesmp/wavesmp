@@ -11,7 +11,7 @@ import { isPlaylistNameValid } from '../../util'
 const TITLE = 'Playlist Settings'
 const ACTION = 'Save'
 
-class PlaylistSettingsModal extends React.Component {
+class PlaylistSettingsModal extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { playlistSaveName: '' }

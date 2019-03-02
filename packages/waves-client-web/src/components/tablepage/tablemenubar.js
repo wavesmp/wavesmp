@@ -5,7 +5,7 @@ import './tablemenubar.css'
 
 const ENTER_KEY_CODE = 13
 
-export default class TableMenuBar extends React.Component {
+export default class TableMenuBar extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { searchValue: props.routerSearchString }
