@@ -41,4 +41,7 @@ export const playlistColumns = [
   }
 ]
 
-export const libraryColumns = playlistColumns.map(col => ({...col, sortable: !!col.attribute}))
+export const libraryColumns = playlistColumns.map(col => ({
+  ...col,
+  sortable: !!col.attribute
+}))

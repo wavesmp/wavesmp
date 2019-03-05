@@ -3,7 +3,7 @@
   position: absolute;
   right: 0px;
   left: 0px;
-  transition: top 0.8s cubic-bezier(.02, .01, .47, 1);
+  transition: top 0.8s cubic-bezier(0.02, 0.01, 0.47, 1);
   bottom: 0px;
 }
 
@@ -16,7 +16,7 @@
   margin-bottom: 60px;
   border: 1px solid transparent;
   border-radius: 4px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
 @media only screen and (min-width: 768px) {
@@ -33,7 +33,7 @@
   }
 
   .contentpage-container-transition {
-    transition: left 2s cubic-bezier(.02, .01, .47, 1), top 0.8s cubic-bezier(.02, .01, .47, 1);
+    transition: left 2s cubic-bezier(0.02, 0.01, 0.47, 1),
+      top 0.8s cubic-bezier(0.02, 0.01, 0.47, 1);
   }
-
 }

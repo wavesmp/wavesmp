@@ -1,4 +1,3 @@
-
 html {
   /* Include padding and border in elements dimensions. */
   box-sizing: border-box;
@@ -6,7 +5,9 @@ html {
   font-family: Helvetica, sans-serif;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   /* Allow components to override. */
   box-sizing: inherit;
 }
@@ -58,13 +59,14 @@ body {
   color: #555;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 .form-input:focus {
   border-color: #66afe9;
   outline: 0;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
 }
 .form-input::placeholder {
   color: #999;
@@ -141,7 +143,7 @@ a {
   text-decoration: none;
 }
 
-table input[type="checkbox"] {
+table input[type='checkbox'] {
   transform: scale(1.3);
   -webkit-transform: scale(1.3);
   position: relative;
@@ -167,4 +169,3 @@ table input[type="checkbox"] {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
-

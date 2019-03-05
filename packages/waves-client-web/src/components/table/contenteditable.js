@@ -68,7 +68,6 @@ export default class ContentEditable extends React.Component {
 // Chrome, so they are not included in this list
 function htmlEscape(str) {
   if (!str) {
-
     return str
   }
   return str

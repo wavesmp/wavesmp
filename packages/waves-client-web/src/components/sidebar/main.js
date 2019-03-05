@@ -55,7 +55,9 @@ export default class MainBar extends React.PureComponent {
           <li>
             <Link
               className={
-                location.pathname === constants.routes.upload ? 'sidebar-active' : ''
+                location.pathname === constants.routes.upload
+                  ? 'sidebar-active'
+                  : ''
               }
               to={constants.routes.upload}
             >

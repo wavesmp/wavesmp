@@ -1,11 +1,11 @@
 {
-    "port": 16242,
-    "auth": {
-        "google": {
-            "clientIds": []
-        }
-    },
-    "db": {
-        "url": "mongodb://localhost/waves"
+  "port": 16242,
+  "auth": {
+    "google": {
+      "clientIds": []
     }
+  },
+  "db": {
+    "url": "mongodb://localhost/waves"
+  }
 }

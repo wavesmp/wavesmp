@@ -1,4 +1,3 @@
-
 /* Mobile sidebar. Collapses to the bottom */
 #sidebar-container {
   float: left;
@@ -9,8 +8,8 @@
   text-align: center;
 }
 
-#sidebar-container>ul>li>a,
-#sidebar-container>ul>li>span {
+#sidebar-container > ul > li > a,
+#sidebar-container > ul > li > span {
   font-family: 'Open Sans', sans-serif;
   border: 0;
   padding-top: 15px;
@@ -32,42 +31,45 @@
 }
 
 /* float left collapses sidebar to bottom */
-#sidebar-container>ul>li {
+#sidebar-container > ul > li {
   float: left;
   padding-left: 0px;
   min-width: var(--sidebar-width);
 }
 
 /* When in wide view (e.g. viewing playlists), stack sidebar items */
-#sidebar-container.sidebar-container-wide>ul>li {
+#sidebar-container.sidebar-container-wide > ul > li {
   float: none;
 }
 
-#sidebar-container>ul>li>a:hover,
-#sidebar-container>ul>li>span:hover {
+#sidebar-container > ul > li > a:hover,
+#sidebar-container > ul > li > span:hover {
   background: var(--sidebar-color-hover);
-  color: var(--sidebar-icons-color-hover)
+  color: var(--sidebar-icons-color-hover);
 }
 
-#sidebar-container.sidebar-container-wide>ul>li>a,
-#sidebar-container.sidebar-container-wide>ul>li>span {
+#sidebar-container.sidebar-container-wide > ul > li > a,
+#sidebar-container.sidebar-container-wide > ul > li > span {
   text-align: left;
 }
 
-#sidebar-container.sidebar-container-wide>ul>li>span.sidebar-divider {
+#sidebar-container.sidebar-container-wide > ul > li > span.sidebar-divider {
   border-bottom: 2px solid;
   font-size: 13px;
   padding-bottom: 5px;
   cursor: default;
 }
 
-#sidebar-container.sidebar-container-wide>ul>li>span.sidebar-divider:hover {
+#sidebar-container.sidebar-container-wide
+  > ul
+  > li
+  > span.sidebar-divider:hover {
   background: var(--sidebar-color);
   color: var(--sidebar-icons-color);
 }
 
 /* We use both <a> and <span> for nav links. Add span for consistency */
-.nav>li>span {
+.nav > li > span {
   padding: 10px 15px;
 }
 
@@ -118,7 +120,7 @@
 }
 
 @media only screen and (min-width: 516px) {
-  .nav>li.sidebar-profile-link {
+  .nav > li.sidebar-profile-link {
     display: none;
   }
 }
@@ -128,7 +130,7 @@
   #sidebar-container {
     height: 100%;
     top: 65px;
-    transition: top 0.8s cubic-bezier(.02, .01, .47, 1);
+    transition: top 0.8s cubic-bezier(0.02, 0.01, 0.47, 1);
   }
 
   #sidebar-container.sidebar-container-narrow {
@@ -143,12 +145,12 @@
     top: calc(65px + var(--trackslider-width));
   }
 
-  #sidebar-container>ul>li {
+  #sidebar-container > ul > li {
     width: 100%;
   }
 
-  #sidebar-container.sidebar-container-wide>ul>li>a,
-  #sidebar-container.sidebar-container-wide>ul>li>span {
+  #sidebar-container.sidebar-container-wide > ul > li > a,
+  #sidebar-container.sidebar-container-wide > ul > li > span {
     padding: 20px 15px;
   }
 

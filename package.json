@@ -3,7 +3,7 @@
         "npm-check": "lerna exec npm-check",
         "test": "lerna run test",
         "build": "lerna run --scope waves-client-web build",
-        "prettier": "prettier --write --no-semi --single-quote --jsx-single-quote 'packages/**/*.js'"
+        "prettier": "prettier --write --no-semi --single-quote --jsx-single-quote 'packages/**/*.js' 'packages/**/*.json' 'packages/**/*.css' 'packages/**/*.md'"
     },
     "devDependencies": {
         "@babel/core": "^7.2.2",

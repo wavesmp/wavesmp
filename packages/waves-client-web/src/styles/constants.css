@@ -2,7 +2,9 @@
   --menubar-height: MENUBAR_HEIGHT;
   --sidebar-width: SIDEBAR_WIDTH;
   --playlistbar-width: PLAYLISTBAR_WIDTH;
-  --transitionbar-width: calc((var(--sidebar-width) + var(--playlistbar-width)) / 2);
+  --transitionbar-width: calc(
+    (var(--sidebar-width) + var(--playlistbar-width)) / 2
+  );
   --trackslider-width: TRACKSLIDER_WIDTH;
 }
 
