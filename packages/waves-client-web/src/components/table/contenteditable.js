@@ -7,7 +7,7 @@ import { ENTER_KEY_CODE } from 'waves-client-constants'
  * http://stackoverflow.com/questions/22677931/
  * react-js-onchange-event-for-contenteditable
  */
-export default class ContentEditable extends React.PureComponent {
+export default class ContentEditable extends React.Component {
   constructor(props) {
     super(props)
     this.spanRef = React.createRef()
@@ -67,6 +67,10 @@ export default class ContentEditable extends React.PureComponent {
 // Quotes appear to be returned unescaped from innerHTML on
 // Chrome, so they are not included in this list
 function htmlEscape(str) {
+  if (!str) {
+
+    return str
+  }
   return str
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -74,6 +78,9 @@ function htmlEscape(str) {
 }
 
 function htmlUnescape(str) {
+  if (!str) {
+    return str
+  }
   return str
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
