@@ -36,6 +36,10 @@
 }
 
 .table-sortable {
-  margin-left: 8px;
   color: var(--title-color);
+  white-space: nowrap;
+}
+
+.table-sortable-icon {
+  margin-left: 8px;
 }
