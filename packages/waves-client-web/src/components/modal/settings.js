@@ -14,8 +14,7 @@ const ACTION = 'Save'
 class AccountSettingsModal extends React.PureComponent {
   constructor(props) {
     super(props)
-    const { rowsPerPage, theme } = this.props
-    const columns = new Set(this.props.columns)
+    const { rowsPerPage, columns, theme } = this.props
     this.state = { rowsPerPage, columns, theme }
   }
 
@@ -43,14 +42,14 @@ class AccountSettingsModal extends React.PureComponent {
   }
 
   addColumn = ev => {
-    const { columns } = this.state
+    const columns = new Set(this.state.columns)
     const colToAdd = ev.currentTarget.getAttribute(COLUMN_NAME_ATTR)
     columns.add(colToAdd)
     this.setState({ columns })
   }
 
   removeColumn = ev => {
-    const { columns } = this.props
+    const columns = new Set(this.state.columns)
     const colToDelete = ev.currentTarget.getAttribute(COLUMN_NAME_ATTR)
     columns.delete(colToDelete)
     this.setState({ columns })
