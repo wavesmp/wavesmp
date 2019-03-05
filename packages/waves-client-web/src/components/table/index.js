@@ -204,8 +204,6 @@ export default class Table extends React.PureComponent {
     this.displayItems = getDisplayItems(startIndex, stopIndex)
 
     // TODO figure out how to use constants as attribute name
-    // TODO find a way to forward all attrs to column.Component
-    // If row in selected rows
     return (
       <div>
         <table className='table table-hover'>

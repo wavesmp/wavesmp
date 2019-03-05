@@ -7,7 +7,6 @@ import './paginationButtons.css'
 const MAX_PAGINATION_BUTTONS = 5
 const HALF_MAX_PAGINATION_BUTTONS = 2
 
-// TODO logic here is good candidate for testing
 export default class PaginationButtons extends React.PureComponent {
   render() {
     const { currentPage, lastPage, location } = this.props
@@ -49,7 +48,6 @@ export default class PaginationButtons extends React.PureComponent {
 
     const previousPageClass = currentPage === 0 ? 'disabled' : ''
     const nextPageClass = currentPage === lastPage ? 'disabled' : ''
-    // TODO do a sick ass animation when changing pages
     qp.set('page', currentPage - 1)
     const prevSearch = `${qp}`
     qp.set('page', currentPage + 1)
