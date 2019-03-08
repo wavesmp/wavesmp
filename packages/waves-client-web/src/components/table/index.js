@@ -203,7 +203,6 @@ export default class Table extends React.PureComponent {
     const stopIndex = (currentPage + 1) * rowsPerPage
     this.displayItems = getDisplayItems(startIndex, stopIndex)
 
-    // TODO figure out how to use constants as attribute name
     return (
       <div>
         <table className='table table-hover'>
