@@ -81,3 +81,18 @@ button.modal-close {
   background: transparent;
   border: 0;
 }
+
+.modal-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.modal-input-label {
+  margin-left: 15px;
+  margin-right: 25px;
+}
+
+.modal-input {
+  width: 100%;
+  margin-right: 15px;
+}

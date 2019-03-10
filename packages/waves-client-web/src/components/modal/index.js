@@ -2,7 +2,7 @@ import React from 'react'
 
 import { modalTypes } from 'waves-client-constants'
 
-import ActionConfirm from './actionConfirm'
+import PlaylistClear from './playlistClear'
 import PlaylistCreate from './playlistCreate'
 import PlaylistSave from './playlistSave'
 import PlaylistSettings from './playlistSettings'
@@ -14,9 +14,9 @@ import './index.css'
 
 const MODALS = {
   null: null,
+  [modalTypes.PLAYLIST_CLEAR]: PlaylistClear,
   [modalTypes.PLAYLIST_CREATE]: PlaylistCreate,
   [modalTypes.PLAYLIST_SAVE]: PlaylistSave,
-  [modalTypes.ACTION_CONFIRM]: ActionConfirm,
   [modalTypes.SETTINGS]: Settings,
   [modalTypes.PLAYLIST_SETTINGS]: PlaylistSettings,
   [modalTypes.TRACKS_DELETE]: TracksDelete,
@@ -25,19 +25,16 @@ const MODALS = {
 
 export default class Modal extends React.PureComponent {
   render() {
-    const { modal } = this.props
+    const { history, modal } = this.props
     if (!modal) {
       return null
     }
     const { type, props } = modal
-    if (!MODALS[type]) {
-      return null
-    }
     const Component = MODALS[type]
     return (
       <React.Fragment>
         <div className='fixed-full-page modal-backdrop' />
-        <Component {...props} />
+        <Component history={history} {...props} />
       </React.Fragment>
     )
   }

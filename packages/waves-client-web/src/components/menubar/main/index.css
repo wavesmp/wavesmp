@@ -31,25 +31,6 @@
   color: var(--title-color);
 }
 
-.menubar-settings-list {
-  list-style: none;
-  padding-left: 8px;
-  max-width: 120px;
-}
-
-.menubar-settings-list-item {
-  cursor: pointer;
-  border: 1px solid var(--dropdown-color);
-  padding: 1px;
-  padding-left: 8px;
-  border-radius: 4px;
-}
-
-.menubar-settings-list-item:hover {
-  background-color: var(--dropdown-color-light);
-  border: 1px solid var(--dropdown-selected-border-color);
-}
-
 /* Logo */
 .menubar-main-logo {
   display: inline;

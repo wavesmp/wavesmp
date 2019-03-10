@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 import {
   DEFAULT_PLAYLIST,
   FULL_PLAYLIST as playlistName,
-  contextmenuTypes
+  contextmenuTypes,
+  routes
 } from 'waves-client-constants'
 import * as WavesActions from 'waves-client-actions'
 import {

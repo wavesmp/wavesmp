@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import * as WavesActions from 'waves-client-actions'
 import { UPLOAD_PLAYLIST as playlistName } from 'waves-client-constants'
 
-import ActionConfirmModal from './actionConfirm'
+import Modal from './util'
 import { playlistColumns } from '../table/columns'
 
 class TracksUploadModal extends React.PureComponent {
@@ -68,17 +68,22 @@ class TracksUploadModal extends React.PureComponent {
 
   render() {
     const { uploading } = this.state
-    const { uploads } = this.props
+    const { actions, uploads } = this.props
     const plurality = hasMoreThanOne(uploads) ? 's' : ''
+    const message = `This will upload the track${plurality} below.`
     return (
-      <ActionConfirmModal
+      <Modal
+        actions={actions}
         title={`Upload track${plurality}`}
         actionTitle={uploading ? 'Uploading' : 'Upload'}
         disabled={uploading}
-        message={`This will upload the track${plurality} below.`}
         onAction={this.onUpload}
-        additionalRow={this.renderUploadItems()}
-      />
+      >
+        <div>
+          <span>{message}</span>
+        </div>
+        {this.renderUploadItems()}
+      </Modal>
     )
   }
 }

@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import * as WavesActions from 'waves-client-actions'
 import { FULL_PLAYLIST } from 'waves-client-constants'
 
-import ActionConfirmModal from './actionConfirm'
+import Modal from './util'
 import { libraryColumns } from '../table/columns'
 
 class TracksDeleteModal extends React.PureComponent {
@@ -70,21 +70,25 @@ class TracksDeleteModal extends React.PureComponent {
   }
 
   render() {
-    const { selection } = this.props
+    const { actions, selection } = this.props
     const { deleting } = this.state
     const deleteTitle = deleting ? 'Deleting' : 'Delete'
     const plurality = hasMoreThanOne(selection) ? 's' : ''
     const title = 'Delete track' + plurality
     const message = `This will delete the track${plurality} below. Are you sure?`
     return (
-      <ActionConfirmModal
+      <Modal
+        actions={actions}
         deleteTitle={deleteTitle}
         disabled={deleting}
         title={title}
-        message={message}
         onDelete={this.onDelete}
-        additionalRow={this.renderDeleteItems()}
-      />
+      >
+        <div>
+          <span>{message}</span>
+        </div>
+        {this.renderDeleteItems()}
+      </Modal>
     )
   }
 }

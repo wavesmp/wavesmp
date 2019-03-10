@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as WavesActions from 'waves-client-actions'
 import { DEFAULT_PLAYLIST, toastTypes, routes } from 'waves-client-constants'
 
-import { ModalHeader, ModalFooter, ModalWrapper } from './util'
+import { ModalInput } from './util'
 import { isPlaylistNameValid } from '../../util'
 
 const TITLE = 'Playlist Settings'
@@ -17,73 +17,52 @@ class PlaylistSettingsModal extends React.PureComponent {
     this.state = { playlistSaveName: '' }
   }
 
-  onInput = ev => {
+  onChange = ev => {
     const playlistSaveName = ev.currentTarget.value
     this.setState({ playlistSaveName })
   }
 
-  onAction = () => {
+  onAction = async () => {
     const { playlistSaveName } = this.state
     const { actions, playlists, playlistName, history } = this.props
     if (!isPlaylistNameValid(playlistSaveName)) {
       actions.toastAdd({ type: toastTypes.Error, msg: 'Invalid playlist name' })
-      return
+      return false
     }
     actions.playlistMove(playlistName, playlistSaveName)
     const { search } = playlists[playlistName]
     const to = { pathname: `/playlist/${playlistSaveName}`, search }
     history.push(to)
     actions.toastAdd({ type: toastTypes.Success, msg: 'Renamed playlist' })
-    this.onClose()
+    return true
   }
 
-  onDelete = () => {
+  onDelete = async () => {
     const { actions, playlists, playlistName, history } = this.props
     actions.playlistDelete(playlistName)
     const { search } = playlists[DEFAULT_PLAYLIST]
     const to = { pathname: routes.defaultRoute, search }
     history.push(to)
     actions.toastAdd({ type: toastTypes.Success, msg: 'Deleted playlist' })
-    this.onClose()
-  }
-
-  onClose = () => {
-    const { actions } = this.props
-    actions.modalSet(null)
+    return true
   }
 
   render() {
-    const { playlistName } = this.props
+    const { actions, playlistName } = this.props
     const { playlistSaveName } = this.state
     return (
-      <ModalWrapper>
-        <ModalHeader title={TITLE} onClose={this.onClose} />
-
-        <div className='modal-body'>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <label style={{ marginLeft: '15px', marginRight: '25px' }}>
-              Name
-            </label>
-            <div style={{ width: '100%', marginRight: '15px' }}>
-              <input
-                className='form-input'
-                value={playlistSaveName}
-                placeholder={playlistName}
-                onInput={this.onInput}
-              />
-            </div>
-            <div className='clearfix' />
-          </div>
-        </div>
-
-        <ModalFooter
-          actionTitle={ACTION}
-          onAction={this.onAction}
-          onClose={this.onClose}
-          deleteTitle='Delete'
-          onDelete={this.onDelete}
-        />
-      </ModalWrapper>
+      <ModalInput
+        actions={actions}
+        title={TITLE}
+        actionTitle={ACTION}
+        onAction={this.onAction}
+        deleteTitle='Delete'
+        onDelete={this.onDelete}
+        label='Name'
+        value={playlistSaveName}
+        placeholder={playlistName}
+        onChange={this.onChange}
+      />
     )
   }
 }

@@ -1,6 +1,6 @@
 /* Minimal validation. Server also validates */
 export function isPlaylistNameValid(name) {
-  return playlistSaveName !== '' && !playlistSaveName.startsWith('__')
+  return name !== '' && !name.startsWith('__')
 }
 
 export function isInternalPlaylist(name) {

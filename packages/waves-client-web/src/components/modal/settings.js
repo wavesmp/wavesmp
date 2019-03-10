@@ -2,11 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { ModalHeader, ModalFooter, ModalWrapper } from './util'
-
 import * as WavesActions from 'waves-client-actions'
 import { ALL_COLUMNS, toastTypes } from 'waves-client-constants'
 const COLUMN_NAME_ATTR = 'data-columnname'
+
+import Modal from './util'
+import './settings.css'
 
 const TITLE = 'Account Settings'
 const ACTION = 'Save'
@@ -18,17 +19,12 @@ class AccountSettingsModal extends React.PureComponent {
     this.state = { rowsPerPage, columns, theme }
   }
 
-  onClose = () => {
-    const { actions } = this.props
-    actions.modalSet(null)
-  }
-
-  onAction = () => {
+  onAction = async () => {
     const { rowsPerPage, columns, theme } = this.state
     const { actions } = this.props
     actions.accountSetSettings(columns, rowsPerPage, theme)
     actions.toastAdd({ type: toastTypes.Success, msg: 'Applied changes' })
-    this.onClose()
+    return true
   }
 
   onRowsPerPageChange = ev => {
@@ -57,93 +53,78 @@ class AccountSettingsModal extends React.PureComponent {
 
   render() {
     const { columns, rowsPerPage, theme } = this.state
+    const { actions } = this.props
     const hiddenColumns = ALL_COLUMNS.filter(x => !columns.has(x))
     const activeColumns = ALL_COLUMNS.filter(x => columns.has(x))
     return (
-      <ModalWrapper>
-        <ModalHeader title={TITLE} onClose={this.onClose} />
-
-        <div className='modal-body'>
-          <div>
-            <div style={{ display: 'flex' }}>
-              <div style={{ width: '50%', marginLeft: '25px' }}>
-                <label style={{ marginTop: '6px' }}>Hidden Columns</label>
-                <ul className='menubar-settings-list'>
-                  {hiddenColumns.map((sample, index) => (
-                    <li
-                      key={sample}
-                      className='menubar-settings-list-item'
-                      data-columnname={sample}
-                      onClick={this.addColumn}
-                    >
-                      <i
-                        style={{ color: '#19B698' }}
-                        className='fa fa-lg fa-plus'
-                      />
-                      &nbsp;&nbsp;{sample}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div style={{ width: '50%', marginLeft: '25px' }}>
-                <label style={{ marginTop: '6px' }}>Active Columns</label>
-                <ul className='menubar-settings-list'>
-                  {activeColumns.map((sample, index) => (
-                    <li
-                      key={sample}
-                      className='menubar-settings-list-item'
-                      data-columnname={sample}
-                      onClick={this.removeColumn}
-                    >
-                      <i
-                        style={{ color: '#C11313' }}
-                        className='fa fa-lg fa-times'
-                      />
-                      &nbsp;&nbsp;{sample}
-                    </li>
-                  ))}
-                </ul>
+      <Modal actions={actions} title={TITLE} actionTitle={ACTION} onAction={this.onAction}>
+        <div>
+          <div className='modal-settings-columns'>
+            <div className='modal-settings-column'>
+              <label>Hidden Columns</label>
+              <ul className='modal-settings-list'>
+                {hiddenColumns.map((sample, index) => (
+                  <li
+                    key={sample}
+                    className='modal-settings-list-item'
+                    data-columnname={sample}
+                    onClick={this.addColumn}
+                  >
+                    <i className='fa fa-lg fa-plus modal-settings-add-icon' />
+                    &nbsp;&nbsp;{sample}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className='modal-settings-column'>
+              <label>Active Columns</label>
+              <ul className='modal-settings-list'>
+                {activeColumns.map((sample, index) => (
+                  <li
+                    key={sample}
+                    className='modal-settings-list-item'
+                    data-columnname={sample}
+                    onClick={this.removeColumn}
+                  >
+                    <i className='fa fa-lg fa-times modal-settings-del-icon' />
+                    &nbsp;&nbsp;{sample}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className='modal-settings-columns'>
+            <div className='modal-settings-column'>
+              <label>Theme:</label>
+              <div className='modal-settings-select-width'>
+                <select
+                  value={theme}
+                  onChange={this.onThemeChange}
+                  className='form-input'
+                >
+                  <option value='light'>Light</option>
+                  <option value='dark'>Dark</option>
+                </select>
               </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{ width: '50%', marginLeft: '25px' }}>
-                <label>Theme:</label>
-                <div style={{ width: '25%' }}>
-                  <select
-                    value={theme}
-                    onChange={this.onThemeChange}
-                    className='form-input'
-                  >
-                    <option value='light'>Light</option>
-                    <option value='dark'>Dark</option>
-                  </select>
-                </div>
-              </div>
-              <div style={{ width: '50%', marginLeft: '25px' }}>
-                <label>Rows Per Page:</label>
-                <div style={{ width: '25%' }}>
-                  <select
-                    value={rowsPerPage}
-                    onChange={this.onRowsPerPageChange}
-                    className='form-input'
-                  >
-                    <option value='10'>10</option>
-                    <option value='25'>25</option>
-                    <option value='50'>50</option>
-                    <option value='100'>100</option>
-                  </select>
-                </div>
+            <div className='modal-settings-column'>
+              <label>Rows Per Page:</label>
+              <div className='modal-settings-select-width'>
+                <select
+                  value={rowsPerPage}
+                  onChange={this.onRowsPerPageChange}
+                  className='form-input'
+                >
+                  <option value='10'>10</option>
+                  <option value='25'>25</option>
+                  <option value='50'>50</option>
+                  <option value='100'>100</option>
+                </select>
               </div>
             </div>
           </div>
         </div>
-
-        <ModalFooter
-          actionTitle={ACTION}
-          onAction={this.onAction}
-          onClose={this.onClose}
-        />
-      </ModalWrapper>
+      </Modal>
     )
   }
 }

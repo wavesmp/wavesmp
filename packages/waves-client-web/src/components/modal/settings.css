@@ -1,0 +1,39 @@
+.modal-settings-columns {
+  display: flex;
+}
+
+.modal-settings-column {
+  width: 50%;
+  margin-left: 25px;
+}
+
+.modal-settings-list {
+  list-style: none;
+  padding-left: 8px;
+  max-width: 120px;
+}
+
+.modal-settings-list-item {
+  cursor: pointer;
+  border: 1px solid var(--dropdown-color);
+  padding: 1px;
+  padding-left: 8px;
+  border-radius: 4px;
+}
+
+.modal-settings-list-item:hover {
+  background-color: var(--dropdown-color-light);
+  border: 1px solid var(--dropdown-selected-border-color);
+}
+
+.modal-settings-add-icon {
+  color: #19b698;
+}
+
+.modal-settings-del-icon {
+  color: #c11313;
+}
+
+.modal-settings-select-width {
+  width: 25%;
+}

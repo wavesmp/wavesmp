@@ -47,20 +47,9 @@ class NowPlaying extends React.PureComponent {
     history.push({ pathname: routes.library, search: libraryPlaylistSearch })
   }
 
-  onDelete = () => {
-    const { actions } = this.props
-    actions.playlistDelete(playlistName)
-  }
-
   onClear = () => {
     const { actions } = this.props
-    const props = {
-      deleteTitle: 'Clear',
-      title: 'Clear Playlist',
-      message: `This will clear the ${TITLE} playlist. Are you sure?`,
-      onDelete: this.onDelete
-    }
-    actions.modalSet({ type: modalTypes.ACTION_CONFIRM, props })
+    actions.modalSet({ type: modalTypes.PLAYLIST_CLEAR })
   }
 
   onPlaylistSave = () => {

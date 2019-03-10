@@ -97,7 +97,7 @@ class MainApp extends React.PureComponent {
           userName={user.name}
         />
         <ContextMenu contextmenu={contextmenu} />
-        <Modal modal={modal} />
+        <Modal history={history} modal={modal} />
         <Toasts actions={actions} toasts={toasts} />
       </div>
     )

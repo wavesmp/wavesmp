@@ -34,7 +34,7 @@ constants.iconBackColor = '#4aa3df'
 constants.ENTER_KEY_CODE = 13
 
 constants.modalTypes = keyMirror({
-  ACTION_CONFIRM: null,
+  PLAYLIST_CLEAR: null,
   PLAYLIST_CREATE: null,
   PLAYLIST_SAVE: null,
   PLAYLIST_SETTINGS: null,

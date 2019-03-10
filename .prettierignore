@@ -1,4 +1,5 @@
 vendor
 build
-nyc_output
+.nyc_output
+.config
 rootfs
