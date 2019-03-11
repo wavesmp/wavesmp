@@ -1,6 +1,3 @@
-// TODO improvements
-// - display track image
-
 import Promise from 'bluebird'
 import React from 'react'
 import { bindActionCreators } from 'redux'
@@ -148,7 +145,9 @@ class Upload extends React.PureComponent {
     const { account, location, actions, playing, transitions } = this.props
     const { isPlaying } = playing
     const { rowsPerPage } = account
-    const columns = playlistColumns.filter(c => account.columns.has(c.title))
+    const columns = playlistColumns.filter(
+      c => account.columns.has(c.title) && c.title !== 'Created At'
+    )
     return (
       <Table
         actions={actions}

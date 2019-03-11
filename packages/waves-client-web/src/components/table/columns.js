@@ -2,8 +2,6 @@ import React from 'react'
 
 import { Name, State, Time, Artist, Album, Genre, CreatedAt } from './rows'
 
-/*  TODO integrate common-columns-small-screen-hide
- *       with displayed columns in localstorage */
 export const playlistColumns = [
   {
     title: 'Name',

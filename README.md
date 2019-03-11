@@ -10,8 +10,6 @@ Features
 - Music metadata is stored locally to quickly view your entire library.
 - Supports multiple users by integrating with identity providers (e.g. Google)
 
-TODO instructions are a work in progress. Open an issue if it's missing something
-
 Requirements
 ============
 - Docker

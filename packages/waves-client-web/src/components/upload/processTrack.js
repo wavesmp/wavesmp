@@ -43,7 +43,6 @@ export default function processTrack(file) {
   })
 }
 
-// TODO factor this out (e.g. attrs at least)
 function addMissingTags(item) {
   if (!item.title || !item.artist) {
     const fileName = trimFileExt(item.file.name.trim())

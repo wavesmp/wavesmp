@@ -97,7 +97,9 @@ function mapStateToProps(state) {
   const { playing, playlists, uploads } = tracks
   const playlist = playlists[playlistName]
   const { playId } = playlist
-  const columns = playlistColumns.filter(c => account.columns.has(c.title))
+  const columns = playlistColumns.filter(
+    c => account.columns.has(c.title) && c.title !== 'Created At'
+  )
   const { isPlaying } = playing
   return {
     playlist,

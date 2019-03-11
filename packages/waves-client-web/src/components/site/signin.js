@@ -17,7 +17,6 @@ export default class SignIn extends React.PureComponent {
       const from = location.state.from || { pathname: routes.defaultRoute }
       history.push(from)
     } catch (err) {
-      // TODO standardize errors across providers
       actions.toastAdd({
         type: toastTypes.Error,
         msg: err.error || err.toString()
