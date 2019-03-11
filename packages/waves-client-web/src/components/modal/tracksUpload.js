@@ -1,4 +1,3 @@
-import formatTime from 'format-duration'
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -8,6 +7,7 @@ import { UPLOAD_PLAYLIST as playlistName } from 'waves-client-constants'
 
 import Modal from './util'
 import { playlistColumns } from '../table/columns'
+import { normalizeTrack } from '../../util'
 
 class TracksUploadModal extends React.PureComponent {
   constructor(props) {
@@ -39,26 +39,19 @@ class TracksUploadModal extends React.PureComponent {
               </tr>
             </thead>
             <tbody>
-              {tracks.map((track, i) => {
-                const sample = {
-                  ...uploads[track],
-                  time: formatTime(1000 * uploads[track].duration),
-                  playId: i + ''
-                }
-                return (
-                  <tr key={track}>
-                    {columns.map(column => (
-                      <column.Component
-                        key={column.title}
-                        isPlaying={isPlaying}
-                        playId={playId}
-                        sample={sample}
-                        editable={false}
-                      />
-                    ))}
-                  </tr>
-                )
-              })}
+              {tracks.map((track, i) => (
+                <tr key={track}>
+                  {columns.map(column => (
+                    <column.Component
+                      key={column.title}
+                      isPlaying={isPlaying}
+                      playId={playId}
+                      sample={normalizeTrack(uploads[track], i)}
+                      editable={false}
+                    />
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

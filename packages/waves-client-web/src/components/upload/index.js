@@ -2,7 +2,6 @@
 // - display track image
 
 import Promise from 'bluebird'
-import formatTime from 'format-duration'
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -20,6 +19,7 @@ import { onRowDoubleClick } from '../playlist/tableActions'
 import Table from '../table'
 import { playlistColumns } from '../table/columns'
 import processTrack from './processTrack'
+import { normalizeTrack } from '../../util'
 
 import defaultTrackLogoUrl from './default-track-image.png'
 import './index.css'
@@ -124,9 +124,7 @@ class Upload extends React.PureComponent {
 
     const displayItems = []
     for (let i = startIndex; i < stopIndex && i < length; i += 1) {
-      const track = uploads[tracks[i]]
-      const time = formatTime(1000 * track.duration)
-      displayItems.push({ ...track, time, playId: i + '' })
+      displayItems.push(normalizeTrack(uploads[tracks[i]], i))
     }
     return displayItems
   }

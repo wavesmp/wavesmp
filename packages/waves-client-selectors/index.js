@@ -110,6 +110,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
       return null
     }
 
+    // TODO refactor with client web
     return tracks.map((track, i) => {
       const libTrack = library[track]
       const time = formatTime(1000 * libTrack.duration)

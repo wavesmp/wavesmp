@@ -21,7 +21,12 @@ class ClearPlaylistModal extends React.PureComponent {
   render() {
     const { actions } = this.props
     return (
-      <Modal actions={actions} title={TITLE} deleteTitle={DELETE_TITLE} onDelete={this.onDelete}>
+      <Modal
+        actions={actions}
+        title={TITLE}
+        deleteTitle={DELETE_TITLE}
+        onDelete={this.onDelete}
+      >
         <div>
           <span>{MESSAGE}</span>
         </div>

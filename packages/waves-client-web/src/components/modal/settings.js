@@ -57,7 +57,12 @@ class AccountSettingsModal extends React.PureComponent {
     const hiddenColumns = ALL_COLUMNS.filter(x => !columns.has(x))
     const activeColumns = ALL_COLUMNS.filter(x => columns.has(x))
     return (
-      <Modal actions={actions} title={TITLE} actionTitle={ACTION} onAction={this.onAction}>
+      <Modal
+        actions={actions}
+        title={TITLE}
+        actionTitle={ACTION}
+        onAction={this.onAction}
+      >
         <div>
           <div className='modal-settings-columns'>
             <div className='modal-settings-column'>

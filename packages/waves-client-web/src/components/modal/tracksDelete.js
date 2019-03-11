@@ -1,4 +1,3 @@
-import formatTime from 'format-duration'
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -8,6 +7,7 @@ import { FULL_PLAYLIST } from 'waves-client-constants'
 
 import Modal from './util'
 import { libraryColumns } from '../table/columns'
+import { normalizeTrack } from '../../util'
 
 class TracksDeleteModal extends React.PureComponent {
   constructor(props) {
@@ -37,31 +37,28 @@ class TracksDeleteModal extends React.PureComponent {
           <table className='table modal-table'>
             <thead>
               <tr>
-                {columns.map(column => (
-                  <th key={column.title}>{column.title}</th>
+                {columns.map(({ title }) => (
+                  <th key={title}>{title}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {itemPlayIds.map(itemPlayId => {
-                // TODO refactor with Library
-                let sample = library[selection[itemPlayId]]
-                const time = formatTime(1000 * sample.duration)
-                sample = { ...sample, time, playId: itemPlayId + '' }
-                return (
-                  <tr key={itemPlayId}>
-                    {columns.map(column => (
-                      <column.Component
-                        key={column.title}
-                        isPlaying={isPlaying}
-                        playId={playId}
-                        sample={sample}
-                        editable={false}
-                      />
-                    ))}
-                  </tr>
-                )
-              })}
+              {itemPlayIds.map(itemPlayId => (
+                <tr key={itemPlayId}>
+                  {columns.map(column => (
+                    <column.Component
+                      key={column.title}
+                      isPlaying={isPlaying}
+                      playId={playId}
+                      sample={normalizeTrack(
+                        library[selection[itemPlayId]],
+                        itemPlayId
+                      )}
+                      editable={false}
+                    />
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

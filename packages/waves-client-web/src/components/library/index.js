@@ -1,4 +1,3 @@
-import formatTime from 'format-duration'
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -18,6 +17,7 @@ import {
 import { onRowDoubleClick } from '../playlist/tableActions'
 import { libraryColumns } from '../table/columns'
 import TablePage from '../tablepage'
+import { normalizeTrack } from '../../util'
 
 const TITLE = 'Library'
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
@@ -35,9 +35,7 @@ class Library extends React.PureComponent {
 
     const displayItems = []
     for (let i = startIndex; i < stopIndex && i < length; i += 1) {
-      const track = library[tracks[i]]
-      const time = formatTime(1000 * track.duration)
-      displayItems.push({ ...track, time, playId: i + '' })
+      displayItems.push(normalizeTrack(library[tracks[i]], i))
     }
     return displayItems
   }
