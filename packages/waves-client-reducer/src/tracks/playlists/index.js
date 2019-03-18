@@ -178,43 +178,11 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       }
     }
     case actionTypes.TRACK_UPLOADS_DELETE: {
-      // TODO refactor with tracks delete
-      // More like delete ids
       const { deleteIds } = action
       const playlistName = UPLOAD_PLAYLIST
       const playlist = playlists[playlistName]
-      const { playId } = playlist
-      let playIndex = getPlayIndex(playId)
-      const tracks = [...playlist.tracks]
-      const selection = { ...playlist.selection }
 
-      for (let i = tracks.length - 1; i >= 0; i -= 1) {
-        const trackId = tracks[i]
-        if (deleteIds.has(trackId)) {
-          tracks.splice(i, 1)
-
-          if (selection[i]) {
-            delete selection[i]
-          }
-
-          if (playIndex != null) {
-            if (playIndex === i) {
-              playIndex = null
-            } else if (playIndex > i) {
-              playIndex -= 1
-            }
-          }
-        }
-      }
-      return {
-        ...playlists,
-        [playlistName]: {
-          ...playlist,
-          selection,
-          tracks,
-          playId: playIndex != null ? playIndex + '' : null
-        }
-      }
+      return { ...playlists, [playlistName]: tracksDelete(playlist, deleteIds) }
     }
     case actionTypes.PLAYLIST_ADD: {
       const { addTracks, playlistName } = action
@@ -275,43 +243,10 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.TRACKS_DELETE: {
       const { deleteIds } = action
-
       const playlistsUpdate = {}
       for (const playlistName in playlists) {
         const playlist = playlists[playlistName]
-        const { selection, tracks, playId } = playlist
-        let playIndex = getPlayIndex(playId)
-
-        let playIndexOffset = 0
-
-        const filteredTracks = tracks.filter((t, i) => {
-          const isTrackDeleted = deleteIds.has(t)
-          if (isTrackDeleted) {
-            if (i in selection) {
-              delete selection[i]
-            }
-            if (playIndex != null) {
-              if (i === playIndex) {
-                /* Track is deleted. Playlist is no longer playing item */
-                playIndex = null
-              } else if (i < playIndex) {
-                playIndexOffset += 1
-              }
-            }
-          }
-          return !isTrackDeleted
-        })
-
-        if (tracks.length !== filteredTracks.length) {
-          playlistsUpdate[playlistName] = {
-            ...playlist,
-            tracks: filteredTracks,
-            playId: playIndex != null ? playIndex - playIndexOffset + '' : null,
-            selection: { ...selection }
-          }
-        } else {
-          playlistsUpdate[playlistName] = playlist
-        }
+        playlistsUpdate[playlistName] = tracksDelete(playlist, deleteIds)
       }
 
       return playlistsUpdate
@@ -375,6 +310,39 @@ function playlistAdd(addTracks, playlistName, playlists) {
     addPlaylistDefaults(playlistUpdate)
   }
   return playlistUpdate
+}
+
+function tracksDelete(playlist, deleteIds) {
+  const { selection, tracks, playId } = playlist
+  let playIndex = getPlayIndex(playId)
+
+  const filteredTracks = tracks.filter((t, i) => {
+    const isTrackDeleted = deleteIds.has(t)
+    if (isTrackDeleted) {
+      if (i in selection) {
+        delete selection[i]
+      }
+      if (playIndex != null) {
+        if (i === playIndex) {
+          /* Track is deleted. Playlist is no longer playing item */
+          playIndex = null
+        } else if (i < playIndex) {
+          playIndex -= 1
+        }
+      }
+    }
+    return !isTrackDeleted
+  })
+
+  if (tracks.length !== filteredTracks.length) {
+    return {
+      ...playlist,
+      tracks: filteredTracks,
+      playId: playIndex != null ? playIndex + '' : null,
+      selection: { ...selection }
+    }
+  }
+  return playlist
 }
 
 function getPlayIndex(playId) {
