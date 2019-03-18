@@ -172,24 +172,9 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const { update } = action
       const addTracks = update.map(t => t.id)
       const playlistName = UPLOAD_PLAYLIST
-
-      // TODO refactor with PLAYLIST_ADD
-      let playlistUpdate
-      if (playlistName in playlists) {
-        const playlist = playlists[playlistName]
-        const { tracks } = playlist
-        playlistUpdate = { ...playlist, tracks: [...tracks, ...addTracks] }
-      } else {
-        playlistUpdate = {
-          name: playlistName,
-          tracks: addTracks
-        }
-        addPlaylistDefaults(playlistUpdate)
-      }
-
       return {
         ...playlists,
-        [playlistName]: playlistUpdate
+        [playlistName]: playlistAdd(addTracks, playlistName, playlists)
       }
     }
     case actionTypes.TRACK_UPLOADS_DELETE: {
@@ -233,22 +218,9 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.PLAYLIST_ADD: {
       const { addTracks, playlistName } = action
-      let playlistUpdate
-      if (playlistName in playlists) {
-        const playlist = playlists[playlistName]
-        const { tracks } = playlist
-        playlistUpdate = { ...playlist, tracks: [...tracks, ...addTracks] }
-      } else {
-        playlistUpdate = {
-          name: playlistName,
-          tracks: addTracks
-        }
-        addPlaylistDefaults(playlistUpdate)
-      }
-
       return {
         ...playlists,
-        [playlistName]: playlistUpdate
+        [playlistName]: playlistAdd(addTracks, playlistName, playlists)
       }
     }
     case actionTypes.PLAYLIST_MOVE: {
@@ -387,6 +359,22 @@ function sortPlaylist(tracks, library, sortKey, ascending, oldPlayId) {
     return '' + tracks.findIndex(track => track === oldTrack)
   }
   return oldPlayId
+}
+
+function playlistAdd(addTracks, playlistName, playlists) {
+  let playlistUpdate
+  if (playlistName in playlists) {
+    const playlist = playlists[playlistName]
+    const { tracks } = playlist
+    playlistUpdate = { ...playlist, tracks: tracks.concat(addTracks) }
+  } else {
+    playlistUpdate = {
+      name: playlistName,
+      tracks: addTracks
+    }
+    addPlaylistDefaults(playlistUpdate)
+  }
+  return playlistUpdate
 }
 
 function getPlayIndex(playId) {
