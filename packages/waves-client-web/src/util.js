@@ -1,5 +1,7 @@
 import formatTime from 'format-duration'
 
+import constants from 'waves-client-constants'
+
 /* Minimal validation. Server also validates */
 export function isPlaylistNameValid(name) {
   return name !== '' && !name.startsWith('__')
@@ -7,9 +9,9 @@ export function isPlaylistNameValid(name) {
 
 export function isInternalPlaylist(name) {
   return (
-    playlist === constants.DEFAULT_PLAYLIST ||
-    playlist === constants.FULL_PLAYLIST ||
-    playlist === constants.UPLOAD_PLAYLIST
+    name === constants.DEFAULT_PLAYLIST ||
+    name === constants.FULL_PLAYLIST ||
+    name === constants.UPLOAD_PLAYLIST
   )
 }
 

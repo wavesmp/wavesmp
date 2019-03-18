@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import constants from 'waves-client-constants'
 
 import { Back, PlaylistAddItem } from './items'
 import { isInternalPlaylist } from '../../../util'
@@ -17,7 +16,7 @@ class PlaylistAdd extends React.PureComponent {
   }
 
   onPlaylistAdd = playlist => {
-    const { currentPlaylist } = this.props
+    const { actions, currentPlaylist } = this.props
     actions.playlistAdd(currentPlaylist, playlist)
   }
 
