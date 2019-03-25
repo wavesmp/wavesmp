@@ -81,7 +81,7 @@ class Storage {
     }
   }
 
-  async playlistRemove(user, name, indexes) {
+  async tracksRemove(user, name, indexes) {
     const { idp, idpId } = user
     const playlistQuery = { idp, idpId, name }
 

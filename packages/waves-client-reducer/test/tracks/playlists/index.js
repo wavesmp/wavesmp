@@ -239,7 +239,7 @@ describe('#playlists()', () => {
 
   it('Remove from default playlist', () => {
     action = {
-      type: actionTypes.PLAYLIST_REMOVE,
+      type: actionTypes.TRACKS_REMOVE,
       playlistName: DEFAULT_PLAYLIST,
       deleteIndexes: [1, 0]
     }

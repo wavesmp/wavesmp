@@ -26,24 +26,6 @@ function playlistMove(src, dest) {
   }
 }
 
-function playlistRemove(playlistName) {
-  return (dispatch, getState, { ws }) => {
-    console.log(`Removing from playlist ${playlistName}`)
-    const { tracks } = getState()
-    const { playlists } = tracks
-    const { selection } = playlists[playlistName]
-
-    const deleteIndexes = Object.keys(selection).map(i => parseInt(i))
-    deleteIndexes.sort((a, b) => b - a)
-
-    dispatch({ type: types.PLAYLIST_REMOVE, playlistName, deleteIndexes })
-    ws.sendBestEffortMessage(types.PLAYLIST_REMOVE, {
-      playlistName,
-      deleteIndexes
-    })
-  }
-}
-
 function playlistAdd(source, dest) {
   return (dispatch, getState, { ws }) => {
     console.log(`Adding from playlist ${source} to ${dest}`)
@@ -80,7 +62,6 @@ module.exports.playlistsUpdate = playlistsUpdate
 module.exports.playlistCopy = playlistCopy
 module.exports.playlistDelete = playlistDelete
 module.exports.playlistMove = playlistMove
-module.exports.playlistRemove = playlistRemove
 module.exports.playlistAdd = playlistAdd
 module.exports.playlistCreate = playlistCreate
 

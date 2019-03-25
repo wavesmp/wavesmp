@@ -75,7 +75,7 @@ class Track extends React.PureComponent {
         {playlistName !== constants.FULL_PLAYLIST && (
           <PlaylistRemove
             onClick={ev => {
-              actions.playlistRemove(playlistName)
+              actions.tracksRemove(playlistName)
             }}
           />
         )}

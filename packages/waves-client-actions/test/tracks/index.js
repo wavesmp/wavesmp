@@ -367,4 +367,47 @@ describe('#tracks()', async () => {
     playerMock.verify()
     wsMock.verify()
   })
+
+  it('#tracksRemove()', () => {
+    const deleteIndexes = [9, 4, 0]
+    const playlists = {
+      [testPlaylistName1]: {
+        selection: { 4: 'trackId4', 0: 'trackId0', 9: 'trackId9' }
+      },
+      [testPlaylistName2]: {
+        selection: { 8: 'trackId8' }
+      }
+    }
+    const tracks = { playing: {}, playlists }
+
+    const ws = new WavesSocket({})
+
+    const thunk = actions.tracksRemove(testPlaylistName1)
+
+    assert.isDefined(types.TRACKS_REMOVE)
+    const action = {
+      type: types.TRACKS_REMOVE,
+      playlistName: testPlaylistName1,
+      deleteIndexes,
+      deletePlaying: false
+    }
+
+    const dispatchMock = sinon.mock()
+    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+
+    const wsMock = sinon.mock(ws)
+    const wsExpect = wsMock
+      .expects('sendBestEffortMessage')
+      .once()
+      .withExactArgs(types.TRACKS_REMOVE, {
+        playlistName: testPlaylistName1,
+        deleteIndexes,
+      })
+
+    thunk(dispatchMock, () => ({ tracks }), { ws })
+
+    dispatchMock.verify()
+    wsMock.verify()
+  })
+
 })

@@ -201,18 +201,20 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       delete playlistsUpdate[src]
       return playlistsUpdate
     }
-    case actionTypes.PLAYLIST_REMOVE: {
+    case actionTypes.TRACKS_REMOVE: {
       const { deleteIndexes, playlistName } = action
-      /* TODO Does not block from removing currently playing track */
       const playlist = playlists[playlistName]
       const tracks = [...playlist.tracks]
       const { playId } = playlist
-      const playIndex = getPlayIndex(playId)
-      let playIndexOffset = 0
+      let playIndex = getPlayIndex(playId)
 
       for (const deleteIndex of deleteIndexes) {
-        if (playIndex != null && deleteIndex < playIndex) {
-          playIndexOffset += 1
+        if (playIndex != null) {
+          if (deleteIndex === playIndex) {
+            playIndex = null
+          } else if (deleteIndex < playIndex) {
+            playIndex -= 1
+          }
         }
         tracks.splice(deleteIndex, 1)
       }
@@ -222,7 +224,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
           ...playlist,
           tracks,
           selection: {},
-          playId: playIndex != null ? playIndex - playIndexOffset + '' : null
+          playId: playIndex != null ? playIndex + '' : null
         }
       }
     }

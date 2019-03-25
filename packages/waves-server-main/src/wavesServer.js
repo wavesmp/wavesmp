@@ -37,12 +37,12 @@ class Server {
         }
       },
 
-      [types.PLAYLIST_REMOVE]: async (ws, user, data, reqId) => {
+      [types.TRACKS_REMOVE]: async (ws, user, data, reqId) => {
         log.info('Track removed from playlist')
         const { playlistName, deleteIndexes } = data
-        await this.storage.playlistRemove(user, playlistName, deleteIndexes)
+        await this.storage.tracksRemove(user, playlistName, deleteIndexes)
         if (reqId) {
-          this.sendMessage(ws, types.PLAYLIST_REMOVE, {}, reqId)
+          this.sendMessage(ws, types.TRACKS_REMOVE, {}, reqId)
         }
       },
 

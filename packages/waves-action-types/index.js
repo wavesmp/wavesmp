@@ -28,6 +28,7 @@ const actionTypes = keyMirror({
   PLAYING_TRACK_REPEAT: null,
 
   TRACKS_DELETE: null,
+  TRACKS_REMOVE: null,
   TRACKS_UPDATE: null,
   TRACK_NEXT: null,
   TRACK_TOGGLE: null,
@@ -43,7 +44,6 @@ const actionTypes = keyMirror({
   PLAYLISTS_UPDATE: null,
   PLAYLIST_COPY: null,
   PLAYLIST_SORT: null,
-  PLAYLIST_REMOVE: null,
   PLAYLIST_ADD: null,
   PLAYLIST_DELETE: null,
   PLAYLIST_MOVE: null,

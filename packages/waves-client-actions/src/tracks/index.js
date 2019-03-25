@@ -357,6 +357,30 @@ function tracksDelete() {
   }
 }
 
+function tracksRemove(playlistName) {
+  return (dispatch, getState, { player, ws }) => {
+    console.log(`Removing from playlist ${playlistName}`)
+    const { tracks } = getState()
+    const { playing, playlists } = tracks
+    const { selection, playId } = playlists[playlistName]
+    const { track, playlist } = playing
+
+    const deleteIndexes = Object.keys(selection).map(i => parseInt(i))
+    deleteIndexes.sort((a, b) => b - a)
+    const deletePlaying = playlist === playlistName && track && track.id === selection[playId]
+
+    if (deletePlaying) {
+      player.pause()
+    }
+
+    dispatch({ type: types.TRACKS_REMOVE, playlistName, deleteIndexes, deletePlaying })
+    ws.sendBestEffortMessage(types.TRACKS_REMOVE, {
+      playlistName,
+      deleteIndexes
+    })
+  }
+}
+
 function updateLibraryById(libraryById, update) {
   for (const item of update) {
     addMissingTags(item)
@@ -386,6 +410,8 @@ module.exports.trackUploadsUpdate = trackUploadsUpdate
 module.exports.tracksUpdate = tracksUpdate
 module.exports.tracksUpload = tracksUpload
 module.exports.tracksDelete = tracksDelete
+module.exports.tracksRemove = tracksRemove
+
 
 Object.assign(
   module.exports,

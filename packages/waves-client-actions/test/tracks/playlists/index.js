@@ -114,47 +114,6 @@ describe('#playlists()', () => {
     wsMock.verify()
   })
 
-  it('#playlistRemove()', () => {
-    const deleteIndexes = [9, 4, 0]
-    const playlists = {
-      [testPlaylistName1]: {
-        selection: { 4: 'trackId4', 0: 'trackId0', 9: 'trackId9' }
-      },
-      [testPlaylistName2]: {
-        selection: { 8: 'trackId8' }
-      }
-    }
-    const tracks = { playlists }
-
-    const ws = new WavesSocket({})
-
-    const thunk = actions.playlistRemove(testPlaylistName1)
-
-    assert.isDefined(types.PLAYLIST_REMOVE)
-    const action = {
-      type: types.PLAYLIST_REMOVE,
-      playlistName: testPlaylistName1,
-      deleteIndexes
-    }
-
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
-
-    const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
-      .expects('sendBestEffortMessage')
-      .once()
-      .withExactArgs(types.PLAYLIST_REMOVE, {
-        playlistName: testPlaylistName1,
-        deleteIndexes
-      })
-
-    thunk(dispatchMock, () => ({ tracks }), { ws })
-
-    dispatchMock.verify()
-    wsMock.verify()
-  })
-
   it('#playlistAdd()', () => {
     const source = testPlaylistName1
     const dest = testPlaylistName2

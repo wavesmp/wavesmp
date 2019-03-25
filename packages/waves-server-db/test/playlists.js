@@ -174,8 +174,8 @@ module.exports = getStorage => {
       const index = 0
       const msg = `Error: Cannot remove from unknown playlist: ${playlistName}`
       await assertThrows(
-        'playlistRemove',
-        getStorage().playlistRemove,
+        'tracksRemove',
+        getStorage().tracksRemove,
         [user, playlistName, [index]],
         msg
       )
@@ -190,8 +190,8 @@ module.exports = getStorage => {
           `Error: Playlist index ${index} out of range for ` +
           `playlist ${playlistName}`
         await assertThrows(
-          'playlistRemove',
-          getStorage().playlistRemove,
+          'tracksRemove',
+          getStorage().tracksRemove,
           [user, playlistName, [index]],
           msg
         )
@@ -201,7 +201,7 @@ module.exports = getStorage => {
     it('Remove second playlist track', async () => {
       const combined = zip(TEST_USERS, TEST_PLAYLIST_NAMES)
       for (const [user, playlistName] of combined) {
-        await getStorage().playlistRemove(user, playlistName, [1])
+        await getStorage().tracksRemove(user, playlistName, [1])
       }
     })
 

@@ -59,6 +59,14 @@ function reducerPlaying(playing = initialPlaying, action) {
       }
     }
 
+    case actionTypes.TRACKS_REMOVE: {
+      const { deletePlaying } = action
+      if (deletePlaying) {
+        return { ...initialPlaying }
+      }
+      return playing
+    }
+
     case actionTypes.TRACKS_DELETE: {
       const { deleteIds } = action
       const { track } = playing
