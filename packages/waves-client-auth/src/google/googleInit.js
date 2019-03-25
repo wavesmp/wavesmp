@@ -1,5 +1,3 @@
-const Promise = require('bluebird')
-
 function googleInit(authOpts) {
   return new Promise((resolve, reject) => {
     gapi.load('auth2', () => {

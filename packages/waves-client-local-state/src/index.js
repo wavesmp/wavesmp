@@ -1,5 +1,4 @@
 const ObjectID = require('bson-objectid')
-const Promise = require('bluebird')
 
 const { storageInit } = require('./storageInit')
 

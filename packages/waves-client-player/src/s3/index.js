@@ -1,5 +1,3 @@
-const Promise = require('bluebird')
-
 const { toastTypes } = require('waves-client-constants')
 const { UploadError } = require('waves-client-errors')
 

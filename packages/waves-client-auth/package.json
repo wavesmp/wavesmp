@@ -8,8 +8,5 @@
     "type": "git",
     "url": "git@github.com:wavesmp/waves-client-auth.git"
   },
-  "license": "ISC",
-  "dependencies": {
-    "bluebird": "^3.5.3"
-  }
+  "license": "ISC"
 }

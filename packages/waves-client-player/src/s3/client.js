@@ -1,5 +1,3 @@
-const Promise = require('bluebird')
-
 const MAX_DELETE_KEYS = 1000
 
 class S3Client {

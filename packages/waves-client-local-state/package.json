@@ -13,7 +13,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.5.3",
     "bson-objectid": "^1.2.4"
   }
 }

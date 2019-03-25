@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import ObjectID from 'bson-objectid'
 const musicmetadata = require('musicmetadata')
 

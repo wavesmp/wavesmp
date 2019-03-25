@@ -1,5 +1,4 @@
 import ObjectID from 'bson-objectid'
-import Promise from 'bluebird'
 
 import * as WavesActions from 'waves-client-actions'
 
