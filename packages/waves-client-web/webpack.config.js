@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const babelConfig = require('./babel.config')
 const constants = require('./buildConstants')
@@ -49,6 +50,8 @@ const wpConfig = {
       { test: /\.png$/, use: 'file-loader' }
     ]
   },
+
+  plugins: [new BundleAnalyzerPlugin({ analyzerMode: 'static' })],
 
   /* Some libs e.g. musicmetadata require fs,
    * even though it might not actually be used. */
