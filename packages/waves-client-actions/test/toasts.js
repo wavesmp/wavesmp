@@ -39,7 +39,6 @@ describe('#toasts()', () => {
   })
 })
 
-// TODO consider moving to util module
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }

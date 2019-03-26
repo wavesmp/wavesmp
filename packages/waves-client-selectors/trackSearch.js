@@ -1,8 +1,6 @@
 const Fuse = require('fuse.js')
 
 function trackSearch(items, searchString) {
-  /* TODO this search is probably not meant for a music library.
-   * Consider replacing */
   const options = {
     keys: ['title', 'artist', 'album', 'genre'],
     shouldSort: false,

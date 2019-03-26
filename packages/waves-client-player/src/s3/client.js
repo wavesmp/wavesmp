@@ -51,7 +51,6 @@ class S3Client {
   // TODO support multiple file types
   putTrack(trackId, file) {
     const objKey = this.baseUrl + trackId + '.mp3'
-    // TODO look into setting ContentDisposition for settings download file name
     const params = {
       Key: objKey,
       Body: file,

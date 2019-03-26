@@ -53,8 +53,7 @@ class StorageSetup {
   }
 
   async after(storage) {
-    // TODO temporary to inspect db manually
-    // await this.cleanTestDb()
+    await this.cleanTestDb()
     await this.storage.close()
   }
 

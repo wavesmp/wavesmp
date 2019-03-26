@@ -159,7 +159,6 @@ class Storage {
 
   async deleteTracks(user, trackIds) {
     const { idp, idpId } = user
-    // TODO do resps need to be handled?
     await Track.remove({ idp, idpId, _id: { $in: trackIds } })
     await Playlist.update(
       { idp, idpId },

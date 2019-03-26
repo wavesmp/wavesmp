@@ -136,8 +136,6 @@ class Server {
 
         try {
           // Verify auth before processing message
-          // TODO factor out constant actions?
-          // TODO factor out error message creation?
           if (!user) {
             if (type !== types.ACCOUNT_LOGIN) {
               const errMsg = `User is not logged in. Invalid message type: ${type}`
@@ -155,6 +153,7 @@ class Server {
             try {
               user = await this.auth.login(idp, token)
             } catch (err) {
+              log.error(`Failed to authenticate user: ${err}`)
               const resp = { err: err.toString() }
               if (reqId) {
                 this.sendMessage(ws, type, resp, reqId)
@@ -162,11 +161,9 @@ class Server {
               return
             }
 
-            //const { idp, idpId, email, name } = user
             const { idpId, email, name } = user
             log.info('Client logged in:', name)
             await this.storage.getUser(idp, idpId, email, name)
-            log.info('SENDING USER DATA')
             this.sendMessage(ws, type, { ...user }, reqId)
 
             const library = await this.storage.getLibrary(user)
@@ -180,8 +177,8 @@ class Server {
           await this.messageMap[type](ws, user, data, reqId)
         } catch (err) {
           const errString = err.toString()
-          // TODO probably want to display user here...
-          log.error(`Error processing message ${type}: ${errString}`)
+          const name = user ? user.name : ''
+          log.error(`Error processing message ${type} for user ${name}: ${errString}`)
           if (reqId) {
             this.sendMessage(ws, type, { err: errString }, reqId)
           }
@@ -230,7 +227,6 @@ class Server {
     }
 
     const cooked = this.encoder.encode(raw)
-    // TODO ack message?
     ws.send(cooked)
   }
 
