@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { ENTER_KEY_CODE } from 'waves-client-constants'
-
 import Buttons from './buttons'
 import './tablemenubar.css'
 
@@ -16,8 +14,8 @@ export default class TableMenuBar extends React.PureComponent {
   }
 
   onKeyDown = ev => {
-    const { keyCode } = ev
-    if (keyCode !== ENTER_KEY_CODE) {
+    const { key } = ev
+    if (key !== 'Enter') {
       return
     }
     this.applySearchFilter(ev.currentTarget.value)

@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { ENTER_KEY_CODE } from 'waves-client-constants'
-
 /**
  * Based on:
  * http://stackoverflow.com/questions/22677931/
@@ -28,8 +26,8 @@ export default class ContentEditable extends React.Component {
   }
 
   onKeyDown = ev => {
-    const { keyCode } = ev
-    if (keyCode === ENTER_KEY_CODE) {
+    const { key } = ev
+    if (key === 'Enter') {
       this.spanRef.current.blur()
       ev.preventDefault()
       return
