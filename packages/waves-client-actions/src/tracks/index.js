@@ -72,7 +72,8 @@ async function _trackNext(
   ws,
   prev
 ) {
-  const { tracks } = getState()
+  const state = getState()
+  const { tracks } = state
   const { library, playing, playlists, uploads } = tracks
   const { playlist: playlistName, isPlaying, shuffle } = playing
   const playlist = playlists[playlistName]
@@ -82,7 +83,7 @@ async function _trackNext(
     playlistName,
     URLSearchParams
   )
-  const searchItems = getSearchItems(tracks, search)
+  const searchItems = getSearchItems(state, search)
 
   /* These are different data structures. Need to handle with care below */
   // TODO try to simplify or break up implementation below

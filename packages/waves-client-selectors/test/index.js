@@ -45,7 +45,8 @@ describe('waves-client-selectors', () => {
         const tracks = {
           playlists: null
         }
-        const search = getPlaylistSearch(tracks)
+        const state = { tracks }
+        const search = getPlaylistSearch(state)
         assert.isNull(search)
       })
 
@@ -53,7 +54,8 @@ describe('waves-client-selectors', () => {
         const tracks = {
           playlists: {}
         }
-        const search = getPlaylistSearch(tracks)
+        const state = { tracks }
+        const search = getPlaylistSearch(state)
         assert.isNull(search)
       })
 
@@ -65,7 +67,8 @@ describe('waves-client-selectors', () => {
             }
           }
         }
-        const search = getPlaylistSearch(tracks)
+        const state = { tracks }
+        const search = getPlaylistSearch(state)
         assert.strictEqual(search, '')
       })
 
@@ -77,7 +80,8 @@ describe('waves-client-selectors', () => {
             }
           }
         }
-        const search = getPlaylistSearch(tracks)
+        const state = { tracks }
+        const search = getPlaylistSearch(state)
         assert.strictEqual(search, testSearch)
       })
     })
@@ -98,14 +102,16 @@ describe('waves-client-selectors', () => {
         const tracks = {
           playlists: null
         }
-        const search = getPlaylist(tracks)
+        const state = { tracks }
+        const search = getPlaylist(state)
         assert.isNull(search)
       })
 
       it('playlist is missing', () => {
         const playlists = {}
         const tracks = { playlists }
-        const playlist = getPlaylist(tracks)
+        const state = { tracks }
+        const playlist = getPlaylist(state)
         assert.isUndefined(playlist)
       })
 
@@ -115,7 +121,8 @@ describe('waves-client-selectors', () => {
           [testPlaylistName]: playlist
         }
         const tracks = { playlists }
-        const actualPlaylist = getPlaylist(tracks)
+        const state = { tracks }
+        const actualPlaylist = getPlaylist(state)
         assert.strictEqual(actualPlaylist, playlist)
       })
     })
@@ -168,7 +175,8 @@ describe('waves-client-selectors', () => {
           }
         }
         const tracks = { playlists, library }
-        const searchItems = getSearchItems(tracks, search)
+        const state = { tracks }
+        const searchItems = getSearchItems(state, search)
         assert.lengthOf(searchItems, 0)
       })
 
@@ -187,7 +195,8 @@ describe('waves-client-selectors', () => {
           }
         }
         const tracks = { playlists, library: libraryCopy }
-        const searchItems = getSearchItems(tracks, search)
+        const state = { tracks }
+        const searchItems = getSearchItems(state, search)
         assert.lengthOf(searchItems, 1)
         const actualTrack = searchItems[0]
         assert.strictEqual(actualTrack.id, track1Copy.id)

@@ -11,9 +11,7 @@ const SORT_KEY_QUERY_KEY = 'sortKey'
 
 const DEFAULT_ASCENDING = true
 const DEFAULT_SORT_KEY = 'title'
-
-const getLibrary = tracks => tracks.library
-const getPlaylists = tracks => tracks.playlists
+const DEFAULT_SEARCH_STRING = ''
 
 const playlistSelectors = {}
 function getOrCreatePlaylistSelectors(playlistName, URLSearchParams) {
@@ -25,7 +23,6 @@ function getOrCreatePlaylistSelectors(playlistName, URLSearchParams) {
   return playlistSelector
 }
 
-/* playlists selector creator */
 function createPlaylistSelectors(playlistName, URLSearchParams) {
   /* router query params */
   function _getRouterQueryParams(search) {
@@ -35,6 +32,8 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
     return new URLSearchParams(search)
   }
 
+  /* Use direct search value since query params may need to be
+   * accessed e.g. when sorting, track next, etc */
   const getRouterQueryParams = createSelector(
     [(_, search) => search],
     _getRouterQueryParams
@@ -51,9 +50,9 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
    * may think it's uncontrolled */
   function _getRouterSearchString(qp) {
     if (!qp) {
-      return ''
+      return DEFAULT_SEARCH_STRING
     }
-    return qp.get(SEARCH_QUERY_KEY) || ''
+    return qp.get(SEARCH_QUERY_KEY) || DEFAULT_SEARCH_STRING
   }
 
   const getRouterSearchString = createSelector(
@@ -91,18 +90,18 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
     _getRouterSortKey
   )
 
-  /* playlist selector */
-  const getPlaylist = createSelector(
-    [getPlaylists],
-    playlists => playlists && playlists[playlistName]
-  )
+  function getPlaylist(state) {
+    return _getPlaylist(state, playlistName)
+  }
 
-  /* playlist search string */
   /* playlist tracks */
-  const getPlaylistTracks = createSelector(
-    [getPlaylist],
-    playlist => playlist && playlist.tracks
-  )
+  function getPlaylistTracks(state) {
+    const playlist = getPlaylist(state)
+    if (!playlist) {
+      return null
+    }
+    return playlist.tracks
+  }
 
   /* playlist display items */
   function _getDisplayItems(tracks, library, searchString) {
@@ -143,41 +142,33 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
   }
 }
 
-/* library playlist search */
-const getLibraryPlaylist = createSelector(
-  [getPlaylists],
-  playlists => playlists && playlists[FULL_PLAYLIST]
-)
+function getLibrary(state) {
+  return state.tracks.library
+}
 
-function _getLibraryPlaylistSearch(playlist) {
+function _getPlaylist(state, playlistName) {
+  const { playlists } = state.tracks
+  if (!playlists) {
+    return null
+  }
+  return playlists[playlistName]
+}
+
+function getLibraryPlaylistSearch(state) {
+  const playlist = _getPlaylist(state, FULL_PLAYLIST)
   if (!playlist) {
     return null
   }
   return playlist.search
 }
 
-const getLibraryPlaylistSearch = createSelector(
-  [getLibraryPlaylist],
-  _getLibraryPlaylistSearch
-)
-
-/* default playlist search string */
-const getDefaultPlaylist = createSelector(
-  [getPlaylists],
-  playlists => playlists && playlists[DEFAULT_PLAYLIST]
-)
-
-function _getDefaultPlaylistSearch(playlist) {
+function getDefaultPlaylistSearch(state) {
+  const playlist = _getPlaylist(state, DEFAULT_PLAYLIST)
   if (!playlist) {
     return null
   }
   return playlist.search
 }
-
-const getDefaultPlaylistSearch = createSelector(
-  [getDefaultPlaylist],
-  _getDefaultPlaylistSearch
-)
 
 module.exports.getOrCreatePlaylistSelectors = getOrCreatePlaylistSelectors
 module.exports.getLibraryPlaylistSearch = getLibraryPlaylistSearch

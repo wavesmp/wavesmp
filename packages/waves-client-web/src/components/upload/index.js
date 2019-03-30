@@ -233,7 +233,7 @@ function mapStateToProps(state) {
   const { account, sidebar, transitions, tracks } = state
   const { library, playing, uploads } = tracks
   return {
-    playlist: getPlaylist(tracks),
+    playlist: getPlaylist(state),
     uploads,
     library,
     playing,

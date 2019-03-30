@@ -157,9 +157,9 @@ function mapStateToProps(state, ownProps) {
   const columns = libraryColumns.filter(c => account.columns.has(c.title))
 
   return {
-    playlist: getPlaylist(tracks),
-    defaultPlaylistSearch: getDefaultPlaylistSearch(tracks),
-    searchItems: getSearchItems(tracks, search),
+    playlist: getPlaylist(state),
+    defaultPlaylistSearch: getDefaultPlaylistSearch(state),
+    searchItems: getSearchItems(state, search),
     routerSearchString: getRouterSearchString(undefined, search),
     library,
     playing,
