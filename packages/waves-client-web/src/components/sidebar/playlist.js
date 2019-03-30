@@ -20,25 +20,19 @@ export default class PlaylistBar extends React.PureComponent {
     actions.modalSet({ type: constants.modalTypes.PLAYLIST_CREATE })
   }
 
-  onNewPlaylistDrop = ev => {
-    const { actions } = this.props
-    const playlistName = ev.dataTransfer.getData(constants.PLAYLIST_TYPE)
-    if (playlistName) {
-      ev.preventDefault()
-      console.log(`TODO implement me. Dropped to new playlist: ${playlistName}`)
-      // actions.modalSet({type: constants.modalTypes.PLAYLIST_CREATE_FROM})
-    }
-  }
-
   onPlaylistDrop = ev => {
-    const playlistName = ev.dataTransfer.getData(constants.PLAYLIST_TYPE)
-    if (playlistName) {
-      ev.preventDefault()
-      console.log(
-        `TODO implement me. Dropped to existing playlist: ${playlistName}`
-      )
-      // actions.playlistAdd(...)
+    const { actions } = this.props
+    const playlistSrc = ev.dataTransfer.getData(constants.PLAYLIST_TYPE)
+    if (!playlistSrc) {
+      return
     }
+    const playlistDst = ev.currentTarget.getAttribute(constants.PLAYLIST_NAME_ATTR)
+    if (playlistDst == '__new') {
+      console.log(`TODO implement me. ${playlistSrc} -> ${playlistDst}`)
+    } else {
+      actions.playlistAdd(playlistSrc, playlistDst)
+    }
+    ev.preventDefault()
   }
 
   render() {
@@ -62,11 +56,12 @@ export default class PlaylistBar extends React.PureComponent {
               <span style={{ padding: '0px 15px' }}>Back</span>
             </span>
           </li>
-          <li className='sidebar-playlist' data-playlistname={'__new'}>
+          <li className='sidebar-playlist'>
             <span
               onClick={this.onNewPlaylistClick}
               onDragOver={this.onDragOver}
-              onDrop={this.onNewPlaylistDrop}
+              onDrop={this.onPlaylistDrop}
+              data-playlistname='__new'
             >
               <i className='fa-fw fa fa-lg fa-plus' />
               <span>New Playlist</span>
@@ -76,7 +71,6 @@ export default class PlaylistBar extends React.PureComponent {
             <li
               key={playlist.name}
               className='sidebar-playlist'
-              data-playlistname={playlist.name}
             >
               <Link
                 to={{
@@ -85,6 +79,7 @@ export default class PlaylistBar extends React.PureComponent {
                 }}
                 onDragOver={this.onDragOver}
                 onDrop={this.onPlaylistDrop}
+                data-playlistname={playlist.name}
               >
                 <i className='fa-fw fa fa-lg fa-list' />
                 <span>{playlist.name}</span>
