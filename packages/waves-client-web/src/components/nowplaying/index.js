@@ -111,7 +111,8 @@ class NowPlaying extends React.PureComponent {
       sidebar,
       rowsPerPage,
       transitions,
-      location,
+      pathname,
+      qp,
       history,
       routerSearchString,
       searchItems,
@@ -140,22 +141,23 @@ class NowPlaying extends React.PureComponent {
         history={history}
         isPlayerVisible={playing.track !== null}
         isPlaying={playing.isPlaying}
-        location={location}
-        theme={theme}
-        transitions={transitions}
         noDataMsg={NO_DATA_MSG}
         numItems={numItems}
-        onItemEdit={this.onItemEdit}
-        routerSearchString={routerSearchString}
         onContextMenu={this.onContextMenu}
+        onItemEdit={this.onItemEdit}
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
+        pathname={location.pathname}
         playId={playId}
         playlistLoaded={playlistLoaded}
         playlistName={playlistName}
+        qp={qp}
+        routerSearchString={routerSearchString}
         rowsPerPage={rowsPerPage}
         selection={selection}
         sidebar={sidebar}
+        theme={theme}
         title={TITLE}
+        transitions={transitions}
       />
     )
   }
@@ -163,19 +165,23 @@ class NowPlaying extends React.PureComponent {
 
 function mapStateToProps(state, ownProps) {
   const {
+    getRouterQueryParams,
     getRouterSearchString,
     getPlaylist,
     getSearchItems
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
-  const { search } = ownProps.location
+  const { location } = ownProps
+  const { pathname, search } = location
   const { rowsPerPage, theme } = account
   const columns = playlistColumns.filter(c => account.columns.has(c.title))
 
   return {
     playlist: getPlaylist(state),
     routerSearchString: getRouterSearchString(undefined, search),
+    qp: getRouterQueryParams(undefined, search),
+    pathname,
     libraryPlaylistSearch: getLibraryPlaylistSearch(state),
     searchItems: getSearchItems(state, search),
     library,

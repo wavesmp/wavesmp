@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom'
 
 export default class Column extends React.PureComponent {
   render() {
-    const { column, sortKey, ascending, location } = this.props
+    const { column, sortKey, ascending, pathname } = this.props
+    let { qp } = this.props
     const { sortable, title, attribute } = column
-    const { pathname, search } = location
     if (!sortable) {
       return <th>{title}</th>
     }
 
-    const qp = new URLSearchParams(search)
+    qp = new URLSearchParams(qp)
     qp.set('page', 0)
 
     let iconClass

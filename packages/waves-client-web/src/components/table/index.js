@@ -174,7 +174,8 @@ export default class Table extends React.PureComponent {
 
   render() {
     const {
-      location,
+      pathname,
+      qp,
       actions,
       playId,
       sortKey,
@@ -191,8 +192,9 @@ export default class Table extends React.PureComponent {
     } = this.props
 
     /* Pagination */
-    const qp = new URLSearchParams(location.search)
-    let currentPage = Math.floor(parseInt(qp.get('page'), 10) || 0)
+    let currentPage = Math.floor(
+      parseInt(new URLSearchParams(qp).get('page'), 10) || 0
+    )
     let lastPage = Math.floor((numItems - 1) / rowsPerPage)
     if (currentPage < 0) {
       currentPage = 0
@@ -214,7 +216,8 @@ export default class Table extends React.PureComponent {
                   column={column}
                   sortKey={sortKey}
                   ascending={ascending}
-                  location={location}
+                  pathname={pathname}
+                  qp={qp}
                 />
               ))}
             </tr>
@@ -262,7 +265,8 @@ export default class Table extends React.PureComponent {
         <PaginationButtons
           currentPage={currentPage}
           lastPage={lastPage}
-          location={location}
+          pathname={pathname}
+          qp={qp}
           actions={actions}
         />
       </div>

@@ -27,16 +27,16 @@ export default class TableMenuBar extends React.PureComponent {
   }
 
   applySearchFilter(searchString) {
-    const { history, location } = this.props
-    const { pathname, search } = location
-    const qp = new URLSearchParams(search)
+    const { history, pathname } = this.props
+    let { qp } = this.props
+    qp = new URLSearchParams(qp)
     qp.set('page', 0)
     qp.set('search', searchString)
     history.push({ pathname, search: `${qp}` })
   }
 
   render() {
-    const { buttons, location, onSettingsClick, history } = this.props
+    const { buttons, onSettingsClick, history } = this.props
     let settingsComponent = null
     if (onSettingsClick) {
       settingsComponent = (

@@ -9,8 +9,8 @@ const HALF_MAX_PAGINATION_BUTTONS = 2
 
 export default class PaginationButtons extends React.PureComponent {
   render() {
-    const { currentPage, lastPage, location } = this.props
-    const { pathname } = location
+    const { currentPage, lastPage, pathname } = this.props
+    let { qp } = this.props
     let paginationStartIndex = currentPage - HALF_MAX_PAGINATION_BUTTONS
 
     /* Handle the case where there are less than HALF_MAX_PAGINATION_BUTTONS
@@ -24,7 +24,7 @@ export default class PaginationButtons extends React.PureComponent {
      * there are less than MAX_PAGINATION_BUTTONS available */
     paginationStartIndex = Math.max(0, paginationStartIndex)
 
-    const qp = new URLSearchParams(location.search)
+    qp = new URLSearchParams(qp)
     const paginationButtons = []
     for (let i = 0; i < MAX_PAGINATION_BUTTONS; i += 1) {
       const pageNum = paginationStartIndex + i

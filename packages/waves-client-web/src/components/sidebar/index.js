@@ -14,7 +14,7 @@ export default class SideBar extends React.PureComponent {
       playing,
       playlists,
       sidebar,
-      location,
+      pathname,
       userName
     } = this.props
     let isPlayerVisible = playing.track !== null
@@ -46,7 +46,7 @@ export default class SideBar extends React.PureComponent {
           actions={actions}
           isPlayerVisible={isPlayerVisible}
           playlists={playlists}
-          location={location}
+          pathname={pathname}
         />
       )
     }

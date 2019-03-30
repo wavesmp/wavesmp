@@ -86,7 +86,7 @@ class MainApp extends React.PureComponent {
           sidebar={sidebar}
           playlists={playlists}
           playing={playing}
-          location={location}
+          pathname={location.pathname}
           userName={user.name}
         />
         <MenuBar

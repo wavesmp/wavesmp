@@ -15,7 +15,7 @@ export default class MainBar extends React.PureComponent {
   }
 
   render() {
-    const { location, playlists, isPlayerVisible } = this.props
+    const { pathname, playlists, isPlayerVisible } = this.props
     let className = 'sidebar-container-narrow'
     if (isPlayerVisible) {
       className += ' sidebar-container-player-visible'
@@ -41,10 +41,10 @@ export default class MainBar extends React.PureComponent {
           {menuBarItems.map(sample => (
             <PlaylistLink
               key={sample.name}
-              pathname={sample.pathname}
+              itemPathname={sample.pathname}
               playlist={playlists && playlists[sample.playlistName]}
               className={sample.className}
-              location={location}
+              pathname={pathname}
             />
           ))}
           <li>
@@ -55,9 +55,7 @@ export default class MainBar extends React.PureComponent {
           <li>
             <Link
               className={
-                location.pathname === constants.routes.upload
-                  ? 'sidebar-active'
-                  : ''
+                pathname === constants.routes.upload ? 'sidebar-active' : ''
               }
               to={constants.routes.upload}
             >
@@ -77,14 +75,13 @@ export default class MainBar extends React.PureComponent {
 
 class PlaylistLink extends React.PureComponent {
   render() {
-    const { pathname, playlist, location, className } = this.props
-    const activeClassName =
-      location.pathname === pathname ? 'sidebar-active' : ''
+    const { itemPathname, playlist, pathname, className } = this.props
+    const activeClassName = pathname === itemPathname ? 'sidebar-active' : ''
     const search = playlist && playlist.search ? playlist.search : ''
-
+    const to = { pathname: itemPathname, search }
     return (
       <li>
-        <Link className={activeClassName} to={{ pathname, search }}>
+        <Link className={activeClassName} to={to}>
           <i className={className} />
         </Link>
       </li>

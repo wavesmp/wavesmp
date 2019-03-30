@@ -141,7 +141,7 @@ class Upload extends React.PureComponent {
       return null
     }
 
-    const { account, location, actions, playing, transitions } = this.props
+    const { account, pathname, qp, actions, playing, transitions } = this.props
     const { isPlaying } = playing
     const { rowsPerPage } = account
     const columns = playlistColumns.filter(
@@ -154,7 +154,8 @@ class Upload extends React.PureComponent {
         draggable={false}
         getDisplayItems={this.getDisplayItems}
         isPlaying={isPlaying}
-        location={location}
+        pathname={pathname}
+        qp={qp}
         numItems={numItems}
         onItemEdit={this.onItemEdit}
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
@@ -225,15 +226,19 @@ class Upload extends React.PureComponent {
   }
 }
 
-function mapStateToProps(state) {
-  const { getPlaylist } = getOrCreatePlaylistSelectors(
+function mapStateToProps(state, ownProps) {
+  const { getPlaylist, getRouterQueryParams } = getOrCreatePlaylistSelectors(
     playlistName,
     URLSearchParams
   )
   const { account, sidebar, transitions, tracks } = state
   const { library, playing, uploads } = tracks
+  const { location } = ownProps
+  const { pathname, search } = location
   return {
     playlist: getPlaylist(state),
+    pathname,
+    qp: getRouterQueryParams(undefined, search),
     uploads,
     library,
     playing,

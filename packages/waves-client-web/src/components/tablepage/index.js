@@ -31,7 +31,8 @@ class TablePageData extends React.PureComponent {
     const {
       noDataMsg,
       buttons,
-      location,
+      pathname,
+      qp,
       routerSearchString,
       onSettingsClick,
       history,
@@ -59,7 +60,8 @@ class TablePageData extends React.PureComponent {
           <div>
             <TableMenuBar
               buttons={buttons}
-              location={location}
+              pathname={pathname}
+              qp={qp}
               routerSearchString={routerSearchString}
               onSettingsClick={onSettingsClick}
               history={history}
@@ -93,12 +95,13 @@ class TablePageData extends React.PureComponent {
       <React.Fragment>
         <TableMenuBar
           buttons={buttons}
-          location={location}
+          pathname={pathname}
+          qp={qp}
           routerSearchString={routerSearchString}
           onSettingsClick={onSettingsClick}
           history={history}
         />
-        <Table {...other} location={location} numItems={numItems} />
+        <Table {...other} pathname={pathname} qp={qp} numItems={numItems} />
       </React.Fragment>
     )
   }

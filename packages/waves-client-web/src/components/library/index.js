@@ -92,7 +92,8 @@ class Library extends React.PureComponent {
       playlist,
       rowsPerPage,
       transitions,
-      location,
+      pathname,
+      qp,
       history,
       searchItems,
       routerSearchString,
@@ -122,23 +123,24 @@ class Library extends React.PureComponent {
         history={history}
         isPlayerVisible={playing.track !== null}
         isPlaying={playing.isPlaying}
-        location={location}
-        theme={theme}
-        transitions={transitions}
         noDataMsg={NO_DATA_MSG}
         numItems={numItems}
         onContextMenu={this.onContextMenu}
         onItemEdit={this.onItemEdit}
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
+        pathname={pathname}
+        playId={playId}
         playlistLoaded={playlistLoaded}
         playlistName={playlistName}
-        playId={playId}
+        qp={qp}
         routerSearchString={routerSearchString}
         rowsPerPage={rowsPerPage}
         selection={selection}
         sidebar={sidebar}
         sortKey={sortKey}
+        theme={theme}
         title={TITLE}
+        transitions={transitions}
       />
     )
   }
@@ -147,12 +149,14 @@ class Library extends React.PureComponent {
 function mapStateToProps(state, ownProps) {
   const {
     getRouterSearchString,
+    getRouterQueryParams,
     getPlaylist,
     getSearchItems
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
-  const { search } = ownProps.location
+  const { location } = ownProps
+  const { pathname, search } = location
   const { rowsPerPage, theme } = account
   const columns = libraryColumns.filter(c => account.columns.has(c.title))
 
@@ -161,6 +165,8 @@ function mapStateToProps(state, ownProps) {
     defaultPlaylistSearch: getDefaultPlaylistSearch(state),
     searchItems: getSearchItems(state, search),
     routerSearchString: getRouterSearchString(undefined, search),
+    qp: getRouterQueryParams(undefined, search),
+    pathname,
     library,
     playing,
     rowsPerPage,

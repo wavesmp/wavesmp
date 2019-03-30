@@ -100,7 +100,8 @@ class Playlist extends React.PureComponent {
       sidebar,
       rowsPerPage,
       transitions,
-      location,
+      pathname,
+      qp,
       history,
       routerSearchString,
       searchItems,
@@ -129,23 +130,24 @@ class Playlist extends React.PureComponent {
         history={history}
         isPlayerVisible={playing.track !== null}
         isPlaying={playing.isPlaying}
-        location={location}
-        theme={theme}
-        transitions={transitions}
         noDataMsg={NO_DATA_MSG}
         numItems={numItems}
         onContextMenu={this.onContextMenu}
         onItemEdit={this.onItemEdit}
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
+        onSettingsClick={this.onSettingsClick}
+        pathname={pathname}
         playId={playId}
         playlistLoaded={playlistLoaded}
         playlistName={playlistName}
+        qp={qp}
         routerSearchString={routerSearchString}
         rowsPerPage={rowsPerPage}
         selection={selection}
         sidebar={sidebar}
-        onSettingsClick={this.onSettingsClick}
+        theme={theme}
         title={playlistName}
+        transitions={transitions}
       />
     )
   }
@@ -155,22 +157,25 @@ function mapStateToProps(state, ownProps) {
   const playlistName = ownProps.match.params.playlist
   const {
     getRouterSearchString,
+    getRouterQueryParams,
     getPlaylist,
     getSearchItems
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
-  const { search } = ownProps.location
+  const { pathname, search } = ownProps.location
   const { rowsPerPage, theme } = account
   const columns = playlistColumns.filter(c => account.columns.has(c.title))
 
   return {
     playlist: getPlaylist(state),
     routerSearchString: getRouterSearchString(undefined, search),
+    qp: getRouterQueryParams(undefined, search),
     libraryPlaylistSearch: getLibraryPlaylistSearch(state),
     defaultPlaylistSearch: getDefaultPlaylistSearch(state),
     searchItems: getSearchItems(state, search),
     playlistName,
+    pathname,
     library,
     playing,
     rowsPerPage,

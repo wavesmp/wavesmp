@@ -135,6 +135,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
   )
   return {
     getPlaylist,
+    getRouterQueryParams,
     getRouterAscending,
     getRouterSearchString,
     getRouterSortKey,
