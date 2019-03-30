@@ -20,3 +20,6 @@
 
 # istanbuljs code coverage output
 .nyc_output
+
+# TODO remove reliance on vendor code
+/packages/waves-client-web/vendor
