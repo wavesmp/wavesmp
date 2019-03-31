@@ -26,7 +26,9 @@ export default class PlaylistBar extends React.PureComponent {
     if (!playlistSrc) {
       return
     }
-    const playlistDst = ev.currentTarget.getAttribute(constants.PLAYLIST_NAME_ATTR)
+    const playlistDst = ev.currentTarget.getAttribute(
+      constants.PLAYLIST_NAME_ATTR
+    )
     if (playlistDst == '__new') {
       console.log(`TODO implement me. ${playlistSrc} -> ${playlistDst}`)
     } else {
@@ -68,10 +70,7 @@ export default class PlaylistBar extends React.PureComponent {
             </span>
           </li>
           {playlistObjs.map(playlist => (
-            <li
-              key={playlist.name}
-              className='sidebar-playlist'
-            >
+            <li key={playlist.name} className='sidebar-playlist'>
               <Link
                 to={{
                   pathname: `/playlist/${playlist.name}`,

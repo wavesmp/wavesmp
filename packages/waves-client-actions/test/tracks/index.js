@@ -401,7 +401,7 @@ describe('#tracks()', async () => {
       .once()
       .withExactArgs(types.TRACKS_REMOVE, {
         playlistName: testPlaylistName1,
-        deleteIndexes,
+        deleteIndexes
       })
 
     thunk(dispatchMock, () => ({ tracks }), { ws })
@@ -409,5 +409,4 @@ describe('#tracks()', async () => {
     dispatchMock.verify()
     wsMock.verify()
   })
-
 })

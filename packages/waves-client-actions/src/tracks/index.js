@@ -367,13 +367,19 @@ function tracksRemove(playlistName) {
 
     const deleteIndexes = Object.keys(selection).map(i => parseInt(i))
     deleteIndexes.sort((a, b) => b - a)
-    const deletePlaying = playlist === playlistName && track && track.id === selection[playId]
+    const deletePlaying =
+      playlist === playlistName && track && track.id === selection[playId]
 
     if (deletePlaying) {
       player.pause()
     }
 
-    dispatch({ type: types.TRACKS_REMOVE, playlistName, deleteIndexes, deletePlaying })
+    dispatch({
+      type: types.TRACKS_REMOVE,
+      playlistName,
+      deleteIndexes,
+      deletePlaying
+    })
     ws.sendBestEffortMessage(types.TRACKS_REMOVE, {
       playlistName,
       deleteIndexes
@@ -411,7 +417,6 @@ module.exports.tracksUpdate = tracksUpdate
 module.exports.tracksUpload = tracksUpload
 module.exports.tracksDelete = tracksDelete
 module.exports.tracksRemove = tracksRemove
-
 
 Object.assign(
   module.exports,

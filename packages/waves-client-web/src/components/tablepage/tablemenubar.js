@@ -68,7 +68,12 @@ export default class TableMenuBar extends React.PureComponent {
             <i
               className='fa fa-lg fa-times tablemenubar-input-icon'
               onClick={this.onSearchReset}
-              style={{ position: 'absolute', top: '5px', right: '5px', cursor: 'pointer' }}
+              style={{
+                position: 'absolute',
+                top: '5px',
+                right: '5px',
+                cursor: 'pointer'
+              }}
             />
           )}
         </div>

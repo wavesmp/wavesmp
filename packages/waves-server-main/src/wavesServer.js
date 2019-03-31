@@ -178,7 +178,9 @@ class Server {
         } catch (err) {
           const errString = err.toString()
           const name = user ? user.name : ''
-          log.error(`Error processing message ${type} for user ${name}: ${errString}`)
+          log.error(
+            `Error processing message ${type} for ${name}: ${errString}`
+          )
           if (reqId) {
             this.sendMessage(ws, type, { err: errString }, reqId)
           }
