@@ -93,16 +93,13 @@ class NowPlaying extends React.PureComponent {
       numItems,
       columns,
       theme,
+      loaded,
+      playId,
+      selection,
       currentPage,
       lastPage,
       displayItems
     } = this.props
-    let playId, selection
-    let playlistLoaded = false
-    if (playlist) {
-      ;({ playId, selection } = playlist)
-      playlistLoaded = true
-    }
     return (
       <TablePage
         actions={actions}
@@ -122,7 +119,7 @@ class NowPlaying extends React.PureComponent {
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
         pathname={location.pathname}
         playId={playId}
-        playlistLoaded={playlistLoaded}
+        playlistLoaded={loaded}
         playlistName={playlistName}
         qp={qp}
         routerSearchString={routerSearchString}
@@ -140,29 +137,26 @@ function mapStateToProps(state, ownProps) {
   const {
     getRouterQueryParams,
     getRouterSearchString,
-    getPlaylist,
-    getPagination
+    getPlaylistProps
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
-  const { library, playing } = tracks
+  const { playing } = tracks
   const { location } = ownProps
   const { pathname, search } = location
   const { theme } = account
   const columns = playlistColumns.filter(c => account.columns.has(c.title))
 
   return {
-    playlist: getPlaylist(state),
-    routerSearchString: getRouterSearchString(undefined, search),
     qp: getRouterQueryParams(undefined, search),
+    routerSearchString: getRouterSearchString(undefined, search),
     pathname,
     libraryPlaylistSearch: getLibraryPlaylistSearch(state),
-    library,
     playing,
     columns,
     sidebar,
     theme,
     transitions,
-    ...getPagination(state, search)
+    ...getPlaylistProps(state, search)
   }
 }
 

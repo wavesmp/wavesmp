@@ -23,6 +23,17 @@ const DEFAULT_PAGE = 0
 const DEFAULT_SORT_KEY = 'title'
 const DEFAULT_SEARCH_STRING = ''
 
+// TODO handle this in redirect?
+function normalizePage(currentPage, lastPage) {
+  if (currentPage < 0) {
+    return 0
+  }
+  if (currentPage > lastPage) {
+    return lastPage
+  }
+  return currentPage
+}
+
 function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
   function getLibrary(state) {
     return state.tracks[libProp]
@@ -96,26 +107,18 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
     return _getPlaylist(state, playlistName)
   }
 
-  /* playlist tracks */
-  function getPlaylistTracks(state) {
-    const playlist = getPlaylist(state)
-    if (!playlist) {
-      return null
-    }
-    return playlist.tracks
-  }
-
   /* playlist display items */
-  function _getFuse(tracks, library, searchString) {
-    if (!tracks || !searchString) {
+  function _getFuse(playlist, library, searchString) {
+    if (!playlist || !searchString) {
       return null
     }
+    const { tracks } = playlist
     const items = tracks.map((track, i) => normalizeTrack(library[track], i))
     return new Fuse(items, FUSE_OPTS)
   }
 
   const getFuse = createSelector(
-    [getPlaylistTracks, getLibrary, getRouterSearchString],
+    [getPlaylist, getLibrary, getRouterSearchString],
     _getFuse
   )
 
@@ -131,21 +134,6 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
     _getSearchItems
   )
 
-  function _getNumItems(searchItems, tracks) {
-    if (searchItems) {
-      return searchItems.length
-    }
-    if (tracks) {
-      return tracks.length
-    }
-    return null
-  }
-
-  const getNumItems = createSelector(
-    [getSearchItems, getPlaylistTracks],
-    _getNumItems
-  )
-
   function getPageItems(searchItems, tracks, library, startIndex, stopIndex) {
     if (searchItems) {
       return searchItems.slice(startIndex, stopIndex)
@@ -159,25 +147,20 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
     return displayItems
   }
 
-  function _getPagination(
+  function _getPlaylistProps(
     currentPage,
-    numItems,
     rowsPerPage,
     searchItems,
-    tracks,
+    playlist,
     library
   ) {
-    if (!tracks) {
-      return null
+    if (!playlist) {
+      return { loaded: false }
     }
+    const { tracks, playId, selection, sortKey, ascending } = playlist
+    const numItems = searchItems ? searchItems.length : tracks.length
     const lastPage = Math.floor((numItems - 1) / rowsPerPage)
-
-    // TODO handle this in redirect?
-    if (currentPage < 0) {
-      currentPage = 0
-    } else if (currentPage > lastPage) {
-      currentPage = lastPage
-    }
+    currentPage = normalizePage(currentPage, lastPage)
 
     const startIndex = currentPage * rowsPerPage
     const stopIndex = (currentPage + 1) * rowsPerPage
@@ -190,6 +173,12 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
     )
 
     return {
+      loaded: true,
+      playId,
+      selection,
+      sortKey,
+      ascending,
+      numItems,
       currentPage,
       lastPage,
       numItems,
@@ -197,27 +186,18 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
     }
   }
 
-  const getPagination = createSelector(
-    [
-      getRouterPage,
-      getNumItems,
-      getRowsPerPage,
-      getSearchItems,
-      getPlaylistTracks,
-      getLibrary
-    ],
-    _getPagination
+  const getPlaylistProps = createSelector(
+    [getRouterPage, getRowsPerPage, getSearchItems, getPlaylist, getLibrary],
+    _getPlaylistProps
   )
 
   return {
-    getPlaylist,
     getRouterQueryParams,
     getRouterAscending,
     getRouterSearchString,
     getRouterSortKey,
     getSearchItems,
-    getNumItems,
-    getPagination
+    getPlaylistProps
   }
 }
 

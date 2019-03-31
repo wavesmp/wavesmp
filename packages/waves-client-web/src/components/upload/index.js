@@ -1,3 +1,7 @@
+/* TODO works for small number of items, but needs
+ * to be improved for large bulk uploads
+ * e.g. modal is not paginated. Also, search should
+ * be disabled explicitly */
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -13,7 +17,7 @@ import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 import ContentPage from '../contentpage'
 import { onRowDoubleClick } from '../playlist/tableActions'
 import Table from '../table'
-import { playlistColumns } from '../table/columns'
+import { uploadColumns } from '../table/columns'
 import processTrack from './processTrack'
 
 import defaultTrackLogoUrl from './default-track-image.png'
@@ -118,37 +122,32 @@ class Upload extends React.PureComponent {
   }
 
   renderUploads() {
-    const { playlist } = this.props
-    if (!playlist) {
+    const { loaded, numItems } = this.props
+    if (!loaded || numItems === 0) {
       return null
     }
-    const { playId, selection, tracks } = playlist
-    const { length: numItems } = tracks
-    if (numItems === 0) {
-      return null
-    }
-
     const {
-      account,
+      columns,
+      playId,
+      selection,
+      displayItems,
       pathname,
       qp,
       actions,
       playing,
       transitions,
       currentPage,
-      lastPage,
-      displayItems
+      lastPage
     } = this.props
-    const { isPlaying } = playing
-    const columns = playlistColumns.filter(
-      c => account.columns.has(c.title) && c.title !== 'Created At'
-    )
     return (
       <Table
         actions={actions}
         columns={columns}
+        currentPage={currentPage}
+        lastPage={lastPage}
+        displayItems={displayItems}
         draggable={false}
-        isPlaying={isPlaying}
+        isPlaying={playing.isPlaying}
         pathname={pathname}
         qp={qp}
         currentPage={currentPage}
@@ -225,25 +224,23 @@ class Upload extends React.PureComponent {
 
 function mapStateToProps(state, ownProps) {
   const {
-    getPlaylist,
     getRouterQueryParams,
-    getPagination
+    getPlaylistProps
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, 'uploads')
   const { account, sidebar, transitions, tracks } = state
-  const { library, playing, uploads } = tracks
+  const { playing, uploads } = tracks
   const { location } = ownProps
   const { pathname, search } = location
+  const columns = uploadColumns.filter(c => account.columns.has(c.title))
   return {
-    playlist: getPlaylist(state),
     pathname,
     qp: getRouterQueryParams(undefined, search),
     uploads,
-    library,
     playing,
-    account,
+    columns,
     sidebar,
     transitions,
-    ...getPagination(state, search)
+    ...getPlaylistProps(state, search)
   }
 }
 

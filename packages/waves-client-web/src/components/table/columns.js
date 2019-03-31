@@ -43,3 +43,7 @@ export const libraryColumns = playlistColumns.map(col => ({
   ...col,
   sortable: !!col.attribute
 }))
+
+export const uploadColumns = playlistColumns.filter(
+  c => c.title !== 'Created At'
+)

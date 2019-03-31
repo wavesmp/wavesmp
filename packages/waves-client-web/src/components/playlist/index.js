@@ -72,6 +72,9 @@ class Playlist extends React.PureComponent {
       playlist,
       playlistName,
       playing,
+      loaded,
+      playId,
+      selection,
       actions,
       sidebar,
       transitions,
@@ -86,12 +89,6 @@ class Playlist extends React.PureComponent {
       columns,
       theme
     } = this.props
-    let playId, selection
-    let playlistLoaded = false
-    if (playlist) {
-      ;({ playId, selection } = playlist)
-      playlistLoaded = true
-    }
     return (
       <TablePage
         actions={actions}
@@ -112,7 +109,7 @@ class Playlist extends React.PureComponent {
         onSettingsClick={this.onSettingsClick}
         pathname={pathname}
         playId={playId}
-        playlistLoaded={playlistLoaded}
+        playlistLoaded={loaded}
         playlistName={playlistName}
         qp={qp}
         routerSearchString={routerSearchString}
@@ -131,30 +128,27 @@ function mapStateToProps(state, ownProps) {
   const {
     getRouterSearchString,
     getRouterQueryParams,
-    getPlaylist,
-    getPagination
+    getPlaylistProps
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
-  const { library, playing } = tracks
+  const { playing } = tracks
   const { pathname, search } = ownProps.location
   const { theme } = account
   const columns = playlistColumns.filter(c => account.columns.has(c.title))
 
   return {
-    playlist: getPlaylist(state),
-    routerSearchString: getRouterSearchString(undefined, search),
     qp: getRouterQueryParams(undefined, search),
+    routerSearchString: getRouterSearchString(undefined, search),
     libraryPlaylistSearch: getLibraryPlaylistSearch(state),
     defaultPlaylistSearch: getDefaultPlaylistSearch(state),
     playlistName,
     pathname,
-    library,
     playing,
     columns,
     sidebar,
     theme,
     transitions,
-    ...getPagination(state, search)
+    ...getPlaylistProps(state, search)
   }
 }
 
