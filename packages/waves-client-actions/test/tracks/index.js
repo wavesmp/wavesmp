@@ -11,7 +11,6 @@ const {
   toastTypes
 } = require('waves-client-constants')
 const Player = require('waves-client-player')
-const { SEARCH_QUERY_KEY } = require('waves-client-selectors')
 const WavesSocket = require('waves-socket')
 const {
   TEST_PLAYLIST_NAME1: testPlaylistName1,
@@ -20,6 +19,7 @@ const {
   TEST_TRACK2: baseTrack2
 } = require('waves-test-data')
 
+const SEARCH_QUERY_KEY = 'search'
 const id1 = '5c3d93000000000000000000'
 const createdAt1 = '1547539200'
 const createAtPretty1 = '1/15/2019, 8:00:00 AM'

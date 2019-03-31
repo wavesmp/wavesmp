@@ -15,7 +15,6 @@ import { onRowDoubleClick } from '../playlist/tableActions'
 import Table from '../table'
 import { playlistColumns } from '../table/columns'
 import processTrack from './processTrack'
-import { normalizeTrack } from '../../util'
 
 import defaultTrackLogoUrl from './default-track-image.png'
 import './index.css'
@@ -113,18 +112,6 @@ class Upload extends React.PureComponent {
     actions.trackUploadsUpdate(validNewUploads)
   }
 
-  getDisplayItems = (startIndex, stopIndex) => {
-    const { playlist, uploads } = this.props
-    const { tracks } = playlist
-    const { length } = tracks
-
-    const displayItems = []
-    for (let i = startIndex; i < stopIndex && i < length; i += 1) {
-      displayItems.push(normalizeTrack(uploads[tracks[i]], i))
-    }
-    return displayItems
-  }
-
   onItemEdit = (id, key, value) => {
     const { actions } = this.props
     actions.uploadInfoUpdate(id, key, value)
@@ -141,9 +128,18 @@ class Upload extends React.PureComponent {
       return null
     }
 
-    const { account, pathname, qp, actions, playing, transitions } = this.props
+    const {
+      account,
+      pathname,
+      qp,
+      actions,
+      playing,
+      transitions,
+      currentPage,
+      lastPage,
+      displayItems
+    } = this.props
     const { isPlaying } = playing
-    const { rowsPerPage } = account
     const columns = playlistColumns.filter(
       c => account.columns.has(c.title) && c.title !== 'Created At'
     )
@@ -152,16 +148,17 @@ class Upload extends React.PureComponent {
         actions={actions}
         columns={columns}
         draggable={false}
-        getDisplayItems={this.getDisplayItems}
         isPlaying={isPlaying}
         pathname={pathname}
         qp={qp}
+        currentPage={currentPage}
+        displayItems={displayItems}
+        lastPage={lastPage}
         numItems={numItems}
         onItemEdit={this.onItemEdit}
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
         playId={playId}
         transitions={transitions}
-        rowsPerPage={rowsPerPage}
         selection={selection}
         playlistName={playlistName}
       />
@@ -227,10 +224,11 @@ class Upload extends React.PureComponent {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { getPlaylist, getRouterQueryParams } = getOrCreatePlaylistSelectors(
-    playlistName,
-    URLSearchParams
-  )
+  const {
+    getPlaylist,
+    getRouterQueryParams,
+    getPagination
+  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, 'uploads')
   const { account, sidebar, transitions, tracks } = state
   const { library, playing, uploads } = tracks
   const { location } = ownProps
@@ -244,7 +242,8 @@ function mapStateToProps(state, ownProps) {
     playing,
     account,
     sidebar,
-    transitions
+    transitions,
+    ...getPagination(state, search)
   }
 }
 

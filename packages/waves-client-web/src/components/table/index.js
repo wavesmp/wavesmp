@@ -182,29 +182,16 @@ export default class Table extends React.PureComponent {
       ascending,
       columns,
       isPlaying,
-      rowsPerPage,
       transitions,
       selection,
       numItems,
-      getDisplayItems,
+      displayItems,
+      currentPage,
+      lastPage,
       onItemEdit,
       draggable
     } = this.props
-
-    /* Pagination */
-    let currentPage = Math.floor(
-      parseInt(new URLSearchParams(qp).get('page'), 10) || 0
-    )
-    let lastPage = Math.floor((numItems - 1) / rowsPerPage)
-    if (currentPage < 0) {
-      currentPage = 0
-    } else if (currentPage > lastPage) {
-      currentPage = lastPage
-    }
-    const startIndex = currentPage * rowsPerPage
-    const stopIndex = (currentPage + 1) * rowsPerPage
-    this.displayItems = getDisplayItems(startIndex, stopIndex)
-
+    this.displayItems = displayItems
     return (
       <div>
         <table className='table table-hover'>

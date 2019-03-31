@@ -14,13 +14,16 @@ const {
 const {
   getDefaultPlaylistSearch,
   getLibraryPlaylistSearch,
-  getOrCreatePlaylistSelectors,
-  SEARCH_QUERY_KEY,
-  SORT_KEY_QUERY_KEY,
-  ORDER_QUERY_KEY,
-  DEFAULT_ASCENDING,
-  DEFAULT_SORT_KEY
+  getOrCreatePlaylistSelectors
 } = require('../')
+
+const ORDER_QUERY_KEY = 'order'
+const SEARCH_QUERY_KEY = 'search'
+const SORT_KEY_QUERY_KEY = 'sortKey'
+
+const DEFAULT_ASCENDING = true
+const DEFAULT_SORT_KEY = 'title'
+const DEFAULT_SEARCH_STRING = ''
 
 const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }
@@ -92,6 +95,7 @@ describe('waves-client-selectors', () => {
       getRouterSearchString,
       getRouterAscending,
       getRouterSortKey,
+      getRouterPage,
       getPlaylist,
       getPlaylistSearchString,
       getSearchItems
@@ -129,7 +133,10 @@ describe('waves-client-selectors', () => {
 
     describe('router values', () => {
       it(`${SEARCH_QUERY_KEY} default value`, () => {
-        assert.strictEqual(getRouterSearchString(null, ''), '')
+        assert.strictEqual(
+          getRouterSearchString(null, ''),
+          DEFAULT_SEARCH_STRING
+        )
       })
 
       it(`${ORDER_QUERY_KEY} default value`, () => {

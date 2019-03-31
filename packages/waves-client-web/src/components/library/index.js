@@ -17,29 +17,11 @@ import {
 import { onRowDoubleClick } from '../playlist/tableActions'
 import { libraryColumns } from '../table/columns'
 import TablePage from '../tablepage'
-import { normalizeTrack } from '../../util'
 
 const TITLE = 'Library'
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
 
 class Library extends React.PureComponent {
-  getDisplayItems = (startIndex, stopIndex) => {
-    const { routerSearchString, playlist, searchItems, library } = this.props
-
-    if (routerSearchString) {
-      return searchItems.slice(startIndex, stopIndex)
-    }
-
-    const { tracks } = playlist
-    const { length } = tracks
-
-    const displayItems = []
-    for (let i = startIndex; i < stopIndex && i < length; i += 1) {
-      displayItems.push(normalizeTrack(library[tracks[i]], i))
-    }
-    return displayItems
-  }
-
   onNowPlayingClick = () => {
     const { history, defaultPlaylistSearch } = this.props
     const to = { pathname: routes.nowplaying, search: defaultPlaylistSearch }
@@ -90,13 +72,15 @@ class Library extends React.PureComponent {
       playing,
       sidebar,
       playlist,
-      rowsPerPage,
       transitions,
       pathname,
       qp,
       history,
       numItems,
       routerSearchString,
+      currentPage,
+      lastPage,
+      displayItems,
       columns,
       theme
     } = this.props
@@ -113,10 +97,12 @@ class Library extends React.PureComponent {
         buttons={this.getButtons()}
         columns={columns}
         draggable={true}
-        getDisplayItems={this.getDisplayItems}
         history={history}
         isPlayerVisible={playing.track !== null}
         isPlaying={playing.isPlaying}
+        currentPage={currentPage}
+        displayItems={displayItems}
+        lastPage={lastPage}
         noDataMsg={NO_DATA_MSG}
         numItems={numItems}
         onContextMenu={this.onContextMenu}
@@ -128,7 +114,6 @@ class Library extends React.PureComponent {
         playlistName={playlistName}
         qp={qp}
         routerSearchString={routerSearchString}
-        rowsPerPage={rowsPerPage}
         selection={selection}
         sidebar={sidebar}
         sortKey={sortKey}
@@ -145,31 +130,28 @@ function mapStateToProps(state, ownProps) {
     getRouterSearchString,
     getRouterQueryParams,
     getPlaylist,
-    getSearchItems,
-    getNumItems
+    getPagination
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
   const { location } = ownProps
   const { pathname, search } = location
-  const { rowsPerPage, theme } = account
+  const { theme } = account
   const columns = libraryColumns.filter(c => account.columns.has(c.title))
 
   return {
     playlist: getPlaylist(state),
     defaultPlaylistSearch: getDefaultPlaylistSearch(state),
-    searchItems: getSearchItems(state, search),
     routerSearchString: getRouterSearchString(undefined, search),
     qp: getRouterQueryParams(undefined, search),
-    numItems: getNumItems(state, search),
     pathname,
     library,
     playing,
-    rowsPerPage,
     columns,
     sidebar,
     theme,
-    transitions
+    transitions,
+    ...getPagination(state, search)
   }
 }
 
