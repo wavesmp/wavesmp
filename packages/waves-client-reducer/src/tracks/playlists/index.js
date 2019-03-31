@@ -223,6 +223,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         [playlistName]: {
           ...playlist,
           tracks,
+          // TODO does selection really need to be cleared?
           selection: {},
           playId: playIndex != null ? playIndex + '' : null
         }
@@ -321,9 +322,6 @@ function tracksDelete(playlist, deleteIds) {
   const filteredTracks = tracks.filter((t, i) => {
     const isTrackDeleted = deleteIds.has(t)
     if (isTrackDeleted) {
-      if (i in selection) {
-        delete selection[i]
-      }
       if (playIndex != null) {
         if (i === playIndex) {
           /* Track is deleted. Playlist is no longer playing item */
@@ -341,7 +339,8 @@ function tracksDelete(playlist, deleteIds) {
       ...playlist,
       tracks: filteredTracks,
       playId: playIndex != null ? playIndex + '' : null,
-      selection: { ...selection }
+      // TODO does selection really need to be cleared?
+      selection: {}
     }
   }
   return playlist
