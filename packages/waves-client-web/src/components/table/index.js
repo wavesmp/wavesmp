@@ -88,7 +88,7 @@ export default class Table extends React.PureComponent {
       /* In case we selected a new item at click time,
        * the operation is on a single item. */
       const bulk = isSelected && Object.keys(selection).length > 1
-      onContextMenu(ev, itemPlayId, trackId, bulk, playlistName, playId)
+      onContextMenu(ev, { itemPlayId, trackId, bulk, playlistName, playId })
       ev.preventDefault()
       return
     }

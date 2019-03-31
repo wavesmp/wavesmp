@@ -50,19 +50,13 @@ class Library extends React.PureComponent {
     actions.libraryInfoUpdate(id, attr, update)
   }
 
-  onContextMenu = (ev, itemPlayId, trackId, bulk, playlistName, playId) => {
+  onContextMenu = ({ pageX: x, pageY: y }, props) => {
     const { actions } = this.props
     actions.contextmenuSet({
-      x: ev.pageX,
-      y: ev.pageY,
+      x,
+      y,
       type: contextmenuTypes.TRACK,
-      props: {
-        itemPlayId,
-        trackId,
-        bulk,
-        playlistName,
-        playId
-      }
+      props
     })
   }
 
