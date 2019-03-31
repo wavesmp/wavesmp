@@ -30,9 +30,6 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
 
   /* router query params */
   function _getRouterQueryParams(search) {
-    if (!search) {
-      return null
-    }
     return new URLSearchParams(search)
   }
 
@@ -53,9 +50,6 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
    * Ensure empty string is returned. Otherwise, input component
    * may think it's uncontrolled */
   function _getRouterSearchString(qp) {
-    if (!qp) {
-      return DEFAULT_SEARCH_STRING
-    }
     return qp.get(SEARCH_QUERY_KEY) || DEFAULT_SEARCH_STRING
   }
 
@@ -66,9 +60,6 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
 
   /* router ascending  */
   function _getRouterAscending(qp) {
-    if (!qp) {
-      return DEFAULT_ASCENDING
-    }
     const order = qp.get(ORDER_QUERY_KEY)
     if (order) {
       return order === 'asc'
@@ -83,9 +74,6 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
 
   /* router sort key  */
   function _getRouterSortKey(qp) {
-    if (!qp) {
-      return DEFAULT_SORT_KEY
-    }
     return qp.get(SORT_KEY_QUERY_KEY) || DEFAULT_SORT_KEY
   }
 
@@ -96,9 +84,6 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
 
   /* router page  */
   function _getRouterPage(qp) {
-    if (!qp) {
-      return DEFAULT_PAGE
-    }
     return parseInt(qp.get(PAGE_QUERY_KEY), 10) || DEFAULT_PAGE
   }
 
