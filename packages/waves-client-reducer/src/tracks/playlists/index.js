@@ -26,8 +26,8 @@ const initialPlaylistsAscending = {}
 
 function addPlaylistDefaults(playlist) {
   const { name } = playlist
-  ;(playlist.selection = {}),
-    (playlist.search = initialPlaylistsSearch[name] || '')
+  playlist.selection = {}
+  playlist.search = initialPlaylistsSearch[name] || ''
   delete initialPlaylistsSearch[name]
   playlist.playId = null
 }
