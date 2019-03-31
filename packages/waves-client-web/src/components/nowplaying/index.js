@@ -115,21 +115,15 @@ class NowPlaying extends React.PureComponent {
       qp,
       history,
       routerSearchString,
-      searchItems,
+      numItems,
       columns,
       theme
     } = this.props
     let playId, selection
     let playlistLoaded = false
-    let numItems
     if (playlist) {
       ;({ playId, selection } = playlist)
       playlistLoaded = true
-      if (routerSearchString) {
-        numItems = searchItems.length
-      } else {
-        numItems = playlist.tracks.length
-      }
     }
     return (
       <TablePage
@@ -168,7 +162,8 @@ function mapStateToProps(state, ownProps) {
     getRouterQueryParams,
     getRouterSearchString,
     getPlaylist,
-    getSearchItems
+    getSearchItems,
+    getNumItems
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
@@ -184,6 +179,7 @@ function mapStateToProps(state, ownProps) {
     pathname,
     libraryPlaylistSearch: getLibraryPlaylistSearch(state),
     searchItems: getSearchItems(state, search),
+    numItems: getNumItems(state, search),
     library,
     playing,
     columns,

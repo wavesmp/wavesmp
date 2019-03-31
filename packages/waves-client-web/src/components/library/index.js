@@ -95,22 +95,16 @@ class Library extends React.PureComponent {
       pathname,
       qp,
       history,
-      searchItems,
+      numItems,
       routerSearchString,
       columns,
       theme
     } = this.props
     let playId, selection, sortKey, ascending
     let playlistLoaded = false
-    let numItems
     if (playlist) {
       ;({ ascending, playId, sortKey, selection } = playlist)
       playlistLoaded = true
-      if (routerSearchString) {
-        numItems = searchItems.length
-      } else {
-        numItems = playlist.tracks.length
-      }
     }
     return (
       <TablePage
@@ -151,7 +145,8 @@ function mapStateToProps(state, ownProps) {
     getRouterSearchString,
     getRouterQueryParams,
     getPlaylist,
-    getSearchItems
+    getSearchItems,
+    getNumItems
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { library, playing } = tracks
@@ -166,6 +161,7 @@ function mapStateToProps(state, ownProps) {
     searchItems: getSearchItems(state, search),
     routerSearchString: getRouterSearchString(undefined, search),
     qp: getRouterQueryParams(undefined, search),
+    numItems: getNumItems(state, search),
     pathname,
     library,
     playing,

@@ -133,13 +133,30 @@ function createPlaylistSelectors(playlistName, URLSearchParams) {
     [getDisplayItems, getRouterSearchString],
     _getSearchItems
   )
+
+  function _getNumItems(searchItems, tracks) {
+    if (searchItems) {
+      return searchItems.length
+    }
+    if (tracks) {
+      return tracks.length
+    }
+    return null
+  }
+
+  const getNumItems = createSelector(
+    [getSearchItems, getPlaylistTracks],
+    _getNumItems
+  )
+
   return {
     getPlaylist,
     getRouterQueryParams,
     getRouterAscending,
     getRouterSearchString,
     getRouterSortKey,
-    getSearchItems
+    getSearchItems,
+    getNumItems
   }
 }
 
