@@ -12,6 +12,7 @@ class Server {
     this.storage = storage
     this.auth = auth
     this.encoder = new Encoder()
+    this.clients = {}
 
     this.listenPromise = new Promise((resolve, reject) => {
       this.wss = new WebSocket.Server({ port, perMessageDeflate: true }, err =>
@@ -186,8 +187,10 @@ class Server {
           }
         }
       })
-      ws.isAlive = true
-      setTimeout(() => this.heartbeat(ws), HEARTBEAT_INTERVAL)
+      this.clients[ws] = setTimeout(
+        () => this.heartbeat(ws),
+        HEARTBEAT_INTERVAL
+      )
       ws.on('close', (code, reason) => this.onClose(ws, code, reason))
       ws.on('error', this.onError)
       ws.on('ping', this.onPing)
@@ -203,7 +206,8 @@ class Server {
   }
 
   onClose(ws, code, reason) {
-    ws.isAlive = false
+    clearTimeout(this.clients[ws])
+    delete this.clients[ws]
     log.info('Client closed connection')
     log.info(`Code: ${code}`)
     log.info(`Reason: ${reason}`)
@@ -233,13 +237,9 @@ class Server {
   }
 
   heartbeat(ws) {
-    if (!ws.isAlive) {
-      log.info('Finished heartbeating to client')
-      return
-    }
     log.info('Heartbeating to client')
     ws.ping()
-    setTimeout(() => this.heartbeat(ws), HEARTBEAT_INTERVAL)
+    this.clients[ws] = setTimeout(() => this.heartbeat(ws), HEARTBEAT_INTERVAL)
   }
 
   close() {

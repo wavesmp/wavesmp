@@ -8,7 +8,11 @@ const {
   TEST_SEARCH: testSearch,
   TEST_PLAYLIST_NAME1: testPlaylistName,
   TEST_TRACK1: baseTrack1,
-  TEST_TRACK2: baseTrack2
+  TEST_TRACK2: baseTrack2,
+  TEST_PLAY_ID: testPlayId,
+  TEST_SELECTION: testSelection,
+  TEST_SORT_KEY: testSortKey,
+  TEST_ASCENDING: testAscending
 } = require('waves-test-data')
 
 const {
@@ -95,39 +99,61 @@ describe('waves-client-selectors', () => {
       getRouterSearchString,
       getRouterAscending,
       getRouterSortKey,
-      getRouterPage,
-      getPlaylist,
-      getPlaylistSearchString,
+      getPlaylistProps,
       getSearchItems
     } = getOrCreatePlaylistSelectors(testPlaylistName, URLSearchParams)
 
-    describe('#getPlaylist()', () => {
-      it('playlists is null', () => {
+    describe('#getPlaylistProps()', () => {
+      it('playlist is null', () => {
         const tracks = {
           playlists: null
         }
-        const state = { tracks }
-        const search = getPlaylist(state)
-        assert.isNull(search)
+        const state = { tracks, account: { rowsPerPage: 25 } }
+        const props = getPlaylistProps(state, '')
+        assert.deepEqual(props, { loaded: false })
       })
 
       it('playlist is missing', () => {
         const playlists = {}
         const tracks = { playlists }
-        const state = { tracks }
-        const playlist = getPlaylist(state)
-        assert.isUndefined(playlist)
+        const state = { tracks, account: { rowsPerPage: 25 } }
+        const props = getPlaylistProps(state)
+        assert.deepEqual(props, { loaded: false })
       })
 
       it('playlist exists', () => {
-        const playlist = {}
+        const playlist = {
+          tracks: [track1.id],
+          playId: testPlayId,
+          selection: testSelection,
+          sortKey: testSortKey,
+          ascending: testAscending
+        }
         const playlists = {
           [testPlaylistName]: playlist
         }
-        const tracks = { playlists }
-        const state = { tracks }
-        const actualPlaylist = getPlaylist(state)
-        assert.strictEqual(actualPlaylist, playlist)
+
+        const tracks = { playlists, library }
+        const state = { tracks, account: { rowsPerPage: 25 } }
+        const props = getPlaylistProps(state, '')
+        const expected = {
+          loaded: true,
+          playId: testPlayId,
+          selection: testSelection,
+          sortKey: testSortKey,
+          ascending: testAscending,
+          numItems: 1,
+          currentPage: 0,
+          lastPage: 0,
+          displayItems: [
+            {
+              ...track1,
+              playId: '0',
+              time: '1:01'
+            }
+          ]
+        }
+        assert.deepEqual(props, expected)
       })
     })
 

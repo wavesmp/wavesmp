@@ -95,5 +95,9 @@
   "TEST_TRACK_ID": "testTrackId",
   "TEST_SEARCH": "testSearch",
   "TEST_TOKEN": "testToken",
-  "TEST_DROPDOWN": "testDropdown"
+  "TEST_DROPDOWN": "testDropdown",
+  "TEST_PLAY_ID": "testPlayId",
+  "TEST_SELECTION": "testSelection",
+  "TEST_SORT_KEY": "testSortKey",
+  "TEST_ASCENDING": "testAscending"
 }
