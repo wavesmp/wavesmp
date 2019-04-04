@@ -53,8 +53,10 @@ class StorageSetup {
   }
 
   async after(storage) {
-    await this.cleanTestDb()
+    /* Ensure that storage is closed before cleaning test db.
+     * See https://github.com/Automattic/mongoose/issues/1807 */
     await this.storage.close()
+    await this.cleanTestDb()
   }
 
   async cleanTestDb() {
