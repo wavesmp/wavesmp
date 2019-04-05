@@ -4,6 +4,7 @@ const {
   FULL_PLAYLIST,
   UPLOAD_PLAYLIST
 } = require('waves-client-constants')
+const { shouldAddToDefaultPlaylist } = require('waves-client-util')
 
 const reducerSelection = require('./selection')
 
@@ -336,11 +337,6 @@ function tracksDelete(playlist, deleteIds) {
     }
   }
   return playlist
-}
-
-// TODO factor w waves-client-actions
-function shouldAddToDefaultPlaylist(playlistName) {
-  return playlistName !== DEFAULT_PLAYLIST && playlistName != UPLOAD_PLAYLIST
 }
 
 module.exports = reducerPlaylists

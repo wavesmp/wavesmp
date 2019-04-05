@@ -1,12 +1,9 @@
 const Fuse = require('fuse.js')
 const { createSelector } = require('reselect')
 
-const {
-  getLibrary,
-  getRowsPerPage,
-  _getPlaylist,
-  normalizeTrack
-} = require('./base')
+const { normalizeTrack } = require('waves-client-util')
+
+const { getLibrary, getRowsPerPage, _getPlaylist } = require('./base')
 
 const FUSE_OPTS = {
   keys: ['title', 'artist', 'album', 'genre'],

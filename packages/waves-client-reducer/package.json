@@ -15,7 +15,8 @@
   "dependencies": {
     "redux": "^4.0.1",
     "waves-action-types": "file:../waves-action-types",
-    "waves-client-constants": "file:../waves-client-constants"
+    "waves-client-constants": "file:../waves-client-constants",
+    "waves-client-util": "file:../waves-client-util"
   },
   "devDependencies": {
     "waves-test-data": "file:../waves-test-data",

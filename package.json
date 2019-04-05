@@ -48,6 +48,7 @@
         "waves-client-player": "file:packages/waves-client-player",
         "waves-client-reducer": "file:packages/waves-client-reducer",
         "waves-client-selectors": "file:packages/waves-client-selectors",
+        "waves-client-util": "file:packages/waves-client-util",
         "waves-client-web": "file:packages/waves-client-web",
         "waves-encoder": "file:packages/waves-encoder",
         "waves-server-auth": "file:packages/waves-server-auth",

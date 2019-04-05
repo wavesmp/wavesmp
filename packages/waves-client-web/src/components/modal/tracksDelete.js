@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
 import { FULL_PLAYLIST } from 'waves-client-constants'
+import { normalizeTrack } from 'waves-client-util'
 
 import Modal from './util'
 import { libraryColumns } from '../table/columns'
-import { normalizeTrack } from '../../util'
 
 class TracksDeleteModal extends React.PureComponent {
   constructor(props) {

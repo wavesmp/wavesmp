@@ -2,11 +2,11 @@ const types = require('waves-action-types')
 const {
   DEFAULT_PLAYLIST,
   FULL_PLAYLIST,
-  UPLOAD_PLAYLIST,
   toastTypes
 } = require('waves-client-constants')
 const { getOrCreatePlaylistSelectors } = require('waves-client-selectors')
 const { UploadError } = require('waves-client-errors')
+const { shouldAddToDefaultPlaylist } = require('waves-client-util')
 
 const { toastAdd } = require('../toasts')
 
@@ -263,11 +263,6 @@ function getTrackById(id, library, uploads) {
   return library[id] || uploads[id]
 }
 
-// TODO factor w waves-client-reducer
-function shouldAddToDefaultPlaylist(playlistName) {
-  return playlistName !== DEFAULT_PLAYLIST && playlistName != UPLOAD_PLAYLIST
-}
-
 function handleDeleteErr(err, dispatch) {
   const { track, code, message } = err
   const name = track.title || track.artist || track.album || track.genre
@@ -402,7 +397,6 @@ function updateLibraryById(libraryById, update) {
 
 const TAGS_OF_INTEREST = ['title', 'artist', 'genre']
 
-// TODO factor this out
 function addMissingTags(item) {
   for (const tag of TAGS_OF_INTEREST) {
     item[tag] = item[tag] || `Unknown ${tag}`

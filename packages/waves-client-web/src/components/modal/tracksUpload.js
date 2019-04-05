@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
 import { UPLOAD_PLAYLIST as playlistName } from 'waves-client-constants'
+import { normalizeTrack } from 'waves-client-util'
 
 import Modal from './util'
 import { playlistColumns } from '../table/columns'
-import { normalizeTrack } from '../../util'
 
 class TracksUploadModal extends React.PureComponent {
   constructor(props) {

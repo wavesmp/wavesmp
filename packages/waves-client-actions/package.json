@@ -16,7 +16,8 @@
     "waves-action-types": "file:../waves-action-types",
     "waves-client-constants": "file:../waves-client-constants",
     "waves-client-errors": "file:../waves-client-errors",
-    "waves-client-selectors": "file:../waves-client-selectors"
+    "waves-client-selectors": "file:../waves-client-selectors",
+    "waves-client-util": "file:../waves-client-util"
   },
   "devDependencies": {
     "waves-client-auth": "file:../waves-client-auth",

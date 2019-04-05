@@ -13,10 +13,10 @@
   },
   "license": "ISC",
   "dependencies": {
-    "format-duration": "^1.3.1",
     "fuse.js": "^3.3.0",
     "reselect": "^4.0.0",
-    "waves-client-constants": "file:../waves-client-constants"
+    "waves-client-constants": "file:../waves-client-constants",
+    "waves-client-util": "file:../waves-client-util"
   },
   "devDependencies": {
     "waves-test-data": "file:../waves-test-data"

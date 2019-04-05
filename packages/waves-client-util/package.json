@@ -1,0 +1,16 @@
+{
+  "name": "waves-client-util",
+  "version": "1.0.0",
+  "description": "Waves client util",
+  "main": "index.js",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wavesmp/waves-client-util.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "format-duration": "^1.3.1",
+    "waves-client-constants": "file:../waves-client-constants"
+  }
+}
