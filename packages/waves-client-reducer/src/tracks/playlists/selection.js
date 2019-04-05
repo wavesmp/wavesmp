@@ -2,48 +2,49 @@ const actionTypes = require('waves-action-types')
 
 const reducerSelection = {
   [actionTypes.SELECTION_CLEAR_AND_ADD]: (playlist, action) => {
-    const { playId, trackId } = action
-    const selection = { [playId]: trackId }
+    const { index, trackId } = action
+    const selection = new Map()
+    selection.set(index, trackId)
     return { ...playlist, selection }
   },
 
   [actionTypes.SELECTION_ADD]: (playlist, action) => {
-    const { selection } = playlist
-    selection[action.playId] = action.trackId
-    return { ...playlist, selection: { ...selection } }
+    const { index, trackId } = action
+    const selection = new Map(playlist.selection)
+    selection.set(index, trackId)
+    return { ...playlist, selection }
   },
 
   [actionTypes.SELECTION_RANGE]: (playlist, action) => {
-    const { selection } = playlist
-    const { startPlayId, endPlayId, displayItems } = action
-    const numItems = displayItems.length
+    const selection = new Map(playlist.selection)
+    const { startIndex, endIndex, displayItems } = action
     let startSelection = false
 
-    for (let i = 0; i < numItems; i += 1) {
-      const item = displayItems[i]
+    for (const item of displayItems) {
       if (
         !startSelection &&
-        (item.playId === startPlayId || item.playId === endPlayId)
+        (item.index === startIndex || item.index === endIndex)
       ) {
         startSelection = true
-        selection[item.playId] = item.id
+        selection.set(item.index, item.id)
         continue
       }
       if (!startSelection) {
         continue
       }
-      selection[item.playId] = item.id
-      if (item.playId == endPlayId || item.playId === startPlayId) {
+      selection.set(item.index, item.id)
+      if (item.index == endIndex || item.index === startIndex) {
         break
       }
     }
-    return { ...playlist, selection: { ...selection } }
+    return { ...playlist, selection }
   },
 
   [actionTypes.SELECTION_REMOVE]: (playlist, action) => {
-    const { selection } = playlist
-    delete selection[action.playId]
-    return { ...playlist, selection: { ...selection } }
+    const { index } = action
+    const selection = new Map(playlist.selection)
+    selection.delete(index)
+    return { ...playlist, selection }
   }
 }
 

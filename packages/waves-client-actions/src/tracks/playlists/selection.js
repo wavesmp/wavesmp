@@ -1,25 +1,25 @@
 const types = require('waves-action-types')
 
-function selectionAdd(name, playId, trackId) {
-  return { type: types.SELECTION_ADD, name, playId, trackId }
+function selectionAdd(name, index, trackId) {
+  return { type: types.SELECTION_ADD, name, index, trackId }
 }
 
-function selectionClearAndAdd(name, playId, trackId) {
-  return { type: types.SELECTION_CLEAR_AND_ADD, name, playId, trackId }
+function selectionClearAndAdd(name, index, trackId) {
+  return { type: types.SELECTION_CLEAR_AND_ADD, name, index, trackId }
 }
 
-function selectionRange(name, startPlayId, endPlayId, displayItems) {
+function selectionRange(name, startIndex, endIndex, displayItems) {
   return {
     type: types.SELECTION_RANGE,
     name,
-    startPlayId,
-    endPlayId,
+    startIndex,
+    endIndex,
     displayItems
   }
 }
 
-function selectionRemove(name, playId) {
-  return { type: types.SELECTION_REMOVE, name, playId }
+function selectionRemove(name, index) {
+  return { type: types.SELECTION_REMOVE, name, index }
 }
 
 module.exports.selectionAdd = selectionAdd

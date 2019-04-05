@@ -23,14 +23,10 @@ class TracksDeleteModal extends React.PureComponent {
     return deleteErrs.length === 0 && serverErrs.length === 0
   }
 
-  parsePlayId(playId) {
-    return parseInt(playId, 10)
-  }
-
   renderDeleteItems() {
-    const { columns, isPlaying, library, playId, selection } = this.props
-    const itemPlayIds = Object.keys(selection).map(this.parsePlayId)
-    itemPlayIds.sort((a, b) => a - b)
+    const { columns, isPlaying, library, index, selection } = this.props
+    const itemPlayIndexes = Array.from(selection.keys())
+    itemPlayIndexes.sort((a, b) => a - b)
     return (
       <div>
         <div>
@@ -43,16 +39,16 @@ class TracksDeleteModal extends React.PureComponent {
               </tr>
             </thead>
             <tbody>
-              {itemPlayIds.map(itemPlayId => (
-                <tr key={itemPlayId}>
+              {itemPlayIndexes.map(itemIndex => (
+                <tr key={itemIndex}>
                   {columns.map(column => (
                     <column.Component
                       key={column.title}
                       isPlaying={isPlaying}
-                      playId={playId}
+                      index={index}
                       sample={normalizeTrack(
-                        library[selection[itemPlayId]],
-                        itemPlayId
+                        library[selection.get(itemIndex)],
+                        itemIndex
                       )}
                       editable={false}
                     />
@@ -70,7 +66,7 @@ class TracksDeleteModal extends React.PureComponent {
     const { actions, selection } = this.props
     const { deleting } = this.state
     const deleteTitle = deleting ? 'Deleting' : 'Delete'
-    const plurality = hasMoreThanOne(selection) ? 's' : ''
+    const plurality = selection.size > 1 ? 's' : ''
     const title = 'Delete track' + plurality
     const message = `This will delete the track${plurality} below. Are you sure?`
     return (
@@ -90,22 +86,11 @@ class TracksDeleteModal extends React.PureComponent {
   }
 }
 
-function hasMoreThanOne(obj) {
-  let i = 0
-  for (const key in obj) {
-    if (i > 0) {
-      return true
-    }
-    i += 1
-  }
-  return false
-}
-
 function mapStateToProps(state) {
   const { account, tracks } = state
   const { library, playlists, playing } = tracks
   const playlist = playlists[FULL_PLAYLIST]
-  const { playId, selection } = playlist
+  const { index, selection } = playlist
   const { isPlaying } = playing
   const columns = libraryColumns.filter(c => account.columns.has(c.title))
   return {
@@ -113,7 +98,7 @@ function mapStateToProps(state) {
     library,
     selection,
     isPlaying,
-    playId
+    index
   }
 }
 

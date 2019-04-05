@@ -15,7 +15,7 @@ export function isInternalPlaylist(name) {
   )
 }
 
-export function normalizeTrack(track, i) {
+export function normalizeTrack(track, index) {
   const time = formatTime(1000 * track.duration)
-  return { ...track, time, playId: i + '' }
+  return { ...track, time, index }
 }

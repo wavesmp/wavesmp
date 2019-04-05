@@ -73,7 +73,7 @@ class Playlist extends React.PureComponent {
       playlistName,
       playing,
       loaded,
-      playId,
+      index,
       selection,
       actions,
       sidebar,
@@ -108,7 +108,7 @@ class Playlist extends React.PureComponent {
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
         onSettingsClick={this.onSettingsClick}
         pathname={pathname}
-        playId={playId}
+        index={index}
         playlistLoaded={loaded}
         playlistName={playlistName}
         qp={qp}

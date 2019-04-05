@@ -27,11 +27,11 @@ export class Name extends React.PureComponent {
   }
 
   render() {
-    const { sample, playId, isPlaying, editable, title, onBlur } = this.props
+    const { sample, index, isPlaying, editable, title, onBlur } = this.props
 
     let playPauseIcon
     let playPausePadding
-    if (playId === sample.playId) {
+    if (index === sample.index) {
       playPausePadding = null
       if (isPlaying) {
         playPauseIcon = PLAY_ICON

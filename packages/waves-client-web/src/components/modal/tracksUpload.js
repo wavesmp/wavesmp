@@ -26,7 +26,7 @@ class TracksUploadModal extends React.PureComponent {
   renderUploadItems() {
     const { playlist } = this.props
     const { tracks } = playlist
-    const { columns, isPlaying, uploads, playId } = this.props
+    const { columns, isPlaying, uploads, index } = this.props
     return (
       <div>
         <div>
@@ -45,7 +45,7 @@ class TracksUploadModal extends React.PureComponent {
                     <column.Component
                       key={column.title}
                       isPlaying={isPlaying}
-                      playId={playId}
+                      index={index}
                       sample={normalizeTrack(uploads[track], i)}
                       editable={false}
                     />
@@ -96,7 +96,7 @@ function mapStateToProps(state) {
   const { account, tracks } = state
   const { playing, playlists, uploads } = tracks
   const playlist = playlists[playlistName]
-  const { playId } = playlist
+  const { index } = playlist
   const columns = playlistColumns.filter(
     c => account.columns.has(c.title) && c.title !== 'Created At'
   )
@@ -106,7 +106,7 @@ function mapStateToProps(state) {
     columns,
     uploads,
     isPlaying,
-    playId
+    index
   }
 }
 

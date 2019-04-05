@@ -12,7 +12,7 @@ const reducerSelection = require('./selection')
  * - tracks
  * - selection (initialized to empty object)
  * - search - undefined by default. React router url query params
- * - playId - undefined by default
+ * - index - undefined by default
  * - ascending - (optional) undefined by default
  * - sortKey - (optional) undefined by default
  */
@@ -26,10 +26,10 @@ const initialPlaylistsAscending = {}
 
 function addPlaylistDefaults(playlist) {
   const { name } = playlist
-  playlist.selection = {}
+  playlist.selection = new Map()
   playlist.search = initialPlaylistsSearch[name] || ''
   delete initialPlaylistsSearch[name]
-  playlist.playId = null
+  playlist.index = null
 }
 
 /* Only library (full) playlist supports sorting */
@@ -82,16 +82,16 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       } else {
         libraryPlaylist = getDefaultLibraryPlaylist()
       }
-      const { sortKey, ascending, playId: oldPlayId } = libraryPlaylist
-      const playId = sortPlaylist(
+      const { sortKey, ascending, index: oldIndex } = libraryPlaylist
+      const index = sortPlaylist(
         libraryPlaylistTracks,
         libraryById,
         sortKey,
         ascending,
-        oldPlayId
+        oldIndex
       )
       libraryPlaylist.tracks = libraryPlaylistTracks
-      libraryPlaylist.playId = playId
+      libraryPlaylist.index = index
 
       return { ...playlists, [FULL_PLAYLIST]: libraryPlaylist }
     }
@@ -110,25 +110,25 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       return playlistsUpdate
     }
     case actionTypes.TRACK_TOGGLE: {
-      const { oldPlaylistName, playlistName, playId, track } = action
+      const { oldPlaylistName, playlistName, index, track } = action
       const { id, source } = track
       const playlistsUpdate = { ...playlists }
 
       /* Remove play id from old playlist, if it exists*/
       const oldPlaylist = playlistsUpdate[oldPlaylistName]
       if (oldPlaylist) {
-        playlistsUpdate[oldPlaylistName] = { ...oldPlaylist, playId: null }
+        playlistsUpdate[oldPlaylistName] = { ...oldPlaylist, index: null }
       }
 
-      return trackNext(playlistsUpdate, playlistName, source, id, playId)
+      return trackNext(playlistsUpdate, playlistName, source, id, index)
     }
     case actionTypes.TRACK_NEXT: {
       const { nextTrack, playlistName } = action
       if (!nextTrack) {
         return playlists
       }
-      const { playId, source, id } = nextTrack
-      return trackNext({ ...playlists }, playlistName, source, id, playId)
+      const { index, source, id } = nextTrack
+      return trackNext({ ...playlists }, playlistName, source, id, index)
     }
     case actionTypes.PLAYLIST_SEARCH_UPDATE: {
       const { name, search } = action
@@ -153,19 +153,13 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       if (sortKey === playlist.sortKey && ascending === playlist.ascending) {
         return playlists
       }
-      const { playId: oldPlayId } = playlist
+      const { index: oldIndex } = playlist
       const tracks = [...playlist.tracks]
 
-      const playId = sortPlaylist(
-        tracks,
-        library,
-        sortKey,
-        ascending,
-        oldPlayId
-      )
+      const index = sortPlaylist(tracks, library, sortKey, ascending, oldIndex)
       return {
         ...playlists,
-        [name]: { ...playlist, sortKey, ascending, tracks, playId }
+        [name]: { ...playlist, sortKey, ascending, tracks, index }
       }
     }
     case actionTypes.TRACK_UPLOADS_UPDATE: {
@@ -205,15 +199,14 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const { deleteIndexes, playlistName } = action
       const playlist = playlists[playlistName]
       const tracks = [...playlist.tracks]
-      const { playId } = playlist
-      let playIndex = getPlayIndex(playId)
+      let { index } = playlist
 
       for (const deleteIndex of deleteIndexes) {
-        if (playIndex != null) {
-          if (deleteIndex === playIndex) {
-            playIndex = null
-          } else if (deleteIndex < playIndex) {
-            playIndex -= 1
+        if (index != null) {
+          if (deleteIndex === index) {
+            index = null
+          } else if (deleteIndex < index) {
+            index -= 1
           }
         }
         tracks.splice(deleteIndex, 1)
@@ -224,8 +217,8 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
           ...playlist,
           tracks,
           // TODO does selection really need to be cleared?
-          selection: {},
-          playId: playIndex != null ? playIndex + '' : null
+          selection: new Map(),
+          index
         }
       }
     }
@@ -259,7 +252,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
   }
 }
 
-function trackNext(playlistsUpdate, playlistName, source, id, playId) {
+function trackNext(playlistsUpdate, playlistName, source, id, index) {
   /* Add track to default playlist by default.
    * Unless it is part of certain playlists. */
   if (shouldAddToDefaultPlaylist(playlistName)) {
@@ -268,19 +261,18 @@ function trackNext(playlistsUpdate, playlistName, source, id, playId) {
     playlistsUpdate[DEFAULT_PLAYLIST] = {
       ...defaultPlaylist,
       tracks: [...tracks, id],
-      playId: tracks.length + ''
+      index: tracks.length
     }
   }
 
   /* Update playlist play id */
-  playlistsUpdate[playlistName] = { ...playlistsUpdate[playlistName], playId }
+  playlistsUpdate[playlistName] = { ...playlistsUpdate[playlistName], index }
   return playlistsUpdate
 }
 
-function sortPlaylist(tracks, library, sortKey, ascending, oldPlayId) {
+function sortPlaylist(tracks, library, sortKey, ascending, oldIndex) {
   const factor = ascending ? 1 : -1
-  const oldPlayIndex = getPlayIndex(oldPlayId)
-  const oldTrack = oldPlayIndex != null && tracks[oldPlayIndex]
+  const oldTrack = oldIndex != null && tracks[oldIndex]
 
   if (sortKey === 'duration') {
     tracks.sort((a, b) => factor * (library[a][sortKey] - library[b][sortKey]))
@@ -294,9 +286,9 @@ function sortPlaylist(tracks, library, sortKey, ascending, oldPlayId) {
 
   if (oldTrack) {
     // Possible to binary search here
-    return '' + tracks.findIndex(track => track === oldTrack)
+    return tracks.findIndex(track => track === oldTrack)
   }
-  return oldPlayId
+  return oldIndex
 }
 
 function playlistAdd(addTracks, playlistName, playlists) {
@@ -316,18 +308,18 @@ function playlistAdd(addTracks, playlistName, playlists) {
 }
 
 function tracksDelete(playlist, deleteIds) {
-  const { selection, tracks, playId } = playlist
-  let playIndex = getPlayIndex(playId)
+  const { selection, tracks } = playlist
+  let { index } = playlist
 
   const filteredTracks = tracks.filter((t, i) => {
     const isTrackDeleted = deleteIds.has(t)
     if (isTrackDeleted) {
-      if (playIndex != null) {
-        if (i === playIndex) {
+      if (index != null) {
+        if (i === index) {
           /* Track is deleted. Playlist is no longer playing item */
-          playIndex = null
-        } else if (i < playIndex) {
-          playIndex -= 1
+          index = null
+        } else if (i < index) {
+          index -= 1
         }
       }
     }
@@ -338,16 +330,12 @@ function tracksDelete(playlist, deleteIds) {
     return {
       ...playlist,
       tracks: filteredTracks,
-      playId: playIndex != null ? playIndex + '' : null,
+      index,
       // TODO does selection really need to be cleared?
-      selection: {}
+      selection: new Map()
     }
   }
   return playlist
-}
-
-function getPlayIndex(playId) {
-  return playId != null ? parseInt(playId) : null
 }
 
 // TODO factor w waves-client-actions

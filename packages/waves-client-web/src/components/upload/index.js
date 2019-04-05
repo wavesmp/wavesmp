@@ -128,7 +128,7 @@ class Upload extends React.PureComponent {
     }
     const {
       columns,
-      playId,
+      index,
       selection,
       displayItems,
       pathname,
@@ -156,7 +156,7 @@ class Upload extends React.PureComponent {
         numItems={numItems}
         onItemEdit={this.onItemEdit}
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
-        playId={playId}
+        index={index}
         transitions={transitions}
         selection={selection}
         playlistName={playlistName}

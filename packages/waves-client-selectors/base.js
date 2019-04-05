@@ -13,9 +13,9 @@ function _getPlaylist(state, playlistName) {
 }
 
 // TODO refactor with client web
-function normalizeTrack(track, i) {
+function normalizeTrack(track, index) {
   const time = formatTime(1000 * track.duration)
-  return { ...track, time, playId: i + '' }
+  return { ...track, time, index }
 }
 
 module.exports.getRowsPerPage = getRowsPerPage

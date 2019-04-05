@@ -8,28 +8,25 @@ describe('#selection()', () => {
   it('#selectionAdd()', () => {
     assert.isDefined(types.SELECTION_ADD)
     const name = 'testName'
-    const playId = 'testPlayId'
+    const index = 'testIndex'
     const trackId = 'testTrackId'
-    const expectedAction = { type: types.SELECTION_ADD, name, playId, trackId }
-    assert.deepEqual(
-      actions.selectionAdd(name, playId, trackId),
-      expectedAction
-    )
+    const expectedAction = { type: types.SELECTION_ADD, name, index, trackId }
+    assert.deepEqual(actions.selectionAdd(name, index, trackId), expectedAction)
   })
 
   it('#selectionClearAndAdd()', () => {
     assert.isDefined(types.SELECTION_CLEAR_AND_ADD)
     const name = 'testName'
-    const playId = 'testPlayId'
+    const index = 'testIndex'
     const trackId = 'testTrackId'
     const expectedAction = {
       type: types.SELECTION_CLEAR_AND_ADD,
       name,
-      playId,
+      index,
       trackId
     }
     assert.deepEqual(
-      actions.selectionClearAndAdd(name, playId, trackId),
+      actions.selectionClearAndAdd(name, index, trackId),
       expectedAction
     )
   })
@@ -37,20 +34,20 @@ describe('#selection()', () => {
   it('#selectionRange()', () => {
     assert.isDefined(types.SELECTION_RANGE)
     const name = 'testName'
-    const startPlayId = 'testStartPlayId'
-    const endPlayId = 'testEndPlayId'
+    const startIndex = 'testStartIndex'
+    const endIndex = 'testEndIndex'
     const displayItems = 'testDisplayItems'
     const expectedAction = {
       type: types.SELECTION_RANGE,
       name,
-      startPlayId,
-      endPlayId,
+      startIndex,
+      endIndex,
       displayItems
     }
     const actualAction = actions.selectionRange(
       name,
-      startPlayId,
-      endPlayId,
+      startIndex,
+      endIndex,
       displayItems
     )
     assert.deepEqual(actualAction, expectedAction)
@@ -59,8 +56,8 @@ describe('#selection()', () => {
   it('#selectionRemove()', () => {
     assert.isDefined(types.SELECTION_REMOVE)
     const name = 'testName'
-    const playId = 'testPlayId'
-    const expectedAction = { type: types.SELECTION_REMOVE, name, playId }
-    assert.deepEqual(actions.selectionRemove(name, playId), expectedAction)
+    const index = 'testIndex'
+    const expectedAction = { type: types.SELECTION_REMOVE, name, index }
+    assert.deepEqual(actions.selectionRemove(name, index), expectedAction)
   })
 })

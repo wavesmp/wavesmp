@@ -13,17 +13,17 @@ const DOUBLE_CLICK_THRESHOLD = 500
 export default class Table extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.state = { editingPlayId: null, editingTitle: null }
+    this.state = { editingIndex: null, editingTitle: null }
     this.dragGhost = null
 
-    this.editOnMouseUpPlayId = null
+    this.editOnMouseUpIndex = null
     this.editOnMouseUpTitle = null
 
-    this.clearOnMouseUpPlayId = null
+    this.clearOnMouseUpIndex = null
     this.clearOnMouseUpTrackId = null
 
     this.lastClickTime = 0
-    this.lastClickPlayId = null
+    this.lastClickIndex = null
     this.lastClickWasForEdit = false
   }
 
@@ -38,7 +38,7 @@ export default class Table extends React.PureComponent {
       onRowDoubleClick,
       onContextMenu,
       playlistName,
-      playId,
+      index,
       selection
     } = this.props
 
@@ -50,49 +50,51 @@ export default class Table extends React.PureComponent {
     /* Shift for select of consecutive elements
      * Alt for toggle of individually selected items
      * No modifier for single select */
-    const itemPlayId = ev.currentTarget.getAttribute(constants.PLAY_INDEX_ATTR)
+    const itemIndex = parseInt(
+      ev.currentTarget.getAttribute(constants.INDEX_ATTR)
+    )
     const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR)
 
     if (ev.altKey) {
-      if (itemPlayId in selection) {
-        actions.selectionRemove(playlistName, itemPlayId)
+      if (selection.has(itemIndex)) {
+        actions.selectionRemove(playlistName, itemIndex)
       } else {
-        actions.selectionAdd(playlistName, itemPlayId, trackId)
+        actions.selectionAdd(playlistName, itemIndex, trackId)
       }
-      this.lastClickPlayId = itemPlayId
+      this.lastClickIndex = itemIndex
       return
     }
 
     if (ev.shiftKey) {
-      if (Object.keys(selection).length === 0) {
-        actions.selectionAdd(playlistName, itemPlayId, trackId)
+      if (selection.size === 0) {
+        actions.selectionAdd(playlistName, itemIndex, trackId)
       } else {
         actions.selectionRange(
           playlistName,
-          this.lastClickPlayId,
-          itemPlayId,
+          this.lastClickIndex,
+          itemIndex,
           this.displayItems
         )
       }
-      this.lastClickPlayId = itemPlayId
+      this.lastClickIndex = itemIndex
       return
     }
 
-    let isSelected = itemPlayId in selection
+    let isSelected = selection.has(itemIndex)
     let isContextMenu = ev.button === CONTEXT_MENU_BUTTON
     if (!isSelected) {
-      actions.selectionClearAndAdd(playlistName, itemPlayId, trackId)
+      actions.selectionClearAndAdd(playlistName, itemIndex, trackId)
     }
 
     if (isContextMenu) {
       /* In case we selected a new item at click time,
        * the operation is on a single item. */
-      const bulk = isSelected && Object.keys(selection).length > 1
-      onContextMenu(ev, { itemPlayId, trackId, bulk, playlistName, playId })
+      const bulk = isSelected && selection.size > 1
+      onContextMenu(ev, { itemIndex, trackId, bulk, playlistName, index })
       ev.preventDefault()
       return
     }
-    const isSameRowClick = this.lastClickPlayId === itemPlayId
+    const isSameRowClick = this.lastClickIndex === itemIndex
     const isSingleClick =
       new Date() - this.lastClickTime > DOUBLE_CLICK_THRESHOLD
     const isDoubleClick = isSameRowClick && !isSingleClick
@@ -103,53 +105,54 @@ export default class Table extends React.PureComponent {
       onRowDoubleClick(ev)
     } else {
       if (isSelected) {
-        this.clearOnMouseUpPlayId = itemPlayId
+        this.clearOnMouseUpIndex = itemIndex
         this.clearOnMouseUpTrackId = trackId
       }
       if (isSameRowClick && this.lastClickWasForEdit && clickWasForEdit) {
-        this.editOnMouseUpPlayId = itemPlayId
+        this.editOnMouseUpIndex = itemIndex
         this.editOnMouseUpTitle = clickTarget.getAttribute(constants.TITLE_ATTR)
       }
     }
     this.lastClickWasForEdit = clickWasForEdit
     this.lastClickTime = new Date()
-    this.lastClickPlayId = itemPlayId
+    this.lastClickIndex = itemIndex
   }
 
   /* After mousedown, either mouseup or dragstart is called (not both) */
 
   onRowMouseUp = ev => {
     const { actions, playlistName, transitions } = this.props
-    if (this.clearOnMouseUpPlayId) {
+    if (this.clearOnMouseUpIndex) {
       actions.selectionClearAndAdd(
         playlistName,
-        this.clearOnMouseUpPlayId,
+        this.clearOnMouseUpIndex,
         this.clearOnMouseUpTrackId
       )
-      this.clearOnMouseUpPlayId = null
+      this.clearOnMouseUpIndex = null
       this.clearOnMouseUpTrackId = null
     }
-    if (this.editOnMouseUpPlayId) {
+    if (this.editOnMouseUpIndex) {
       if (transitions) {
         this.setState({
-          editingPlayId: this.editOnMouseUpPlayId,
+          editingIndex: this.editOnMouseUpIndex,
           editingTitle: this.editOnMouseUpTitle
         })
       }
-      this.editOnMouseUpPlayId = null
+      this.editOnMouseUpIndex = null
       this.editOnMouseUpTitle = null
     }
   }
 
   onDragStart = ev => {
-    this.editOnMouseUpPlayId = null
+    this.editOnMouseUpIndex = null
     this.editOnMouseUpTitle = null
 
-    this.clearOnMouseUpPlayId = null
+    this.clearOnMouseUpIndex = null
     this.clearOnMouseUpTrackId = null
 
-    const numSelected = Object.keys(this.props.selection).length
-    this.dragGhost = getDragCanvas(numSelected, this.props.theme)
+    const { theme, selection, playlistName } = this.props
+    const numSelected = selection.size
+    this.dragGhost = getDragCanvas(numSelected, theme)
 
     // 1/21/2019 - Must be appended to dom for chrome
     // https://stackoverflow.com/questions/43790022/
@@ -158,7 +161,6 @@ export default class Table extends React.PureComponent {
     this.dragGhost.style.left = '-100%'
     document.body.append(this.dragGhost)
 
-    const { playlistName } = this.props
     ev.dataTransfer.setData(constants.PLAYLIST_TYPE, playlistName)
     ev.dataTransfer.setDragImage(this.dragGhost, 0, 0)
   }
@@ -169,7 +171,7 @@ export default class Table extends React.PureComponent {
   }
 
   onBlur = () => {
-    this.setState({ editingPlayId: null, editingTitle: null })
+    this.setState({ editingIndex: null, editingTitle: null })
   }
 
   render() {
@@ -177,7 +179,7 @@ export default class Table extends React.PureComponent {
       pathname,
       qp,
       actions,
-      playId,
+      index,
       sortKey,
       ascending,
       columns,
@@ -210,19 +212,19 @@ export default class Table extends React.PureComponent {
             </tr>
           </thead>
           <tbody>
-            {this.displayItems.map((sample, index) => {
+            {this.displayItems.map(sample => {
               let className = ''
-              if (sample.playId in selection) {
+              if (selection.has(sample.index)) {
                 className = 'common-table-row-selected'
               }
               return (
                 <tr
-                  key={index + sample.id}
+                  key={sample.index + sample.id}
                   onMouseDown={this.onRowMouseDown}
                   onMouseUp={this.onRowMouseUp}
                   onContextMenu={this.onContextMenu}
                   data-trackid={sample.id}
-                  data-playindex={sample.playId}
+                  data-index={sample.index}
                   draggable={draggable}
                   onDragStart={this.onDragStart}
                   onDragEnd={this.onDragEnd}
@@ -235,11 +237,11 @@ export default class Table extends React.PureComponent {
                       isPlaying={isPlaying}
                       onChange={onItemEdit}
                       onBlur={this.onBlur}
-                      playId={playId}
+                      index={index}
                       sample={sample}
                       editable={
                         transitions &&
-                        this.state.editingPlayId === sample.playId &&
+                        this.state.editingIndex === sample.index &&
                         this.state.editingTitle === column.title
                       }
                     />

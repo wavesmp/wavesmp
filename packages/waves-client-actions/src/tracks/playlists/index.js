@@ -34,10 +34,10 @@ function playlistAdd(source, dest) {
     const { playlists } = tracks
 
     const { selection } = playlists[source]
-    const addIndexes = Object.keys(selection).map(i => parseInt(i))
+    const addIndexes = Array.from(selection.keys())
     addIndexes.sort((a, b) => a - b)
 
-    const addTracks = addIndexes.map(addIndex => selection[addIndex])
+    const addTracks = addIndexes.map(addIndex => selection.get(addIndex))
 
     dispatch({ type: types.PLAYLIST_ADD, playlistName: dest, addTracks })
     ws.sendBestEffortMessage(types.PLAYLIST_ADD, {

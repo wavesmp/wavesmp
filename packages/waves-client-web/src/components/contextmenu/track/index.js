@@ -22,22 +22,22 @@ class Track extends React.PureComponent {
       actions,
       playlistName,
       isPlaying,
-      playId,
-      itemPlayId,
+      index,
+      itemIndex,
       trackId
     } = this.props
 
-    if (playId === itemPlayId && isPlaying) {
+    if (index === itemIndex && isPlaying) {
       return <Pause onClick={actions.playPauseButtonToggle} />
     }
 
-    if (playId === itemPlayId) {
+    if (index === itemIndex) {
       return <PlayResume onClick={actions.playPauseButtonToggle} />
     }
     return (
       <Play
         onClick={ev => {
-          actions.trackToggle(trackId, playlistName, itemPlayId)
+          actions.trackToggle(trackId, playlistName, itemIndex)
         }}
       />
     )

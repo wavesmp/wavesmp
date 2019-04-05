@@ -8,7 +8,7 @@ constants.UPLOAD_PLAYLIST = '__upload'
 
 constants.TOAST_ID_ATTR = 'data-toast'
 constants.TRACK_ID_ATTR = 'data-trackid'
-constants.PLAY_INDEX_ATTR = 'data-playindex'
+constants.INDEX_ATTR = 'data-index'
 constants.TITLE_ATTR = 'data-title'
 constants.PLAYLIST_NAME_ATTR = 'data-playlistname'
 constants.ALL_COLUMNS = [

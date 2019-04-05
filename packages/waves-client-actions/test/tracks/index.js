@@ -37,19 +37,19 @@ const actions = require('../../src/tracks')
 
 describe('#tracks()', async () => {
   it('track toggle test playlist', async () => {
-    const testPlayId = 'testPlayId'
+    const testIndex = 'testIndex'
 
     const ws = new WavesSocket({})
     const player = new Player({})
 
     assert.isDefined(types.TRACK_TOGGLE)
-    const thunk = actions.trackToggle(track2.id, testPlaylistName2, testPlayId)
+    const thunk = actions.trackToggle(track2.id, testPlaylistName2, testIndex)
 
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs({
       type: types.TRACK_TOGGLE,
       playlistName: testPlaylistName2,
-      playId: testPlayId,
+      index: testIndex,
       track: track2,
       oldPlaylistName: testPlaylistName1
     })
@@ -79,18 +79,18 @@ describe('#tracks()', async () => {
   })
 
   it('track toggle default playlist', async () => {
-    const testPlayId = 'testPlayId'
+    const testIndex = 'testIndex'
 
     const player = new Player({})
 
-    const thunk = actions.trackToggle(track2.id, DEFAULT_PLAYLIST, testPlayId)
+    const thunk = actions.trackToggle(track2.id, DEFAULT_PLAYLIST, testIndex)
 
     assert.isDefined(types.TRACK_TOGGLE)
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs({
       type: types.TRACK_TOGGLE,
       playlistName: DEFAULT_PLAYLIST,
-      playId: testPlayId,
+      index: testIndex,
       track: track2,
       oldPlaylistName: testPlaylistName1
     })
@@ -120,7 +120,7 @@ describe('#tracks()', async () => {
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs({
       type: types.TRACK_NEXT,
-      nextTrack: { ...track2, playId: '1' },
+      nextTrack: { ...track2, index: 1 },
       playlistName: playlistName
     })
 
@@ -138,12 +138,12 @@ describe('#tracks()', async () => {
     const playerExpect = playerMock
       .expects('trackNext')
       .once()
-      .withExactArgs({ ...track2, playId: '1' }, isPlaying)
+      .withExactArgs({ ...track2, index: 1 }, isPlaying)
 
     const playing = { playlist: playlistName, isPlaying, shuffle: false }
     const playlist = {
       tracks: [track1.id, track2.id],
-      playId: '0',
+      index: 0,
       search: ''
     }
     const playlists = { [playlistName]: playlist }
@@ -161,7 +161,7 @@ describe('#tracks()', async () => {
 
     const track1Copy = { ...track1, title: searchString }
     const track1Time = formatTime(track1Copy.duration * 1000)
-    const expectedTrack1 = { ...track1Copy, playId: '0', time: track1Time }
+    const expectedTrack1 = { ...track1Copy, index: 0, time: track1Time }
     const track2Copy = { ...track2, title: searchString }
     const playlistName = DEFAULT_PLAYLIST
 
@@ -192,7 +192,7 @@ describe('#tracks()', async () => {
     const playing = { playlist: playlistName, isPlaying, shuffle: false }
     const playlist = {
       tracks: [track1Copy.id, track2Copy.id],
-      playId: '1',
+      index: 1,
       search
     }
     const playlists = { [playlistName]: playlist }
@@ -370,12 +370,18 @@ describe('#tracks()', async () => {
 
   it('#tracksRemove()', () => {
     const deleteIndexes = [9, 4, 0]
+    const selection1 = new Map()
+    selection1.set(4, 'trackId4')
+    selection1.set(0, 'trackId0')
+    selection1.set(9, 'trackId9')
+    const selection2 = new Map()
+    selection2.set(8, 'trackId8')
     const playlists = {
       [testPlaylistName1]: {
-        selection: { 4: 'trackId4', 0: 'trackId0', 9: 'trackId9' }
+        selection: selection1
       },
       [testPlaylistName2]: {
-        selection: { 8: 'trackId8' }
+        selection: selection2
       }
     }
     const tracks = { playing: {}, playlists }

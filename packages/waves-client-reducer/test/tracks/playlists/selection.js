@@ -8,78 +8,76 @@ const { TEST_PLAYLIST_NAME1: playlistName } = require('waves-test-data')
 const selection = require('../../../src/tracks/playlists/selection')
 
 describe('#selection()', () => {
-  let state = { name: playlistName, selection: {} }
+  let state = { name: playlistName, selection: new Map() }
   let action
 
   it('Initial clear and add', () => {
     const action = {
       type: actionTypes.SELECTION_CLEAR_AND_ADD,
-      playId: '0',
+      index: 0,
       trackId: 'trackId0'
     }
     state = assertNewState(selection[action.type], state, action)
-    assert.deepEqual(state.selection, { '0': 'trackId0' })
+    const expectedSelection = new Map()
+    expectedSelection.set(0, 'trackId0')
+    assert.deepEqual(state.selection, expectedSelection)
   })
 
   it('selection add', () => {
     const action = {
       type: actionTypes.SELECTION_ADD,
-      playId: '1',
+      index: 1,
       trackId: 'trackId1'
     }
     state = assertNewState(selection[action.type], state, action)
-    const expectedSelection = {
-      '0': 'trackId0',
-      '1': 'trackId1'
-    }
+    const expectedSelection = new Map()
+    expectedSelection.set(0, 'trackId0')
+    expectedSelection.set(1, 'trackId1')
     assert.deepEqual(state.selection, expectedSelection)
   })
 
   it('selection remove', () => {
     const action = {
       type: actionTypes.SELECTION_REMOVE,
-      playId: '0'
+      index: 0
     }
     state = assertNewState(selection[action.type], state, action)
-    const expectedSelection = {
-      '1': 'trackId1'
-    }
+    const expectedSelection = new Map()
+    expectedSelection.set(1, 'trackId1')
     assert.deepEqual(state.selection, expectedSelection)
   })
 
   it('selection range', () => {
-    const items = [...Array(10).keys()].map((_, i) => {
-      i += 10
-      return {
-        playId: i + '',
-        id: `trackId${i}`
-      }
-    })
+    const items = []
+    for (let i = 10; i < 20; i += 1) {
+      items.push({ index: i, id: `trackId${i}` })
+    }
 
     const action = {
       type: actionTypes.SELECTION_RANGE,
       displayItems: items,
-      startPlayId: '12',
-      endPlayId: '15'
+      startIndex: 12,
+      endIndex: 15
     }
     state = assertNewState(selection[action.type], state, action)
-    const expectedSelection = {
-      '1': 'trackId1',
-      '12': 'trackId12',
-      '13': 'trackId13',
-      '14': 'trackId14',
-      '15': 'trackId15'
-    }
+    const expectedSelection = new Map()
+    expectedSelection.set(1, 'trackId1')
+    expectedSelection.set(12, 'trackId12')
+    expectedSelection.set(13, 'trackId13')
+    expectedSelection.set(14, 'trackId14')
+    expectedSelection.set(15, 'trackId15')
     assert.deepEqual(state.selection, expectedSelection)
   })
 
   it('clear and add', () => {
     const action = {
       type: actionTypes.SELECTION_CLEAR_AND_ADD,
-      playId: '5',
+      index: 5,
       trackId: 'trackId5'
     }
     state = assertNewState(selection[action.type], state, action)
-    assert.deepEqual(state.selection, { '5': 'trackId5' })
+    const expectedSelection = new Map()
+    expectedSelection.set(5, 'trackId5')
+    assert.deepEqual(state.selection, expectedSelection)
   })
 })

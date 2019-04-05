@@ -51,9 +51,9 @@ describe('#playlists()', () => {
       name: FULL_PLAYLIST,
       sortKey: 'title',
       ascending: true,
-      selection: {},
+      selection: new Map(),
       search: '',
-      playId: null,
+      index: null,
       tracks: [track1.id, track2.id]
     }
     assert.deepEqual(playlist, expected)
@@ -73,9 +73,9 @@ describe('#playlists()', () => {
 
     const expected = {
       name: DEFAULT_PLAYLIST,
-      selection: {},
+      selection: new Map(),
       search: '',
-      playId: null,
+      index: null,
       tracks: [track1.id]
     }
     assert.deepEqual(state[DEFAULT_PLAYLIST], expected)
@@ -86,17 +86,17 @@ describe('#playlists()', () => {
       type: actionTypes.TRACK_TOGGLE,
       oldPlaylistName: null,
       playlistName: FULL_PLAYLIST,
-      playId: '1',
+      index: 1,
       track: track2
     }
     state = assertNewState(playlists, state, action)
 
     const expectedDefaultPlaylist = {
       name: DEFAULT_PLAYLIST,
-      selection: {},
+      selection: new Map(),
       search: '',
       tracks: [track1.id, track2.id],
-      playId: '1'
+      index: 1
     }
     assert.deepEqual(state[DEFAULT_PLAYLIST], expectedDefaultPlaylist)
 
@@ -104,10 +104,10 @@ describe('#playlists()', () => {
       name: FULL_PLAYLIST,
       sortKey: 'title',
       ascending: true,
-      selection: {},
+      selection: new Map(),
       search: '',
       tracks: [track1.id, track2.id],
-      playId: '1'
+      index: 1
     }
     assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
 
@@ -128,16 +128,16 @@ describe('#playlists()', () => {
     action = {
       type: actionTypes.TRACK_NEXT,
       playlistName: FULL_PLAYLIST,
-      nextTrack: { ...track1, playId: '0' }
+      nextTrack: { ...track1, index: 0 }
     }
     state = assertNewState(playlists, state, action)
 
     const expectedDefaultPlaylist = {
       name: DEFAULT_PLAYLIST,
-      selection: {},
+      selection: new Map(),
       search: '',
       tracks: [track1.id, track2.id, track1.id],
-      playId: '2'
+      index: 2
     }
     assert.deepEqual(state[DEFAULT_PLAYLIST], expectedDefaultPlaylist)
 
@@ -145,10 +145,10 @@ describe('#playlists()', () => {
       name: FULL_PLAYLIST,
       sortKey: 'title',
       ascending: true,
-      selection: {},
+      selection: new Map(),
       search: '',
       tracks: [track1.id, track2.id],
-      playId: '0'
+      index: 0
     }
     assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
 
@@ -167,10 +167,10 @@ describe('#playlists()', () => {
       name: FULL_PLAYLIST,
       sortKey: 'title',
       ascending: true,
-      selection: {},
+      selection: new Map(),
       search: testSearch,
       tracks: [track1.id, track2.id],
-      playId: '0'
+      index: 0
     }
     assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
   })
@@ -189,10 +189,10 @@ describe('#playlists()', () => {
       name: FULL_PLAYLIST,
       sortKey: 'artist',
       ascending: false,
-      selection: {},
+      selection: new Map(),
       search: testSearch,
       tracks: [track2.id, track1.id],
-      playId: '1'
+      index: 1
     }
     assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
   })
@@ -207,9 +207,9 @@ describe('#playlists()', () => {
 
     const expectedPlaylist1 = {
       name: playlistName1,
-      selection: {},
+      selection: new Map(),
       search: '',
-      playId: null,
+      index: null,
       tracks: [track1.id]
     }
     assert.deepEqual(state[playlistName1], expectedPlaylist1)
@@ -227,9 +227,9 @@ describe('#playlists()', () => {
 
     const expectedPlaylist2 = {
       name: playlistName2,
-      selection: {},
+      selection: new Map(),
       search: '',
-      playId: null,
+      index: null,
       tracks: [track1.id]
     }
     assert.deepEqual(state[playlistName2], expectedPlaylist2)
@@ -247,10 +247,10 @@ describe('#playlists()', () => {
 
     const expectedDefaultPlaylist = {
       name: DEFAULT_PLAYLIST,
-      selection: {},
+      selection: new Map(),
       search: '',
       tracks: [track1.id],
-      playId: '0'
+      index: 0
     }
     assert.deepEqual(state[DEFAULT_PLAYLIST], expectedDefaultPlaylist)
   })
@@ -265,10 +265,10 @@ describe('#playlists()', () => {
 
     const expectedPlaylist1 = {
       name: playlistName1,
-      selection: {},
+      selection: new Map(),
       search: '',
       tracks: [track1.id],
-      playId: null
+      index: null
     }
     assert.deepEqual(state[playlistName1], expectedPlaylist1)
     assert.lengthOf(Object.keys(state), 4)
@@ -283,10 +283,10 @@ describe('#playlists()', () => {
 
     const expectedDefaultPlaylist = {
       name: DEFAULT_PLAYLIST,
-      selection: {},
+      selection: new Map(),
       search: '',
       tracks: [],
-      playId: null
+      index: null
     }
     assert.deepEqual(state[DEFAULT_PLAYLIST], expectedDefaultPlaylist)
     assert.lengthOf(Object.keys(state), 4)
@@ -310,10 +310,10 @@ describe('#playlists()', () => {
       name: FULL_PLAYLIST,
       sortKey: 'artist',
       ascending: false,
-      selection: {},
+      selection: new Map(),
       search: testSearch,
       tracks: [track1.id],
-      playId: '0'
+      index: 0
     }
     assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
   })
@@ -327,9 +327,9 @@ describe('#playlists()', () => {
 
     const expectedPlaylist = {
       name: playlistName,
-      selection: {},
+      selection: new Map(),
       search: '',
-      playId: null,
+      index: null,
       tracks: [track1.id, track2.id]
     }
     assert.deepEqual(state[playlistName], expectedPlaylist)

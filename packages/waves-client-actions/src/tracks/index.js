@@ -10,7 +10,7 @@ const { UploadError } = require('waves-client-errors')
 
 const { toastAdd } = require('../toasts')
 
-function trackToggle(id, playlistName, playId) {
+function trackToggle(id, playlistName, index) {
   return (dispatch, getState, { player, ws }) => {
     const { tracks } = getState()
     const { library, playing, uploads } = tracks
@@ -22,7 +22,7 @@ function trackToggle(id, playlistName, playId) {
     dispatch({
       type: types.TRACK_TOGGLE,
       playlistName,
-      playId,
+      index,
       track,
       oldPlaylistName
     })
@@ -77,7 +77,7 @@ async function _trackNext(
   const { library, playing, playlists, uploads } = tracks
   const { playlist: playlistName, isPlaying, shuffle } = playing
   const playlist = playlists[playlistName]
-  const { playId, search } = playlist
+  const { index, search } = playlist
 
   const { getSearchItems } = getOrCreatePlaylistSelectors(
     playlistName,
@@ -100,7 +100,7 @@ async function _trackNext(
       const i = Math.floor(Math.random() * length)
       const trackId = items[i]
       const track = getTrackById(trackId, library, uploads)
-      nextTrack = { ...track, playId: i + '' }
+      nextTrack = { ...track, index }
     }
   } else {
     /* Find the track after the current one.
@@ -117,25 +117,25 @@ async function _trackNext(
 
     for (let i = start; i < end; i += 1) {
       const item = items[i]
-      if (searchItems && item.playId === playId) {
+      if (searchItems && item.index === index) {
         if (prev) {
           nextTrack = items[i - 1]
           break
         }
         nextTrack = items[i + 1]
         break
-      } else if (!searchItems && playId === '' + i) {
+      } else if (!searchItems && index === i) {
         let trackId
-        let playId
+        let nextIndex
         if (prev) {
           trackId = items[i - 1]
-          playId = i - 1 + ''
+          nextIndex = i - 1
         } else {
           trackId = items[i + 1]
-          playId = i + 1 + ''
+          nextIndex = i + 1
         }
         const track = getTrackById(trackId, library, uploads)
-        nextTrack = { ...track, playId }
+        nextTrack = { ...track, index: nextIndex }
         break
       }
     }
@@ -318,7 +318,7 @@ function tracksDelete() {
     const { selection } = playlists[FULL_PLAYLIST]
     const { track } = playing
 
-    const deleteIds = Object.values(selection)
+    const deleteIds = Array.from(selection.values())
     dispatch({
       type: types.LIBRARY_TRACK_UPDATE,
       ids: deleteIds,
@@ -363,13 +363,13 @@ function tracksRemove(playlistName) {
     console.log(`Removing from playlist ${playlistName}`)
     const { tracks } = getState()
     const { playing, playlists } = tracks
-    const { selection, playId } = playlists[playlistName]
+    const { selection, index } = playlists[playlistName]
     const { track, playlist } = playing
 
-    const deleteIndexes = Object.keys(selection).map(i => parseInt(i))
+    const deleteIndexes = Array.from(selection.keys())
     deleteIndexes.sort((a, b) => b - a)
     const deletePlaying =
-      playlist === playlistName && track && track.id === selection[playId]
+      playlist === playlistName && track && track.id === selection.get(index)
 
     if (deletePlaying) {
       player.pause()

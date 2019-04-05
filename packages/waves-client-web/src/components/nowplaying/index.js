@@ -94,7 +94,7 @@ class NowPlaying extends React.PureComponent {
       columns,
       theme,
       loaded,
-      playId,
+      index,
       selection,
       currentPage,
       lastPage,
@@ -118,7 +118,7 @@ class NowPlaying extends React.PureComponent {
         onItemEdit={this.onItemEdit}
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
         pathname={location.pathname}
-        playId={playId}
+        index={index}
         playlistLoaded={loaded}
         playlistName={playlistName}
         qp={qp}

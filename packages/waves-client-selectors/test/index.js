@@ -9,7 +9,7 @@ const {
   TEST_PLAYLIST_NAME1: testPlaylistName,
   TEST_TRACK1: baseTrack1,
   TEST_TRACK2: baseTrack2,
-  TEST_PLAY_ID: testPlayId,
+  TEST_INDEX: testIndex,
   TEST_SELECTION: testSelection,
   TEST_SORT_KEY: testSortKey,
   TEST_ASCENDING: testAscending
@@ -124,7 +124,7 @@ describe('waves-client-selectors', () => {
       it('playlist exists', () => {
         const playlist = {
           tracks: [track1.id],
-          playId: testPlayId,
+          index: testIndex,
           selection: testSelection,
           sortKey: testSortKey,
           ascending: testAscending
@@ -138,7 +138,7 @@ describe('waves-client-selectors', () => {
         const props = getPlaylistProps(state, '')
         const expected = {
           loaded: true,
-          playId: testPlayId,
+          index: testIndex,
           selection: testSelection,
           sortKey: testSortKey,
           ascending: testAscending,
@@ -148,7 +148,7 @@ describe('waves-client-selectors', () => {
           displayItems: [
             {
               ...track1,
-              playId: '0',
+              index: 0,
               time: '1:01'
             }
           ]

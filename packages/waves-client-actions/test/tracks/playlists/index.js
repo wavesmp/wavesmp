@@ -118,12 +118,18 @@ describe('#playlists()', () => {
     const source = testPlaylistName1
     const dest = testPlaylistName2
     const addTracks = ['trackId0', 'trackId4', 'trackId9']
+    const sourceSelection = new Map()
+    sourceSelection.set(4, 'trackId4')
+    sourceSelection.set(0, 'trackId0')
+    sourceSelection.set(9, 'trackId9')
+    const destSelection = new Map()
+    destSelection.set(8, 'trackId8')
     const playlists = {
       [source]: {
-        selection: { 4: 'trackId4', 0: 'trackId0', 9: 'trackId9' }
+        selection: sourceSelection
       },
       [dest]: {
-        selection: { 8: 'trackId8' }
+        selection: destSelection
       }
     }
     const tracks = { playlists }

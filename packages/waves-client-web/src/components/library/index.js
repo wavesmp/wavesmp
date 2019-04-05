@@ -70,7 +70,7 @@ class Library extends React.PureComponent {
       pathname,
       qp,
       loaded,
-      playId,
+      index,
       selection,
       sortKey,
       ascending,
@@ -102,7 +102,7 @@ class Library extends React.PureComponent {
         onItemEdit={this.onItemEdit}
         onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
         pathname={pathname}
-        playId={playId}
+        index={index}
         playlistLoaded={loaded}
         playlistName={playlistName}
         qp={qp}
