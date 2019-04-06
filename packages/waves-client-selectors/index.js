@@ -3,25 +3,7 @@ const { createSelector } = require('reselect')
 const { DEFAULT_PLAYLIST, FULL_PLAYLIST } = require('waves-client-constants')
 
 const { _getPlaylist } = require('./base')
-const { createPlaylistSelectors } = require('./playlist')
-
-const playlistSelectors = {}
-function getOrCreatePlaylistSelectors(
-  playlistName,
-  URLSearchParams,
-  libProp = 'library'
-) {
-  let playlistSelector = playlistSelectors[playlistName]
-  if (!playlistSelector) {
-    playlistSelector = createPlaylistSelectors(
-      playlistName,
-      URLSearchParams,
-      libProp
-    )
-    playlistSelectors[playlistName] = playlistSelector
-  }
-  return playlistSelector
-}
+const { getOrCreatePlaylistSelectors } = require('./playlist')
 
 function getLibraryPlaylistSearch(state) {
   const playlist = _getPlaylist(state, FULL_PLAYLIST)

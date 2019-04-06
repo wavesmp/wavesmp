@@ -20,6 +20,28 @@ const DEFAULT_PAGE = 0
 const DEFAULT_SORT_KEY = 'title'
 const DEFAULT_SEARCH_STRING = ''
 
+const playlistSelectors = {}
+function getOrCreatePlaylistSelectors(
+  playlistName,
+  URLSearchParams,
+  libProp = 'library'
+) {
+  let playlistSelector = playlistSelectors[playlistName]
+  if (!playlistSelector) {
+    playlistSelector = createPlaylistSelectors(
+      playlistName,
+      URLSearchParams,
+      libProp
+    )
+    playlistSelectors[playlistName] = playlistSelector
+  }
+  return playlistSelector
+}
+
+function getPlaylistSelectors(playlistName) {
+  return playlistSelectors[playlistName]
+}
+
 // TODO handle this in redirect?
 function normalizePage(currentPage, lastPage) {
   if (currentPage < 0) {
@@ -198,4 +220,5 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
   }
 }
 
-module.exports.createPlaylistSelectors = createPlaylistSelectors
+module.exports.getOrCreatePlaylistSelectors = getOrCreatePlaylistSelectors
+module.exports.getPlaylistSelectors = getPlaylistSelectors
