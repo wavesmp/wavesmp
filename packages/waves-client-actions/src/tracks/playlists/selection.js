@@ -4,8 +4,14 @@ function selectionAdd(name, index, trackId) {
   return { type: types.SELECTION_ADD, name, index, trackId }
 }
 
-function selectionClearAndAdd(name, index, trackId) {
-  return { type: types.SELECTION_CLEAR_AND_ADD, name, index, trackId }
+function selectionClearAndAdd(name, index, trackId, displayItems) {
+  return {
+    type: types.SELECTION_CLEAR_AND_ADD,
+    name,
+    index,
+    trackId,
+    displayItems
+  }
 }
 
 function selectionRange(name, startIndex, endIndex, displayItems) {

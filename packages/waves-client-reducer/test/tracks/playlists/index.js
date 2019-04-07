@@ -241,7 +241,9 @@ describe('#playlists()', () => {
     action = {
       type: actionTypes.TRACKS_REMOVE,
       playlistName: DEFAULT_PLAYLIST,
-      deleteIndexes: [1, 0]
+      deleteIndexes: [1, 0],
+      selection: new Map(),
+      index: 0
     }
     state = assertNewState(playlists, state, action)
 
@@ -302,7 +304,14 @@ describe('#playlists()', () => {
   it('delete track2', () => {
     action = {
       type: actionTypes.TRACKS_DELETE,
-      deleteIds: new Set([track2.id])
+      playlists: {
+        ...state,
+        [FULL_PLAYLIST]: {
+          ...state[FULL_PLAYLIST],
+          tracks: [track1.id],
+          index: 0
+        }
+      }
     }
     state = assertNewState(playlists, state, action)
 

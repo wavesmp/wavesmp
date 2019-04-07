@@ -2,9 +2,14 @@ const types = require('waves-action-types')
 const {
   DEFAULT_PLAYLIST,
   FULL_PLAYLIST,
+  UPLOAD_PLAYLIST,
   toastTypes
 } = require('waves-client-constants')
-const { getOrCreatePlaylistSelectors } = require('waves-client-selectors')
+const {
+  getOrCreatePlaylistSelectors,
+  getFilteredSelection,
+  removeSelection
+} = require('waves-client-selectors')
 const { UploadError } = require('waves-client-errors')
 const { shouldAddToDefaultPlaylist } = require('waves-client-util')
 
@@ -216,7 +221,7 @@ async function handleUploadPromises(promises, dispatch) {
 function tracksUpload(trackSource) {
   return async (dispatch, getState, { player, ws }) => {
     const { tracks } = getState()
-    const { playing, uploads } = tracks
+    const { playing, uploads, playlists } = tracks
     const { track } = playing
     const uploadIds = Object.keys(uploads)
     dispatch({
@@ -253,7 +258,14 @@ function tracksUpload(trackSource) {
        * it is deleted from state */
       player.pause()
     }
-    dispatch({ type: types.TRACK_UPLOADS_DELETE, deleteIds: uploadedIds })
+    dispatch({
+      type: types.TRACK_UPLOADS_DELETE,
+      deleteIds: uploadedIds,
+      playlist: tracksDeleteFromPlaylist(
+        playlists[UPLOAD_PLAYLIST],
+        uploadedIds
+      )
+    })
     tracksUpdate(uploaded)(dispatch, getState)
     return result
   }
@@ -306,11 +318,65 @@ async function handleDeletePromises(promises, dispatch) {
   }
 }
 
+function tracksDeleteFromPlaylists(playlists, deleteIds) {
+  const playlistsUpdate = {}
+  for (const playlistName in playlists) {
+    const playlist = playlists[playlistName]
+    playlistsUpdate[playlistName] = tracksDeleteFromPlaylist(
+      playlist,
+      deleteIds
+    )
+  }
+  return playlistsUpdate
+}
+
+function tracksDeleteFromPlaylist(playlist, deleteIds) {
+  const { selection, tracks } = playlist
+  let { index } = playlist
+
+  const filteredSelection = new Map()
+  const filteredTracks = []
+
+  let numDeleted = 0
+  let indexOffset = 0
+  for (let i = 0; i < tracks.length; i += 1) {
+    const track = tracks[i]
+    if (deleteIds.has(track)) {
+      if (index != null) {
+        if (i === index) {
+          index = null
+        } else if (i < index) {
+          indexOffset += 1
+        }
+      }
+      numDeleted += 1
+    } else {
+      filteredTracks.push(track)
+      if (selection.has(i)) {
+        filteredSelection.set(i - numDeleted, track)
+      }
+    }
+  }
+
+  if (index) {
+    index -= indexOffset
+  }
+
+  return {
+    ...playlist,
+    selection: filteredSelection,
+    tracks: filteredTracks,
+    index
+  }
+}
+
 function tracksDelete() {
   return async (dispatch, getState, { player, ws }) => {
-    const { tracks } = getState()
+    const state = getState()
+    const { tracks } = state
     const { library, playing, playlists } = tracks
-    const { selection } = playlists[FULL_PLAYLIST]
+    const selection = getFilteredSelection(state, FULL_PLAYLIST)
+
     const { track } = playing
 
     const deleteIds = Array.from(selection.values())
@@ -346,8 +412,11 @@ function tracksDelete() {
        * it is deleted from state */
       player.pause()
     }
-    console.log(deletedIds)
-    dispatch({ type: types.TRACKS_DELETE, deleteIds: deletedIds })
+    dispatch({
+      type: types.TRACKS_DELETE,
+      deleteIds: deletedIds,
+      playlists: tracksDeleteFromPlaylists(playlists, deletedIds)
+    })
 
     return result
   }
@@ -356,15 +425,24 @@ function tracksDelete() {
 function tracksRemove(playlistName) {
   return (dispatch, getState, { player, ws }) => {
     console.log(`Removing from playlist ${playlistName}`)
-    const { tracks } = getState()
-    const { playing, playlists } = tracks
-    const { selection, index } = playlists[playlistName]
-    const { track, playlist } = playing
+    const state = getState()
+    const { tracks } = state
+    const { playing } = tracks
+    const {
+      oldIndex,
+      removedSelection,
+      updatedSelection,
+      index
+    } = removeSelection(state, playlistName)
 
-    const deleteIndexes = Array.from(selection.keys())
-    deleteIndexes.sort((a, b) => b - a)
+    // Removed selection keys should be in order
+    const deleteIndexes = Array.from(removedSelection.keys())
+
+    deleteIndexes.reverse()
     const deletePlaying =
-      playlist === playlistName && track && track.id === selection.get(index)
+      playing.playlist === playlistName &&
+      playing.track &&
+      playing.track.id === removedSelection.get(oldIndex)
 
     if (deletePlaying) {
       player.pause()
@@ -374,6 +452,8 @@ function tracksRemove(playlistName) {
       type: types.TRACKS_REMOVE,
       playlistName,
       deleteIndexes,
+      selection: updatedSelection,
+      index,
       deletePlaying
     })
     ws.sendBestEffortMessage(types.TRACKS_REMOVE, {

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
 import { FULL_PLAYLIST } from 'waves-client-constants'
+import { getFilteredSelection } from 'waves-client-selectors'
 import { normalizeTrack } from 'waves-client-util'
 
 import Modal from './util'
@@ -90,9 +91,10 @@ function mapStateToProps(state) {
   const { account, tracks } = state
   const { library, playlists, playing } = tracks
   const playlist = playlists[FULL_PLAYLIST]
-  const { index, selection } = playlist
+  const { index } = playlist
   const { isPlaying } = playing
   const columns = libraryColumns.filter(c => account.columns.has(c.title))
+  const selection = getFilteredSelection(state, FULL_PLAYLIST)
   return {
     columns,
     library,

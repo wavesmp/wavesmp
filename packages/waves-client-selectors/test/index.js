@@ -54,7 +54,7 @@ describe('waves-client-selectors', () => {
         }
         const state = { tracks }
         const search = getPlaylistSearch(state)
-        assert.isNull(search)
+        assert.strictEqual(search, '')
       })
 
       it('playlist is null', () => {
@@ -63,7 +63,7 @@ describe('waves-client-selectors', () => {
         }
         const state = { tracks }
         const search = getPlaylistSearch(state)
-        assert.isNull(search)
+        assert.strictEqual(search, '')
       })
 
       it('Search is empty string', () => {

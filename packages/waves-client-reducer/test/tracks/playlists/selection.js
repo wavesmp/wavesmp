@@ -15,7 +15,8 @@ describe('#selection()', () => {
     const action = {
       type: actionTypes.SELECTION_CLEAR_AND_ADD,
       index: 0,
-      trackId: 'trackId0'
+      trackId: 'trackId0',
+      displayItems: []
     }
     state = assertNewState(selection[action.type], state, action)
     const expectedSelection = new Map()
@@ -70,13 +71,20 @@ describe('#selection()', () => {
   })
 
   it('clear and add', () => {
+    const items = []
+    for (let i = 10; i < 20; i += 1) {
+      items.push({ index: i, id: `trackId${i}` })
+    }
+
     const action = {
       type: actionTypes.SELECTION_CLEAR_AND_ADD,
       index: 5,
-      trackId: 'trackId5'
+      trackId: 'trackId5',
+      displayItems: items
     }
     state = assertNewState(selection[action.type], state, action)
     const expectedSelection = new Map()
+    expectedSelection.set(1, 'trackId1')
     expectedSelection.set(5, 'trackId5')
     assert.deepEqual(state.selection, expectedSelection)
   })

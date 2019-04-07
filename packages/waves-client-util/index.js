@@ -14,5 +14,16 @@ function normalizeTrack(track, index) {
   }
 }
 
+function filterSelection(displayItems, selection) {
+  const filtered = new Map()
+  for (const { index } of displayItems) {
+    if (selection.has(index)) {
+      filtered.set(index, selection.get(index))
+    }
+  }
+  return filtered
+}
+
 module.exports.shouldAddToDefaultPlaylist = shouldAddToDefaultPlaylist
 module.exports.normalizeTrack = normalizeTrack
+module.exports.filterSelection = filterSelection

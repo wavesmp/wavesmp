@@ -1,5 +1,6 @@
 const types = require('waves-action-types')
 const { DEFAULT_PLAYLIST } = require('waves-client-constants')
+const { getFilteredSelection } = require('waves-client-selectors')
 
 function playlistsUpdate(update) {
   return { type: types.PLAYLISTS_UPDATE, update }
@@ -30,10 +31,7 @@ function playlistAdd(source, dest) {
   return (dispatch, getState, { ws }) => {
     console.log(`Adding from playlist ${source} to ${dest}`)
 
-    const { tracks } = getState()
-    const { playlists } = tracks
-
-    const { selection } = playlists[source]
+    const selection = getFilteredSelection(getState(), source)
     const addIndexes = Array.from(selection.keys())
     addIndexes.sort((a, b) => a - b)
 

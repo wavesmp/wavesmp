@@ -117,22 +117,24 @@ describe('#playlists()', () => {
   it('#playlistAdd()', () => {
     const source = testPlaylistName1
     const dest = testPlaylistName2
-    const addTracks = ['trackId0', 'trackId4', 'trackId9']
+    const addTracks = [track1.id, track2.id]
     const sourceSelection = new Map()
-    sourceSelection.set(4, 'trackId4')
-    sourceSelection.set(0, 'trackId0')
-    sourceSelection.set(9, 'trackId9')
+    sourceSelection.set(0, track1.id)
+    sourceSelection.set(1, track2.id)
+    sourceSelection.set(25, 'trackId25')
     const destSelection = new Map()
     destSelection.set(8, 'trackId8')
     const playlists = {
       [source]: {
-        selection: sourceSelection
+        selection: sourceSelection,
+        tracks: [track1.id, track2.id]
       },
       [dest]: {
         selection: destSelection
       }
     }
-    const tracks = { playlists }
+    const tracks = { playlists, library }
+    const account = { rowsPerPage: 25 }
 
     const ws = new WavesSocket({})
 
@@ -157,7 +159,7 @@ describe('#playlists()', () => {
         trackIds: addTracks
       })
 
-    thunk(dispatchMock, () => ({ tracks }), { ws })
+    thunk(dispatchMock, () => ({ tracks, account }), { ws })
 
     dispatchMock.verify()
     wsMock.verify()

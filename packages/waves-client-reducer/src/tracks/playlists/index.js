@@ -173,11 +173,9 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       }
     }
     case actionTypes.TRACK_UPLOADS_DELETE: {
-      const { deleteIds } = action
+      const { playlist } = action
       const playlistName = UPLOAD_PLAYLIST
-      const playlist = playlists[playlistName]
-
-      return { ...playlists, [playlistName]: tracksDelete(playlist, deleteIds) }
+      return { ...playlists, [playlistName]: playlist }
     }
     case actionTypes.PLAYLIST_ADD: {
       const { addTracks, playlistName } = action
@@ -197,19 +195,11 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       return playlistsUpdate
     }
     case actionTypes.TRACKS_REMOVE: {
-      const { deleteIndexes, playlistName } = action
+      const { deleteIndexes, playlistName, selection, index } = action
       const playlist = playlists[playlistName]
       const tracks = [...playlist.tracks]
-      let { index } = playlist
 
       for (const deleteIndex of deleteIndexes) {
-        if (index != null) {
-          if (deleteIndex === index) {
-            index = null
-          } else if (deleteIndex < index) {
-            index -= 1
-          }
-        }
         tracks.splice(deleteIndex, 1)
       }
       return {
@@ -217,8 +207,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         [playlistName]: {
           ...playlist,
           tracks,
-          // TODO does selection really need to be cleared?
-          selection: new Map(),
+          selection,
           index
         }
       }
@@ -239,14 +228,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       return playlistsUpdate
     }
     case actionTypes.TRACKS_DELETE: {
-      const { deleteIds } = action
-      const playlistsUpdate = {}
-      for (const playlistName in playlists) {
-        const playlist = playlists[playlistName]
-        playlistsUpdate[playlistName] = tracksDelete(playlist, deleteIds)
-      }
-
-      return playlistsUpdate
+      return action.playlists
     }
     default:
       return playlists
@@ -306,37 +288,6 @@ function playlistAdd(addTracks, playlistName, playlists) {
     addPlaylistDefaults(playlistUpdate)
   }
   return playlistUpdate
-}
-
-function tracksDelete(playlist, deleteIds) {
-  const { selection, tracks } = playlist
-  let { index } = playlist
-
-  const filteredTracks = tracks.filter((t, i) => {
-    const isTrackDeleted = deleteIds.has(t)
-    if (isTrackDeleted) {
-      if (index != null) {
-        if (i === index) {
-          /* Track is deleted. Playlist is no longer playing item */
-          index = null
-        } else if (i < index) {
-          index -= 1
-        }
-      }
-    }
-    return !isTrackDeleted
-  })
-
-  if (tracks.length !== filteredTracks.length) {
-    return {
-      ...playlist,
-      tracks: filteredTracks,
-      index,
-      // TODO does selection really need to be cleared?
-      selection: new Map()
-    }
-  }
-  return playlist
 }
 
 module.exports = reducerPlaylists

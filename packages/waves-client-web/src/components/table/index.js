@@ -1,6 +1,7 @@
 import React from 'react'
 
 import constants from 'waves-client-constants'
+import { filterSelection } from 'waves-client-util'
 
 import './index.css'
 import Column from './column'
@@ -32,6 +33,11 @@ export default class Table extends React.PureComponent {
     ev.preventDefault()
   }
 
+  getFilteredSelection() {
+    const { selection, displayItems } = this.props
+    return filterSelection(displayItems, selection)
+  }
+
   onRowMouseDown = ev => {
     const {
       actions,
@@ -39,7 +45,8 @@ export default class Table extends React.PureComponent {
       onContextMenu,
       playlistName,
       index,
-      selection
+      selection,
+      displayItems
     } = this.props
 
     const clickTarget = ev.target
@@ -66,15 +73,15 @@ export default class Table extends React.PureComponent {
     }
 
     if (ev.shiftKey) {
-      if (selection.size === 0) {
-        actions.selectionAdd(playlistName, itemIndex, trackId)
-      } else {
+      if (this.getFilteredSelection().has(this.lastClickIndex)) {
         actions.selectionRange(
           playlistName,
           this.lastClickIndex,
           itemIndex,
-          this.displayItems
+          displayItems
         )
+      } else {
+        actions.selectionAdd(playlistName, itemIndex, trackId)
       }
       this.lastClickIndex = itemIndex
       return
@@ -83,13 +90,18 @@ export default class Table extends React.PureComponent {
     let isSelected = selection.has(itemIndex)
     let isContextMenu = ev.button === CONTEXT_MENU_BUTTON
     if (!isSelected) {
-      actions.selectionClearAndAdd(playlistName, itemIndex, trackId)
+      actions.selectionClearAndAdd(
+        playlistName,
+        itemIndex,
+        trackId,
+        displayItems
+      )
     }
 
     if (isContextMenu) {
       /* In case we selected a new item at click time,
        * the operation is on a single item. */
-      const bulk = isSelected && selection.size > 1
+      const bulk = isSelected && this.getFilteredSelection().size > 1
       onContextMenu(ev, { itemIndex, trackId, bulk, playlistName, index })
       ev.preventDefault()
       return
@@ -121,12 +133,13 @@ export default class Table extends React.PureComponent {
   /* After mousedown, either mouseup or dragstart is called (not both) */
 
   onRowMouseUp = ev => {
-    const { actions, playlistName, transitions } = this.props
+    const { actions, playlistName, transitions, displayItems } = this.props
     if (this.clearOnMouseUpIndex) {
       actions.selectionClearAndAdd(
         playlistName,
         this.clearOnMouseUpIndex,
-        this.clearOnMouseUpTrackId
+        this.clearOnMouseUpTrackId,
+        displayItems
       )
       this.clearOnMouseUpIndex = null
       this.clearOnMouseUpTrackId = null
@@ -150,8 +163,8 @@ export default class Table extends React.PureComponent {
     this.clearOnMouseUpIndex = null
     this.clearOnMouseUpTrackId = null
 
-    const { theme, selection, playlistName } = this.props
-    const numSelected = selection.size
+    const { theme, playlistName } = this.props
+    const numSelected = this.getFilteredSelection().size
     this.dragGhost = getDragCanvas(numSelected, theme)
 
     // 1/21/2019 - Must be appended to dom for chrome
@@ -193,7 +206,6 @@ export default class Table extends React.PureComponent {
       onItemEdit,
       draggable
     } = this.props
-    this.displayItems = displayItems
     return (
       <div>
         <table className='table table-hover'>
@@ -212,7 +224,7 @@ export default class Table extends React.PureComponent {
             </tr>
           </thead>
           <tbody>
-            {this.displayItems.map(sample => {
+            {displayItems.map(sample => {
               let className = ''
               if (selection.has(sample.index)) {
                 className = 'common-table-row-selected'

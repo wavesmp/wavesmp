@@ -19,14 +19,16 @@ describe('#selection()', () => {
     const name = 'testName'
     const index = 'testIndex'
     const trackId = 'testTrackId'
+    const displayItems = [trackId]
     const expectedAction = {
       type: types.SELECTION_CLEAR_AND_ADD,
       name,
       index,
-      trackId
+      trackId,
+      displayItems
     }
     assert.deepEqual(
-      actions.selectionClearAndAdd(name, index, trackId),
+      actions.selectionClearAndAdd(name, index, trackId, displayItems),
       expectedAction
     )
   })

@@ -18,7 +18,6 @@ function getPlaylistSearch(state, playlistName) {
     return DEFAULT_SEARCH_STRING
   }
   return playlist.search
-
 }
 
 module.exports.getPlaylistSearch = getPlaylistSearch

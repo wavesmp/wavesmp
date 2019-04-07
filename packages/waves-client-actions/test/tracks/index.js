@@ -268,8 +268,16 @@ describe('#tracks()', async () => {
       [track1.id]: { ...track1, file: { name: fileName1 } },
       [track2.id]: { ...track2, file: { name: fileName2 } }
     }
+    const uploadPlaylist = {
+      tracks: [track1.id, track2.id],
+      index: 1,
+      selection: new Map()
+    }
+    const playlists = { [UPLOAD_PLAYLIST]: uploadPlaylist }
     const uploadValues = Object.values(uploads)
-    const getState = () => ({ tracks: { uploads, playing, library } })
+    const getState = () => ({
+      tracks: { uploads, playing, library, playlists }
+    })
 
     const thunk = actions.tracksUpload(sourceType)
 
@@ -351,7 +359,12 @@ describe('#tracks()', async () => {
     assert.isTrue(
       fifthDisptachCall.calledWithExactly({
         type: types.TRACK_UPLOADS_DELETE,
-        deleteIds: uploadedIds
+        deleteIds: uploadedIds,
+        playlist: {
+          ...uploadPlaylist,
+          tracks: [],
+          index: null
+        }
       })
     )
 
@@ -369,22 +382,25 @@ describe('#tracks()', async () => {
   })
 
   it('#tracksRemove()', () => {
-    const deleteIndexes = [9, 4, 0]
+    const deleteIndexes = [1, 0]
     const selection1 = new Map()
-    selection1.set(4, 'trackId4')
-    selection1.set(0, 'trackId0')
-    selection1.set(9, 'trackId9')
+    selection1.set(1, track2.id)
+    selection1.set(0, track1.id)
     const selection2 = new Map()
-    selection2.set(8, 'trackId8')
+    selection2.set(2, track2.id)
     const playlists = {
       [testPlaylistName1]: {
-        selection: selection1
+        selection: selection1,
+        tracks: [track1.id, track2.id],
+        index: 1
       },
       [testPlaylistName2]: {
-        selection: selection2
+        selection: selection2,
+        tracks: [track1.id, track2.id]
       }
     }
-    const tracks = { playing: {}, playlists }
+    const tracks = { library, playing: {}, playlists }
+    const account = { rowsPerPage: 25 }
 
     const ws = new WavesSocket({})
 
@@ -395,7 +411,9 @@ describe('#tracks()', async () => {
       type: types.TRACKS_REMOVE,
       playlistName: testPlaylistName1,
       deleteIndexes,
-      deletePlaying: false
+      deletePlaying: false,
+      selection: new Map(),
+      index: null
     }
 
     const dispatchMock = sinon.mock()
@@ -410,7 +428,7 @@ describe('#tracks()', async () => {
         deleteIndexes
       })
 
-    thunk(dispatchMock, () => ({ tracks }), { ws })
+    thunk(dispatchMock, () => ({ tracks, account }), { ws })
 
     dispatchMock.verify()
     wsMock.verify()

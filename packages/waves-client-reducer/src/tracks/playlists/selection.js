@@ -2,8 +2,11 @@ const actionTypes = require('waves-action-types')
 
 const reducerSelection = {
   [actionTypes.SELECTION_CLEAR_AND_ADD]: (playlist, action) => {
-    const { index, trackId } = action
-    const selection = new Map()
+    const { index, trackId, displayItems } = action
+    const selection = new Map(playlist.selection)
+    for (const item of displayItems) {
+      selection.delete(item.index)
+    }
     selection.set(index, trackId)
     return { ...playlist, selection }
   },
