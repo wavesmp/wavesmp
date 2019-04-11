@@ -1,6 +1,5 @@
 .tablemenubar {
   margin-top: 15px;
-  margin-bottom: 15px;
 }
 
 .tablemenubar-search-box {
@@ -16,10 +15,32 @@
   border-radius: 4px;
 }
 
-.tablemenubar-input-icon {
+.tablemenubar-search-icon {
   color: var(--input-icon-color);
+  position: absolute;
+  top: 5px;
+  left: 6px;
+}
+
+.tablemenubar-reset-icon {
+  color: var(--input-icon-color);
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
+.tablemenubar-cog-icon {
+  position: absolute;
+  top: 5px;
+  left: -30px;
 }
 
 .tablemenubar-buttons {
   margin-top: 17px;
+}
+
+.tablemenubar-input {
+  padding-left: 30px;
+  padding-right: 25px;
 }

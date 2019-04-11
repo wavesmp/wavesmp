@@ -4,6 +4,8 @@ import { Route, Redirect } from 'react-router-dom'
 
 import { routes } from 'waves-client-constants'
 
+import './index.css'
+
 /* Redirect to main site if not authenticated */
 class PrivateRoute extends React.PureComponent {
   render() {
@@ -41,10 +43,7 @@ class PublicRoute extends React.PureComponent {
           if (fetchingUser) {
             return (
               <div className='absolute-center'>
-                <i
-                  className='fa fa-spinner fa-pulse'
-                  style={{ fontSize: '150px' }}
-                />
+                <i className='fa fa-spinner fa-pulse routes-loading' />
               </div>
             )
           }

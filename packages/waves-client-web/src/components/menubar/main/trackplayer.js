@@ -42,32 +42,23 @@ class LeftButtons extends React.PureComponent {
     let playOrPauseClass
     let onPlayPauseClick
     if (isPlaying) {
-      playOrPauseClass = 'fa fa-lg fa-pause trackplayer-buttons'
+      playOrPauseClass = 'fa fa-lg fa-pause trackplayer-btn-lg'
       onPlayPauseClick = actions.pause
     } else {
-      playOrPauseClass = 'fa fa-lg fa-play trackplayer-buttons'
+      playOrPauseClass = 'fa fa-lg fa-play trackplayer-btn-lg'
       onPlayPauseClick = actions.play
     }
     return (
-      <div
-        className='trackplayer'
-        style={{ transform: 'translate(-160px, 0)', width: '160px' }}
-      >
-        <span style={{ float: 'left', marginLeft: '20px', marginTop: '9px' }}>
+      <div className='trackplayer trackplayer-left'>
+        <span className='trackplayer-left-btns'>
           <i
-            className='fa fa-backward trackplayer-buttons'
+            className='fa fa-backward trackplayer-btn'
             onClick={this.onTrackPrevious}
-            style={{ marginTop: '0px', marginLeft: '5px', marginRight: '5px' }}
           />
+          <i className={playOrPauseClass} onClick={onPlayPauseClick} />
           <i
-            className={playOrPauseClass}
-            onClick={onPlayPauseClick}
-            style={{ marginTop: '10px', marginLeft: '5px', marginRight: '5px' }}
-          />
-          <i
-            className='fa fa-forward trackplayer-buttons'
+            className='fa fa-forward trackplayer-btn'
             onClick={this.onTrackNext}
-            style={{ marginTop: '0px', marginLeft: '5px', marginRight: '5px' }}
           />
         </span>
       </div>
@@ -96,30 +87,20 @@ class RightButtons extends React.PureComponent {
     const { playing } = this.props
     const { repeat, shuffle } = playing
 
-    let repeatButtonClass = 'fa fa-repeat trackplayer-buttons'
+    let repeatButtonClass = 'fa fa-repeat trackplayer-btn'
     if (repeat) {
-      repeatButtonClass += ' trackplayer-button-activated'
+      repeatButtonClass += ' trackplayer-btn-active'
     }
 
-    let shuffleButtonClass = 'fa fa-random trackplayer-buttons'
+    let shuffleButtonClass = 'fa fa-random trackplayer-btn'
     if (shuffle) {
-      shuffleButtonClass += ' trackplayer-button-activated'
+      shuffleButtonClass += ' trackplayer-btn-active'
     }
     return (
-      <div className='trackplayer' style={{ width: '160px' }}>
-        <span
-          style={{ float: 'right', marginRight: '32px', marginTop: '15px' }}
-        >
-          <i
-            className={shuffleButtonClass}
-            onClick={this.onShuffleClick}
-            style={{ marginTop: '0px', marginLeft: '5px', marginRight: '5px' }}
-          />
-          <i
-            className={repeatButtonClass}
-            onClick={this.onRepeatClick}
-            style={{ marginTop: '0px', marginLeft: '5px', marginRight: '5px' }}
-          />
+      <div className='trackplayer trackplayer-right'>
+        <span className='trackplayer-right-btns'>
+          <i className={shuffleButtonClass} onClick={this.onShuffleClick} />
+          <i className={repeatButtonClass} onClick={this.onRepeatClick} />
         </span>
       </div>
     )

@@ -28,8 +28,8 @@ export default class ContextMenu extends React.PureComponent {
     const Component = CONTEXT_MENUS[type]
 
     const style = {
-      left: x + 'px',
-      top: y + 'px'
+      left: `${x}px`,
+      top: `${y}px`
     }
     return (
       <menu className='contextmenu contextmenu-active' style={style}>

@@ -69,3 +69,15 @@
   background-color: var(--separator-color);
   border-bottom: 3px solid var(--separator-color);
 }
+
+.site-main-browser-close {
+  background-color: #e34c24;
+}
+
+.site-main-browser-min {
+  background-color: #e4d735;
+}
+
+.site-main-browser-max {
+  background-color: #2ad665;
+}

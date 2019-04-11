@@ -31,7 +31,7 @@ export default class SettingsBar extends React.PureComponent {
           <li>
             <span onClick={this.onBackClick}>
               <i className='fa-fw fa fa-lg fa-arrow-left' />
-              <span style={{ padding: '0px 15px' }}>Back</span>
+              <span className='sidebar-back-text'>Back</span>
             </span>
           </li>
           <li className='sidebar-playlist'>

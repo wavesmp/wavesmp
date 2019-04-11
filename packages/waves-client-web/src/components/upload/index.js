@@ -183,7 +183,7 @@ class Upload extends React.PureComponent {
         transitions={transitions}
       >
         <div>
-          <h4 style={{ marginTop: '15px' }}>Select files from your computer</h4>
+          <h4>Select files from your computer</h4>
           <form>
             <div>
               <input

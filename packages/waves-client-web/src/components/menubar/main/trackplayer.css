@@ -30,12 +30,44 @@
   margin: 0;
 }
 
-.trackplayer-buttons:hover {
+.trackplayer-btn {
+  margin-top: 0px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.trackplayer-btn-lg {
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.trackplayer-btn-lg:hover,
+.trackplayer-btn:hover {
   text-shadow: 0px 0px 10px #0c88dc, 0px 0px 20px #0f60f7;
 }
 
-.trackplayer-button-activated {
+.trackplayer-btn-active {
   color: #428bca;
 }
 
-/* Trackplayer button styline is inline */
+.trackplayer-left {
+  transform: translate(-160px, 0);
+  width: 160px;
+}
+
+.trackplayer-left-btns {
+  float: left;
+  margin-left: 20px;
+  margin-top: 9px;
+}
+
+.trackplayer-right {
+  width: 160px;
+}
+
+.trackplayer-right-btns {
+  float: right;
+  margin-right: 32px;
+  margin-top: 15px;
+}

@@ -200,3 +200,7 @@
     transition: transform 1000ms ease, width 1000ms ease;
   }
 }
+
+.sidebar-back-text {
+  padding: 0px 15px;
+}

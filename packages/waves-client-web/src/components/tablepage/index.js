@@ -3,6 +3,7 @@ import React from 'react'
 import ContentPage from '../contentpage'
 import TableMenuBar from './tablemenubar'
 import Table from '../table'
+import './index.css'
 
 export default class TablePage extends React.PureComponent {
   render() {
@@ -43,15 +44,9 @@ class TablePageData extends React.PureComponent {
 
     if (!playlistLoaded) {
       return (
-        <p
-          style={{
-            marginTop: '100px',
-            marginBottom: '100px',
-            textAlign: 'center'
-          }}
-        >
+        <div className='tablepage-msg'>
           <i className='fa fa-spinner fa-pulse fa-5x' />
-        </p>
+        </div>
       )
     }
     if (numItems === 0) {
@@ -67,29 +62,11 @@ class TablePageData extends React.PureComponent {
               history={history}
             />
             <div className='clearfix' />
-            <h3
-              style={{
-                marginTop: '100px',
-                marginBottom: '100px',
-                textAlign: 'center'
-              }}
-            >
-              No data
-            </h3>
+            <h3 className='tablepage-msg'>No data</h3>
           </div>
         )
       }
-      return (
-        <h3
-          style={{
-            marginTop: '100px',
-            marginBottom: '100px',
-            textAlign: 'center'
-          }}
-        >
-          {noDataMsg}
-        </h3>
-      )
+      return <h3>{noDataMsg}</h3>
     }
     return (
       <React.Fragment>
