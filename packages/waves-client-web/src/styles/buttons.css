@@ -128,7 +128,6 @@ a.btn.disabled {
 .btn-primary:hover {
   color: #fff;
   background-color: var(--button-primary-color);
-  border-color: #204d74;
 }
 
 .btn-primary:focus,
