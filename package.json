@@ -1,6 +1,5 @@
 {
     "scripts": {
-        "npm-check": "lerna exec npm-check",
         "test": "lerna run test",
         "build": "lerna run --scope waves-client-web build",
         "prettier": "prettier --write --no-semi --single-quote --jsx-single-quote 'packages/**/*.js' 'packages/**/*.json' 'packages/**/*.css' 'packages/**/*.md'"
@@ -8,7 +7,6 @@
     "devDependencies": {
         "@babel/core": "^7.2.2",
         "@babel/plugin-proposal-class-properties": "^7.3.0",
-        "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
         "@babel/preset-react": "^7.0.0",
         "babel-loader": "^8.0.5",
         "babel-plugin-inline-react-svg": "^1.0.1",

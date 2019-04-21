@@ -21,8 +21,7 @@ const stringReplacer = {
 }
 
 const wpConfig = {
-  // mode: 'development',
-  mode: 'production',
+  mode: process.env.NODE_ENV || 'production',
 
   entry: path.join(__dirname, 'src', 'index.js'),
 
