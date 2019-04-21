@@ -1,105 +1,84 @@
 import React from 'react'
 
-import constants from 'waves-client-constants'
+export function LibraryDelete({ onClick }) {
+  return (
+    <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <i className='fa fa-lg fa-trash-o contextmenu-delete' />
+      &nbsp;&nbsp;Delete
+    </li>
+  )
+}
 
-export const LibraryDelete = createContextMenuItem(
-  <React.Fragment>
-    <i
-      style={{ color: constants.iconDeleteColor }}
-      className='fa fa-lg fa-trash-o'
-    />
-    &nbsp;&nbsp;Delete
-  </React.Fragment>
-)
+export function PlaylistRemove({ onClick }) {
+  return (
+    <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <i className='fa fa-lg fa-times contextmenu-remove' />
+      &nbsp;&nbsp;Remove
+    </li>
+  )
+}
 
-export const PlaylistRemove = createContextMenuItem(
-  <React.Fragment>
-    <i
-      style={{ color: constants.iconRemoveColor }}
-      className='fa fa-lg fa-times'
-    />
-    &nbsp;&nbsp;Remove
-  </React.Fragment>
-)
+export function Download({ onClick }) {
+  return (
+    <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <i className='fa fa-lg fa-download contextmenu-download' />
+      &nbsp;&nbsp;Download
+    </li>
+  )
+}
 
-export const Download = createContextMenuItem(
-  <React.Fragment>
-    <i
-      style={{ color: constants.iconDownloadColor }}
-      className='fa fa-lg fa-download'
-    />
-    &nbsp;&nbsp;Download
-  </React.Fragment>
-)
+export function PlaylistAdd({ onClick }) {
+  return (
+    <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <i className='fa fa-lg fa-plus-circle contextmenu-add' />
+      &nbsp;&nbsp;Add to Playlist...
+    </li>
+  )
+}
 
-export const PlaylistAdd = createContextMenuItem(
-  <React.Fragment>
-    <i
-      style={{ color: constants.iconAddColor }}
-      className='fa fa-lg fa-plus-circle'
-    />
-    &nbsp;&nbsp;Add to Playlist...
-  </React.Fragment>
-)
+export function Back({ onClick }) {
+  return (
+    <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <i className='fa fa-lg fa-chevron-circle-left contextmenu-back' />
+      &nbsp;&nbsp;Back
+    </li>
+  )
+}
 
-export const Back = createContextMenuItem(
-  <React.Fragment>
-    <i
-      style={{ color: constants.iconBackColor }}
-      className='fa fa-lg fa-chevron-circle-left'
-    />
-    &nbsp;&nbsp;Back
-  </React.Fragment>
-)
+export function NowPlayingAdd({ onClick }) {
+  return (
+    <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <i className='fa fa-lg fa-plus contextmenu-add' />
+      &nbsp;&nbsp;Add to Now Playing
+    </li>
+  )
+}
 
-export const NowPlayingAdd = createContextMenuItem(
-  <React.Fragment>
-    <i style={{ color: constants.iconAddColor }} className='fa fa-lg fa-plus' />
-    &nbsp;&nbsp;Add to Now Playing
-  </React.Fragment>
-)
+export function Play({ onClick }) {
+  return (
+    <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <i className='fa fa-lg fa-play contextmenu-play' />
+      &nbsp;&nbsp;Play
+    </li>
+  )
+}
 
-export const Play = createContextMenuItem(
-  <React.Fragment>
-    <i
-      style={{ color: constants.iconPlayColor }}
-      className='fa fa-lg fa-play'
-    />
-    &nbsp;&nbsp;Play
-  </React.Fragment>
-)
+export function Pause({ onClick }) {
+  return (
+    <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <i className='fa fa-lg fa-pause contextmenu-pause' />
+      &nbsp;&nbsp;Pause
+    </li>
+  )
+}
 
-export const Pause = createContextMenuItem(
-  <React.Fragment>
-    <i
-      style={{ color: constants.iconPauseColor }}
-      className='fa fa-lg fa-pause'
-    />
-    &nbsp;&nbsp;Pause
-  </React.Fragment>
-)
-
-export const PlayResume = createContextMenuItem(
-  <React.Fragment>
-    <i
-      style={{ color: constants.iconPlayColor }}
-      className='fa fa-lg fa-play-circle'
-    />
-    &nbsp;&nbsp;Resume
-  </React.Fragment>
-)
-
-function createContextMenuItem(Component) {
-  return class extends React.PureComponent {
-    render() {
-      const { onClick } = this.props
-      return (
-        <li className='btn btn-default contextmenu-item' onClick={onClick}>
-          {Component}
-        </li>
-      )
-    }
-  }
+export function PlayResume({ onClick }) {
+  return (
+    <li className='btn btn-default contextmenu-item' onClick={onClick}>
+      <i className='fa fa-lg fa-play-circle contextmenu-play' />
+      &nbsp;&nbsp;Resume
+    </li>
+  )
 }
 
 export class PlaylistAddItem extends React.PureComponent {

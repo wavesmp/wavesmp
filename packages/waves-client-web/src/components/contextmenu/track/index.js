@@ -28,11 +28,11 @@ class Track extends React.PureComponent {
     } = this.props
 
     if (index === itemIndex && isPlaying) {
-      return <Pause onClick={actions.playPauseButtonToggle} />
+      return <Pause onClick={actions.pause} />
     }
 
     if (index === itemIndex) {
-      return <PlayResume onClick={actions.playPauseButtonToggle} />
+      return <PlayResume onClick={actions.play} />
     }
     return (
       <Play

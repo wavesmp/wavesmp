@@ -23,14 +23,6 @@ constants.ALL_COLUMNS = [
 
 constants.PLAYLIST_TYPE = 'application/wp'
 
-constants.iconPlayColor = '#52CA19'
-constants.iconPauseColor = '#F17B10'
-constants.iconAddColor = '#4aa3df'
-constants.iconRemoveColor = '#C11313'
-constants.iconDeleteColor = '#696969'
-constants.iconDownloadColor = '#505050'
-constants.iconBackColor = '#4aa3df'
-
 constants.modalTypes = keyMirror({
   PLAYLIST_CLEAR: null,
   PLAYLIST_CREATE: null,
