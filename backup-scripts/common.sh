@@ -27,10 +27,10 @@ usage() {
 wait_for_port_listen() {
     local port="$1"
 
-	while ! nc -z localhost "${port}"; do
+    while ! nc -z localhost "${port}"; do
         echo "Waiting for port ${port} to listen"
-	    sleep 3
-	done
+        sleep 3
+    done
 }
 
 get_backup_versions() {
