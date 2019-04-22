@@ -14,7 +14,6 @@ import {
   getDefaultPlaylistSearch
 } from 'waves-client-selectors'
 
-import { onRowDoubleClick } from '../playlist/tableActions'
 import { libraryColumns } from '../table/columns'
 import TablePage from '../tablepage'
 
@@ -100,7 +99,6 @@ class Library extends React.PureComponent {
         numItems={numItems}
         onContextMenu={this.onContextMenu}
         onItemEdit={this.onItemEdit}
-        onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
         pathname={pathname}
         index={index}
         playlistLoaded={loaded}

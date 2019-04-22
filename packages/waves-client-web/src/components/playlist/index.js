@@ -18,7 +18,6 @@ import {
 
 import TablePage from '../tablepage'
 import { playlistColumns } from '../table/columns'
-import { onRowDoubleClick } from './tableActions'
 
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
 
@@ -105,7 +104,6 @@ class Playlist extends React.PureComponent {
         numItems={numItems}
         onContextMenu={this.onContextMenu}
         onItemEdit={this.onItemEdit}
-        onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
         onSettingsClick={this.onSettingsClick}
         pathname={pathname}
         index={index}

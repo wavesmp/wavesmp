@@ -38,10 +38,16 @@ export default class Table extends React.PureComponent {
     return filterSelection(displayItems, selection)
   }
 
+  onRowDoubleClick(ev) {
+    const { actions, playlistName } = this.props
+    const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR)
+    const index = parseInt(ev.currentTarget.getAttribute(constants.INDEX_ATTR))
+    actions.trackToggle(trackId, playlistName, index)
+  }
+
   onRowMouseDown = ev => {
     const {
       actions,
-      onRowDoubleClick,
       onContextMenu,
       playlistName,
       index,
@@ -114,7 +120,7 @@ export default class Table extends React.PureComponent {
     /* A single click on a selected item should clear other items.
      * However, we may be dragging, so defer clearing to mouseUp */
     if (isDoubleClick) {
-      onRowDoubleClick(ev)
+      this.onRowDoubleClick(ev)
     } else {
       if (isSelected) {
         this.clearOnMouseUpIndex = itemIndex

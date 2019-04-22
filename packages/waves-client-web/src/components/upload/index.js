@@ -15,7 +15,6 @@ import {
 import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 
 import ContentPage from '../contentpage'
-import { onRowDoubleClick } from '../playlist/tableActions'
 import Table from '../table'
 import { uploadColumns } from '../table/columns'
 import processTrack from './processTrack'
@@ -156,7 +155,6 @@ class Upload extends React.PureComponent {
         lastPage={lastPage}
         numItems={numItems}
         onItemEdit={this.onItemEdit}
-        onRowDoubleClick={onRowDoubleClick(actions, playlistName)}
         index={index}
         transitions={transitions}
         selection={selection}
