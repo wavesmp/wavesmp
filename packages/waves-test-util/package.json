@@ -2,7 +2,7 @@
   "name": "waves-test-util",
   "version": "1.0.0",
   "description": "Test util functions for Waves projects",
-  "main": "index.json",
+  "main": "index.js",
   "author": "",
   "repository": {
     "type": "git",

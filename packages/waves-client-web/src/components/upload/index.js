@@ -86,10 +86,11 @@ class Upload extends React.PureComponent {
   }
 
   /* Wrap the processTrack call, and handle errors */
-  async wrapProcessTrack(file) {
+  wrapProcessTrack = async file => {
     try {
       return await processTrack(file)
     } catch (err) {
+      const { actions } = this.props
       actions.toastAdd({
         type: toastTypes.Error,
         msg: `${f.name}: Failed to read track info: ${err}`
