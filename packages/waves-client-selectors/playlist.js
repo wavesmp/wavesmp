@@ -178,7 +178,8 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
     }
     const { tracks, index, selection, sortKey, ascending } = playlist
     const numItems = searchItems ? searchItems.length : tracks.length
-    const lastPage = numItems === 0 ? 0 : Math.floor((numItems - 1) / rowsPerPage)
+    const lastPage =
+      numItems === 0 ? 0 : Math.floor((numItems - 1) / rowsPerPage)
     currentPage = normalizePage(currentPage, lastPage)
 
     const startIndex = currentPage * rowsPerPage

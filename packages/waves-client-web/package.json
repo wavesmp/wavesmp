@@ -16,7 +16,7 @@
   "dependencies": {
     "bson-objectid": "^1.2.4",
     "history": "^4.9.0",
-    "musicmetadata": "^2.0.5",
+    "music-metadata-browser": "^0.7.1",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-redux": "^6.0.1",

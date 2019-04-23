@@ -1,45 +1,30 @@
 import ObjectID from 'bson-objectid'
-const musicmetadata = require('musicmetadata')
+import * as musicmetadata from 'music-metadata-browser'
 
 /* Given the raw file to be uploaded,
  * return file metadata in an object. */
-export default function processTrack(file) {
-  return new Promise((resolve, reject) => {
-    musicmetadata(file, { duration: true }, (err, metadata) => {
-      if (err) {
-        reject(err)
-        return
-      }
-
-      const upload = {
-        id: ObjectID().toString(),
-        source: 'file',
-        title: metadata.title.trim(),
-        artist: metadata.artist.map(trim).join(', '),
-        album: metadata.album.trim(),
-        genre: metadata.genre.map(trim).join(', '),
-        duration: metadata.duration,
-        file
-      }
-
-      addMissingTags(upload)
-
-      // const pictures = metadata.picture;
-      // const numPictures = pictures.length
-      // if (numPictures > 0) {
-      //   if (numPictures > 1) {
-      //     console.log('Detected multiple pictures for track. Using only first one')
-      //   }
-      //   // picture has format (string) and data (Uint8Array) attributes
-      //   const picture = pictures[0];
-      //   upload.image = URL.createObjectURL(...)
-      //   upload.picture = picture
-      // }
-      // // TODO do sth w picture. not used atm
-
-      resolve(upload)
-    })
+export default async function processTrack(file) {
+  const metadata = await musicmetadata.parseBlob(file, {
+    duration: true,
+    native: true
   })
+  const { common, format } = metadata
+  const { title, artists, albumartist, album, genre } = common
+  const { duration } = format
+  const upload = {
+    id: ObjectID().toString(),
+    source: 'file',
+    title: title && title.trim(),
+    artist: (artists && artists.map(trim).join(', ')) || albumartist,
+    album: album && album.trim(),
+    genre: genre && genre.map(trim).join(', '),
+    duration,
+    file
+  }
+
+  addMissingTags(upload)
+  // TODO use picture
+  return upload
 }
 
 function addMissingTags(item) {
