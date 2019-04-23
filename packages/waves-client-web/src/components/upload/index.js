@@ -1,7 +1,3 @@
-/* TODO works for small number of items, but needs
- * to be improved for large bulk uploads
- * e.g. modal is not paginated. Also, search should
- * be disabled explicitly */
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -46,7 +42,8 @@ class Upload extends React.PureComponent {
   }
 
   // Needed preventDefault on dragenter, dragover, and ondrop events
-  // https://stackoverflow.com/questions/8414154/html5-drop-event-doesnt-work-unless-dragover-is-handled
+  // https://stackoverflow.com/questions/8414154/
+  // html5-drop-event-doesnt-work-unless-dragover-is-handled
   onDragOver = ev => {
     ev.preventDefault()
   }
@@ -85,14 +82,14 @@ class Upload extends React.PureComponent {
   }
 
   /* Wrap the processTrack call, and handle errors */
-  wrapProcessTrack = async file => {
+  async wrapProcessTrack(file) {
     try {
       return await processTrack(file)
     } catch (err) {
       const { actions } = this.props
       actions.toastAdd({
         type: toastTypes.Error,
-        msg: `${f.name}: Failed to read track info: ${err}`
+        msg: `${file.name}: Failed to read track info: ${err}`
       })
       console.log(err)
       console.log(err.stack)
@@ -104,7 +101,7 @@ class Upload extends React.PureComponent {
     // files (type FileList) is not an array, so can't use map.
     // Use Array.from(arrayLikeObj, mapFn) as a workaround
     const newUploads = await Promise.all(
-      Array.from(files, this.wrapProcessTrack)
+      Array.from(files, this.wrapProcessTrack, this)
     )
     const validNewUploads = newUploads.filter(upload => upload != null)
 
@@ -112,7 +109,15 @@ class Upload extends React.PureComponent {
     console.log('AWAITED NEW UPLOADS')
     console.log(validNewUploads)
 
-    const { actions } = this.props
+    const { actions, numItems, rowsPerPage } = this.props
+    if (numItems + validNewUploads.length > rowsPerPage) {
+      /* TODO look into command line utility */
+      actions.toastAdd({
+        type: toastTypes.Error,
+        msg: `Cannot upload more than ${rowsPerPage} items`
+      })
+      return
+    }
     actions.trackUploadsUpdate(validNewUploads)
   }
 
@@ -182,7 +187,7 @@ class Upload extends React.PureComponent {
         transitions={transitions}
       >
         <div>
-          <h4>Select files from your computer</h4>
+          <h4>Select files from your device</h4>
           <form>
             <div>
               <input
@@ -232,6 +237,7 @@ function mapStateToProps(state, ownProps) {
   const { pathname, search } = location
   const columns = uploadColumns.filter(c => account.columns.has(c.title))
   return {
+    rowsPerPage: account.rowsPerPage,
     pathname,
     qp: getRouterQueryParams(undefined, search),
     uploads,
