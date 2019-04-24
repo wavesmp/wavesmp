@@ -237,6 +237,9 @@ class Server {
   }
 
   heartbeat(ws) {
+    if (ws.readyState !== ws.OPEN) {
+      return
+    }
     log.info('Heartbeating to client')
     ws.ping()
     this.clients[ws] = setTimeout(() => this.heartbeat(ws), HEARTBEAT_INTERVAL)
