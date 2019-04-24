@@ -105,10 +105,6 @@ class Upload extends React.PureComponent {
     )
     const validNewUploads = newUploads.filter(upload => upload != null)
 
-    // TODO remove me
-    console.log('AWAITED NEW UPLOADS')
-    console.log(validNewUploads)
-
     const { actions, numItems, rowsPerPage } = this.props
     if (numItems + validNewUploads.length > rowsPerPage) {
       /* TODO look into command line utility */

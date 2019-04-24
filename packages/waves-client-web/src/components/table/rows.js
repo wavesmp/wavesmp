@@ -18,7 +18,6 @@ const PAUSE_ICON = (
   />
 )
 const PLAY_PAUSE_PADDING = <span style={{ paddingRight: '25px' }} />
-// TODO avoid hardcoding attributes (e.g. 'title') here
 
 export class Name extends React.PureComponent {
   emitChange = update => {

@@ -6,7 +6,6 @@ function download(id) {
   return async (dispatch, getState, { player }) => {
     const { tracks } = getState()
     const { library } = tracks
-    // TODO should refactor with getTrackById.. but without uploads
     const track = library[id]
 
     try {

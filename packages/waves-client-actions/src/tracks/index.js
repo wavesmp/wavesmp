@@ -176,9 +176,6 @@ function tracksUpdate(update) {
     const { library } = tracks
     const libraryById = { ...library }
     updateLibraryById(libraryById, update)
-
-    // TODO nit: improve naming. Just using libraryById
-    // here to prevent conflict with library
     dispatch({ type: types.TRACKS_UPDATE, libraryById })
   }
 }
@@ -467,8 +464,7 @@ function updateLibraryById(libraryById, update) {
   for (const item of update) {
     addMissingTags(item)
     const epoch = parseInt(item.id.substring(0, 8), 16)
-    // TODO Currently sort keys must be strings
-    item.createdAt = epoch + ''
+    item.createdAt = epoch
     item.createdAtPretty = new Date(epoch * 1000).toLocaleString()
     libraryById[item.id] = item
   }

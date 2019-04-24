@@ -257,7 +257,7 @@ function sortPlaylist(tracks, library, sortKey, ascending, oldIndex) {
   const factor = ascending ? 1 : -1
   const oldTrack = oldIndex != null && tracks[oldIndex]
 
-  if (sortKey === 'duration') {
+  if (sortKey === 'duration' || sortKey === 'createdAt') {
     tracks.sort((a, b) => factor * (library[a][sortKey] - library[b][sortKey]))
   } else {
     tracks.sort((a, b) => {

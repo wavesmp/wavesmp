@@ -42,7 +42,6 @@ function getPlaylistSelectors(playlistName) {
   return playlistSelectors[playlistName]
 }
 
-// TODO handle this in redirect?
 function normalizePage(currentPage, lastPage) {
   if (currentPage < 0) {
     return 0
