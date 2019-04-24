@@ -48,6 +48,7 @@ class NowPlaying extends React.PureComponent {
     }
   ]
 
+  // TODO These should be links
   playlistButtons = [
     {
       name: 'Library',

@@ -53,7 +53,8 @@ constants.routes = {
   nowplaying: '/nowplaying',
   library: '/library',
   upload: '/upload',
-  playlist: '/playlist/:playlist'
+  playlist: '/playlist/:playlist',
+  playlistBase: '/playlist/'
 }
 
 constants.DROPDOWN_DATA_VALUE = 'dropdown'
