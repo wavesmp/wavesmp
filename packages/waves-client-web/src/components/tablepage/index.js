@@ -1,7 +1,7 @@
 import React from 'react'
 
 import ContentPage from '../contentpage'
-import TableMenuBar from './tablemenubar'
+import TableBar from '../tablebar'
 import Table from '../table'
 import './index.css'
 
@@ -53,7 +53,7 @@ class TablePageData extends React.PureComponent {
       if (routerSearchString) {
         return (
           <div>
-            <TableMenuBar
+            <TableBar
               buttons={buttons}
               pathname={pathname}
               qp={qp}
@@ -70,7 +70,7 @@ class TablePageData extends React.PureComponent {
     }
     return (
       <React.Fragment>
-        <TableMenuBar
+        <TableBar
           buttons={buttons}
           pathname={pathname}
           qp={qp}

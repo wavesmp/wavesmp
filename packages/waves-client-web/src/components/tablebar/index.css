@@ -1,13 +1,13 @@
-.tablemenubar {
+.tablebar {
   margin-top: 15px;
 }
 
-.tablemenubar-search-box {
+.tablebar-search-box {
   margin-top: 19px;
   position: relative;
 }
 
-.tablemenubar-search-box input {
+.tablebar-search-box input {
   width: 200px;
   background-color: var(--input-background-color);
   color: var(--title-color);
@@ -15,14 +15,14 @@
   border-radius: 4px;
 }
 
-.tablemenubar-search-icon {
+.tablebar-search-icon {
   color: var(--input-icon-color);
   position: absolute;
   top: 5px;
   left: 6px;
 }
 
-.tablemenubar-reset-icon {
+.tablebar-reset-icon {
   color: var(--input-icon-color);
   position: absolute;
   top: 5px;
@@ -30,17 +30,17 @@
   cursor: pointer;
 }
 
-.tablemenubar-cog-icon {
+.tablebar-cog-icon {
   position: absolute;
   top: 5px;
   left: -30px;
 }
 
-.tablemenubar-buttons {
+.tablebar-buttons {
   margin-top: 17px;
 }
 
-.tablemenubar-input {
+.tablebar-input {
   padding-left: 30px;
   padding-right: 25px;
 }

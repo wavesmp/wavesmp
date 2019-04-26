@@ -8,7 +8,7 @@ export default class Buttons extends React.PureComponent {
     }
     return (
       <div className='pull-left'>
-        <div className='tablemenubar-buttons'>
+        <div className='tablebar-buttons'>
           {buttons.map(sample => (
             <button
               key={sample.name}

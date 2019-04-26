@@ -1,9 +1,9 @@
 import React from 'react'
 
 import Buttons from './buttons'
-import './tablemenubar.css'
+import './index.css'
 
-export default class TableMenuBar extends React.PureComponent {
+export default class TableBar extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { searchValue: props.routerSearchString }
@@ -41,20 +41,20 @@ export default class TableMenuBar extends React.PureComponent {
     if (onSettingsClick) {
       settingsComponent = (
         <i
-          className='fa fa-lg fa-cog tablemenubar-cog-icon'
+          className='fa fa-lg fa-cog tablebar-cog-icon'
           onClick={onSettingsClick}
         />
       )
     }
 
     return (
-      <div className='tablemenubar'>
+      <div className='tablebar'>
         <Buttons buttons={buttons} />
-        <div className='pull-right tablemenubar-search-box'>
+        <div className='pull-right tablebar-search-box'>
           {settingsComponent}
-          <i className='fa fa-lg fa-search tablemenubar-search-icon' />
+          <i className='fa fa-lg fa-search tablebar-search-icon' />
           <input
-            className='tablemenubar-input'
+            className='tablebar-input'
             type='text'
             value={this.state.searchValue}
             onKeyDown={this.onKeyDown}
@@ -62,7 +62,7 @@ export default class TableMenuBar extends React.PureComponent {
           />
           {this.state.searchValue && (
             <i
-              className='fa fa-lg fa-times tablemenubar-reset-icon'
+              className='fa fa-lg fa-times tablebar-reset-icon'
               onClick={this.onSearchReset}
             />
           )}
@@ -71,3 +71,4 @@ export default class TableMenuBar extends React.PureComponent {
     )
   }
 }
+
