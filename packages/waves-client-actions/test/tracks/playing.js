@@ -58,7 +58,6 @@ describe('#playing()', () => {
       .once()
       .withExactArgs(newTime)
 
-    assert.isDefined(types.PLAYING_TIME_UPDATE)
     const thunk = actions.seek(newTime)
     thunk(undefined, undefined, { player })
 

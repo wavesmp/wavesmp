@@ -1,5 +1,4 @@
 const { assert } = require('chai')
-const formatTime = require('format-duration')
 const mongoid = require('mongoid-js')
 const { URLSearchParams } = require('url')
 const sinon = require('sinon')
@@ -11,6 +10,7 @@ const {
   toastTypes
 } = require('waves-client-constants')
 const Player = require('waves-client-player')
+const { normalizeTrack } = require('waves-client-util')
 const WavesSocket = require('waves-socket')
 const {
   TEST_PLAYLIST_NAME1: testPlaylistName1,
@@ -21,10 +21,10 @@ const {
 
 const SEARCH_QUERY_KEY = 'search'
 const id1 = '5c3d93000000000000000000'
-const createdAt1 = '1547539200'
+const createdAt1 = 1547539200
 const createAtPretty1 = '1/15/2019, 8:00:00 AM'
 const id2 = '5a5c5f800000000000000000'
-const createdAt2 = '1516003200'
+const createdAt2 = 1516003200
 const createdAtPretty2 = '1/15/2018, 8:00:00 AM'
 const track1 = { ...baseTrack1, id: id1 }
 const track2 = { ...baseTrack2, id: id2 }
@@ -117,10 +117,11 @@ describe('#tracks()', async () => {
     const thunk = actions.trackNext(URLSearchParams)
 
     assert.isDefined(types.TRACK_NEXT)
+    const expectedTrack = normalizeTrack(track2, 1)
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs({
       type: types.TRACK_NEXT,
-      nextTrack: { ...track2, index: 1 },
+      nextTrack: expectedTrack,
       playlistName: playlistName
     })
 
@@ -138,7 +139,7 @@ describe('#tracks()', async () => {
     const playerExpect = playerMock
       .expects('trackNext')
       .once()
-      .withExactArgs({ ...track2, index: 1 }, isPlaying)
+      .withExactArgs(expectedTrack, isPlaying)
 
     const playing = { playlist: playlistName, isPlaying, shuffle: false }
     const playlist = {
@@ -160,8 +161,7 @@ describe('#tracks()', async () => {
     const search = `${SEARCH_QUERY_KEY}=${searchString}`
 
     const track1Copy = { ...track1, title: searchString }
-    const track1Time = formatTime(track1Copy.duration * 1000)
-    const expectedTrack1 = { ...track1Copy, index: 0, time: track1Time }
+    const expectedTrack1 = normalizeTrack(track1Copy, 0)
     const track2Copy = { ...track2, title: searchString }
     const playlistName = DEFAULT_PLAYLIST
 

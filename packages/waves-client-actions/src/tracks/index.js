@@ -11,7 +11,10 @@ const {
   removeSelection
 } = require('waves-client-selectors')
 const { UploadError } = require('waves-client-errors')
-const { shouldAddToDefaultPlaylist } = require('waves-client-util')
+const {
+  normalizeTrack,
+  shouldAddToDefaultPlaylist
+} = require('waves-client-util')
 
 const { toastAdd } = require('../toasts')
 
@@ -78,36 +81,62 @@ async function _trackNext(
   prev
 ) {
   const state = getState()
-  const { tracks } = state
-  const { library, playing, playlists, uploads } = tracks
+  const { library, playing, playlists, uploads } = state.tracks
   const { playlist: playlistName, isPlaying, shuffle } = playing
   const playlist = playlists[playlistName]
-  const { index, search } = playlist
 
   const { getSearchItems } = getOrCreatePlaylistSelectors(
     playlistName,
     URLSearchParams
   )
-  const searchItems = getSearchItems(state, search)
+  const searchItems = getSearchItems(state, playlist.search)
+  const nextTrack = getNextTrack(
+    searchItems,
+    playlist,
+    shuffle,
+    prev,
+    library,
+    uploads
+  )
 
-  /* These are different data structures. Need to handle with care below */
-  // TODO try to simplify or break up implementation below
-  const items = searchItems || playlist.tracks
+  dispatch({
+    type: types.TRACK_NEXT,
+    nextTrack,
+    playlistName
+  })
+  if (nextTrack) {
+    if (shouldAddToDefaultPlaylist(playlistName)) {
+      ws.sendBestEffortMessage(types.PLAYLIST_ADD, {
+        playlistName: DEFAULT_PLAYLIST,
+        trackIds: [nextTrack.id]
+      })
+    }
+    try {
+      await player.trackNext(nextTrack, isPlaying)
+    } catch (err) {
+      toastAdd({ type: toastTypes.Error, msg: err.toString() })(dispatch)
+    }
+  }
+}
 
-  let nextTrack = null
+function getNextTrack(searchItems, playlist, shuffle, prev, library, uploads) {
+  const { tracks, index } = playlist
+  const items = searchItems || tracks
   const { length } = items
   if (length === 0) {
-    nextTrack = null
-  } else if (shuffle) {
+    return null
+  }
+  if (shuffle) {
+    const i = Math.floor(Math.random() * length)
     if (searchItems) {
-      nextTrack = items[Math.floor(Math.random() * length)]
-    } else {
-      const i = Math.floor(Math.random() * length)
-      const trackId = items[i]
-      const track = getTrackById(trackId, library, uploads)
-      nextTrack = { ...track, index }
+      return items[i]
     }
-  } else {
+    const trackId = tracks[i]
+    const track = getTrackById(trackId, library, uploads)
+    return normalizeTrack(track, index)
+  }
+
+  if (searchItems) {
     /* Find the track after the current one.
      * If prev, find the track before the current one. */
     let start
@@ -122,48 +151,29 @@ async function _trackNext(
 
     for (let i = start; i < end; i += 1) {
       const item = items[i]
-      if (searchItems && item.index === index) {
+      if (item.index === index) {
         if (prev) {
-          nextTrack = items[i - 1]
-          break
+          return items[i - 1]
         }
-        nextTrack = items[i + 1]
-        break
-      } else if (!searchItems && index === i) {
-        let trackId
-        let nextIndex
-        if (prev) {
-          trackId = items[i - 1]
-          nextIndex = i - 1
-        } else {
-          trackId = items[i + 1]
-          nextIndex = i + 1
-        }
-        const track = getTrackById(trackId, library, uploads)
-        nextTrack = { ...track, index: nextIndex }
-        break
+        return items[i + 1]
       }
     }
+    return null
   }
 
-  dispatch({
-    type: types.TRACK_NEXT,
-    nextTrack,
-    playlistName
-  })
-  if (nextTrack && shouldAddToDefaultPlaylist(playlistName)) {
-    ws.sendBestEffortMessage(types.PLAYLIST_ADD, {
-      playlistName: DEFAULT_PLAYLIST,
-      trackIds: [nextTrack.id]
-    })
+  if (prev && index > 0) {
+    const nextIndex = index - 1
+    const trackId = items[nextIndex]
+    const track = getTrackById(trackId, library, uploads)
+    return normalizeTrack(track, nextIndex)
   }
-  if (nextTrack) {
-    try {
-      await player.trackNext(nextTrack, isPlaying)
-    } catch (err) {
-      toastAdd({ type: toastTypes.Error, msg: err.toString() })(dispatch)
-    }
+  if (!prev && index < length - 1) {
+    const nextIndex = index + 1
+    const trackId = items[nextIndex]
+    const track = getTrackById(trackId, library, uploads)
+    return normalizeTrack(track, nextIndex)
   }
+  return null
 }
 
 function trackUploadsUpdate(update) {
