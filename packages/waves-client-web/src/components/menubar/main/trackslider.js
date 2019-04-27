@@ -7,8 +7,22 @@ export default class TrackSlider extends React.PureComponent {
     super(props)
     this.state = {
       seeking: false,
-      seekingValue: 0
+      seekingValue: 0,
+      currentTime: 0
     }
+  }
+
+  onTimeUpdate = ev => {
+    const { currentTime } = ev.currentTarget
+    this.setState({ currentTime })
+  }
+
+  componentDidMount() {
+    this.props.actions.addOnTimeUpdate(this.onTimeUpdate)
+  }
+
+  componentWillUnmount() {
+    this.props.actions.removeOnTimeUpdate(this.onTimeUpdate)
   }
 
   onMouseDown = ev => {
@@ -21,20 +35,18 @@ export default class TrackSlider extends React.PureComponent {
 
   onMouseUp = ev => {
     const { actions, playing } = this.props
-    const { track } = playing
-    const { duration } = track
-    this.setState({ seeking: false })
-    actions.seek(ev.target.value * duration)
+    const { duration } = playing.track
+    const currentTime = ev.target.value * duration
+    actions.seek(currentTime)
+    this.setState({ seeking: false, currentTime })
   }
 
   getValue() {
-    if (this.state.seeking) {
-      return this.state.seekingValue
+    const { seeking, seekingValue, currentTime } = this.state
+    if (seeking) {
+      return seekingValue
     }
-
-    const { playing } = this.props
-    const { track, currentTime } = playing
-    const { duration } = track
+    const { duration } = this.props.playing.track
     return currentTime / duration
   }
 

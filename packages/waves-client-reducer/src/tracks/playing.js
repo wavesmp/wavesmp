@@ -5,8 +5,7 @@ const initialPlaying = {
   playlist: null,
   track: null,
   shuffle: false,
-  repeat: false,
-  currentTime: 0
+  repeat: false
 }
 
 function reducerPlaying(playing = initialPlaying, action) {
@@ -31,11 +30,6 @@ function reducerPlaying(playing = initialPlaying, action) {
 
     case actionTypes.PLAYING_REPEAT_TOGGLE: {
       return { ...playing, repeat: !playing.repeat, shuffle: false }
-    }
-
-    case actionTypes.PLAYING_TIME_UPDATE: {
-      const { currentTime } = action
-      return { ...playing, currentTime }
     }
 
     case actionTypes.TRACK_NEXT: {

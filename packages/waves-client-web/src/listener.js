@@ -18,10 +18,6 @@ export default async (store, ws, player, localState, history) => {
     )
   })
 
-  player.setOnTimeUpdate(currentTime => {
-    store.dispatch(WavesActions.playingTimeUpdate(currentTime))
-  })
-
   player.setOnToastAdd(toast => {
     store.dispatch(WavesActions.toastAdd(toast))
   })

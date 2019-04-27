@@ -34,12 +34,19 @@ function shuffleToggle() {
 function seek(newTime) {
   return (dispatch, getState, { player }) => {
     player.seek(newTime)
-    dispatch({ type: types.PLAYING_TIME_UPDATE, currentTime: newTime })
   }
 }
 
-function playingTimeUpdate(currentTime) {
-  return { type: types.PLAYING_TIME_UPDATE, currentTime }
+function addOnTimeUpdate(setOnTimeUpdate) {
+  return (dispatch, getState, { player }) => {
+    player.addOnTimeUpdate(setOnTimeUpdate)
+  }
+}
+
+function removeOnTimeUpdate(setOnTimeUpdate) {
+  return (dispatch, getState, { player }) => {
+    player.removeOnTimeUpdate(setOnTimeUpdate)
+  }
 }
 
 module.exports.pause = pause
@@ -47,4 +54,5 @@ module.exports.play = play
 module.exports.repeatToggle = repeatToggle
 module.exports.shuffleToggle = shuffleToggle
 module.exports.seek = seek
-module.exports.playingTimeUpdate = playingTimeUpdate
+module.exports.addOnTimeUpdate = addOnTimeUpdate
+module.exports.removeOnTimeUpdate = removeOnTimeUpdate

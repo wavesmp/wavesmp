@@ -20,10 +20,12 @@ class FilePlayer {
     // No use case for this currently
   }
 
-  setOnTimeUpdate(onTimeUpdate) {
-    this.stream.addEventListener('timeupdate', () => {
-      onTimeUpdate(this.stream.currentTime)
-    })
+  addOnTimeUpdate(onTimeUpdate) {
+    this.stream.addEventListener('timeupdate', onTimeUpdate)
+  }
+
+  removeOnTimeUpdate(onTimeUpdate) {
+    this.stream.removeEventListener('timeupdate', onTimeUpdate)
   }
 
   async trackNext(track, isPlaying) {

@@ -251,7 +251,7 @@ function tracksUpload(trackSource) {
     const uploadedIds = new Set(uploaded.map(t => t.id))
     if (track && uploadedIds.has(track.id)) {
       /* Pause before deleting from state. Otherwise,
-       * track may update playing.currentTime before
+       * player may emit time change before
        * it is deleted from state */
       player.pause()
     }
@@ -405,7 +405,7 @@ function tracksDelete() {
 
     if (track && deletedIds.has(track.id)) {
       /* Pause before deleting from state. Otherwise,
-       * track may update playing.currentTime before
+       * player may emit time change before
        * it is deleted from state */
       player.pause()
     }

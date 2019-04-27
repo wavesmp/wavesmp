@@ -42,10 +42,17 @@ class Player {
     }
   }
 
-  setOnTimeUpdate(onTimeUpdate) {
+  addOnTimeUpdate(onTimeUpdate) {
     for (const source in this.players) {
       const player = this.players[source]
-      player.setOnTimeUpdate(onTimeUpdate)
+      player.addOnTimeUpdate(onTimeUpdate)
+    }
+  }
+
+  removeOnTimeUpdate(onTimeUpdate) {
+    for (const source in this.players) {
+      const player = this.players[source]
+      player.removeOnTimeUpdate(onTimeUpdate)
     }
   }
 

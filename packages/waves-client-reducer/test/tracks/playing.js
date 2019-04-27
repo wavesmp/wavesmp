@@ -25,8 +25,7 @@ describe('#playing()', () => {
       playlist: null,
       track: null,
       shuffle: false,
-      repeat: false,
-      currentTime: 0
+      repeat: false
     })
   })
 
@@ -86,12 +85,6 @@ describe('#playing()', () => {
     assert.isTrue(state.isPlaying)
   })
 
-  it('track time update', () => {
-    const action = { type: actionTypes.PLAYING_TIME_UPDATE, currentTime: 3 }
-    state = assertNewState(playing, state, action)
-    assert.strictEqual(state.currentTime, 3)
-  })
-
   it('track next', () => {
     const action = {
       type: actionTypes.TRACK_NEXT,
@@ -135,8 +128,7 @@ describe('#playing()', () => {
       playlist: null,
       track: null,
       shuffle: false,
-      repeat: false,
-      currentTime: 0
+      repeat: false
     })
   })
 })

@@ -58,17 +58,10 @@ describe('#playing()', () => {
       .once()
       .withExactArgs(newTime)
 
-    const dispatchMock = sinon.mock()
     assert.isDefined(types.PLAYING_TIME_UPDATE)
-    const dispatchExpect = dispatchMock.once().withExactArgs({
-      type: types.PLAYING_TIME_UPDATE,
-      currentTime: newTime
-    })
-
     const thunk = actions.seek(newTime)
-    thunk(dispatchMock, undefined, { player })
+    thunk(undefined, undefined, { player })
 
-    dispatchMock.verify()
     playerMock.verify()
   })
 
