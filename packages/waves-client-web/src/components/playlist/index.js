@@ -1,6 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import * as WavesActions from 'waves-client-actions'
 import {
@@ -22,26 +23,25 @@ import { playlistColumns } from '../table/columns'
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
 
 class Playlist extends React.PureComponent {
-  onLibraryClick = () => {
-    const { libraryPlaylistSearch, history } = this.props
-    history.push({ pathname: routes.library, search: libraryPlaylistSearch })
-  }
-
-  onNowPlayingClick = () => {
-    const { defaultPlaylistSearch, history } = this.props
-    history.push({ pathname: routes.nowplaying, search: defaultPlaylistSearch })
-  }
-
-  buttons = [
-    {
-      name: 'Library',
-      onClick: this.onLibraryClick
-    },
-    {
-      name: 'Now Playing',
-      onClick: this.onNowPlayingClick
+  getButtons() {
+    const { libraryPlaylistSearch, defaultPlaylistSearch } = this.props
+    const toLibrary = {
+      pathname: routes.library,
+      search: libraryPlaylistSearch
     }
-  ]
+    const toNowPlaying = {
+      pathname: routes.nowplaying,
+      search: defaultPlaylistSearch
+    }
+    return [
+      <Link key='Library' className='btn btn-primary' to={toLibrary}>
+        Library
+      </Link>,
+      <Link key='Now Playing' className='btn btn-primary' to={toNowPlaying}>
+        Now Playing
+      </Link>
+    ]
+  }
 
   onSettingsClick = () => {
     const { actions, playlistName } = this.props
@@ -70,13 +70,13 @@ class Playlist extends React.PureComponent {
     return (
       <TablePage
         {...this.props}
-        buttons={this.buttons}
+        buttons={this.getButtons()}
         draggable={true}
         noDataMsg={NO_DATA_MSG}
         onContextMenu={this.onContextMenu}
         onItemEdit={this.onItemEdit}
         onSettingsClick={this.onSettingsClick}
-        title={playlistName}
+        title={this.props.playlistName}
       />
     )
   }

@@ -1,6 +1,5 @@
 import React from 'react'
 
-import Buttons from './buttons'
 import './index.css'
 
 export default class TableBar extends React.PureComponent {
@@ -49,7 +48,9 @@ export default class TableBar extends React.PureComponent {
 
     return (
       <div className='tablebar'>
-        <Buttons buttons={buttons} />
+        <div className='pull-left'>
+          <div className='tablebar-buttons'>{buttons}</div>
+        </div>
         <div className='pull-right tablebar-search-box'>
           {settingsComponent}
           <i className='fa fa-lg fa-search tablebar-search-icon' />

@@ -1,6 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import * as WavesActions from 'waves-client-actions'
 import {
@@ -21,11 +22,6 @@ import { playlistColumns } from '../table/columns'
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
 
 class NowPlaying extends React.PureComponent {
-  onLibraryClick = () => {
-    const { history, libraryPlaylistSearch } = this.props
-    history.push({ pathname: routes.library, search: libraryPlaylistSearch })
-  }
-
   onClear = () => {
     const { actions } = this.props
     actions.modalSet({ type: modalTypes.PLAYLIST_CLEAR })
@@ -37,28 +33,32 @@ class NowPlaying extends React.PureComponent {
   }
 
   defaultButtons = [
-    {
-      name: 'Clear',
-      onClick: this.onClear
-    },
-    {
-      name: 'Save',
-      onClick: this.onPlaylistSave
-    }
+    <button key='Clear' className='btn btn-primary' onClick={this.onClear}>
+      Clear
+    </button>,
+    <button
+      key='Save'
+      className='btn btn-primary'
+      onClick={this.onPlaylistSave}
+    >
+      Save
+    </button>
   ]
 
-  // TODO These should be links
-  playlistButtons = [
-    {
-      name: 'Library',
-      onClick: this.onLibraryClick
-    }
-  ]
+  getPlaylistButtons() {
+    const { libraryPlaylistSearch } = this.props
+    const to = { pathname: routes.library, search: libraryPlaylistSearch }
+    return [
+      <Link key='Library' className='btn btn-primary' to={to}>
+        Library
+      </Link>
+    ]
+  }
 
   getButtons() {
     const { sidebar } = this.props
     if (sidebar === 'playlist') {
-      return this.playlistButtons
+      return this.getPlaylistButtons()
     }
     return this.defaultButtons
   }
@@ -87,7 +87,6 @@ class NowPlaying extends React.PureComponent {
         noDataMsg={NO_DATA_MSG}
         onContextMenu={this.onContextMenu}
         onItemEdit={this.onItemEdit}
-        pathname={location.pathname}
         playlistName={playlistName}
         title='Now Playing'
       />

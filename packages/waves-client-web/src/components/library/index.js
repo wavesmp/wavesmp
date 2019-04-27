@@ -1,6 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import {
   DEFAULT_PLAYLIST,
@@ -20,27 +21,22 @@ import TablePage from '../tablepage'
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
 
 class Library extends React.PureComponent {
-  onNowPlayingClick = () => {
-    const { history, defaultPlaylistSearch } = this.props
+  getPlaylistButtons() {
+    const { defaultPlaylistSearch } = this.props
     const to = { pathname: routes.nowplaying, search: defaultPlaylistSearch }
-    history.push(to)
+    return [
+      <Link key='Now Playing' className='btn btn-primary' to={to}>
+        Now Playing
+      </Link>
+    ]
   }
-
-  defaultButtons = []
-
-  playlistButtons = [
-    {
-      name: 'Now Playing',
-      onClick: this.onNowPlayingClick
-    }
-  ]
 
   getButtons() {
     const { sidebar } = this.props
     if (sidebar === 'playlist') {
-      return this.playlistButtons
+      return this.getPlaylistButtons()
     }
-    return this.defaultButtons
+    return null
   }
 
   onItemEdit = (id, attr, update) => {
