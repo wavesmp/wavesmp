@@ -71,4 +71,3 @@ export default class TableBar extends React.PureComponent {
     )
   }
 }
-

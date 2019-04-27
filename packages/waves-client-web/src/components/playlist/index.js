@@ -67,55 +67,16 @@ class Playlist extends React.PureComponent {
   }
 
   render() {
-    const {
-      playlist,
-      playlistName,
-      playing,
-      loaded,
-      index,
-      selection,
-      actions,
-      sidebar,
-      transitions,
-      pathname,
-      qp,
-      history,
-      routerSearchString,
-      numItems,
-      currentPage,
-      lastPage,
-      displayItems,
-      columns,
-      theme
-    } = this.props
     return (
       <TablePage
-        actions={actions}
+        {...this.props}
         buttons={this.buttons}
-        columns={columns}
         draggable={true}
-        history={history}
-        currentPage={currentPage}
-        displayItems={displayItems}
-        lastPage={lastPage}
-        isPlayerVisible={playing.track !== null}
-        isPlaying={playing.isPlaying}
         noDataMsg={NO_DATA_MSG}
-        numItems={numItems}
         onContextMenu={this.onContextMenu}
         onItemEdit={this.onItemEdit}
         onSettingsClick={this.onSettingsClick}
-        pathname={pathname}
-        index={index}
-        playlistLoaded={loaded}
-        playlistName={playlistName}
-        qp={qp}
-        routerSearchString={routerSearchString}
-        selection={selection}
-        sidebar={sidebar}
-        theme={theme}
         title={playlistName}
-        transitions={transitions}
       />
     )
   }
@@ -130,7 +91,10 @@ function mapStateToProps(state, ownProps) {
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { playing } = tracks
-  const { pathname, search } = ownProps.location
+  const { isPlaying } = playing
+  const isPlayerVisible = playing.track != null
+  const { location } = ownProps
+  const { pathname, search } = location
   const { theme } = account
   const columns = playlistColumns.filter(c => account.columns.has(c.title))
 
@@ -141,7 +105,8 @@ function mapStateToProps(state, ownProps) {
     defaultPlaylistSearch: getDefaultPlaylistSearch(state),
     playlistName,
     pathname,
-    playing,
+    isPlaying,
+    isPlayerVisible,
     columns,
     sidebar,
     theme,

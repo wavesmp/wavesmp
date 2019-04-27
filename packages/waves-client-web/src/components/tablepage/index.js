@@ -37,12 +37,12 @@ class TablePageData extends React.PureComponent {
       routerSearchString,
       onSettingsClick,
       history,
-      playlistLoaded,
+      loaded,
       numItems,
       ...other
     } = this.props
 
-    if (!playlistLoaded) {
+    if (!loaded) {
       return (
         <div className='tablepage-msg'>
           <i className='fa fa-spinner fa-pulse fa-5x' />

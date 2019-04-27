@@ -17,7 +17,6 @@ import {
 import { libraryColumns } from '../table/columns'
 import TablePage from '../tablepage'
 
-const TITLE = 'Library'
 const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
 
 class Library extends React.PureComponent {
@@ -60,57 +59,16 @@ class Library extends React.PureComponent {
   }
 
   render() {
-    const {
-      actions,
-      playing,
-      sidebar,
-      playlist,
-      transitions,
-      pathname,
-      qp,
-      loaded,
-      index,
-      selection,
-      sortKey,
-      ascending,
-      history,
-      numItems,
-      routerSearchString,
-      currentPage,
-      lastPage,
-      displayItems,
-      columns,
-      theme
-    } = this.props
     return (
       <TablePage
-        actions={actions}
-        ascending={ascending}
+        {...this.props}
         buttons={this.getButtons()}
-        columns={columns}
         draggable={true}
-        history={history}
-        isPlayerVisible={playing.track !== null}
-        isPlaying={playing.isPlaying}
-        currentPage={currentPage}
-        displayItems={displayItems}
-        lastPage={lastPage}
         noDataMsg={NO_DATA_MSG}
-        numItems={numItems}
         onContextMenu={this.onContextMenu}
         onItemEdit={this.onItemEdit}
-        pathname={pathname}
-        index={index}
-        playlistLoaded={loaded}
         playlistName={playlistName}
-        qp={qp}
-        routerSearchString={routerSearchString}
-        selection={selection}
-        sidebar={sidebar}
-        sortKey={sortKey}
-        theme={theme}
-        title={TITLE}
-        transitions={transitions}
+        title='Library'
       />
     )
   }
@@ -124,6 +82,8 @@ function mapStateToProps(state, ownProps) {
   } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams)
   const { tracks, account, sidebar, transitions } = state
   const { playing } = tracks
+  const { isPlaying } = playing
+  const isPlayerVisible = playing.track != null
   const { location } = ownProps
   const { pathname, search } = location
   const { theme } = account
@@ -134,7 +94,8 @@ function mapStateToProps(state, ownProps) {
     qp: getRouterQueryParams(undefined, search),
     routerSearchString: getRouterSearchString(undefined, search),
     pathname,
-    playing,
+    isPlaying,
+    isPlayerVisible,
     columns,
     sidebar,
     theme,
