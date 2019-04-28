@@ -116,6 +116,9 @@ async function _trackNext(
     } catch (err) {
       toastAdd({ type: toastTypes.Error, msg: err.toString() })(dispatch)
     }
+  } else {
+    player.pause()
+    player.seek(0)
   }
 }
 
