@@ -30,7 +30,10 @@ export default class PlaylistBar extends React.PureComponent {
       constants.PLAYLIST_NAME_ATTR
     )
     if (playlistDst == '__new') {
-      console.log(`TODO implement me. ${playlistSrc} -> ${playlistDst}`)
+      actions.modalSet({
+        type: constants.modalTypes.PLAYLIST_CREATE,
+        props: { playlistSrc }
+      })
     } else {
       actions.playlistAdd(playlistSrc, playlistDst)
     }

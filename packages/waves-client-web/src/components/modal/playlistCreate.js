@@ -4,11 +4,9 @@ import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
 import { toastTypes } from 'waves-client-constants'
+import { getFilteredSelection } from 'waves-client-selectors'
 
 import { ModalInput } from './util'
-
-const TITLE = 'Create Playlist'
-const ACTION = 'Create'
 
 class CreatePlaylistModal extends React.PureComponent {
   constructor(props) {
@@ -22,27 +20,42 @@ class CreatePlaylistModal extends React.PureComponent {
   }
 
   onAction = async () => {
-    const { actions } = this.props
+    const { actions, numItems, playlistSrc } = this.props
     const { name } = this.state
-    try {
-      await actions.playlistCreate(name)
-    } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: err.message })
-      console.log(`Error creating playlist: ${err}`)
-      return false
+    if (numItems) {
+      actions.playlistAdd(playlistSrc, name)
+      return true
+    } else {
+      try {
+        await actions.playlistCreate(name)
+      } catch (err) {
+        actions.toastAdd({ type: toastTypes.Error, msg: err.message })
+        console.log(`Error creating playlist: ${err}`)
+        return false
+      }
+      actions.toastAdd({ type: toastTypes.Success, msg: 'Created playlist' })
+      return true
     }
-    actions.toastAdd({ type: toastTypes.Success, msg: 'Created playlist' })
-    return true
+  }
+
+  getTitle() {
+    const { numItems } = this.props
+    if (numItems) {
+      const plurality = numItems === 1 ? '' : 's'
+      return `Create Playlist with ${numItems} track${plurality}`
+    }
+    return 'Create Playlist'
   }
 
   render() {
     const { name } = this.state
     const { actions } = this.props
+    const title = this.getTitle()
     return (
       <ModalInput
         actions={actions}
-        title={TITLE}
-        actionTitle={ACTION}
+        title={title}
+        actionTitle='Create'
         onAction={this.onAction}
         label='Name'
         value={name}
@@ -52,10 +65,13 @@ class CreatePlaylistModal extends React.PureComponent {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    playlists: state.tracks.playlists
+function mapStateToProps(state, ownProps) {
+  const { playlistSrc } = ownProps
+  if (playlistSrc) {
+    const numItems = getFilteredSelection(state, playlistSrc).size
+    return { numItems }
   }
+  return {}
 }
 
 function mapDispatchToProps(dispatch) {
