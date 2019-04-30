@@ -1,26 +1,21 @@
 const types = require('waves-action-types')
-const {
-  DEFAULT_PLAYLIST,
-  FULL_PLAYLIST,
-  routes
-} = require('waves-client-constants')
+const { FULL_PLAYLIST } = require('waves-client-constants')
 const { getOrCreatePlaylistSelectors } = require('waves-client-selectors')
+const { getPlaylistNameFromRoute } = require('waves-client-util')
 
 function routerChange(location) {
   return async (dispatch, getState) => {
     const { pathname, search } = location
-    if (pathname === routes.nowplaying) {
-      dispatch({
-        type: types.PLAYLIST_SEARCH_UPDATE,
-        name: DEFAULT_PLAYLIST,
-        search
-      })
-    } else if (pathname === routes.library) {
-      dispatch({
-        type: types.PLAYLIST_SEARCH_UPDATE,
-        name: FULL_PLAYLIST,
-        search
-      })
+    const playlistName = getPlaylistNameFromRoute(pathname)
+    if (!playlistName) {
+      return
+    }
+    dispatch({
+      type: types.PLAYLIST_SEARCH_UPDATE,
+      name: playlistName,
+      search
+    })
+    if (playlistName === FULL_PLAYLIST) {
       const {
         getRouterAscending,
         getRouterSortKey
@@ -34,13 +29,6 @@ function routerChange(location) {
         name: FULL_PLAYLIST,
         sortKey,
         ascending
-      })
-    } else if (pathname.startsWith(routes.playlistBase)) {
-      const playlistName = pathname.slice(routes.playlistBase.length)
-      dispatch({
-        type: types.PLAYLIST_SEARCH_UPDATE,
-        name: playlistName,
-        search
       })
     }
   }
