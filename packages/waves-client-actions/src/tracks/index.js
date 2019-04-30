@@ -1,4 +1,7 @@
 const types = require('waves-action-types')
+
+const playing = require('./playing')
+
 const {
   DEFAULT_PLAYLIST,
   FULL_PLAYLIST,
@@ -492,6 +495,28 @@ function addMissingTags(item) {
   }
 }
 
+function tracksKeyDown(ev) {
+  return async (dispatch, getState, { player, ws }) => {
+    const { key, target } = ev
+    const { tagName, contentEditable } = target
+    if (tagName === 'INPUT' || contentEditable === true) {
+      return
+    }
+    if (key === ' ') {
+      const { track, isPlaying } = getState().tracks.playing
+      if (!track) {
+        return
+      }
+      ev.preventDefault()
+      if (isPlaying) {
+        playing.pause()(dispatch, getState, { player })
+      } else {
+        await playing.play()(dispatch, getState, { player })
+      }
+    }
+  }
+}
+
 module.exports.trackToggle = trackToggle
 module.exports.trackNext = trackNext
 module.exports.trackPrevious = trackPrevious
@@ -501,11 +526,12 @@ module.exports.tracksUpdate = tracksUpdate
 module.exports.tracksUpload = tracksUpload
 module.exports.tracksDelete = tracksDelete
 module.exports.tracksRemove = tracksRemove
+module.exports.tracksKeyDown = tracksKeyDown
 
 Object.assign(
   module.exports,
   require('./library'),
-  require('./playing'),
+  playing,
   require('./playlists'),
   require('./sideEffects'),
   require('./uploads')

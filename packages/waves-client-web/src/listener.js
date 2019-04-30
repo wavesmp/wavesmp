@@ -44,6 +44,10 @@ export default async (store, ws, player, localState, history) => {
     }
   })
 
+  document.addEventListener('keydown', ev => {
+    store.dispatch(WavesActions.tracksKeyDown(ev))
+  })
+
   /* When localStorage is loaded, update the state */
   const [columns, rowsPerPage, lastIdp, machineId, theme] = await Promise.all([
     localState.getItem('columns'),
