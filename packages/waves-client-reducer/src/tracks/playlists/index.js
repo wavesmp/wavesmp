@@ -151,9 +151,6 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         return playlists
       }
       const playlist = playlists[name]
-      if (sortKey === playlist.sortKey && ascending === playlist.ascending) {
-        return playlists
-      }
       const { index: oldIndex } = playlist
       const tracks = [...playlist.tracks]
 

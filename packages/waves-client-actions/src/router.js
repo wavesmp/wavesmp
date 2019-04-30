@@ -22,7 +22,16 @@ function routerChange(location) {
       } = getOrCreatePlaylistSelectors(FULL_PLAYLIST, URLSearchParams)
       const ascending = getRouterAscending(undefined, search)
       const sortKey = getRouterSortKey(undefined, search)
-      const { library } = getState().tracks
+      const { library, playlists } = getState().tracks
+      const playlist = playlists && playlists[FULL_PLAYLIST]
+      if (
+        library &&
+        playlist &&
+        sortKey === playlist.sortKey &&
+        ascending === playlist.ascending
+      ) {
+        return
+      }
       dispatch({
         type: types.PLAYLIST_SORT,
         library,
