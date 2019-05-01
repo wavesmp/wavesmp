@@ -46,14 +46,7 @@ export default class Table extends React.PureComponent {
   }
 
   onRowMouseDown = ev => {
-    const {
-      actions,
-      onContextMenu,
-      playlistName,
-      index,
-      selection,
-      displayItems
-    } = this.props
+    const { actions, playlistName, index, selection, displayItems } = this.props
 
     const clickTarget = ev.target
     const clickWasForEdit = clickTarget.nodeName.toLowerCase() === 'span'
@@ -108,7 +101,12 @@ export default class Table extends React.PureComponent {
       /* In case we selected a new item at click time,
        * the operation is on a single item. */
       const bulk = isSelected && this.getFilteredSelection().size > 1
-      onContextMenu(ev, { itemIndex, trackId, bulk, playlistName, index })
+      actions.contextmenuSet({
+        x: ev.pageX,
+        y: ev.pageY,
+        type: constants.contextmenuTypes.TRACK,
+        props: { itemIndex, trackId, bulk, playlistName, index }
+      })
       ev.preventDefault()
       return
     }

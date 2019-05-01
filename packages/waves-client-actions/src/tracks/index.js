@@ -435,6 +435,27 @@ function tracksDelete() {
   }
 }
 
+function trackUploadsDelete() {
+  return (dispatch, getState, { player, ws }) => {
+    const { playing, playlists } = getState().tracks
+    const { track } = playing
+    const playlist = playlists[UPLOAD_PLAYLIST]
+    const { selection } = playlist
+    const deleteIds = new Set(selection.values())
+    if (track && deleteIds.has(track.id)) {
+      /* Pause before deleting from state. Otherwise,
+       * player may emit time change before
+       * it is deleted from state */
+      player.pause()
+    }
+    dispatch({
+      type: types.TRACK_UPLOADS_DELETE,
+      deleteIds,
+      playlist: tracksDeleteFromPlaylist(playlist, deleteIds)
+    })
+  }
+}
+
 function tracksRemove(playlistName) {
   return (dispatch, getState, { player, ws }) => {
     console.log(`Removing from playlist ${playlistName}`)
@@ -525,6 +546,7 @@ module.exports.trackUploadsUpdate = trackUploadsUpdate
 module.exports.tracksUpdate = tracksUpdate
 module.exports.tracksUpload = tracksUpload
 module.exports.tracksDelete = tracksDelete
+module.exports.trackUploadsDelete = trackUploadsDelete
 module.exports.tracksRemove = tracksRemove
 module.exports.tracksKeyDown = tracksKeyDown
 

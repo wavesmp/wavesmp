@@ -8,7 +8,6 @@ import {
   DEFAULT_PLAYLIST,
   FULL_PLAYLIST,
   modalTypes,
-  contextmenuTypes,
   routes
 } from 'waves-client-constants'
 import {
@@ -56,16 +55,6 @@ class Playlist extends React.PureComponent {
     actions.libraryInfoUpdate(id, attr, update)
   }
 
-  onContextMenu = ({ pageX: x, pageY: y }, props) => {
-    const { actions } = this.props
-    actions.contextmenuSet({
-      x,
-      y,
-      type: contextmenuTypes.TRACK,
-      props
-    })
-  }
-
   render() {
     return (
       <TablePage
@@ -73,7 +62,6 @@ class Playlist extends React.PureComponent {
         buttons={this.getButtons()}
         draggable={true}
         noDataMsg={NO_DATA_MSG}
-        onContextMenu={this.onContextMenu}
         onItemEdit={this.onItemEdit}
         onSettingsClick={this.onSettingsClick}
         title={this.props.playlistName}

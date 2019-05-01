@@ -43,50 +43,64 @@ class Track extends React.PureComponent {
     )
   }
 
+  getRemoveAction() {
+    const { actions, trackId, bulk, playlistName } = this.props
+    if (playlistName === constants.FULL_PLAYLIST) {
+      return (
+        <LibraryDelete
+          onClick={ev => {
+            actions.modalSet({ type: constants.modalTypes.TRACKS_DELETE })
+          }}
+        />
+      )
+    }
+    if (playlistName === constants.UPLOAD_PLAYLIST) {
+      return <PlaylistRemove onClick={actions.trackUploadsDelete} />
+    }
+    return (
+      <PlaylistRemove
+        onClick={ev => {
+          actions.tracksRemove(playlistName)
+        }}
+      />
+    )
+  }
+
   render() {
     const { actions, trackId, bulk, playlistName } = this.props
     return (
       <React.Fragment>
         {!bulk && this.getPlayOrPauseAction()}
 
-        {playlistName !== constants.DEFAULT_PLAYLIST && (
-          <NowPlayingAdd
+        {playlistName !== constants.DEFAULT_PLAYLIST &&
+          playlistName !== constants.UPLOAD_PLAYLIST && (
+            <NowPlayingAdd
+              onClick={ev => {
+                actions.playlistAdd(playlistName, constants.DEFAULT_PLAYLIST)
+              }}
+            />
+          )}
+
+        {playlistName !== constants.UPLOAD_PLAYLIST && (
+          <PlaylistAdd
             onClick={ev => {
-              actions.playlistAdd(playlistName, constants.DEFAULT_PLAYLIST)
+              actions.contextmenuNext({
+                type: constants.contextmenuTypes.PLAYLIST_ADD,
+                props: {
+                  currentPlaylist: playlistName
+                }
+              })
+              ev.preventDefault()
+              ev.stopPropagation()
             }}
           />
         )}
 
-        <PlaylistAdd
-          onClick={ev => {
-            actions.contextmenuNext({
-              type: constants.contextmenuTypes.PLAYLIST_ADD,
-              props: {
-                currentPlaylist: playlistName
-              }
-            })
-            ev.preventDefault()
-            ev.stopPropagation()
-          }}
-        />
-
-        {!bulk && <Download onClick={ev => actions.download(trackId)} />}
-
-        {playlistName !== constants.FULL_PLAYLIST && (
-          <PlaylistRemove
-            onClick={ev => {
-              actions.tracksRemove(playlistName)
-            }}
-          />
+        {!bulk && playlistName !== constants.UPLOAD_PLAYLIST && (
+          <Download onClick={ev => actions.download(trackId)} />
         )}
 
-        {playlistName === constants.FULL_PLAYLIST && (
-          <LibraryDelete
-            onClick={ev => {
-              actions.modalSet({ type: constants.modalTypes.TRACKS_DELETE })
-            }}
-          />
-        )}
+        {this.getRemoveAction()}
       </React.Fragment>
     )
   }
