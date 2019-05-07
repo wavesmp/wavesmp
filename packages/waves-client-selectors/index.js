@@ -3,7 +3,10 @@ const { createSelector } = require('reselect')
 const { DEFAULT_PLAYLIST, FULL_PLAYLIST } = require('waves-client-constants')
 
 const { getPlaylistSearch } = require('./base')
-const { getOrCreatePlaylistSelectors } = require('./playlist')
+const {
+  getOrCreatePlaylistSelectors,
+  getPlaylistSelectors
+} = require('./playlist')
 const { getFilteredSelection, removeSelection } = require('./selection')
 
 function getLibraryPlaylistSearch(state) {
@@ -15,6 +18,7 @@ function getDefaultPlaylistSearch(state) {
 }
 
 module.exports.getOrCreatePlaylistSelectors = getOrCreatePlaylistSelectors
+module.exports.getPlaylistSelectors = getPlaylistSelectors
 module.exports.getPlaylistSearch = getPlaylistSearch
 module.exports.getLibraryPlaylistSearch = getLibraryPlaylistSearch
 module.exports.getDefaultPlaylistSearch = getDefaultPlaylistSearch

@@ -45,7 +45,7 @@ export default async (store, ws, player, localState, history) => {
   })
 
   document.addEventListener('keydown', ev => {
-    store.dispatch(WavesActions.tracksKeyDown(ev))
+    store.dispatch(WavesActions.tracksKeyDown(ev, history))
   })
 
   /* When localStorage is loaded, update the state */
