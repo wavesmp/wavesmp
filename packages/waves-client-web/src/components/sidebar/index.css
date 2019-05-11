@@ -82,7 +82,7 @@
 #sidebar-container.mainbartransition-enter.mainbartransition-enter-active {
   bottom: 0px;
   transform: translateY(0%);
-  transition: transform 1000ms ease 1000ms;
+  transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
 }
 
 #sidebar-container.mainbartransition-leave {
@@ -93,7 +93,7 @@
 #sidebar-container.mainbartransition-leave.mainbartransition-leave-active {
   bottom: 0px;
   transform: translateY(100%);
-  transition: transform 1000ms ease;
+  transition: transform SIDEBAR_LEAVE_TIMEOUTms ease;
 }
 
 /* Playlist bar transition */
@@ -105,7 +105,7 @@
 #sidebar-container.playlistbartransition-enter.playlistbartransition-enter-active {
   bottom: 0px;
   transform: translateY(0%);
-  transition: transform 1000ms ease 1000ms;
+  transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
 }
 
 #sidebar-container.playlistbartransition-leave {
@@ -116,7 +116,7 @@
 #sidebar-container.playlistbartransition-leave.playlistbartransition-leave-active {
   bottom: 0px;
   transform: translateY(100%);
-  transition: transform 1000ms ease;
+  transition: transform SIDEBAR_LEAVE_TIMEOUTms ease;
 }
 
 @media only screen and (min-width: 516px) {
@@ -163,7 +163,8 @@
   #sidebar-container.mainbartransition-enter.mainbartransition-enter-active {
     width: var(--sidebar-width);
     transform: rotateY(0deg);
-    transition: transform 1000ms ease 1000ms, width 1000ms ease 1000ms;
+    transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms,
+      width SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
   }
 
   #sidebar-container.mainbartransition-leave {
@@ -174,7 +175,8 @@
   #sidebar-container.mainbartransition-leave.mainbartransition-leave-active {
     width: var(--transitionbar-width);
     transform: rotateY(90deg);
-    transition: transform 1000ms ease, width 1000ms ease;
+    transition: transform SIDEBAR_LEAVE_TIMEOUTms ease,
+      width SIDEBAR_LEAVE_TIMEOUTms ease;
   }
 
   /* Playlist bar transition */
@@ -186,7 +188,8 @@
   #sidebar-container.playlistbartransition-enter.playlistbartransition-enter-active {
     width: var(--playlistbar-width);
     transform: rotateY(0deg);
-    transition: transform 1000ms ease 1000ms, width 1000ms ease 1000ms;
+    transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms,
+      width SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
   }
 
   #sidebar-container.playlistbartransition-leave {
@@ -197,7 +200,8 @@
   #sidebar-container.playlistbartransition-leave.playlistbartransition-leave-active {
     width: var(--transitionbar-width);
     transform: rotateY(90deg);
-    transition: transform 1000ms ease, width 1000ms ease;
+    transition: transform SIDEBAR_LEAVE_TIMEOUTms ease,
+      width SIDEBAR_LEAVE_TIMEOUTms ease;
   }
 }
 

@@ -54,22 +54,22 @@ export default class SideBar extends React.PureComponent {
       <span>
         <CSSTransitionGroup
           transitionName='mainbartransition'
-          transitionEnterTimeout={2000}
-          transitionLeaveTimeout={1000}
+          transitionEnterTimeout={SIDEBAR_ENTER_TIMEOUT}
+          transitionLeaveTimeout={SIDEBAR_LEAVE_TIMEOUT}
         >
           {mainBar}
         </CSSTransitionGroup>
         <CSSTransitionGroup
           transitionName='playlistbartransition'
-          transitionEnterTimeout={2000}
-          transitionLeaveTimeout={1000}
+          transitionEnterTimeout={SIDEBAR_ENTER_TIMEOUT}
+          transitionLeaveTimeout={SIDEBAR_LEAVE_TIMEOUT}
         >
           {playlistBar}
         </CSSTransitionGroup>
         <CSSTransitionGroup
           transitionName='playlistbartransition'
-          transitionEnterTimeout={2000}
-          transitionLeaveTimeout={1000}
+          transitionEnterTimeout={SIDEBAR_ENTER_TIMEOUT}
+          transitionLeaveTimeout={SIDEBAR_LEAVE_TIMEOUT}
         >
           {settingsBar}
         </CSSTransitionGroup>
