@@ -5,19 +5,9 @@ import constants from 'waves-client-constants'
 
 import ContentEditable from './contenteditable'
 
-const PLAY_ICON = (
-  <i
-    className='fa fa-lg fa-play'
-    style={{ marginRight: '10px', color: '#52CA19' }}
-  />
-)
-const PAUSE_ICON = (
-  <i
-    className='fa fa-lg fa-pause'
-    style={{ marginRight: '10px', color: '#F17B10' }}
-  />
-)
-const PLAY_PAUSE_PADDING = <span style={{ paddingRight: '25px' }} />
+const PLAY_ICON = <i className='fa fa-lg fa-play table-play-icon' />
+const PAUSE_ICON = <i className='fa fa-lg fa-pause table-pause-icon' />
+const PLAY_PAUSE_PADDING = <span className='table-blank-icon' />
 
 export class Name extends React.PureComponent {
   emitChange = update => {
@@ -32,11 +22,7 @@ export class Name extends React.PureComponent {
     let playPausePadding
     if (index === sample.index) {
       playPausePadding = null
-      if (isPlaying) {
-        playPauseIcon = PLAY_ICON
-      } else {
-        playPauseIcon = PAUSE_ICON
-      }
+      playPauseIcon = isPlaying ? PLAY_ICON : PAUSE_ICON
     } else {
       playPauseIcon = null
       playPausePadding = PLAY_PAUSE_PADDING

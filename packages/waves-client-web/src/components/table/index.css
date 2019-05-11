@@ -43,3 +43,17 @@
 .table-sortable-icon {
   margin-left: 8px;
 }
+
+.table-play-icon {
+  color: #52ca19;
+  margin-right: 10px;
+}
+
+.table-pause-icon {
+  color: #f17b10;
+  margin-right: 10px;
+}
+
+.table-blank-icon {
+  padding-right: 25px;
+}
