@@ -15,10 +15,7 @@
 }
 
 .contextmenu-item {
-  /* Removes bullet on item */
   display: block;
-  /* Taken from bootstrap
-   * dropdown-menu>li>a */
   padding: 3px 20px;
   clear: both;
   font-weight: 400;
@@ -26,13 +23,11 @@
   color: #333;
   white-space: nowrap;
   border-color: var(--dropdown-color);
-  /* custom */
   text-align: left;
   cursor: pointer;
 }
 
 .contextmenu-item:hover {
-  /* From bootstrap */
   color: #262626;
   background-color: var(--dropdown-color-light);
 }

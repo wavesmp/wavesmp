@@ -1,17 +1,10 @@
 import React from 'react'
 
-import PageHeader from './pageheader'
 import './index.css'
 
 export default class ContentPage extends React.PureComponent {
   render() {
-    const {
-      title,
-      sidebar,
-      isPlayerVisible,
-      transitions,
-      ...other
-    } = this.props
+    const { title, sidebar, isPlayerVisible, transitions } = this.props
     let className
     if (transitions) {
       className = 'contentpage-container-transition '
@@ -30,7 +23,9 @@ export default class ContentPage extends React.PureComponent {
     return (
       <div className={className}>
         <div className='contentpage-panel'>
-          <PageHeader title={title} />
+          <div className='contentpage-title'>
+            <h1>{title}</h1>
+          </div>
           {this.props.children}
         </div>
       </div>
