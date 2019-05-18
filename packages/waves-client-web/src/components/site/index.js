@@ -12,12 +12,12 @@ import Toasts from '../toasts'
 
 class Site extends React.PureComponent {
   render() {
-    const { actions, location, history, toasts } = this.props
+    const { actions, location, history, theme, toasts } = this.props
     return (
       <React.Fragment>
         <MenuBar />
         <SignIn actions={actions} location={location} history={history} />
-        <Preview />
+        <Preview theme={theme} />
         <Toasts actions={actions} toasts={toasts} />
       </React.Fragment>
     )
@@ -32,6 +32,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
+    theme: state.account.theme,
     toasts: state.toasts
   }
 }
