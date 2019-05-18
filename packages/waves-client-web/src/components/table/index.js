@@ -138,7 +138,7 @@ export default class Table extends React.PureComponent {
 
   onRowMouseUp = ev => {
     const { actions, playlistName, transitions, displayItems } = this.props
-    if (this.clearOnMouseUpIndex) {
+    if (this.clearOnMouseUpIndex != null) {
       actions.selectionClearAndAdd(
         playlistName,
         this.clearOnMouseUpIndex,
@@ -148,7 +148,7 @@ export default class Table extends React.PureComponent {
       this.clearOnMouseUpIndex = null
       this.clearOnMouseUpTrackId = null
     }
-    if (this.editOnMouseUpIndex) {
+    if (this.editOnMouseUpIndex != null) {
       if (transitions) {
         this.setState({
           editingIndex: this.editOnMouseUpIndex,

@@ -610,7 +610,7 @@ function tracksKeyDown(ev, history) {
   return async (dispatch, getState, { player, ws }) => {
     const { key, target } = ev
     const { tagName, contentEditable } = target
-    if (tagName === 'INPUT' || contentEditable === true) {
+    if (tagName === 'INPUT' || contentEditable === 'true') {
       return
     }
 
