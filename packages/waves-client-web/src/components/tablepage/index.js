@@ -66,7 +66,7 @@ class TablePageData extends React.PureComponent {
           </div>
         )
       }
-      return <h3>{noDataMsg}</h3>
+      return <h3 className='tablepage-msg'>{noDataMsg}</h3>
     }
     return (
       <React.Fragment>
