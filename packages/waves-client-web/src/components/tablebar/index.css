@@ -1,9 +1,11 @@
 .tablebar {
-  margin-top: 15px;
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .tablebar-search-box {
-  margin-top: 19px;
   position: relative;
 }
 
@@ -34,10 +36,6 @@
   position: absolute;
   top: 5px;
   left: -30px;
-}
-
-.tablebar-buttons {
-  margin-top: 17px;
 }
 
 .tablebar-input {

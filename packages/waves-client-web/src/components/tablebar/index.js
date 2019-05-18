@@ -48,10 +48,8 @@ export default class TableBar extends React.PureComponent {
 
     return (
       <div className='tablebar'>
-        <div className='pull-left'>
-          <div className='tablebar-buttons'>{buttons}</div>
-        </div>
-        <div className='pull-right tablebar-search-box'>
+        <div>{buttons}</div>
+        <div className='tablebar-search-box'>
           {settingsComponent}
           <i className='fa fa-lg fa-search tablebar-search-icon' />
           <input
