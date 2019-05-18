@@ -13,8 +13,8 @@
   },
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.5.3",
-    "mongoose": "^5.4.2"
+    "bluebird": "^3.5.4",
+    "mongoose": "^5.5.9"
   },
   "devDependencies": {
     "waves-test-data": "file:../waves-test-data",

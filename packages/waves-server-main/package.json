@@ -10,14 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.5.3",
-    "commander": "^2.19.0",
+    "bluebird": "^3.5.4",
+    "commander": "^2.20.0",
     "waves-action-types": "file:../waves-action-types",
     "waves-encoder": "file:../waves-encoder",
     "waves-server-auth": "file:../waves-server-auth",
     "waves-server-db": "file:../waves-server-db",
     "waves-server-logger": "file:../waves-server-logger",
-    "ws": "^6.1.2"
+    "ws": "^7.0.0"
   },
   "devDependencies": {
     "waves-socket": "file:../waves-socket",
