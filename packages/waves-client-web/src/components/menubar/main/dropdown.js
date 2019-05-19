@@ -12,35 +12,22 @@ export default class Dropdown extends React.PureComponent {
     }
   }
 
-  renderDropdownHeader() {
-    const { header } = this.props
-    return (
-      <React.Fragment>
-        <li className='menubar-dropdown-header'>
-          {header.text}
-          <span className={header.classes} />{' '}
-        </li>
-        <li className='menubar-dropdown-divider' />
-      </React.Fragment>
-    )
-  }
-
   renderDropdown() {
-    const { items, header } = this.props
+    const { items, headerText, headerClass } = this.props
     return (
       <ul className='menubar-dropdown-menu'>
-        {header && this.renderDropdownHeader()}
+        <li className='menubar-dropdown-header'>
+          {headerText}
+          <i className={headerClass} />
+        </li>
+        <li className='menubar-dropdown-divider' />
         {items &&
           items.map(({ text, classes, onClick }, i) => (
             <li key={i}>
-              <a
-                className='menubar-dropdown-link'
-                href='javascript:'
-                onClick={onClick}
-              >
+              <div className='menubar-dropdown-item' onClick={onClick}>
                 {text}
-                <span className={classes} />
-              </a>
+                <i className={classes} />
+              </div>
             </li>
           ))}
       </ul>
@@ -51,13 +38,11 @@ export default class Dropdown extends React.PureComponent {
     const { iconClasses, dropdown, dropdownName } = this.props
     return (
       <div
-        className='menubar-profile-link'
+        className='menubar-dropdown-icon-container'
         data-toggle={DROPDOWN_DATA_VALUE}
         onClick={this.onIconClick}
       >
-        <a href='javascript:;'>
-          <i className={iconClasses} />
-        </a>
+        <i className={iconClasses} />
         {dropdown === dropdownName && this.renderDropdown()}
       </div>
     )

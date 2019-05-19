@@ -29,22 +29,16 @@ export default class UserSettings extends React.PureComponent {
     }
   ]
 
-  iconClasses = 'fa fa-lg fa-user'
-
-  header = {
-    text: this.props.userName,
-    classes: 'fa fa-user menubar-dropdown-item-icon'
-  }
-
   render() {
-    const { actions, dropdown } = this.props
+    const { actions, dropdown, userName } = this.props
     return (
       <Dropdown
         actions={actions}
         dropdown={dropdown}
         dropdownName={dropdownTypes.USER_SETTINGS}
-        iconClasses={this.iconClasses}
-        header={this.header}
+        iconClasses='fa fa-lg fa-user menubar-dropdown-icon'
+        headerText={userName}
+        headerClass='fa fa-user menubar-dropdown-item-icon'
         items={this.items}
       />
     )

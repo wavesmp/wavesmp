@@ -5,13 +5,6 @@ import { dropdownTypes, toastTypes } from 'waves-client-constants'
 import Dropdown from './dropdown'
 
 export default class Notifications extends React.PureComponent {
-  iconClasses = 'fa fa-lg fa-globe'
-
-  header = {
-    text: 'Notifications',
-    classes: 'fa fa-globe menubar-dropdown-item-icon'
-  }
-
   items = [
     {
       text: 'File name mismatches',
@@ -43,8 +36,9 @@ export default class Notifications extends React.PureComponent {
         actions={actions}
         dropdown={dropdown}
         dropdownName={dropdownTypes.NOTIFICATIONS}
-        iconClasses={this.iconClasses}
-        header={this.header}
+        iconClasses='fa fa-lg fa-globe menubar-dropdown-icon'
+        headerText='Notifications'
+        headerClass='fa fa-globe menubar-dropdown-item-icon'
         items={this.items}
       />
     )
