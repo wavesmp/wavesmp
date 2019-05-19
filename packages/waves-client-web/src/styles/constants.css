@@ -26,7 +26,6 @@
 
   --modal-close-btn-border: DARK_MODAL_CLOSE_BTN_BORDER;
   --modal-close-btn-hover-color: DARK_MODAL_CLOSE_BTN_HOVER_COLOR;
-  --modal-close-btn-hover-border-color: DARK_MODAL_CLOSE_BTN_HOVER_BORDER_COLOR;
 
   --table-color-hover: DARK_TABLE_COLOR_HOVER;
   --input-background-color: DARK_INPUT_BACKGROUND_COLOR;
@@ -74,7 +73,6 @@
 
   --modal-close-btn-border: LIGHT_MODAL_CLOSE_BTN_BORDER;
   --modal-close-btn-hover-color: LIGHT_MODAL_CLOSE_BTN_HOVER_COLOR;
-  --modal-close-btn-hover-border-color: LIGHT_MODAL_CLOSE_BTN_HOVER_BORDER_COLOR;
 
   --table-color-hover: LIGHT_TABLE_COLOR_HOVER;
   --input-background-color: LIGHT_INPUT_BACKGROUND_COLOR;

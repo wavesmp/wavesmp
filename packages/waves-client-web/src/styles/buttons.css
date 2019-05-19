@@ -180,7 +180,6 @@ a.btn.disabled {
 
 .btn-dropdown:hover {
   color: var(--modal-close-btn-hover-color);
-  border-color: var(--modal-close-btn-hover-border-color);
   background-color: var(--modal-close-btn-border);
 }
 
