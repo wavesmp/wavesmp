@@ -4,13 +4,15 @@ import { Route, Redirect } from 'react-router-dom'
 
 import { routes } from 'waves-client-constants'
 
-import './index.css'
-
 /* Redirect to site if not authenticated */
 class PrivateRoute extends React.PureComponent {
   renderRoute = routeProps => {
     const { account, component: Component } = this.props
-    const { user } = account
+    const { fetchingUser, user } = account
+    if (fetchingUser) {
+      /* May want to display loading icon if this takes long */
+      return null
+    }
     if (user) {
       return <Component {...routeProps} />
     }
@@ -36,11 +38,8 @@ class PublicRoute extends React.PureComponent {
     const { account, component: Component } = this.props
     const { fetchingUser, user } = account
     if (fetchingUser) {
-      return (
-        <div className='absolute-center'>
-          <i className='fa fa-spinner fa-pulse routes-loading' />
-        </div>
-      )
+      /* May want to display loading icon if this takes long */
+      return null
     }
     if (user) {
       const defaultFrom = { from: { pathname: routes.defaultRoute } }

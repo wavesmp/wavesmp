@@ -169,3 +169,56 @@ table input[type='checkbox'] {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
+
+.shelf {
+  background-color: hsl(0, 0%, 89%);
+}
+
+.shelf-btn {
+  height: 34px;
+  width: 60px;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 5px;
+}
+
+.shelf-btn:not(:first-child) {
+  margin-left: 10px;
+}
+
+.shelf-search-box {
+  width: 200px;
+  height: 22px;
+  border-radius: 4px;
+}
+
+.shelf-row {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--separator-color);
+}
+
+.shelf-cell {
+  width: 35%;
+  height: 24px;
+  margin: 10px;
+}
+
+.shelf-cell-lg {
+  width: 55%;
+}
+
+@media only screen and (min-width: 768px) {
+  .shelf-row {
+    flex-direction: row;
+    border-bottom: 0;
+  }
+
+  .shelf-cell {
+    width: 25%;
+  }
+
+  .shelf-cell-lg {
+    width: 40%;
+  }
+}

@@ -43,9 +43,27 @@ class TablePageData extends React.PureComponent {
     } = this.props
 
     if (!loaded) {
+      const numRows = 8
+      const rows = Array(numRows)
+      for (let i = 0; i < numRows; i += 1) {
+        rows[i] = (
+          <div key={i} className='shelf-row'>
+            <div className='shelf shelf-cell shelf-cell-lg' />
+            <div className='shelf shelf-cell' />
+            <div className='shelf shelf-cell' />
+          </div>
+        )
+      }
       return (
-        <div className='tablepage-msg'>
-          <i className='fa fa-spinner fa-pulse fa-5x' />
+        <div>
+          <div className='tablebar'>
+            <div>
+              <div className='shelf shelf-btn' />
+              <div className='shelf shelf-btn' />
+            </div>
+            <div className='shelf shelf-search-box' />
+          </div>
+          <div className='table'>{rows}</div>
         </div>
       )
     }
@@ -61,7 +79,6 @@ class TablePageData extends React.PureComponent {
               onSettingsClick={onSettingsClick}
               history={history}
             />
-            <div className='clearfix' />
             <h3 className='tablepage-msg'>No data</h3>
           </div>
         )

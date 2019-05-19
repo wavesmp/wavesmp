@@ -4,7 +4,6 @@ const { UploadError } = require('waves-client-errors')
 const S3Client = require('./client')
 
 const STREAM_ERROR_RETRIES = 1
-const TRACKS_SOURCE = 's3'
 
 class S3Player {
   constructor(opts) {
@@ -121,7 +120,7 @@ class S3Player {
   async _upload(track) {
     /* Make a copy. In upload failure case, original
      * 'file' track remains intact */
-    track = { ...track, source: TRACK_SOURCE }
+    track = { ...track, source: 's3' }
     try {
       await this.client.putTrack(track.id, track.file)
       return track
