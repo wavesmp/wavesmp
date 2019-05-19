@@ -10,8 +10,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "request": "^2.88.0",
-    "request-promise": "^4.2.4",
-    "waves-server-logger": "file:../waves-server-logger"
+    "google-auth-library": "^4.0.0"
   }
 }
