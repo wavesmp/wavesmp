@@ -6,56 +6,53 @@ import { routes } from 'waves-client-constants'
 
 import './index.css'
 
-/* Redirect to main site if not authenticated */
+/* Redirect to site if not authenticated */
 class PrivateRoute extends React.PureComponent {
-  render() {
-    const { account, component: Component, ...rest } = this.props
+  renderRoute = routeProps => {
+    const { account, component: Component } = this.props
     const { user } = account
+    if (user) {
+      return <Component {...routeProps} />
+    }
     return (
-      <Route
-        {...rest}
-        render={props =>
-          user ? (
-            <Component {...props} />
-          ) : (
-            <Redirect
-              to={{
-                pathname: '/',
-                state: { from: props.location }
-              }}
-            />
-          )
-        }
-      />
-    )
-  }
-}
-
-/* Redirect to main app if authenticated */
-class PublicRoute extends React.PureComponent {
-  render() {
-    const { account, component: Component, ...rest } = this.props
-    const { fetchingUser, user } = account
-    return (
-      <Route
-        {...rest}
-        render={props => {
-          if (fetchingUser) {
-            return (
-              <div className='absolute-center'>
-                <i className='fa fa-spinner fa-pulse routes-loading' />
-              </div>
-            )
-          }
-          if (user) {
-            const defaultFrom = { from: { pathname: routes.defaultRoute } }
-            const { from } = props.location.state || defaultFrom
-            return <Redirect to={from} />
-          }
-          return <Component {...props} />
+      <Redirect
+        to={{
+          pathname: '/',
+          state: { from: routeProps.location }
         }}
       />
     )
+  }
+
+  render() {
+    const { path } = this.props
+    return <Route path={path} render={this.renderRoute} />
+  }
+}
+
+/* Redirect to app if authenticated */
+class PublicRoute extends React.PureComponent {
+  renderRoute = routeProps => {
+    const { account, component: Component } = this.props
+    const { fetchingUser, user } = account
+    if (fetchingUser) {
+      return (
+        <div className='absolute-center'>
+          <i className='fa fa-spinner fa-pulse routes-loading' />
+        </div>
+      )
+    }
+    if (user) {
+      const defaultFrom = { from: { pathname: routes.defaultRoute } }
+      const { from } = routeProps.location.state || defaultFrom
+      return <Redirect to={from} />
+    }
+    return <Component {...routeProps} />
+  }
+
+  render() {
+    const { path, exact } = this.props
+    return <Route path={path} exact={exact} render={this.renderRoute} />
   }
 }
 
