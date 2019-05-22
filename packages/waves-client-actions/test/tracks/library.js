@@ -16,7 +16,7 @@ const track2 = { ...baseTrack2, id: mongoid() }
 
 describe('#library()', () => {
   it('track info update', () => {
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
 
     const id = track1.id
     const key = 'title'

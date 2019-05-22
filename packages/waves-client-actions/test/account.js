@@ -79,6 +79,7 @@ describe('#account()', () => {
   })
 
   it('#signOut()', async () => {
+    const ws = new WavesSocket(() => ({}))
     const auth = new Auth({})
     const localStorage = new LocalStorage(LOCAL_STORAGE_PATH)
     const localState = new LocalState(localStorage)
@@ -107,52 +108,26 @@ describe('#account()', () => {
       .once()
       .withExactArgs('lastIdp', '')
 
-    await thunk(dispatchMock, undefined, { auth, localState })
+    const wsMock = sinon.mock(ws)
+    const wsExpect = wsMock
+      .expects('setOnConnect')
+      .once()
+      .withExactArgs(null)
+
+    await thunk(dispatchMock, undefined, { auth, ws, localState })
 
     dispatchMock.verify()
     authMock.verify()
     localStateMock.verify()
     localStorage._deleteLocation()
-  })
-
-  it('sign in auth denied', async () => {
-    const auth = new Auth({})
-
-    const thunk = actions.signIn(testIdp)
-
-    const action = { type: types.ACCOUNT_LOGIN, user: null }
-
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
-
-    const authMock = sinon.mock(auth)
-    const authFirstExpect = authMock
-      .expects('signIn')
-      .once()
-      .withExactArgs(testIdp)
-    const authSecondExpect = authMock
-      .expects('tryAutoLogin')
-      .once()
-      .withExactArgs(testIdp)
-      .returns(null)
-
-    await thunk(dispatchMock, undefined, { auth })
-
-    dispatchMock.verify()
-    authMock.verify()
+    wsMock.verify()
   })
 
   it('sign in auth not verified', async () => {
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
     const auth = new Auth({})
 
     const thunk = actions.signIn(testIdp)
-
-    assert.isDefined(types.ACCOUNT_LOGIN)
-    const action = { type: types.ACCOUNT_LOGIN, user: null }
-
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
 
     const authMock = sinon.mock(auth)
     const authFirstExpect = authMock
@@ -166,22 +141,26 @@ describe('#account()', () => {
       .returns({ token: testToken })
 
     const wsMock = sinon.mock(ws)
-    const loginErr = 'Waves internal server error'
+    const loginErr = new Error('Waves internal server error')
     const wsExpect = wsMock
       .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.ACCOUNT_LOGIN, { token: testToken, idp: testIdp })
       .rejects(loginErr)
 
-    await thunk(dispatchMock, undefined, { auth, ws })
+    try {
+      await thunk(undefined, undefined, { auth, ws })
+      assert.fail('Expected sign in to throw')
+    } catch (err) {
+      assert.strictEqual(err, loginErr)
+    }
 
-    dispatchMock.verify()
     authMock.verify()
     wsMock.verify()
   })
 
   it('sign in successful', async () => {
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
     const auth = new Auth({})
     const localStorage = new LocalStorage(LOCAL_STORAGE_PATH)
     const localState = new LocalState(localStorage)

@@ -11,6 +11,7 @@ import {
   routes
 } from 'waves-client-constants'
 
+import Boundary from '../boundary'
 import SideBar from '../sidebar'
 import MenuBar from '../menubar/main'
 import Upload from '../upload'
@@ -59,6 +60,7 @@ class MainApp extends React.PureComponent {
 
   render() {
     const {
+      err,
       modal,
       sidebar,
       playlists,
@@ -72,34 +74,33 @@ class MainApp extends React.PureComponent {
       toasts
     } = this.props
     const { user } = account
-    if (!user) {
-      return null
-    }
     return (
-      <div onClick={this.onClick}>
-        <Route path={routes.nowplaying} component={NowPlaying} />
-        <Route path={routes.library} component={Library} />
-        <Route path={routes.upload} component={Upload} />
-        <Route path={routes.playlist} component={Playlist} />
-        <SideBar
-          actions={actions}
-          sidebar={sidebar}
-          playlists={playlists}
-          playing={playing}
-          pathname={location.pathname}
-          userName={user.name}
-        />
-        <MenuBar
-          actions={actions}
-          dropdown={dropdown}
-          playing={playing}
-          history={history}
-          userName={user.name}
-        />
-        <ContextMenu contextmenu={contextmenu} />
-        <Modal history={history} modal={modal} />
-        <Toasts actions={actions} toasts={toasts} />
-      </div>
+      <Boundary err={err}>
+        <div onClick={this.onClick}>
+          <Route path={routes.nowplaying} component={NowPlaying} />
+          <Route path={routes.library} component={Library} />
+          <Route path={routes.upload} component={Upload} />
+          <Route path={routes.playlist} component={Playlist} />
+          <SideBar
+            actions={actions}
+            sidebar={sidebar}
+            playlists={playlists}
+            playing={playing}
+            pathname={location.pathname}
+            userName={user.name}
+          />
+          <MenuBar
+            actions={actions}
+            dropdown={dropdown}
+            playing={playing}
+            history={history}
+            userName={user.name}
+          />
+          <ContextMenu contextmenu={contextmenu} />
+          <Modal history={history} modal={modal} />
+          <Toasts actions={actions} toasts={toasts} />
+        </div>
+      </Boundary>
     )
   }
 }
@@ -110,6 +111,7 @@ function mapStateToProps(state) {
     playing: state.tracks.playing,
     sidebar: state.sidebar,
     contextmenu: state.contextmenu,
+    err: state.err,
     modal: state.modal,
     toasts: state.toasts,
     account: state.account,

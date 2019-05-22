@@ -39,7 +39,7 @@ describe('#tracks()', async () => {
   it('track toggle test playlist', async () => {
     const testIndex = 'testIndex'
 
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
     const player = new Player({})
 
     assert.isDefined(types.TRACK_TOGGLE)
@@ -110,7 +110,7 @@ describe('#tracks()', async () => {
   })
 
   it('track next on playlist without search', async () => {
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
     const player = new Player({})
     const playlistName = testPlaylistName1
 
@@ -257,7 +257,7 @@ describe('#tracks()', async () => {
 
   it('#tracksUpload()', async () => {
     const player = new Player({})
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
 
     const sourceType = 's3'
     const fileName1 = 'testFileName1'
@@ -402,7 +402,7 @@ describe('#tracks()', async () => {
     const tracks = { library, playing: {}, playlists }
     const account = { rowsPerPage: 25 }
 
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
 
     const thunk = actions.tracksRemove(testPlaylistName1)
 

@@ -222,3 +222,35 @@ table input[type='checkbox'] {
     width: 40%;
   }
 }
+
+.danger {
+  color: #df3e3e;
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
+.main-err-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-err-sign {
+  display: flex;
+}
+
+.fa.main-err-icon {
+  font-size: 10em;
+  margin-right: 10px;
+}
+
+.main-err-title {
+  font-weight: bolder;
+  marginbottom: 0;
+}
+
+.main-err-text {
+  display: flex;
+  flex-direction: column;
+}

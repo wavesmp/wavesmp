@@ -10,6 +10,8 @@ const actionTypes = keyMirror({
   ACCOUNT_SET_FETCHING_USER: null,
   ACCOUNT_SET_SETTINGS: null,
 
+  ERR: null,
+
   DROPDOWN_SET: null,
 
   MODAL_SET: null,

@@ -13,7 +13,9 @@ export default class SignIn extends React.PureComponent {
   signIn = async () => {
     const { history, actions, location } = this.props
     try {
-      const user = await actions.signIn('google')
+      const idp = 'google'
+      const user = await actions.signIn(idp)
+      actions.retryLoginOnConnect(idp)
       const from = location.state.from || { pathname: routes.defaultRoute }
       history.push(from)
     } catch (err) {

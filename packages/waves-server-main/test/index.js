@@ -56,7 +56,7 @@ const BEST_EFFORT_MESSAGE_TIMEOUT =
 
       it('Start client', async () => {
         const url = `ws://localhost:${TEST_PORT}`
-        wavesSocket = new WavesSocket(new WebSocket(url))
+        wavesSocket = new WavesSocket(() => new WebSocket(url))
       })
 
       it('Login fail', async () => {
@@ -262,6 +262,7 @@ const BEST_EFFORT_MESSAGE_TIMEOUT =
 
       it('Close server', async () => {
         await wavesServer.close()
+        wavesSocket.close()
       })
     })
   })

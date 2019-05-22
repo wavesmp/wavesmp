@@ -31,7 +31,7 @@ describe('#playlists()', () => {
   })
 
   it('#playlistCopy()', () => {
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
 
     const thunk = actions.playlistCopy(testPlaylistName1, testPlaylistName2)
 
@@ -59,7 +59,7 @@ describe('#playlists()', () => {
   })
 
   it('#playlistDelete()', () => {
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
 
     const thunk = actions.playlistDelete(testPlaylistName1)
 
@@ -85,7 +85,7 @@ describe('#playlists()', () => {
   })
 
   it('#playlistMove()', () => {
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
 
     const thunk = actions.playlistMove(testPlaylistName1, testPlaylistName2)
 
@@ -136,7 +136,7 @@ describe('#playlists()', () => {
     const tracks = { playlists, library }
     const account = { rowsPerPage: 25 }
 
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
 
     const thunk = actions.playlistAdd(source, dest)
 
@@ -167,7 +167,7 @@ describe('#playlists()', () => {
 
   it('#playlistCreate()', async () => {
     const dispatchMock = sinon.mock()
-    const ws = new WavesSocket({})
+    const ws = new WavesSocket(() => ({}))
     const wsMock = sinon.mock(ws)
 
     const playlistName = testPlaylistName1

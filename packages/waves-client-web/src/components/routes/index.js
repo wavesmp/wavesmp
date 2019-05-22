@@ -4,12 +4,43 @@ import { Route, Redirect } from 'react-router-dom'
 
 import { routes } from 'waves-client-constants'
 
+import './index.css'
+
+const LOADING_TIMEOUT = 4000
+
+function LoadingComponent() {
+  return (
+    <div className='absolute-center routes-loading'>
+      <i className='fa fa-spinner fa-pulse routes-loading-icon' />
+      <h1>Taking longer than usual...</h1>
+    </div>
+  )
+}
+
 /* Redirect to site if not authenticated */
 class PrivateRoute extends React.PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = { loading: false }
+  }
+
+  componentWillMount() {
+    this.loadingTimeout = setTimeout(this.onLoadingTimeout, LOADING_TIMEOUT)
+  }
+
+  onLoadingTimeout = () => {
+    if (this.props.account.fetchingUser) {
+      this.setState({ loading: true })
+    }
+  }
+
   renderRoute = routeProps => {
     const { account, component: Component } = this.props
     const { fetchingUser, user } = account
     if (fetchingUser) {
+      if (this.state.loading) {
+        return <LoadingComponent />
+      }
       /* May want to display loading icon if this takes long */
       return null
     }
@@ -34,11 +65,28 @@ class PrivateRoute extends React.PureComponent {
 
 /* Redirect to app if authenticated */
 class PublicRoute extends React.PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = { loading: false }
+  }
+
+  componentWillMount() {
+    this.loadingTimeout = setTimeout(this.onLoadingTimeout, LOADING_TIMEOUT)
+  }
+
+  onLoadingTimeout = () => {
+    if (this.props.account.fetchingUser) {
+      this.setState({ loading: true })
+    }
+  }
+
   renderRoute = routeProps => {
     const { account, component: Component } = this.props
     const { fetchingUser, user } = account
     if (fetchingUser) {
-      /* May want to display loading icon if this takes long */
+      if (this.state.loading) {
+        return <LoadingComponent />
+      }
       return null
     }
     if (user) {

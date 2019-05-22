@@ -23,7 +23,7 @@ import { googleAuthOpts, s3Opts, server, defaultTrackSource } from './config'
 import storeListener from './listener'
 
 const history = createBrowserHistory()
-const ws = new WavesSocket(new WebSocket(server))
+const ws = new WavesSocket(() => new WebSocket(server))
 const auth = new Auth({ google: googleAuthOpts })
 const player = new Player({ s3: s3Opts, file: undefined, defaultTrackSource })
 const localState = new LocalState(localStorage)

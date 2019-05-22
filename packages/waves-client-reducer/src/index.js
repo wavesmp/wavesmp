@@ -3,6 +3,7 @@ const { combineReducers } = require('redux')
 const account = require('./account')
 const contextmenu = require('./contextmenu')
 const dropdown = require('./dropdown')
+const err = require('./err')
 const modal = require('./modal')
 const sidebar = require('./sidebar')
 const toasts = require('./toasts')
@@ -13,6 +14,7 @@ const combined = combineReducers({
   tracks,
   contextmenu,
   dropdown,
+  err,
   modal,
   sidebar,
   toasts,

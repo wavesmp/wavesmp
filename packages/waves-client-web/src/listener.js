@@ -56,14 +56,19 @@ export default async (store, ws, player, localState, history) => {
     localState.getItem('machineId'),
     localState.getItem('theme')
   ])
-  if (lastIdp) {
-    store.dispatch(WavesActions.tryAutoLogin(lastIdp))
-  } else {
-    // fetchingUser initially true
-    store.dispatch(WavesActions.accountSetFetchingUser(false))
-  }
   store.dispatch(
     WavesActions.accountSetSettings(new Set(columns), rowsPerPage, theme)
   )
   ObjectID.setMachineID(machineId)
+  if (lastIdp) {
+    try {
+      await store.dispatch(WavesActions.tryAutoLogin(lastIdp))
+      store.dispatch(WavesActions.retryLoginOnConnect(lastIdp))
+    } catch (err) {
+      store.dispatch(WavesActions.err(err))
+      store.dispatch(WavesActions.accountSetFetchingUser(false))
+    }
+  } else {
+    store.dispatch(WavesActions.accountSetFetchingUser(false))
+  }
 }

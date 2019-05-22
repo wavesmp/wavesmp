@@ -1,6 +1,7 @@
 export * from './account'
 export * from './contextmenu'
 export * from './dropdown'
+export * from './err'
 export * from './modal'
 export * from './router'
 export * from './sidebar'
