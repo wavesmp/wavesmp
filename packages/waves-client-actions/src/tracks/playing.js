@@ -16,7 +16,7 @@ function play() {
       dispatch({ type: types.PLAYING_PLAY })
       await player.play()
     } catch (err) {
-      toastAdd({ type: toastTypes.Error, msg: err.toString() })(dispatch)
+      dispatch(toastAdd({ type: toastTypes.Error, msg: err.toString() }))
       console.log('Failed to start playing')
       console.log(err)
     }

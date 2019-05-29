@@ -120,7 +120,7 @@ async function _trackNext(
     try {
       await player.trackNext(nextTrack, isPlaying)
     } catch (err) {
-      toastAdd({ type: toastTypes.Error, msg: err.toString() })(dispatch)
+      dispatch(toastAdd({ type: toastTypes.Error, msg: err.toString() }))
     }
   } else {
     player.pause()
@@ -208,22 +208,24 @@ async function handleUploadPromises(promises, dispatch) {
         const track = await promise
         const { file } = track
         delete track.file
-        toastAdd({ type: toastTypes.Success, msg: `Uploaded ${file.name}` })(
-          dispatch
+        dispatch(
+          toastAdd({ type: toastTypes.Success, msg: `Uploaded ${file.name}` })
         )
         uploaded.push(track)
       } catch (err) {
         if (err instanceof UploadError) {
-          toastAdd({
-            type: toastTypes.Error,
-            msg: `${err.track.file.name}: ${err.cause}`
-          })(dispatch)
+          dispatch(
+            toastAdd({
+              type: toastTypes.Error,
+              msg: `${err.track.file.name}: ${err.cause}`
+            })
+          )
           console.log('Track upload failure')
           console.log(err)
           console.log(err.cause)
         } else {
           // Should not be reached. Here temporarily
-          toastAdd({ type: toastTypes.Error, msg: err.toString() })
+          dispatch(toastAdd({ type: toastTypes.Error, msg: err.toString() }))
           console.log('Expected upload error but got:')
           console.log(err)
         }
@@ -261,8 +263,11 @@ function tracksUpload(trackSource) {
     } catch (serverErr) {
       console.log('Failed to upload tracks to server')
       console.log(serverErr)
-      toastAdd({ type: toastTypes.Error, msg: `Upload failure: ${serverErr}` })(
-        dispatch
+      dispatch(
+        toastAdd({
+          type: toastTypes.Error,
+          msg: `Upload failure: ${serverErr}`
+        })
       )
       result.serverErr = serverErr
       return result
@@ -282,7 +287,7 @@ function tracksUpload(trackSource) {
         uploadedIds
       )
     })
-    tracksUpdate(uploaded)(dispatch, getState)
+    dispatch(tracksUpdate(uploaded))
     return result
   }
 }
@@ -294,7 +299,7 @@ function getTrackById(id, library, uploads) {
 function handleDeleteErr(err, dispatch) {
   const { track, code, message } = err
   const name = track.title || track.artist || track.album || track.genre
-  toastAdd({ type: toastTypes.Error, msg: `${name}: ${message}` })(dispatch)
+  dispatch(toastAdd({ type: toastTypes.Error, msg: `${name}: ${message}` }))
   console.log(`Failed to delete track ${name}: ${code} - ${message}`)
 }
 
@@ -313,14 +318,14 @@ async function handleDeletePromises(promises, dispatch) {
           handleDeleteErr(err, dispatch)
         }
         for (const track of deleted) {
-          toastAdd({ type: toastTypes.Success, msg: `Deleted ${name}` })(
-            dispatch
+          dispatch(
+            toastAdd({ type: toastTypes.Success, msg: `Deleted ${name}` })
           )
         }
       } catch (err) {
         serverErrs.push(err)
-        toastAdd({ type: toastTypes.Error, msg: `Delete failure: ${err}` })(
-          dispatch
+        dispatch(
+          toastAdd({ type: toastTypes.Error, msg: `Delete failure: ${err}` })
         )
         console.log('Error deleting from server:')
         console.log(err)
@@ -413,8 +418,8 @@ function tracksDelete() {
         deleteIds: [...deletedIds]
       })
     } catch (err) {
-      toastAdd({ type: toastTypes.Error, msg: `Delete failure: ${err}` })(
-        dispatch
+      dispatch(
+        toastAdd({ type: toastTypes.Error, msg: `Delete failure: ${err}` })
       )
       result.serverErrs.push(err)
       console.log('Failed to delete tracks from server')
@@ -620,9 +625,9 @@ function tracksKeyDown(ev, history) {
         if (track) {
           ev.preventDefault()
           if (isPlaying) {
-            playing.pause()(dispatch, getState, { player })
+            dispatch(playing.pause())
           } else {
-            await playing.play()(dispatch, getState, { player })
+            await dispatch(playing.play())
           }
           return
         }

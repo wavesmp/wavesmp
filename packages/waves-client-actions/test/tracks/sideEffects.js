@@ -25,7 +25,7 @@ describe('#sideEffects()', async () => {
     const player = new Player({})
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once()
+    const dispatchExpect = dispatchMock.twice()
 
     const thunk = actions.download(track1.id)
 
@@ -42,13 +42,19 @@ describe('#sideEffects()', async () => {
     const firstCallArgs = firstDisptachCall.args
     assert.lengthOf(firstCallArgs, 1)
     const firstCallArg = firstCallArgs[0]
-    assert.lengthOf(Object.keys(firstCallArg), 2)
-    assert.strictEqual(firstCallArg.type, types.TOAST_ADD)
-    const firstCallToast = firstCallArg.toast
-    assert.lengthOf(Object.keys(firstCallToast), 3)
-    assert.strictEqual(firstCallToast.type, toastTypes.Success)
-    assert.strictEqual(firstCallToast.msg, 'Download started')
-    assert.isNumber(firstCallToast.id)
+    firstCallArg(dispatchMock)
+
+    const secondDispatchCall = dispatchExpect.secondCall
+    const secondCallArgs = secondDispatchCall.args
+    assert.lengthOf(secondCallArgs, 1)
+    const secondCallArg = secondCallArgs[0]
+    assert.lengthOf(Object.keys(secondCallArg), 2)
+    assert.strictEqual(secondCallArg.type, types.TOAST_ADD)
+    const secondCallToast = secondCallArg.toast
+    assert.lengthOf(Object.keys(secondCallToast), 3)
+    assert.strictEqual(secondCallToast.type, toastTypes.Success)
+    assert.strictEqual(secondCallToast.msg, 'Download started')
+    assert.isNumber(secondCallToast.id)
 
     playerMock.verify()
     dispatchMock.verify()

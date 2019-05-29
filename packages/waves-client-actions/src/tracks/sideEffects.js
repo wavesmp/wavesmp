@@ -10,11 +10,13 @@ function download(id) {
 
     try {
       await player.download(track)
-      toastAdd({ type: toastTypes.Success, msg: 'Download started' })(dispatch)
+      dispatch(toastAdd({ type: toastTypes.Success, msg: 'Download started' }))
     } catch (err) {
       console.log('Download failed')
       console.log(err)
-      toastAdd({ type: toastTypes.Error, msg: `Download failed: ${err}` })
+      dispatch(
+        toastAdd({ type: toastTypes.Error, msg: `Download failed: ${err}` })
+      )
     }
   }
 }

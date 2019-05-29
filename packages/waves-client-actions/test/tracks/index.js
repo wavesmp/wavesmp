@@ -3,6 +3,9 @@ const mongoid = require('mongoid-js')
 const { URLSearchParams } = require('url')
 const sinon = require('sinon')
 
+const actions = require('../../src/tracks')
+const { toastAdd } = require('../../src/toasts')
+
 const types = require('waves-action-types')
 const {
   DEFAULT_PLAYLIST,
@@ -32,8 +35,6 @@ const library = {
   [id1]: track1,
   [id2]: track2
 }
-
-const actions = require('../../src/tracks')
 
 describe('#tracks()', async () => {
   it('track toggle test playlist', async () => {
@@ -317,9 +318,9 @@ describe('#tracks()', async () => {
       })
     )
 
-    const secondDisptachCall = dispatchExpect.secondCall
+    const secondDispatchCall = dispatchExpect.secondCall
     assert.isTrue(
-      secondDisptachCall.calledWithExactly({
+      secondDispatchCall.calledWithExactly({
         type: types.UPLOAD_TRACKS_UPDATE,
         ids: uploadIds,
         key: 'uploadProgress',
@@ -328,36 +329,26 @@ describe('#tracks()', async () => {
     )
 
     assert.isDefined(types.TOAST_ADD)
-    const thirdDisptachCall = dispatchExpect.thirdCall
-    const thirdCallArgs = thirdDisptachCall.args
+    const thirdDispatchCall = dispatchExpect.thirdCall
+    const thirdCallArgs = thirdDispatchCall.args
     assert.lengthOf(thirdCallArgs, 1)
     const thirdCallArg = thirdCallArgs[0]
-    assert.lengthOf(Object.keys(thirdCallArg), 2)
-    assert.strictEqual(thirdCallArg.type, types.TOAST_ADD)
-    const thirdCallToast = thirdCallArg.toast
-    assert.lengthOf(Object.keys(thirdCallToast), 3)
-    assert.strictEqual(thirdCallToast.type, toastTypes.Success)
-    assert.strictEqual(thirdCallToast.msg, `Uploaded ${fileName1}`)
-    assert.isNumber(thirdCallToast.id)
+    /* Toast add function */
+    assert.isFunction(thirdCallArg)
 
     assert.isDefined(types.TOAST_ADD)
-    const fourthDisptachCall = dispatchExpect.getCall(3)
-    const fourthCallArgs = fourthDisptachCall.args
+    const fourthDispatchCall = dispatchExpect.getCall(3)
+    const fourthCallArgs = fourthDispatchCall.args
     assert.lengthOf(fourthCallArgs, 1)
     const fourthCallArg = fourthCallArgs[0]
-    assert.lengthOf(Object.keys(fourthCallArg), 2)
-    assert.strictEqual(fourthCallArg.type, types.TOAST_ADD)
-    const fourthCallToast = fourthCallArg.toast
-    assert.lengthOf(Object.keys(fourthCallToast), 3)
-    assert.strictEqual(fourthCallToast.type, toastTypes.Success)
-    assert.strictEqual(fourthCallToast.msg, `Uploaded ${fileName2}`)
-    assert.isNumber(fourthCallToast.id)
+    /* Toast add function */
+    assert.isFunction(fourthCallArg)
 
     assert.isDefined(types.TRACK_UPLOADS_DELETE)
     const uploadedIds = new Set(uploadIds)
-    const fifthDisptachCall = dispatchExpect.getCall(4)
+    const fifthDispatchCall = dispatchExpect.getCall(4)
     assert.isTrue(
-      fifthDisptachCall.calledWithExactly({
+      fifthDispatchCall.calledWithExactly({
         type: types.TRACK_UPLOADS_DELETE,
         deleteIds: uploadedIds,
         playlist: {
@@ -368,13 +359,11 @@ describe('#tracks()', async () => {
       })
     )
 
-    const sixthDisptachCall = dispatchExpect.getCall(5)
-    assert.isTrue(
-      sixthDisptachCall.calledWithExactly({
-        type: types.TRACKS_UPDATE,
-        libraryById: uploads
-      })
-    )
+    const sixthDispatchCall = dispatchExpect.getCall(5)
+    const sixthCallArgs = sixthDispatchCall.args
+    assert.lengthOf(sixthCallArgs, 1)
+    const sixthCallArg = sixthCallArgs[0]
+    assert.isFunction(sixthCallArg)
 
     dispatchMock.verify()
     playerMock.verify()
