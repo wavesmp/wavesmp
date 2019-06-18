@@ -2,6 +2,8 @@ const types = require('waves-action-types')
 const { DEFAULT_PLAYLIST } = require('waves-client-constants')
 const { getFilteredSelection } = require('waves-client-selectors')
 
+const { reorder } = require('./reorder')
+
 function playlistsUpdate(update) {
   return { type: types.PLAYLISTS_UPDATE, update }
 }
@@ -56,11 +58,32 @@ function playlistCreate(playlistName) {
   }
 }
 
+function playlistReorder(playlistName, insertAt) {
+  return async (dispatch, getState, { ws }) => {
+    const state = getState()
+    const filteredSelection = getFilteredSelection(state, playlistName)
+    const playlist = state.tracks.playlists[playlistName]
+    const { reordered, newSelection, newIndex } = reorder(
+      playlist,
+      filteredSelection,
+      insertAt
+    )
+    dispatch({
+      type: types.PLAYLIST_REORDER,
+      playlistName,
+      reordered,
+      newSelection,
+      newIndex
+    })
+  }
+}
+
 module.exports.playlistsUpdate = playlistsUpdate
 module.exports.playlistCopy = playlistCopy
 module.exports.playlistDelete = playlistDelete
 module.exports.playlistMove = playlistMove
 module.exports.playlistAdd = playlistAdd
 module.exports.playlistCreate = playlistCreate
+module.exports.playlistReorder = playlistReorder
 
 Object.assign(module.exports, require('./selection'))
