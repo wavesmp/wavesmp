@@ -47,6 +47,20 @@ class Server {
         }
       },
 
+      [types.PLAYLIST_REORDER]: async (ws, user, data, reqId) => {
+        const { playlistName, selection, insertAt } = data
+        log.info(`Reordering playlist ${playlistName}`)
+        await this.storage.playlistReorder(
+          user,
+          playlistName,
+          selection,
+          insertAt
+        )
+        if (reqId) {
+          this.sendMessage(ws, types.PLAYLIST_REORDER, {}, reqId)
+        }
+      },
+
       [types.PLAYLIST_COPY]: async (ws, user, data, reqId) => {
         const { src, dest } = data
         log.info('Copying playlist')

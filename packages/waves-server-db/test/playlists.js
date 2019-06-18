@@ -1,11 +1,7 @@
 const { assert } = require('chai')
 const zip = require('lodash.zip')
 
-const {
-  assertThrows,
-  assertThrowsMessage,
-  generateString
-} = require('waves-test-util')
+const { assertThrows, generateString } = require('waves-test-util')
 const {
   TEST_USER1,
   TEST_USER2,
@@ -21,6 +17,7 @@ const {
 } = require('waves-test-data')
 
 const { MAX_STRING_LENGTH } = require('../models')
+const testReorder = require('./reorder')
 
 const TEST_USERS = [TEST_USER1, TEST_USER2]
 const TEST_TRACKS = [TEST_TRACK1, TEST_TRACK2]
@@ -384,6 +381,58 @@ module.exports = getStorage => {
         assert.strictEqual(playlistMove.tracks[0], track.id)
       }
     })
+
+    it('Add track to moved playlist', async () => {
+      const user = TEST_USER1
+      const playlistName = TEST_PLAYLIST_MOVE_NAME1
+      const track = TEST_TRACK2
+      await getStorage().playlistAdd(user, playlistName, [track.id])
+    })
+
+    it('Verify track added to moved playlist', async () => {
+      const user = TEST_USER1
+      const playlistName = TEST_PLAYLIST_MOVE_NAME1
+      const playlists = await getStorage().getPlaylists(user)
+
+      assert.strictEqual(playlists.length, 2)
+
+      const playlistMove = playlists[1]
+
+      assert.strictEqual(playlistMove.name, playlistName)
+      assert.strictEqual(playlistMove.tracks.length, 2)
+      assert.strictEqual(playlistMove.tracks[0], TEST_TRACK1.id)
+      assert.strictEqual(playlistMove.tracks[1], TEST_TRACK2.id)
+    })
+
+    it('Reorder moved playlist', async () => {
+      const user = TEST_USER1
+      const playlistName = TEST_PLAYLIST_MOVE_NAME1
+      const selection = [0]
+      const insertAt = 2
+      const playlists = await getStorage().playlistReorder(
+        user,
+        playlistName,
+        selection,
+        insertAt
+      )
+    })
+
+    it('Verify moved playlist reordering', async () => {
+      const user = TEST_USER1
+      const playlistName = TEST_PLAYLIST_MOVE_NAME1
+      const playlists = await getStorage().getPlaylists(user)
+
+      assert.strictEqual(playlists.length, 2)
+
+      const playlistMove = playlists[1]
+
+      assert.strictEqual(playlistMove.name, playlistName)
+      assert.strictEqual(playlistMove.tracks.length, 2)
+      assert.strictEqual(playlistMove.tracks[0], TEST_TRACK2.id)
+      assert.strictEqual(playlistMove.tracks[1], TEST_TRACK1.id)
+    })
+
+    testReorder()
 
     it('Cannot delete unknown playlist', async () => {
       const user = TEST_USER1

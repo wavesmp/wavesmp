@@ -7,6 +7,7 @@ const {
   trackFromObject,
   validatePlaylistTrackIds
 } = require('./models')
+const { reorder } = require('./reorder')
 
 class Storage {
   constructor(conf) {
@@ -79,6 +80,19 @@ class Storage {
       const playlist = { idp, idpId, name, tracks: trackIds }
       await Playlist.create(playlist)
     }
+  }
+
+  async playlistReorder(user, name, selection, insertAt) {
+    const { idp, idpId } = user
+    const playlistQuery = { name, idp, idpId }
+    const dbPlaylist = await Playlist.findOne(playlistQuery)
+
+    if (!dbPlaylist) {
+      throw new Error(`Did not find playlist ${name}`)
+    }
+
+    const tracks = reorder(dbPlaylist.tracks, selection, insertAt)
+    await Playlist.findOneAndUpdate(playlistQuery, { tracks })
   }
 
   async tracksRemove(user, name, indexes) {

@@ -75,6 +75,11 @@ function playlistReorder(playlistName, insertAt) {
       newSelection,
       newIndex
     })
+    ws.sendBestEffortMessage(types.PLAYLIST_REORDER, {
+      playlistName,
+      selection: [...filteredSelection.keys()],
+      insertAt
+    })
   }
 }
 
