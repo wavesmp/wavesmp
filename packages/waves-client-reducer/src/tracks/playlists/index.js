@@ -181,6 +181,18 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         [playlistName]: playlistAdd(addTracks, playlistName, playlists)
       }
     }
+    case actionTypes.PLAYLIST_REORDER: {
+      const { reordered, playlistName, newSelection, newIndex } = action
+      return {
+        ...playlists,
+        [playlistName]: {
+          ...playlists[playlistName],
+          tracks: reordered,
+          selection: newSelection,
+          index: newIndex
+        }
+      }
+    }
     case actionTypes.PLAYLIST_MOVE: {
       const { src, dest } = action
       const playlistsUpdate = { ...playlists }
