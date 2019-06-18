@@ -14,7 +14,12 @@ const DOUBLE_CLICK_THRESHOLD = 500
 export default class Table extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.state = { editingIndex: null, editingTitle: null }
+    this.state = {
+      editingIndex: null,
+      editingTitle: null,
+      reorderTopIndex: null,
+      reorderBottomIndex: null
+    }
     this.dragGhost = null
 
     this.editOnMouseUpIndex = null
@@ -160,6 +165,75 @@ export default class Table extends React.PureComponent {
     }
   }
 
+  getOrderIndexes(ev) {
+    const { currentTarget: ct } = ev
+    const { top, height } = ct.getBoundingClientRect()
+    const midY = top + height / 2
+    if (ev.clientY <= midY) {
+      const bottomIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR))
+      const topIndex =
+        ct.previousSibling &&
+        parseInt(ct.previousSibling.getAttribute(constants.INDEX_ATTR))
+      return { topIndex, bottomIndex }
+    }
+
+    const topIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR))
+    const bottomIndex =
+      ct.nextSibling &&
+      parseInt(ct.nextSibling.getAttribute(constants.INDEX_ATTR))
+    return { topIndex, bottomIndex }
+  }
+
+  onRowDragOver = ev => {
+    const { orderable } = this.props
+    if (
+      !orderable ||
+      !this.dragGhost ||
+      !ev.dataTransfer.types.includes(constants.PLAYLIST_TYPE)
+    ) {
+      return
+    }
+    ev.preventDefault()
+    const { topIndex, bottomIndex } = this.getOrderIndexes(ev)
+    const { reorderTopIndex, reorderBottomIndex } = this.state
+    if (topIndex !== reorderTopIndex || bottomIndex !== reorderBottomIndex) {
+      this.setState({
+        reorderTopIndex: topIndex,
+        reorderBottomIndex: bottomIndex
+      })
+    }
+  }
+
+  onRowDragLeave = () => {
+    const { reorderTopIndex, reorderBottomIndex } = this.state
+    if (reorderTopIndex != null || reorderBottomIndex != null) {
+      this.setState({ reorderTopIndex: null, reorderBottomIndex: null })
+    }
+  }
+
+  getInsertAt() {
+    const { reorderTopIndex, reorderBottomIndex } = this.state
+    if (reorderTopIndex != null) {
+      return reorderTopIndex + 1
+    }
+    return reorderBottomIndex
+  }
+
+  /* Insert items between top and bottom index.
+   *
+   * There may be many ways to do this since there may be elements
+   * in between (e.g. when items are filtered), so put items
+   * immediately after topIndex.
+   *
+   * If no top index is available, insert immediately before bottom
+   * index. */
+  onRowDrop = () => {
+    this.setState({ reorderTopIndex: null, reorderBottomIndex: null })
+    const { actions, playlistName } = this.props
+    const insertAt = this.getInsertAt()
+    actions.playlistReorder(playlistName, insertAt)
+  }
+
   onDragStart = ev => {
     this.editOnMouseUpIndex = null
     this.editOnMouseUpTitle = null
@@ -182,7 +256,7 @@ export default class Table extends React.PureComponent {
     ev.dataTransfer.setDragImage(this.dragGhost, 0, 0)
   }
 
-  onDragEnd = ev => {
+  onDragEnd = () => {
     this.dragGhost.remove()
     this.dragGhost = null
   }
@@ -210,6 +284,7 @@ export default class Table extends React.PureComponent {
       onItemEdit,
       draggable
     } = this.props
+    const { reorderTopIndex, reorderBottomIndex } = this.state
     return (
       <div>
         <table className='table table-hover'>
@@ -231,12 +306,20 @@ export default class Table extends React.PureComponent {
             {displayItems.map(sample => {
               let className = ''
               if (selection.has(sample.index)) {
-                className = 'common-table-row-selected'
+                className = 'common-table-row-selected '
+              }
+              if (sample.index === reorderTopIndex) {
+                className += 'common-table-row-reorder-bottom'
+              } else if (sample.index === reorderBottomIndex) {
+                className += 'common-table-row-reorder-top'
               }
               return (
                 <tr
                   key={sample.index + sample.id}
                   onMouseDown={this.onRowMouseDown}
+                  onDragOver={this.onRowDragOver}
+                  onDragLeave={this.onRowDragLeave}
+                  onDrop={this.onRowDrop}
                   onMouseUp={this.onRowMouseUp}
                   onContextMenu={this.onContextMenu}
                   data-trackid={sample.id}

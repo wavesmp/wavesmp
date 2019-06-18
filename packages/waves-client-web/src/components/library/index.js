@@ -49,6 +49,7 @@ class Library extends React.PureComponent {
         {...this.props}
         buttons={this.getButtons()}
         draggable={true}
+        orderable={false}
         noDataMsg={NO_DATA_MSG}
         onItemEdit={this.onItemEdit}
         playlistName={playlistName}

@@ -9,6 +9,16 @@
   color: var(--title-color);
 }
 
+.common-table-row-reorder-bottom {
+  border-bottom-style: solid;
+  border-bottom-color: #19b698;
+}
+
+.common-table-row-reorder-top {
+  border-top-style: solid;
+  border-top-color: #19b698;
+}
+
 .table > tbody > tr.common-table-row-selected > td:first-child {
   padding-top: 1px;
 }

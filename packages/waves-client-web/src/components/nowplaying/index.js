@@ -73,6 +73,7 @@ class NowPlaying extends React.PureComponent {
         {...this.props}
         buttons={this.getButtons()}
         draggable={true}
+        orderable={true}
         noDataMsg={NO_DATA_MSG}
         onItemEdit={this.onItemEdit}
         playlistName={playlistName}

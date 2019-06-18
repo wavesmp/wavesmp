@@ -148,6 +148,7 @@ class Upload extends React.PureComponent {
         lastPage={lastPage}
         displayItems={displayItems}
         draggable={false}
+        orderable={false}
         isPlaying={playing.isPlaying}
         pathname={pathname}
         qp={qp}
