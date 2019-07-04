@@ -33,18 +33,12 @@ class Server {
         log.info('Track added to playlist')
         const { playlistName, trackIds } = data
         await this.storage.playlistAdd(user, playlistName, trackIds)
-        if (reqId) {
-          this.sendMessage(ws, types.PLAYLIST_ADD, {}, reqId)
-        }
       },
 
       [types.TRACKS_REMOVE]: async (ws, user, data, reqId) => {
         log.info('Track removed from playlist')
         const { playlistName, deleteIndexes } = data
         await this.storage.tracksRemove(user, playlistName, deleteIndexes)
-        if (reqId) {
-          this.sendMessage(ws, types.TRACKS_REMOVE, {}, reqId)
-        }
       },
 
       [types.PLAYLIST_REORDER]: async (ws, user, data, reqId) => {
@@ -56,36 +50,24 @@ class Server {
           selection,
           insertAt
         )
-        if (reqId) {
-          this.sendMessage(ws, types.PLAYLIST_REORDER, {}, reqId)
-        }
       },
 
       [types.PLAYLIST_COPY]: async (ws, user, data, reqId) => {
         const { src, dest } = data
         log.info('Copying playlist')
         await this.storage.playlistCopy(user, src, dest)
-        if (reqId) {
-          this.sendMessage(ws, types.PLAYLIST_COPY, {}, reqId)
-        }
       },
 
       [types.PLAYLIST_MOVE]: async (ws, user, data, reqId) => {
         log.info('Renaming playlist')
         const { src, dest } = data
         await this.storage.playlistMove(user, src, dest)
-        if (reqId) {
-          this.sendMessage(ws, types.PLAYLIST_MOVE, {}, reqId)
-        }
       },
 
       [types.PLAYLIST_DELETE]: async (ws, user, data, reqId) => {
         const { playlistName } = data
         log.info(`Deleting playlist: ${playlistName}`)
         await this.storage.deletePlaylist(user, playlistName)
-        if (reqId) {
-          this.sendMessage(ws, types.PLAYLIST_DELETE, {}, reqId)
-        }
       },
 
       [types.LIBRARY_TRACK_UPDATE]: async (ws, user, data, reqId) => {
@@ -97,9 +79,6 @@ class Server {
           idpId: user.idpId
         }
         await this.storage.updateTrack(user, id, updateObj)
-        if (reqId) {
-          this.sendMessage(ws, types.LIBRARY_TRACK_UPDATE, {}, reqId)
-        }
       },
       [types.TRACKS_UPDATE]: async (ws, user, data, reqId) => {
         const { tracks } = data
@@ -109,17 +88,11 @@ class Server {
             .map(t => ({ ...t, idp: user.idp, idpId: user.idpId }))
             .map(this.storage.addTrack)
         )
-        if (reqId) {
-          this.sendMessage(ws, types.TRACKS_UPDATE, {}, reqId)
-        }
       },
       [types.TRACKS_DELETE]: async (ws, user, data, reqId) => {
         const { deleteIds } = data
         log.info(`Deleting from library: ${deleteIds}`)
         await this.storage.deleteTracks(user, deleteIds)
-        if (reqId) {
-          this.sendMessage(ws, types.TRACKS_DELETE, {}, reqId)
-        }
       }
     }
   }
@@ -189,13 +162,17 @@ class Server {
             return
           }
 
-          await this.messageMap[type](ws, user, data, reqId)
+          const resp = await this.messageMap[type](ws, user, data, reqId)
+          if (reqId) {
+            this.sendMessage(ws, type, resp || {}, reqId)
+          }
         } catch (err) {
           const errString = err.toString()
           const name = user ? user.name : ''
           log.error(
             `Error processing message ${type} for ${name}: ${errString}`
           )
+          log.error(err)
           if (reqId) {
             this.sendMessage(ws, type, { err: errString }, reqId)
           }
