@@ -1,22 +1,25 @@
 /* Reorder tracks by relocating selected indexes to insertAt */
-function reorder(tracks, selection, insertAt) {
+function reorder(tracks, indexToId, insertAt) {
   const n = tracks.length
   if (insertAt < 0 || insertAt > n) {
     throw new Error(`Reorder index ${insertAt} out of bounds`)
   }
 
-  if (selection.length === 0) {
-    return
+  if (indexToId.size === 0) {
+    return tracks
   }
 
-  selection.sort((a, b) => a - b)
-  if (selection[0] < 0 || getLast(selection) >= n) {
-    throw new Error(`Reorder selection out of bounds: ${selection}`)
+  const indexes = [...indexToId.keys()].sort((a, b) => a - b)
+  const firstIndex = indexes[0]
+  const lastIndex = getLast(indexes)
+  if (firstIndex < 0) {
+    throw new Error(`Reorder index out of bounds: ${firstIndex}`)
+  }
+  if (lastIndex >= n) {
+    throw new Error(`Reorder index out of bounds: ${lastIndex}`)
   }
 
-  const selectionSet = new Set(selection)
-
-  const firstStop = Math.min(insertAt, selection[0])
+  const firstStop = Math.min(insertAt, firstIndex)
   const reordered = []
 
   for (let i = 0; i < firstStop; i += 1) {
@@ -24,17 +27,17 @@ function reorder(tracks, selection, insertAt) {
   }
 
   for (let i = firstStop; i < insertAt; i += 1) {
-    if (!selectionSet.has(i)) {
+    if (!indexToId.has(i)) {
       reordered.push(tracks[i])
     }
   }
 
-  for (const i of selection) {
+  for (const i of indexes) {
     reordered.push(tracks[i])
   }
 
   for (let i = insertAt; i < n; i += 1) {
-    if (!selectionSet.has(i)) {
+    if (!indexToId.has(i)) {
       reordered.push(tracks[i])
     }
   }

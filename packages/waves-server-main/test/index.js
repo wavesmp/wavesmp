@@ -84,7 +84,7 @@ const BEST_EFFORT_MESSAGE_TIMEOUT =
         // Mock db calls
         const storageMock = sinon.mock(storage)
         const storageUserExpect = storageMock
-          .expects('getUser')
+          .expects('createOrUpdateUser')
           .once()
           .withArgs(
             TEST_USER1.idp,
@@ -244,11 +244,7 @@ const BEST_EFFORT_MESSAGE_TIMEOUT =
         const key = 'testKey'
         const value = 'testValue'
 
-        const expectedUpdate = {
-          [key]: value,
-          idp: user.idp,
-          idpId: user.idpId
-        }
+        const expectedUpdate = { [key]: value }
         const storageMock = sinon.mock(storage)
         const storageUserExpect = storageMock
           .expects('updateTrack')

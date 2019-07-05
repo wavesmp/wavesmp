@@ -73,21 +73,13 @@ class Server {
       [types.LIBRARY_TRACK_UPDATE]: async (ws, user, data) => {
         log.info('Updating track info')
         const { id, key, value } = data
-        const updateObj = {
-          [key]: value,
-          idp: user.idp,
-          idpId: user.idpId
-        }
+        const updateObj = { [key]: value }
         await this.storage.updateTrack(user, id, updateObj)
       },
       [types.TRACKS_UPDATE]: async (ws, user, data) => {
         const { tracks } = data
         log.info('Importing tracks to library', tracks)
-        await Promise.all(
-          tracks
-            .map(t => ({ ...t, idp: user.idp, idpId: user.idpId }))
-            .map(this.storage.addTrack)
-        )
+        await this.storage.addTracks(user, tracks)
       },
       [types.TRACKS_DELETE]: async (ws, user, data) => {
         const { deleteIds } = data
@@ -151,7 +143,7 @@ class Server {
 
             const { idpId, email, name } = user
             log.info('Client logged in:', name)
-            await this.storage.getUser(idp, idpId, email, name)
+            await this.storage.createOrUpdateUser(idp, idpId, email, name)
             this.sendMessage(ws, type, { ...user }, reqId)
 
             const library = await this.storage.getLibrary(user)

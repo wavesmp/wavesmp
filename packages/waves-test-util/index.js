@@ -19,7 +19,7 @@ async function assertThrows(fnName, fn, args, msg, thisArg) {
 }
 
 async function assertThrowsMessage(fnName, fn, args, msg, thisArg) {
-  await _assertThrows(fnName, fn, args, err => err.message, msg)
+  await _assertThrows(fnName, fn, args, err => err.message, msg, thisArg)
 }
 
 function assertNewState(reducer, state, action) {
