@@ -4,7 +4,7 @@ const waitPort = require('wait-port')
 
 const Storage = require('../')
 
-const DB_CONTAINER_IMAGE_NAME = 'mongo:3.6.6'
+const DB_CONTAINER_IMAGE_NAME = 'mongo:4.0.10'
 const DB_CONTAINER_NAME = 'waves-server-db-test-db'
 const DB_CONTAINER_PORT = '27018'
 const DB_CONTAINER_CMD = ['mongod', '--port', DB_CONTAINER_PORT]

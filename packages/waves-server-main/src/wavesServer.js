@@ -29,19 +29,19 @@ class Server {
     this.heartbeat = this.heartbeat.bind(this)
 
     this.messageMap = {
-      [types.PLAYLIST_ADD]: async (ws, user, data, reqId) => {
+      [types.PLAYLIST_ADD]: async (ws, user, data) => {
         log.info('Track added to playlist')
         const { playlistName, trackIds } = data
         await this.storage.playlistAdd(user, playlistName, trackIds)
       },
 
-      [types.TRACKS_REMOVE]: async (ws, user, data, reqId) => {
+      [types.TRACKS_REMOVE]: async (ws, user, data) => {
         log.info('Track removed from playlist')
         const { playlistName, deleteIndexes } = data
         await this.storage.tracksRemove(user, playlistName, deleteIndexes)
       },
 
-      [types.PLAYLIST_REORDER]: async (ws, user, data, reqId) => {
+      [types.PLAYLIST_REORDER]: async (ws, user, data) => {
         const { playlistName, selection, insertAt } = data
         log.info(`Reordering playlist ${playlistName}`)
         await this.storage.playlistReorder(
@@ -52,25 +52,25 @@ class Server {
         )
       },
 
-      [types.PLAYLIST_COPY]: async (ws, user, data, reqId) => {
+      [types.PLAYLIST_COPY]: async (ws, user, data) => {
         const { src, dest } = data
         log.info('Copying playlist')
         await this.storage.playlistCopy(user, src, dest)
       },
 
-      [types.PLAYLIST_MOVE]: async (ws, user, data, reqId) => {
+      [types.PLAYLIST_MOVE]: async (ws, user, data) => {
         log.info('Renaming playlist')
         const { src, dest } = data
         await this.storage.playlistMove(user, src, dest)
       },
 
-      [types.PLAYLIST_DELETE]: async (ws, user, data, reqId) => {
+      [types.PLAYLIST_DELETE]: async (ws, user, data) => {
         const { playlistName } = data
         log.info(`Deleting playlist: ${playlistName}`)
         await this.storage.deletePlaylist(user, playlistName)
       },
 
-      [types.LIBRARY_TRACK_UPDATE]: async (ws, user, data, reqId) => {
+      [types.LIBRARY_TRACK_UPDATE]: async (ws, user, data) => {
         log.info('Updating track info')
         const { id, key, value } = data
         const updateObj = {
@@ -80,7 +80,7 @@ class Server {
         }
         await this.storage.updateTrack(user, id, updateObj)
       },
-      [types.TRACKS_UPDATE]: async (ws, user, data, reqId) => {
+      [types.TRACKS_UPDATE]: async (ws, user, data) => {
         const { tracks } = data
         log.info('Importing tracks to library', tracks)
         await Promise.all(
@@ -89,7 +89,7 @@ class Server {
             .map(this.storage.addTrack)
         )
       },
-      [types.TRACKS_DELETE]: async (ws, user, data, reqId) => {
+      [types.TRACKS_DELETE]: async (ws, user, data) => {
         const { deleteIds } = data
         log.info(`Deleting from library: ${deleteIds}`)
         await this.storage.deleteTracks(user, deleteIds)

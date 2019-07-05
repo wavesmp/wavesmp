@@ -31,7 +31,7 @@ fi
 
 # Deploy mongo db if not present
 DB_NAME=mongo
-DB_IMAGE=mongo:3.6.6
+DB_IMAGE=mongo:4.0.10
 DB_VOLUME_DEST=/data/db
 # Mongo docker image defaults to --bind_ip_all flag
 # Restrict to localhost since we run DB on host network

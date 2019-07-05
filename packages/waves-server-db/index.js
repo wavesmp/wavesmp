@@ -15,7 +15,10 @@ class Storage {
   }
 
   connect() {
-    return mongoose.connect(this.conf.url)
+    return mongoose.connect(this.conf.url, {
+      useNewUrlParser: true,
+      useCreateIndex: true
+    })
   }
 
   close() {
