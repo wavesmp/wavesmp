@@ -20,8 +20,6 @@ const actionTypes = keyMirror({
 
   TRANSITION_MAIN_SET: null,
 
-  LIBRARY_TRACK_UPDATE: null,
-
   PLAYING_PLAY: null,
   PLAYING_PAUSE: null,
   PLAYING_REPEAT_TOGGLE: null,
@@ -29,12 +27,11 @@ const actionTypes = keyMirror({
   PLAYING_TRACK_REPEAT: null,
 
   TRACKS_DELETE: null,
+  TRACKS_INFO_UPDATE: null,
+  TRACKS_ADD: null,
   TRACKS_REMOVE: null,
-  TRACKS_UPDATE: null,
   TRACK_NEXT: null,
   TRACK_TOGGLE: null,
-  TRACK_UPLOADS_DELETE: null,
-  TRACK_UPLOADS_UPDATE: null,
 
   SELECTION_ADD: null,
   SELECTION_CLEAR_AND_ADD: null,
@@ -51,9 +48,7 @@ const actionTypes = keyMirror({
   PLAYLIST_REORDER: null,
 
   TOAST_ADD: null,
-  TOAST_REMOVE: null,
-
-  UPLOAD_TRACKS_UPDATE: null
+  TOAST_REMOVE: null
 })
 
 module.exports = actionTypes
