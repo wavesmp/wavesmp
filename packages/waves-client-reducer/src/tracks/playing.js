@@ -69,14 +69,6 @@ function reducerPlaying(playing = initialPlaying, action) {
       }
       return playing
     }
-    case actionTypes.TRACK_UPLOADS_DELETE: {
-      const { deleteIds } = action
-      const { track } = playing
-      if (track && deleteIds.has(track.id)) {
-        return { ...initialPlaying }
-      }
-      return playing
-    }
     default:
       return playing
   }

@@ -2,11 +2,17 @@ const actionTypes = require('waves-action-types')
 const {
   DEFAULT_PLAYLIST,
   FULL_PLAYLIST,
-  UPLOAD_PLAYLIST
+  UPLOAD_PLAYLIST,
+  libTypes
 } = require('waves-client-constants')
 const { shouldAddToDefaultPlaylist } = require('waves-client-util')
 
 const reducerSelection = require('./selection')
+
+const libTypeToPlaylistName = {
+  [libTypes.WAVES]: FULL_PLAYLIST,
+  [libTypes.UPLOADS]: UPLOAD_PLAYLIST
+}
 
 /* Maps playlist names to playlists. Playlists contain:
  * - name
@@ -33,19 +39,19 @@ function addPlaylistDefaults(playlist) {
   playlist.index = null
 }
 
-/* Only library (full) playlist supports sorting */
-function getDefaultLibraryPlaylist() {
+/* Only library playlists support sorting */
+function getDefaultLibraryPlaylist(playlistName) {
   const playlist = {
-    name: FULL_PLAYLIST,
-    sortKey: initialPlaylistsSortKey[FULL_PLAYLIST] || 'title'
+    name: playlistName,
+    sortKey: initialPlaylistsSortKey[playlistName] || 'title'
   }
-  if (FULL_PLAYLIST in initialPlaylistsAscending) {
-    playlist.ascending = initialPlaylistsAscending[FULL_PLAYLIST]
-    delete initialPlaylistsAscending[FULL_PLAYLIST]
+  if (playlistName in initialPlaylistsAscending) {
+    playlist.ascending = initialPlaylistsAscending[playlistName]
+    delete initialPlaylistsAscending[playlistName]
   } else {
     playlist.ascending = true
   }
-  delete initialPlaylistsSortKey[FULL_PLAYLIST]
+  delete initialPlaylistsSortKey[playlistName]
   addPlaylistDefaults(playlist)
   return playlist
 }
@@ -74,27 +80,28 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       }
     }
 
-    case actionTypes.TRACKS_UPDATE: {
-      const { libraryById } = action
-      const libraryPlaylistTracks = Object.keys(libraryById)
-      let libraryPlaylist
-      if (playlists && playlists[FULL_PLAYLIST]) {
-        libraryPlaylist = { ...playlists[FULL_PLAYLIST] }
+    case actionTypes.TRACKS_ADD: {
+      const { lib, libType } = action
+      const libPlaylistTracks = Object.keys(lib)
+      const playlistName = libTypeToPlaylistName[libType]
+      let libPlaylist
+      if (playlists && playlists[playlistName]) {
+        libPlaylist = { ...playlists[playlistName] }
       } else {
-        libraryPlaylist = getDefaultLibraryPlaylist()
+        libPlaylist = getDefaultLibraryPlaylist(playlistName)
       }
-      const { sortKey, ascending, index: oldIndex } = libraryPlaylist
+      const { sortKey, ascending, index: oldIndex } = libPlaylist
       const index = sortPlaylist(
-        libraryPlaylistTracks,
-        libraryById,
+        libPlaylistTracks,
+        lib,
         sortKey,
         ascending,
         oldIndex
       )
-      libraryPlaylist.tracks = libraryPlaylistTracks
-      libraryPlaylist.index = index
+      libPlaylist.tracks = libPlaylistTracks
+      libPlaylist.index = index
 
-      return { ...playlists, [FULL_PLAYLIST]: libraryPlaylist }
+      return { ...playlists, [playlistName]: libPlaylist }
     }
     case actionTypes.PLAYLISTS_UPDATE: {
       const { update } = action
@@ -144,8 +151,8 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       return { ...playlists, [name]: { ...playlist, search } }
     }
     case actionTypes.PLAYLIST_SORT: {
-      const { library, name, sortKey, ascending } = action
-      if (!library || !playlists || !(name in playlists)) {
+      const { lib, name, sortKey, ascending } = action
+      if (!lib || !playlists || !(name in playlists)) {
         initialPlaylistsAscending[name] = ascending
         initialPlaylistsSortKey[name] = sortKey
         return playlists
@@ -154,25 +161,23 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const { index: oldIndex } = playlist
       const tracks = [...playlist.tracks]
 
-      const index = sortPlaylist(tracks, library, sortKey, ascending, oldIndex)
+      const index = sortPlaylist(tracks, lib, sortKey, ascending, oldIndex)
       return {
         ...playlists,
         [name]: { ...playlist, sortKey, ascending, tracks, index }
       }
     }
-    case actionTypes.TRACK_UPLOADS_UPDATE: {
-      const { update } = action
-      const addTracks = update.map(t => t.id)
-      const playlistName = UPLOAD_PLAYLIST
-      return {
-        ...playlists,
-        [playlistName]: playlistAdd(addTracks, playlistName, playlists)
+    case actionTypes.TRACKS_DELETE: {
+      const { deleteIds } = action
+      const playlistsUpdate = {}
+      for (const playlistName in playlists) {
+        const playlist = playlists[playlistName]
+        playlistsUpdate[playlistName] = tracksDeleteFromPlaylist(
+          playlist,
+          deleteIds
+        )
       }
-    }
-    case actionTypes.TRACK_UPLOADS_DELETE: {
-      const { playlist } = action
-      const playlistName = UPLOAD_PLAYLIST
-      return { ...playlists, [playlistName]: playlist }
+      return playlistsUpdate
     }
     case actionTypes.PLAYLIST_ADD: {
       const { addTracks, playlistName } = action
@@ -236,9 +241,6 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       }
       return playlistsUpdate
     }
-    case actionTypes.TRACKS_DELETE: {
-      return action.playlists
-    }
     default:
       return playlists
   }
@@ -262,16 +264,16 @@ function trackNext(playlistsUpdate, playlistName, source, id, index) {
   return playlistsUpdate
 }
 
-function sortPlaylist(tracks, library, sortKey, ascending, oldIndex) {
+function sortPlaylist(tracks, lib, sortKey, ascending, oldIndex) {
   const factor = ascending ? 1 : -1
   const oldTrack = oldIndex != null && tracks[oldIndex]
 
   if (sortKey === 'duration' || sortKey === 'createdAt') {
-    tracks.sort((a, b) => factor * (library[a][sortKey] - library[b][sortKey]))
+    tracks.sort((a, b) => factor * (lib[a][sortKey] - lib[b][sortKey]))
   } else {
     tracks.sort((a, b) => {
-      const valueA = (library[a][sortKey] || '').toLowerCase()
-      const valueB = (library[b][sortKey] || '').toLowerCase()
+      const valueA = (lib[a][sortKey] || '').toLowerCase()
+      const valueB = (lib[b][sortKey] || '').toLowerCase()
       return factor * valueA.localeCompare(valueB)
     })
   }
@@ -297,6 +299,46 @@ function playlistAdd(addTracks, playlistName, playlists) {
     addPlaylistDefaults(playlistUpdate)
   }
   return playlistUpdate
+}
+
+function tracksDeleteFromPlaylist(playlist, deleteIds) {
+  const { selection, tracks } = playlist
+  let { index } = playlist
+
+  const filteredSelection = new Map()
+  const filteredTracks = []
+
+  let numDeleted = 0
+  let indexOffset = 0
+  for (let i = 0; i < tracks.length; i += 1) {
+    const track = tracks[i]
+    if (deleteIds.has(track)) {
+      if (index != null) {
+        if (i === index) {
+          index = null
+        } else if (i < index) {
+          indexOffset += 1
+        }
+      }
+      numDeleted += 1
+    } else {
+      filteredTracks.push(track)
+      if (selection.has(i)) {
+        filteredSelection.set(i - numDeleted, track)
+      }
+    }
+  }
+
+  if (index) {
+    index -= indexOffset
+  }
+
+  return {
+    ...playlist,
+    selection: filteredSelection,
+    tracks: filteredTracks,
+    index
+  }
 }
 
 module.exports = reducerPlaylists

@@ -5,7 +5,8 @@ const actionTypes = require('waves-action-types')
 const {
   DEFAULT_PLAYLIST,
   FULL_PLAYLIST,
-  UPLOAD_PLAYLIST
+  UPLOAD_PLAYLIST,
+  libTypes
 } = require('waves-client-constants')
 
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
@@ -23,7 +24,7 @@ const playlists = require('../../../src/tracks/playlists')
 const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }
 
-const libraryById = {
+const testLib = {
   [track1.id]: track1,
   [track2.id]: track2
 }
@@ -38,25 +39,24 @@ describe('#playlists()', () => {
   })
 
   it('library playlist update', () => {
-    action = { type: actionTypes.TRACKS_UPDATE, libraryById }
-    state = assertNewState(playlists, state, action)
-    assert.isObject(state)
-    const playlistNames = Object.keys(state)
-    assert.lengthOf(playlistNames, 1)
-    const playlistName = playlistNames[0]
-
-    const playlist = state[playlistName]
-
-    const expected = {
-      name: FULL_PLAYLIST,
-      sortKey: 'title',
-      ascending: true,
-      selection: new Map(),
-      search: '',
-      index: null,
-      tracks: [track1.id, track2.id]
+    assert.isDefined(actionTypes.TRACKS_ADD)
+    action = {
+      type: actionTypes.TRACKS_ADD,
+      lib: testLib,
+      libType: libTypes.WAVES
     }
-    assert.deepEqual(playlist, expected)
+    state = assertNewState(playlists, state, action)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'title',
+        ascending: true,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id, track2.id]
+      }
+    })
   })
 
   it('playlists update', () => {
@@ -69,16 +69,27 @@ describe('#playlists()', () => {
         }
       ]
     }
+
     state = assertNewState(playlists, state, action)
 
-    const expected = {
-      name: DEFAULT_PLAYLIST,
-      selection: new Map(),
-      search: '',
-      index: null,
-      tracks: [track1.id]
-    }
-    assert.deepEqual(state[DEFAULT_PLAYLIST], expected)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'title',
+        ascending: true,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id, track2.id]
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 
   it('library playlist track toggle', () => {
@@ -91,27 +102,24 @@ describe('#playlists()', () => {
     }
     state = assertNewState(playlists, state, action)
 
-    const expectedDefaultPlaylist = {
-      name: DEFAULT_PLAYLIST,
-      selection: new Map(),
-      search: '',
-      tracks: [track1.id, track2.id],
-      index: 1
-    }
-    assert.deepEqual(state[DEFAULT_PLAYLIST], expectedDefaultPlaylist)
-
-    const expectedLibraryPlaylist = {
-      name: FULL_PLAYLIST,
-      sortKey: 'title',
-      ascending: true,
-      selection: new Map(),
-      search: '',
-      tracks: [track1.id, track2.id],
-      index: 1
-    }
-    assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
-
-    assert.lengthOf(Object.keys(state), 2)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'title',
+        ascending: true,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id, track2.id],
+        index: 1
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id, track2.id],
+        index: 1
+      }
+    })
   })
 
   it('library playlist track next', () => {
@@ -132,27 +140,24 @@ describe('#playlists()', () => {
     }
     state = assertNewState(playlists, state, action)
 
-    const expectedDefaultPlaylist = {
-      name: DEFAULT_PLAYLIST,
-      selection: new Map(),
-      search: '',
-      tracks: [track1.id, track2.id, track1.id],
-      index: 2
-    }
-    assert.deepEqual(state[DEFAULT_PLAYLIST], expectedDefaultPlaylist)
-
-    const expectedLibraryPlaylist = {
-      name: FULL_PLAYLIST,
-      sortKey: 'title',
-      ascending: true,
-      selection: new Map(),
-      search: '',
-      tracks: [track1.id, track2.id],
-      index: 0
-    }
-    assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
-
-    assert.lengthOf(Object.keys(state), 2)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'title',
+        ascending: true,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id, track2.id],
+        index: 0
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id, track2.id, track1.id],
+        index: 2
+      }
+    })
   })
 
   it('library playlist search', () => {
@@ -163,16 +168,24 @@ describe('#playlists()', () => {
     }
     state = assertNewState(playlists, state, action)
 
-    const expectedLibraryPlaylist = {
-      name: FULL_PLAYLIST,
-      sortKey: 'title',
-      ascending: true,
-      selection: new Map(),
-      search: testSearch,
-      tracks: [track1.id, track2.id],
-      index: 0
-    }
-    assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'title',
+        ascending: true,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track1.id, track2.id],
+        index: 0
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id, track2.id, track1.id],
+        index: 2
+      }
+    })
   })
 
   it('library sort key update', () => {
@@ -181,20 +194,29 @@ describe('#playlists()', () => {
       name: FULL_PLAYLIST,
       sortKey: 'artist',
       ascending: false,
-      library: libraryById
+      lib: testLib
     }
+
     state = assertNewState(playlists, state, action)
 
-    const expectedLibraryPlaylist = {
-      name: FULL_PLAYLIST,
-      sortKey: 'artist',
-      ascending: false,
-      selection: new Map(),
-      search: testSearch,
-      tracks: [track2.id, track1.id],
-      index: 1
-    }
-    assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track2.id, track1.id],
+        index: 1
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id, track2.id, track1.id],
+        index: 2
+      }
+    })
   })
 
   it('add playlistName1', () => {
@@ -205,15 +227,31 @@ describe('#playlists()', () => {
     }
     state = assertNewState(playlists, state, action)
 
-    const expectedPlaylist1 = {
-      name: playlistName1,
-      selection: new Map(),
-      search: '',
-      index: null,
-      tracks: [track1.id]
-    }
-    assert.deepEqual(state[playlistName1], expectedPlaylist1)
-    assert.lengthOf(Object.keys(state), 3)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track2.id, track1.id],
+        index: 1
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id, track2.id, track1.id],
+        index: 2
+      },
+      [playlistName1]: {
+        name: playlistName1,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 
   it('rename playlistName1 to playlistName2', () => {
@@ -223,18 +261,34 @@ describe('#playlists()', () => {
       src: playlistName1,
       dest: playlistName2
     }
+
     state = assertNewState(playlists, state, action)
 
-    const expectedPlaylist2 = {
-      name: playlistName2,
-      selection: new Map(),
-      search: '',
-      index: null,
-      tracks: [track1.id]
-    }
-    assert.deepEqual(state[playlistName2], expectedPlaylist2)
-    assert.lengthOf(Object.keys(state), 3)
-    assert.isUndefined(state[playlistName1])
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track2.id, track1.id],
+        index: 1
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id, track2.id, track1.id],
+        index: 2
+      },
+      [playlistName2]: {
+        name: playlistName2,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 
   it('Remove from default playlist', () => {
@@ -247,14 +301,31 @@ describe('#playlists()', () => {
     }
     state = assertNewState(playlists, state, action)
 
-    const expectedDefaultPlaylist = {
-      name: DEFAULT_PLAYLIST,
-      selection: new Map(),
-      search: '',
-      tracks: [track1.id],
-      index: 0
-    }
-    assert.deepEqual(state[DEFAULT_PLAYLIST], expectedDefaultPlaylist)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track2.id, track1.id],
+        index: 1
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id],
+        index: 0
+      },
+      [playlistName2]: {
+        name: playlistName2,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 
   it('copy default playlist to playlistName1', () => {
@@ -265,15 +336,38 @@ describe('#playlists()', () => {
     }
     state = assertNewState(playlists, state, action)
 
-    const expectedPlaylist1 = {
-      name: playlistName1,
-      selection: new Map(),
-      search: '',
-      tracks: [track1.id],
-      index: null
-    }
-    assert.deepEqual(state[playlistName1], expectedPlaylist1)
-    assert.lengthOf(Object.keys(state), 4)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track2.id, track1.id],
+        index: 1
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id],
+        index: 0
+      },
+      [playlistName1]: {
+        name: playlistName1,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id],
+        index: null
+      },
+      [playlistName2]: {
+        name: playlistName2,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 
   it('clear the default playlist', () => {
@@ -283,73 +377,177 @@ describe('#playlists()', () => {
     }
     state = assertNewState(playlists, state, action)
 
-    const expectedDefaultPlaylist = {
-      name: DEFAULT_PLAYLIST,
-      selection: new Map(),
-      search: '',
-      tracks: [],
-      index: null
-    }
-    assert.deepEqual(state[DEFAULT_PLAYLIST], expectedDefaultPlaylist)
-    assert.lengthOf(Object.keys(state), 4)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track2.id, track1.id],
+        index: 1
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [],
+        index: null
+      },
+      [playlistName1]: {
+        name: playlistName1,
+        selection: new Map(),
+        search: '',
+        tracks: [track1.id],
+        index: null
+      },
+      [playlistName2]: {
+        name: playlistName2,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 
   it('delete playistName1', () => {
     action = { type: actionTypes.PLAYLIST_DELETE, playlistName: playlistName1 }
     state = assertNewState(playlists, state, action)
-    assert.isUndefined(state[playlistName1])
-    assert.lengthOf(Object.keys(state), 3)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track2.id, track1.id],
+        index: 1
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [],
+        index: null
+      },
+      [playlistName2]: {
+        name: playlistName2,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 
   it('delete track2', () => {
     action = {
       type: actionTypes.TRACKS_DELETE,
-      playlists: {
-        ...state,
-        [FULL_PLAYLIST]: {
-          ...state[FULL_PLAYLIST],
-          tracks: [track1.id],
-          index: 0
-        }
-      }
+      deleteIds: new Set([track2.id])
     }
     state = assertNewState(playlists, state, action)
 
-    const expectedLibraryPlaylist = {
-      name: FULL_PLAYLIST,
-      sortKey: 'artist',
-      ascending: false,
-      selection: new Map(),
-      search: testSearch,
-      tracks: [track1.id],
-      index: 0
-    }
-    assert.deepEqual(state[FULL_PLAYLIST], expectedLibraryPlaylist)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track1.id],
+        index: 0
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [],
+        index: null
+      },
+      [playlistName2]: {
+        name: playlistName2,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 
   it('add to uploads', () => {
-    const playlistName = UPLOAD_PLAYLIST
-    assert.isUndefined(state[playlistName])
-    const update = [track1, track2]
-    action = { type: actionTypes.TRACK_UPLOADS_UPDATE, update }
+    action = {
+      type: actionTypes.TRACKS_ADD,
+      lib: testLib,
+      libType: libTypes.UPLOADS
+    }
+
     state = assertNewState(playlists, state, action)
 
-    const expectedPlaylist = {
-      name: playlistName,
-      selection: new Map(),
-      search: '',
-      index: null,
-      tracks: [track1.id, track2.id]
-    }
-    assert.deepEqual(state[playlistName], expectedPlaylist)
-    assert.lengthOf(Object.keys(state), 4)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track1.id],
+        index: 0
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [],
+        index: null
+      },
+      [UPLOAD_PLAYLIST]: {
+        name: UPLOAD_PLAYLIST,
+        sortKey: 'title',
+        ascending: true,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id, track2.id]
+      },
+      [playlistName2]: {
+        name: playlistName2,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 
   it('delete uploads', () => {
     const playlistName = UPLOAD_PLAYLIST
     action = { type: actionTypes.PLAYLIST_DELETE, playlistName }
     state = assertNewState(playlists, state, action)
-    assert.isUndefined(state[playlistName])
-    assert.lengthOf(Object.keys(state), 3)
+    assert.deepEqual(state, {
+      [FULL_PLAYLIST]: {
+        name: FULL_PLAYLIST,
+        sortKey: 'artist',
+        ascending: false,
+        selection: new Map(),
+        search: testSearch,
+        tracks: [track1.id],
+        index: 0
+      },
+      [DEFAULT_PLAYLIST]: {
+        name: DEFAULT_PLAYLIST,
+        selection: new Map(),
+        search: '',
+        tracks: [],
+        index: null
+      },
+      [playlistName2]: {
+        name: playlistName2,
+        selection: new Map(),
+        search: '',
+        index: null,
+        tracks: [track1.id]
+      }
+    })
   })
 })

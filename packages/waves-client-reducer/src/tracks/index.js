@@ -1,15 +1,13 @@
 const { combineReducers } = require('redux')
 
-const library = require('./library')
+const libraries = require('./libraries')
 const playlists = require('./playlists')
 const playing = require('./playing')
-const uploads = require('./uploads')
 
 const tracks = combineReducers({
-  library,
+  libraries,
   playlists,
-  playing,
-  uploads
+  playing
 })
 
 module.exports = tracks
