@@ -4,6 +4,7 @@ import * as WavesActions from 'waves-client-actions'
 import { libTypes } from 'waves-client-constants'
 
 export default async (store, ws, player, localState, history) => {
+  store.dispatch(WavesActions.routerChange(history.location))
   history.listen(location => {
     store.dispatch(WavesActions.routerChange(location))
   })
