@@ -32,9 +32,13 @@ const DEFAULT_SEARCH_STRING = ''
 const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }
 
-const library = {
+const libType = 'testLibType'
+const testLib = {
   [track1.id]: track1,
   [track2.id]: track2
+}
+const libraries = {
+  [libType]: testLib
 }
 
 describe('waves-client-selectors', () => {
@@ -101,12 +105,13 @@ describe('waves-client-selectors', () => {
       getRouterSortKey,
       getPlaylistProps,
       getSearchItems
-    } = getOrCreatePlaylistSelectors(testPlaylistName, URLSearchParams)
+    } = getOrCreatePlaylistSelectors(testPlaylistName, URLSearchParams, libType)
 
     describe('#getPlaylistProps()', () => {
       it('playlist is null', () => {
         const tracks = {
-          playlists: null
+          playlists: null,
+          libraries
         }
         const state = { tracks, account: { rowsPerPage: 25 } }
         const props = getPlaylistProps(state, '')
@@ -115,7 +120,7 @@ describe('waves-client-selectors', () => {
 
       it('playlist is missing', () => {
         const playlists = {}
-        const tracks = { playlists }
+        const tracks = { playlists, libraries }
         const state = { tracks, account: { rowsPerPage: 25 } }
         const props = getPlaylistProps(state)
         assert.deepEqual(props, { loaded: false })
@@ -133,7 +138,7 @@ describe('waves-client-selectors', () => {
           [testPlaylistName]: playlist
         }
 
-        const tracks = { playlists, library }
+        const tracks = { playlists, libraries }
         const state = { tracks, account: { rowsPerPage: 25 } }
         const props = getPlaylistProps(state, '')
         const expected = {
@@ -207,7 +212,7 @@ describe('waves-client-selectors', () => {
             tracks: [track1.id, track2.id]
           }
         }
-        const tracks = { playlists, library }
+        const tracks = { playlists, libraries }
         const state = { tracks }
         const searchItems = getSearchItems(state, search)
         assert.lengthOf(searchItems, 0)
@@ -216,10 +221,9 @@ describe('waves-client-selectors', () => {
       it('search has a hit', () => {
         const searchString = 'thisisaveryspecificsearchstring'
 
-        const track1Copy = { ...track1 }
-        track1Copy.title = searchString
-
-        const libraryCopy = { ...library, [track1Copy.id]: track1Copy }
+        const track1Copy = { ...track1, title: searchString }
+        const libCopy = {...libraries[libType], [track1Copy.id]: track1Copy }
+        const librariesCopy = { ...libraries, [libType]: libCopy }
 
         const search = `${SEARCH_QUERY_KEY}=${searchString}`
         const playlists = {
@@ -227,7 +231,7 @@ describe('waves-client-selectors', () => {
             tracks: [track1Copy.id, track2.id]
           }
         }
-        const tracks = { playlists, library: libraryCopy }
+        const tracks = { playlists, libraries: librariesCopy }
         const state = { tracks }
         const searchItems = getSearchItems(state, search)
         assert.lengthOf(searchItems, 1)

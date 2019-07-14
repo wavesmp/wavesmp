@@ -3,7 +3,7 @@ const { createSelector } = require('reselect')
 
 const { normalizeTrack } = require('waves-client-util')
 
-const { getLibrary, getRowsPerPage, _getPlaylist } = require('./base')
+const { getRowsPerPage, _getPlaylist } = require('./base')
 
 const FUSE_OPTS = {
   keys: ['title', 'artist', 'album', 'genre'],
@@ -24,14 +24,14 @@ const playlistSelectors = {}
 function getOrCreatePlaylistSelectors(
   playlistName,
   URLSearchParams,
-  libProp = 'library'
+  libType
 ) {
   let playlistSelector = playlistSelectors[playlistName]
   if (!playlistSelector) {
     playlistSelector = createPlaylistSelectors(
       playlistName,
       URLSearchParams,
-      libProp
+      libType
     )
     playlistSelectors[playlistName] = playlistSelector
   }
@@ -52,9 +52,9 @@ function normalizePage(currentPage, lastPage) {
   return currentPage
 }
 
-function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
-  function getLibrary(state) {
-    return state.tracks[libProp]
+function createPlaylistSelectors(playlistName, URLSearchParams, libType) {
+  function getLib(state) {
+    return state.tracks.libraries[libType]
   }
 
   /* router query params */
@@ -126,17 +126,17 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
   }
 
   /* playlist display items */
-  function _getFuse(playlist, library, searchString) {
+  function _getFuse(playlist, lib, searchString) {
     if (!playlist || !searchString) {
       return null
     }
     const { tracks } = playlist
-    const items = tracks.map((track, i) => normalizeTrack(library[track], i))
+    const items = tracks.map((track, i) => normalizeTrack(lib[track], i))
     return new Fuse(items, FUSE_OPTS)
   }
 
   const getFuse = createSelector(
-    [getPlaylist, getLibrary, getRouterSearchString],
+    [getPlaylist, getLib, getRouterSearchString],
     _getFuse
   )
 
@@ -152,14 +152,14 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
     _getSearchItems
   )
 
-  function getPageItems(searchItems, tracks, library, startIndex, stopIndex) {
+  function getPageItems(searchItems, tracks, lib, startIndex, stopIndex) {
     if (searchItems) {
       return searchItems.slice(startIndex, stopIndex)
     }
     const { length } = tracks
     const displayItems = []
     for (let i = startIndex; i < stopIndex && i < length; i += 1) {
-      const track = library[tracks[i]]
+      const track = lib[tracks[i]]
       displayItems.push(normalizeTrack(track, i))
     }
     return displayItems
@@ -170,7 +170,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
     rowsPerPage,
     searchItems,
     playlist,
-    library
+    lib
   ) {
     if (!playlist) {
       return { loaded: false }
@@ -186,7 +186,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
     const displayItems = getPageItems(
       searchItems,
       tracks,
-      library,
+      lib,
       startIndex,
       stopIndex
     )
@@ -206,7 +206,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libProp) {
   }
 
   const getPlaylistProps = createSelector(
-    [getRouterPage, getRowsPerPage, getSearchItems, getPlaylist, getLibrary],
+    [getRouterPage, getRowsPerPage, getSearchItems, getPlaylist, getLib],
     _getPlaylistProps
   )
 
