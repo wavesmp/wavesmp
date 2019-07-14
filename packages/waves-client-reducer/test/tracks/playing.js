@@ -96,6 +96,21 @@ describe('#playing()', () => {
     assert.strictEqual(state.playlist, playlistName1)
   })
 
+  it('Update track info', () => {
+    const key = 'title'
+    const updatedValue = 'updatedTitle'
+    assert.notEqual(updatedValue, track2[key])
+    const action = {
+      type: actionTypes.TRACKS_INFO_UPDATE,
+      ids: [track2.id],
+      key,
+      value: updatedValue
+    }
+    state = assertNewState(playing, state, action)
+    assert.isTrue(state.isPlaying)
+    assert.deepEqual(state.track, { ...track2, [key]: updatedValue })
+  })
+
   it('empty track next', () => {
     const action = {
       type: actionTypes.TRACK_NEXT,

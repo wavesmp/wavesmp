@@ -53,6 +53,21 @@ function reducerPlaying(playing = initialPlaying, action) {
       }
     }
 
+    case actionTypes.TRACKS_INFO_UPDATE: {
+      const { ids, key, value } = action
+      const { track } = playing
+      if (track && ids.includes(track.id)) {
+        return {
+          ...playing,
+          track: {
+            ...track,
+            [key]: value
+          }
+        }
+      }
+      return playing
+    }
+
     case actionTypes.TRACKS_REMOVE: {
       const { deletePlaying } = action
       if (deletePlaying) {
