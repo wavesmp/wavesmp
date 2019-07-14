@@ -1,6 +1,7 @@
 import ObjectID from 'bson-objectid'
 
 import * as WavesActions from 'waves-client-actions'
+import { libTypes } from 'waves-client-constants'
 
 export default async (store, ws, player, localState, history) => {
   history.listen(location => {
@@ -14,7 +15,12 @@ export default async (store, ws, player, localState, history) => {
 
   player.setOnUploadProgress((trackId, progress) => {
     store.dispatch(
-      WavesActions.uploadInfoUpdate(trackId, 'uploadProgress', progress)
+      WavesActions.tracksLocalInfoUpdate(
+        trackId,
+        'uploadProgress',
+        progress,
+        libTypes.UPLOADS
+      )
     )
   })
 
@@ -24,7 +30,7 @@ export default async (store, ws, player, localState, history) => {
 
   /* Recieve data from server */
   ws.setOnLibraryUpdate(lib => {
-    store.dispatch(WavesActions.tracksUpdate(lib))
+    store.dispatch(WavesActions.tracksAdd(lib, libTypes.WAVES))
   })
 
   ws.setOnPlaylistsUpdate(playlists => {

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import * as WavesActions from 'waves-client-actions'
 import {
   UPLOAD_PLAYLIST as playlistName,
+  libTypes,
   modalTypes,
   toastTypes
 } from 'waves-client-constants'
@@ -114,12 +115,12 @@ class Upload extends React.PureComponent {
       })
       return
     }
-    actions.trackUploadsUpdate(validNewUploads)
+    actions.tracksAdd(validNewUploads, libTypes.UPLOADS)
   }
 
   onItemEdit = (id, key, value) => {
     const { actions } = this.props
-    actions.uploadInfoUpdate(id, key, value)
+    actions.tracksLocalInfoUpdate(id, key, value, libTypes.UPLOADS)
   }
 
   renderUploads() {
@@ -227,7 +228,11 @@ function mapStateToProps(state, ownProps) {
   const {
     getRouterQueryParams,
     getPlaylistProps
-  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, 'uploads')
+  } = getOrCreatePlaylistSelectors(
+    playlistName,
+    URLSearchParams,
+    libTypes.UPLOADS
+  )
   const { account, sidebar, transitions, tracks } = state
   const { playing, uploads } = tracks
   const { location } = ownProps
