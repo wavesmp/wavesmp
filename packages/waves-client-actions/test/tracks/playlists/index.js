@@ -3,7 +3,7 @@ const mongoid = require('mongoid-js')
 const sinon = require('sinon')
 
 const types = require('waves-action-types')
-const { DEFAULT_PLAYLIST } = require('waves-client-constants')
+const { DEFAULT_PLAYLIST, libTypes } = require('waves-client-constants')
 const WavesSocket = require('waves-socket')
 const {
   TEST_PLAYLIST_NAME1: testPlaylistName1,
@@ -15,10 +15,12 @@ const {
 
 const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }
-const library = {
+const libType = 'testLibType'
+const lib = {
   [track1.id]: track1,
   [track2.id]: track2
 }
+const libraries = { [libType]: lib, [libTypes.WAVES]: lib }
 
 const actions = require('../../../src/tracks/playlists')
 
@@ -133,7 +135,7 @@ describe('#playlists()', () => {
         selection: destSelection
       }
     }
-    const tracks = { playlists, library }
+    const tracks = { playlists, libraries }
     const account = { rowsPerPage: 25 }
 
     const ws = new WavesSocket(() => ({}))

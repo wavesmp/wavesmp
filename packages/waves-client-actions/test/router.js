@@ -3,7 +3,13 @@ const mongoid = require('mongoid-js')
 const sinon = require('sinon')
 
 const types = require('waves-action-types')
-const { DEFAULT_PLAYLIST, FULL_PLAYLIST } = require('waves-client-constants')
+const {
+  DEFAULT_PLAYLIST,
+  FULL_PLAYLIST,
+  libTypes,
+  routes
+} = require('waves-client-constants')
+const { getPlaylistNameFromRoute } = require('waves-client-util')
 const {
   TEST_PLAYLIST_NAME1: testPlaylistName,
   TEST_SEARCH: testSearch,
@@ -13,17 +19,21 @@ const {
 
 const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }
-const library = {
+const lib = {
   [track1.id]: track1,
   [track2.id]: track2
+}
+const libraries = {
+  [libTypes.WAVES]: lib,
+  [libTypes.UPLOADS]: lib
 }
 
 const actions = require('../src/router')
 
 describe('#router()', () => {
-  it('Router change on non-playlist path', () => {
+  it('Router change on unknown path', () => {
     const location = {
-      pathname: '/uploads',
+      pathname: '/unknown',
       search: testSearch
     }
     const thunk = actions.routerChange(location)
@@ -74,43 +84,45 @@ describe('#router()', () => {
   })
 
   it('Router change on library playlist', () => {
-    const ascending = false
-    const order = 'desc'
-    const sortKey = 'testSortKey'
-    const search = `?page=2&search=foobar&sortKey=${sortKey}&order=${order}`
-    const location = { pathname: '/library', search }
+    for (const pathname of [routes.library, routes.upload]) {
+      const playlistName = getPlaylistNameFromRoute(pathname)
+      const ascending = false
+      const order = 'desc'
+      const sortKey = 'testSortKey'
+      const search = `?page=2&search=foobar&sortKey=${sortKey}&order=${order}`
+      const location = { pathname, search }
 
-    const thunk = actions.routerChange(location)
+      const thunk = actions.routerChange(location)
 
-    assert.isDefined(types.PLAYLIST_SEARCH_UPDATE)
-    const firstAction = {
-      type: types.PLAYLIST_SEARCH_UPDATE,
-      name: FULL_PLAYLIST,
-      search
+      assert.isDefined(types.PLAYLIST_SEARCH_UPDATE)
+      const firstAction = {
+        type: types.PLAYLIST_SEARCH_UPDATE,
+        name: playlistName,
+        search
+      }
+
+      assert.isDefined(types.PLAYLIST_SORT)
+      const secondAction = {
+        type: types.PLAYLIST_SORT,
+        lib,
+        name: playlistName,
+        sortKey,
+        ascending
+      }
+
+      const dispatchMock = sinon.mock()
+      const dispatchExpect = dispatchMock.twice()
+
+      const getState = () => ({ tracks: { libraries } })
+      thunk(dispatchMock, getState)
+
+      const firstDispatchCall = dispatchExpect.firstCall
+      assert.isTrue(firstDispatchCall.calledWithExactly(firstAction))
+
+      const secondDispatchCall = dispatchExpect.secondCall
+      assert.isTrue(secondDispatchCall.calledWithExactly(secondAction))
+
+      dispatchMock.verify()
     }
-
-    assert.isDefined(types.PLAYLIST_SORT)
-    const secondAction = {
-      type: types.PLAYLIST_SORT,
-      library,
-      name: FULL_PLAYLIST,
-      sortKey,
-      ascending
-    }
-
-    const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.twice()
-
-    const getState = () => ({ tracks: { library } })
-    thunk(dispatchMock, getState)
-
-    const firstDispatchCall = dispatchExpect.firstCall
-    assert.isTrue(firstDispatchCall.calledWithExactly(firstAction))
-
-    const secondDispatchCall = dispatchExpect.secondCall
-    assert.isTrue(secondDispatchCall.calledWithExactly(secondAction))
-
-    dispatchMock.verify()
-    dispatchMock.verify()
   })
 })

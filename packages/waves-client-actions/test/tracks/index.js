@@ -10,6 +10,7 @@ const types = require('waves-action-types')
 const {
   DEFAULT_PLAYLIST,
   UPLOAD_PLAYLIST,
+  libTypes,
   toastTypes
 } = require('waves-client-constants')
 const Player = require('waves-client-player')
@@ -23,6 +24,7 @@ const {
 } = require('waves-test-data')
 
 const SEARCH_QUERY_KEY = 'search'
+const libType = 'testLibType'
 const id1 = '5c3d93000000000000000000'
 const createdAt1 = 1547539200
 const createAtPretty1 = '1/15/2019, 8:00:00 AM'
@@ -31,9 +33,13 @@ const createdAt2 = 1516003200
 const createdAtPretty2 = '1/15/2018, 8:00:00 AM'
 const track1 = { ...baseTrack1, id: id1 }
 const track2 = { ...baseTrack2, id: id2 }
-const library = {
+const lib = {
   [id1]: track1,
   [id2]: track2
+}
+const libraries = {
+  [libTypes.WAVES]: lib,
+  [libTypes.UPLOADS]: lib
 }
 
 describe('#tracks()', async () => {
@@ -71,7 +77,7 @@ describe('#tracks()', async () => {
       .withExactArgs(track2)
 
     const playing = { playlist: testPlaylistName1 }
-    const tracks = { playing, library }
+    const tracks = { playing, libraries }
     thunk(dispatchMock, () => ({ tracks }), { player, ws })
 
     dispatchMock.verify()
@@ -103,7 +109,7 @@ describe('#tracks()', async () => {
       .withExactArgs(track2)
 
     const playing = { playlist: testPlaylistName1 }
-    const tracks = { playing, library }
+    const tracks = { playing, libraries }
     thunk(dispatchMock, () => ({ tracks }), { player })
 
     dispatchMock.verify()
@@ -149,7 +155,7 @@ describe('#tracks()', async () => {
       search: ''
     }
     const playlists = { [playlistName]: playlist }
-    const tracks = { playing, playlists, library }
+    const tracks = { playing, playlists, libraries }
     thunk(dispatchMock, () => ({ tracks }), { player, ws })
 
     dispatchMock.verify()
@@ -169,6 +175,9 @@ describe('#tracks()', async () => {
     const libraryCopy = {
       [track1Copy.id]: track1Copy,
       [track2Copy.id]: track2Copy
+    }
+    const librariesCopy = {
+      [libTypes.WAVES]: libraryCopy
     }
 
     const player = new Player({})
@@ -197,28 +206,21 @@ describe('#tracks()', async () => {
       search
     }
     const playlists = { [playlistName]: playlist }
-    const tracks = { playing, playlists, library: libraryCopy }
+    const tracks = { playing, playlists, libraries: librariesCopy }
     thunk(dispatchMock, () => ({ tracks }), { player })
 
     dispatchMock.verify()
     playerMock.verify()
   })
 
-  it('trackUploadsUpdate()', async () => {
-    const update = [track1, track2]
-    assert.isDefined(types.TRACK_UPLOADS_UPDATE)
-    const expectedAction = { type: types.TRACK_UPLOADS_UPDATE, update }
-    assert.deepEqual(actions.trackUploadsUpdate(update), expectedAction)
-  })
-
-  it('initial library update', async () => {
-    const library = null
-    const getState = () => ({ tracks: { library } })
+  it('initial library add', async () => {
+    const lib = null
+    const getState = () => ({ tracks: { libraries: { [libType]: null } } })
     const update = [track1]
-    const updatedLibrary = { [track1.id]: track1 }
-    const thunk = actions.tracksUpdate(update)
+    const updatedLib = { [track1.id]: track1 }
+    const thunk = actions.tracksAdd(update, libType)
 
-    const action = { type: types.TRACKS_UPDATE, libraryById: updatedLibrary }
+    const action = { type: types.TRACKS_ADD, lib: updatedLib, libType }
 
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs(action)
@@ -229,11 +231,9 @@ describe('#tracks()', async () => {
   })
 
   it('library update', async () => {
-    const track2Copy = { ...track2 }
-    track2Copy.title = ''
-
-    const library = { [track1.id]: track1 }
-    const getState = () => ({ tracks: { library } })
+    const track2Copy = { ...track2, title: '' }
+    const lib = { [track1.id]: track1 }
+    const getState = () => ({ tracks: { libraries: { [libType]: lib } } })
     const update = [track2Copy]
     const updatedLibrary = {
       [track1.id]: track1,
@@ -244,9 +244,9 @@ describe('#tracks()', async () => {
         createdAtPretty: createdAtPretty2
       }
     }
-    const thunk = actions.tracksUpdate(update)
+    const thunk = actions.tracksAdd(update, libType)
 
-    const action = { type: types.TRACKS_UPDATE, libraryById: updatedLibrary }
+    const action = { type: types.TRACKS_ADD, lib: updatedLibrary, libType }
 
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs(action)
@@ -276,8 +276,12 @@ describe('#tracks()', async () => {
     }
     const playlists = { [UPLOAD_PLAYLIST]: uploadPlaylist }
     const uploadValues = Object.values(uploads)
+    const testLibraries = {
+      [libTypes.WAVES]: null,
+      [libTypes.UPLOADS]: uploads
+    }
     const getState = () => ({
-      tracks: { uploads, playing, library, playlists }
+      tracks: { playing, playlists, libraries: testLibraries }
     })
 
     const thunk = actions.tracksUpload(sourceType)
@@ -289,12 +293,12 @@ describe('#tracks()', async () => {
       .withExactArgs(sourceType, uploadValues)
       .returns(uploadValues.map(uploadValue => Promise.resolve(uploadValue)))
 
-    assert.isDefined(types.TRACKS_UPDATE)
+    assert.isDefined(types.TRACKS_ADD)
     const wsMock = sinon.mock(ws)
     const wsExpect = wsMock
       .expects('sendAckedMessage')
       .once()
-      .withExactArgs(types.TRACKS_UPDATE, { tracks: uploadValues })
+      .withExactArgs(types.TRACKS_ADD, { tracks: uploadValues })
 
     const playerPauseExpect = playerMock
       .expects('pause')
@@ -306,25 +310,27 @@ describe('#tracks()', async () => {
 
     await thunk(dispatchMock, getState, { player, ws })
 
-    assert.isDefined(types.UPLOAD_TRACKS_UPDATE)
+    assert.isDefined(types.TRACKS_INFO_UPDATE)
     const uploadIds = Object.keys(uploads)
     const firstDispatchCall = dispatchExpect.firstCall
     assert.isTrue(
       firstDispatchCall.calledWithExactly({
-        type: types.UPLOAD_TRACKS_UPDATE,
+        type: types.TRACKS_INFO_UPDATE,
         ids: uploadIds,
         key: 'state',
-        value: 'uploading'
+        value: 'uploading',
+        libType: libTypes.UPLOADS
       })
     )
 
     const secondDispatchCall = dispatchExpect.secondCall
     assert.isTrue(
       secondDispatchCall.calledWithExactly({
-        type: types.UPLOAD_TRACKS_UPDATE,
+        type: types.TRACKS_INFO_UPDATE,
         ids: uploadIds,
         key: 'uploadProgress',
-        value: 0
+        value: 0,
+        libType: libTypes.UPLOADS
       })
     )
 
@@ -344,18 +350,14 @@ describe('#tracks()', async () => {
     /* Toast add function */
     assert.isFunction(fourthCallArg)
 
-    assert.isDefined(types.TRACK_UPLOADS_DELETE)
+    assert.isDefined(types.TRACKS_DELETE)
     const uploadedIds = new Set(uploadIds)
     const fifthDispatchCall = dispatchExpect.getCall(4)
     assert.isTrue(
       fifthDispatchCall.calledWithExactly({
-        type: types.TRACK_UPLOADS_DELETE,
+        type: types.TRACKS_DELETE,
         deleteIds: uploadedIds,
-        playlist: {
-          ...uploadPlaylist,
-          tracks: [],
-          index: null
-        }
+        libType: libTypes.UPLOADS
       })
     )
 
@@ -388,7 +390,7 @@ describe('#tracks()', async () => {
         tracks: [track1.id, track2.id]
       }
     }
-    const tracks = { library, playing: {}, playlists }
+    const tracks = { libraries, playing: {}, playlists }
     const account = { rowsPerPage: 25 }
 
     const ws = new WavesSocket(() => ({}))
@@ -421,5 +423,54 @@ describe('#tracks()', async () => {
 
     dispatchMock.verify()
     wsMock.verify()
+  })
+
+  it('#tracksInfoUpdate()', () => {
+    const ws = new WavesSocket(() => ({}))
+
+    const id = track1.id
+    const key = 'title'
+    const value = 'newTitle'
+    const action = {
+      type: types.TRACKS_INFO_UPDATE,
+      ids: [id],
+      key,
+      value,
+      libType
+    }
+    const thunk = actions.tracksInfoUpdate(id, key, value, libType)
+
+    assert.isDefined(types.TRACKS_INFO_UPDATE)
+    const dispatchMock = sinon.mock()
+    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+
+    const wsMock = sinon.mock(ws)
+    const wsExpect = wsMock
+      .expects('sendBestEffortMessage')
+      .once()
+      .withExactArgs(types.TRACKS_INFO_UPDATE, { id, key, value })
+
+    thunk(dispatchMock, undefined, { ws })
+
+    dispatchMock.verify()
+    wsMock.verify()
+  })
+
+  it('#tracksLocalInfoUpdate()', () => {
+    const id = 'testId'
+    const key = 'testAttr'
+    const value = 'testUpdate'
+    assert.isDefined(types.TRACKS_INFO_UPDATE)
+    const expectedAction = {
+      type: types.TRACKS_INFO_UPDATE,
+      ids: [id],
+      key,
+      value,
+      libType
+    }
+    assert.deepEqual(
+      actions.tracksLocalInfoUpdate(id, key, value, libType),
+      expectedAction
+    )
   })
 })

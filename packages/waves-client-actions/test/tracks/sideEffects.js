@@ -3,7 +3,7 @@ const mongoid = require('mongoid-js')
 const sinon = require('sinon')
 
 const types = require('waves-action-types')
-const { toastTypes } = require('waves-client-constants')
+const { libTypes, toastTypes } = require('waves-client-constants')
 const Player = require('waves-client-player')
 
 const actions = require('../../src/tracks/sideEffects')
@@ -18,6 +18,9 @@ const track2 = { ...baseTrack2, id: mongoid() }
 const library = {
   [track1.id]: track1,
   [track2.id]: track2
+}
+const libraries = {
+  [libTypes.WAVES]: library
 }
 
 describe('#sideEffects()', async () => {
@@ -35,7 +38,7 @@ describe('#sideEffects()', async () => {
       .once()
       .withExactArgs(track1)
 
-    const tracks = { library }
+    const tracks = { libraries }
     await thunk(dispatchMock, () => ({ tracks }), { player })
 
     const firstDisptachCall = dispatchExpect.firstCall

@@ -7,6 +7,7 @@ const {
   DEFAULT_PLAYLIST,
   FULL_PLAYLIST,
   UPLOAD_PLAYLIST,
+  libTypes,
   toastTypes
 } = require('waves-client-constants')
 const {
@@ -24,12 +25,19 @@ const {
 
 const { toastAdd } = require('../toasts')
 
+function getLibTypeForPlaylist(playlistName) {
+  if (playlistName === UPLOAD_PLAYLIST) {
+    return libTypes.UPLOADS
+  }
+  return libTypes.WAVES
+}
+
 function trackToggle(id, playlistName, index) {
   return (dispatch, getState, { player, ws }) => {
     const { tracks } = getState()
-    const { library, playing, uploads } = tracks
-
-    const track = getTrackById(id, library, uploads)
+    const { libraries, playing } = tracks
+    const libType = getLibTypeForPlaylist(playlistName)
+    const track = libraries[libType][id]
     const { playlist: oldPlaylistName } = playing
 
     player.trackToggle(track)
@@ -87,23 +95,19 @@ async function _trackNext(
   prev
 ) {
   const state = getState()
-  const { library, playing, playlists, uploads } = state.tracks
+  const { libraries, playing, playlists } = state.tracks
   const { playlist: playlistName, isPlaying, shuffle } = playing
   const playlist = playlists[playlistName]
+  const libType = getLibTypeForPlaylist(playlistName)
+  const lib = libraries[libType]
 
   const { getSearchItems } = getOrCreatePlaylistSelectors(
     playlistName,
-    URLSearchParams
+    URLSearchParams,
+    libType
   )
   const searchItems = getSearchItems(state, playlist.search)
-  const nextTrack = getNextTrack(
-    searchItems,
-    playlist,
-    shuffle,
-    prev,
-    library,
-    uploads
-  )
+  const nextTrack = getNextTrack(searchItems, playlist, shuffle, prev, lib)
 
   dispatch({
     type: types.TRACK_NEXT,
@@ -128,7 +132,7 @@ async function _trackNext(
   }
 }
 
-function getNextTrack(searchItems, playlist, shuffle, prev, library, uploads) {
+function getNextTrack(searchItems, playlist, shuffle, prev, lib) {
   const { tracks, index } = playlist
   const items = searchItems || tracks
   const { length } = items
@@ -141,7 +145,7 @@ function getNextTrack(searchItems, playlist, shuffle, prev, library, uploads) {
       return items[i]
     }
     const trackId = tracks[i]
-    const track = getTrackById(trackId, library, uploads)
+    const track = lib[trackId]
     return normalizeTrack(track, index)
   }
 
@@ -173,29 +177,25 @@ function getNextTrack(searchItems, playlist, shuffle, prev, library, uploads) {
   if (prev && index > 0) {
     const nextIndex = index - 1
     const trackId = items[nextIndex]
-    const track = getTrackById(trackId, library, uploads)
+    const track = lib[trackId]
     return normalizeTrack(track, nextIndex)
   }
   if (!prev && index < length - 1) {
     const nextIndex = index + 1
     const trackId = items[nextIndex]
-    const track = getTrackById(trackId, library, uploads)
+    const track = lib[trackId]
     return normalizeTrack(track, nextIndex)
   }
   return null
 }
 
-function trackUploadsUpdate(update) {
-  return { type: types.TRACK_UPLOADS_UPDATE, update }
-}
-
-function tracksUpdate(update) {
+function tracksAdd(update, libType) {
   return (dispatch, getState) => {
     const { tracks } = getState()
-    const { library } = tracks
-    const libraryById = { ...library }
+    const { libraries } = tracks
+    const libraryById = { ...libraries[libType] }
     updateLibraryById(libraryById, update)
-    dispatch({ type: types.TRACKS_UPDATE, libraryById })
+    dispatch({ type: types.TRACKS_ADD, lib: libraryById, libType })
   }
 }
 
@@ -239,27 +239,30 @@ async function handleUploadPromises(promises, dispatch) {
 function tracksUpload(trackSource) {
   return async (dispatch, getState, { player, ws }) => {
     const { tracks } = getState()
-    const { playing, uploads, playlists } = tracks
+    const { playing, libraries, playlists } = tracks
     const { track } = playing
+    const uploads = libraries[libTypes.UPLOADS]
     const uploadIds = Object.keys(uploads)
     dispatch({
-      type: types.UPLOAD_TRACKS_UPDATE,
+      type: types.TRACKS_INFO_UPDATE,
       ids: uploadIds,
       key: 'state',
-      value: 'uploading'
+      value: 'uploading',
+      libType: libTypes.UPLOADS
     })
     dispatch({
-      type: types.UPLOAD_TRACKS_UPDATE,
+      type: types.TRACKS_INFO_UPDATE,
       ids: uploadIds,
       key: 'uploadProgress',
-      value: 0
+      value: 0,
+      libType: libTypes.UPLOADS
     })
     const uploadValues = Object.values(uploads)
     const uploadPromises = await player.upload(trackSource, uploadValues)
     const result = await handleUploadPromises(uploadPromises, dispatch)
     const { uploaded } = result
     try {
-      await ws.sendAckedMessage(types.TRACKS_UPDATE, { tracks: uploaded })
+      await ws.sendAckedMessage(types.TRACKS_ADD, { tracks: uploaded })
     } catch (serverErr) {
       console.log('Failed to upload tracks to server')
       console.log(serverErr)
@@ -280,20 +283,13 @@ function tracksUpload(trackSource) {
       player.pause()
     }
     dispatch({
-      type: types.TRACK_UPLOADS_DELETE,
+      type: types.TRACKS_DELETE,
       deleteIds: uploadedIds,
-      playlist: tracksDeleteFromPlaylist(
-        playlists[UPLOAD_PLAYLIST],
-        uploadedIds
-      )
+      libType: libTypes.UPLOADS
     })
-    dispatch(tracksUpdate(uploaded))
+    dispatch(tracksAdd(uploaded, libTypes.WAVES))
     return result
   }
-}
-
-function getTrackById(id, library, uploads) {
-  return library[id] || uploads[id]
 }
 
 function handleDeleteErr(err, dispatch) {
@@ -339,73 +335,23 @@ async function handleDeletePromises(promises, dispatch) {
   }
 }
 
-function tracksDeleteFromPlaylists(playlists, deleteIds) {
-  const playlistsUpdate = {}
-  for (const playlistName in playlists) {
-    const playlist = playlists[playlistName]
-    playlistsUpdate[playlistName] = tracksDeleteFromPlaylist(
-      playlist,
-      deleteIds
-    )
-  }
-  return playlistsUpdate
-}
-
-function tracksDeleteFromPlaylist(playlist, deleteIds) {
-  const { selection, tracks } = playlist
-  let { index } = playlist
-
-  const filteredSelection = new Map()
-  const filteredTracks = []
-
-  let numDeleted = 0
-  let indexOffset = 0
-  for (let i = 0; i < tracks.length; i += 1) {
-    const track = tracks[i]
-    if (deleteIds.has(track)) {
-      if (index != null) {
-        if (i === index) {
-          index = null
-        } else if (i < index) {
-          indexOffset += 1
-        }
-      }
-      numDeleted += 1
-    } else {
-      filteredTracks.push(track)
-      if (selection.has(i)) {
-        filteredSelection.set(i - numDeleted, track)
-      }
-    }
-  }
-
-  if (index) {
-    index -= indexOffset
-  }
-
-  return {
-    ...playlist,
-    selection: filteredSelection,
-    tracks: filteredTracks,
-    index
-  }
-}
-
 function tracksDelete() {
   return async (dispatch, getState, { player, ws }) => {
     const state = getState()
     const { tracks } = state
-    const { library, playing, playlists } = tracks
+    const { libraries, playing, playlists } = tracks
+    const library = libraries[libTypes.WAVES]
     const selection = getFilteredSelection(state, FULL_PLAYLIST)
 
     const { track } = playing
 
     const deleteIds = Array.from(selection.values())
     dispatch({
-      type: types.LIBRARY_TRACK_UPDATE,
+      type: types.TRACKS_INFO_UPDATE,
       ids: deleteIds,
       key: 'state',
-      value: 'pending'
+      value: 'pending',
+      libType: libTypes.WAVES
     })
     const deleteTracks = deleteIds.map(deleteId => library[deleteId])
     const deletePromises = await player.deleteTracks(deleteTracks)
@@ -436,9 +382,8 @@ function tracksDelete() {
     dispatch({
       type: types.TRACKS_DELETE,
       deleteIds: deletedIds,
-      playlists: tracksDeleteFromPlaylists(playlists, deletedIds)
+      libType: libTypes.WAVES
     })
-
     return result
   }
 }
@@ -457,9 +402,9 @@ function trackUploadsDelete() {
       player.pause()
     }
     dispatch({
-      type: types.TRACK_UPLOADS_DELETE,
+      type: types.TRACKS_DELETE,
       deleteIds,
-      playlist: tracksDeleteFromPlaylist(playlist, deleteIds)
+      libType: libTypes.UPLOADS
     })
   }
 }
@@ -659,23 +604,28 @@ function tracksKeyDown(ev, history) {
   }
 }
 
+function tracksLocalInfoUpdate(id, key, value, libType) {
+  return { type: types.TRACKS_INFO_UPDATE, ids: [id], key, value, libType }
+}
+
+function tracksInfoUpdate(id, key, value, libType) {
+  return (dispatch, getState, { ws }) => {
+    dispatch({ type: types.TRACKS_INFO_UPDATE, ids: [id], key, value, libType })
+    ws.sendBestEffortMessage(types.TRACKS_INFO_UPDATE, { id, key, value })
+  }
+}
+
 module.exports.trackToggle = trackToggle
 module.exports.trackNext = trackNext
 module.exports.trackPrevious = trackPrevious
 module.exports.trackEnded = trackEnded
-module.exports.trackUploadsUpdate = trackUploadsUpdate
-module.exports.tracksUpdate = tracksUpdate
+module.exports.tracksAdd = tracksAdd
 module.exports.tracksUpload = tracksUpload
 module.exports.tracksDelete = tracksDelete
 module.exports.trackUploadsDelete = trackUploadsDelete
 module.exports.tracksRemove = tracksRemove
 module.exports.tracksKeyDown = tracksKeyDown
+module.exports.tracksLocalInfoUpdate = tracksLocalInfoUpdate
+module.exports.tracksInfoUpdate = tracksInfoUpdate
 
-Object.assign(
-  module.exports,
-  require('./library'),
-  playing,
-  playlists,
-  require('./sideEffects'),
-  require('./uploads')
-)
+Object.assign(module.exports, playing, playlists, require('./sideEffects'))

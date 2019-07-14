@@ -21,11 +21,7 @@ const DEFAULT_SORT_KEY = 'title'
 const DEFAULT_SEARCH_STRING = ''
 
 const playlistSelectors = {}
-function getOrCreatePlaylistSelectors(
-  playlistName,
-  URLSearchParams,
-  libType
-) {
+function getOrCreatePlaylistSelectors(playlistName, URLSearchParams, libType) {
   let playlistSelector = playlistSelectors[playlistName]
   if (!playlistSelector) {
     playlistSelector = createPlaylistSelectors(

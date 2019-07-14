@@ -36,6 +36,9 @@ function getPlaylistNameFromRoute(pathname) {
   if (pathname === routes.library) {
     return FULL_PLAYLIST
   }
+  if (pathname === routes.upload) {
+    return UPLOAD_PLAYLIST
+  }
   if (pathname.startsWith(routes.playlistBase)) {
     return pathname.slice(routes.playlistBase.length)
   }

@@ -1,7 +1,16 @@
 const types = require('waves-action-types')
-const { FULL_PLAYLIST } = require('waves-client-constants')
+const {
+  FULL_PLAYLIST,
+  UPLOAD_PLAYLIST,
+  libTypes
+} = require('waves-client-constants')
 const { getOrCreatePlaylistSelectors } = require('waves-client-selectors')
 const { getPlaylistNameFromRoute } = require('waves-client-util')
+
+const playlistNameToLibType = {
+  [FULL_PLAYLIST]: libTypes.WAVES,
+  [UPLOAD_PLAYLIST]: libTypes.UPLOADS
+}
 
 function routerChange(location) {
   return async (dispatch, getState) => {
@@ -15,17 +24,19 @@ function routerChange(location) {
       name: playlistName,
       search
     })
-    if (playlistName === FULL_PLAYLIST) {
+    if (playlistName in playlistNameToLibType) {
+      const libType = playlistNameToLibType[playlistName]
       const {
         getRouterAscending,
         getRouterSortKey
-      } = getOrCreatePlaylistSelectors(FULL_PLAYLIST, URLSearchParams)
+      } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, libType)
       const ascending = getRouterAscending(undefined, search)
       const sortKey = getRouterSortKey(undefined, search)
-      const { library, playlists } = getState().tracks
-      const playlist = playlists && playlists[FULL_PLAYLIST]
+      const { libraries, playlists } = getState().tracks
+      const lib = libraries[libType]
+      const playlist = playlists && playlists[playlistName]
       if (
-        library &&
+        lib &&
         playlist &&
         sortKey === playlist.sortKey &&
         ascending === playlist.ascending
@@ -34,8 +45,8 @@ function routerChange(location) {
       }
       dispatch({
         type: types.PLAYLIST_SORT,
-        library,
-        name: FULL_PLAYLIST,
+        lib,
+        name: playlistName,
         sortKey,
         ascending
       })

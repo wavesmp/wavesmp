@@ -222,7 +222,7 @@ describe('waves-client-selectors', () => {
         const searchString = 'thisisaveryspecificsearchstring'
 
         const track1Copy = { ...track1, title: searchString }
-        const libCopy = {...libraries[libType], [track1Copy.id]: track1Copy }
+        const libCopy = { ...libraries[libType], [track1Copy.id]: track1Copy }
         const librariesCopy = { ...libraries, [libType]: libCopy }
 
         const search = `${SEARCH_QUERY_KEY}=${searchString}`
