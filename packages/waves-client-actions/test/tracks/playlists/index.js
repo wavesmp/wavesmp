@@ -32,7 +32,7 @@ describe('#playlists()', () => {
     assert.deepEqual(actions.playlistsUpdate(update), action)
   })
 
-  it('#playlistCopy()', () => {
+  it('#playlistCopy()', async () => {
     const ws = new WavesSocket(() => ({}))
 
     const thunk = actions.playlistCopy(testPlaylistName1, testPlaylistName2)
@@ -50,17 +50,17 @@ describe('#playlists()', () => {
     const data = { src: testPlaylistName1, dest: testPlaylistName2 }
     const wsMock = sinon.mock(ws)
     const wsExpect = wsMock
-      .expects('sendBestEffortMessage')
+      .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.PLAYLIST_COPY, data)
 
-    thunk(dispatchMock, undefined, { ws })
+    await thunk(dispatchMock, undefined, { ws })
 
     dispatchMock.verify()
     wsMock.verify()
   })
 
-  it('#playlistDelete()', () => {
+  it('#playlistDelete()', async () => {
     const ws = new WavesSocket(() => ({}))
 
     const thunk = actions.playlistDelete(testPlaylistName1)
@@ -76,17 +76,17 @@ describe('#playlists()', () => {
 
     const wsMock = sinon.mock(ws)
     const wsExpect = wsMock
-      .expects('sendBestEffortMessage')
+      .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.PLAYLIST_DELETE, { playlistName: testPlaylistName1 })
 
-    thunk(dispatchMock, undefined, { ws })
+    await thunk(dispatchMock, undefined, { ws })
 
     dispatchMock.verify()
     wsMock.verify()
   })
 
-  it('#playlistMove()', () => {
+  it('#playlistMove()', async () => {
     const ws = new WavesSocket(() => ({}))
 
     const thunk = actions.playlistMove(testPlaylistName1, testPlaylistName2)
@@ -103,14 +103,14 @@ describe('#playlists()', () => {
 
     const wsMock = sinon.mock(ws)
     const wsExpect = wsMock
-      .expects('sendBestEffortMessage')
+      .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.PLAYLIST_MOVE, {
         src: testPlaylistName1,
         dest: testPlaylistName2
       })
 
-    thunk(dispatchMock, undefined, { ws })
+    await thunk(dispatchMock, undefined, { ws })
 
     dispatchMock.verify()
     wsMock.verify()
@@ -187,7 +187,7 @@ describe('#playlists()', () => {
     const dispatchExpect = dispatchMock.once().withExactArgs(action)
 
     const wsExpect = wsMock
-      .expects('sendAckedMessage')
+      .expects('sendBestEffortMessage')
       .once()
       .withExactArgs(types.PLAYLIST_ADD, { playlistName, trackIds: addTracks })
 

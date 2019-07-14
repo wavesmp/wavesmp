@@ -9,22 +9,22 @@ function playlistsUpdate(update) {
 }
 
 function playlistCopy(src, dest) {
-  return (dispatch, getState, { ws }) => {
+  return async (dispatch, getState, { ws }) => {
+    await ws.sendAckedMessage(types.PLAYLIST_COPY, { src, dest })
     dispatch({ type: types.PLAYLIST_COPY, src, dest })
-    ws.sendBestEffortMessage(types.PLAYLIST_COPY, { src, dest })
   }
 }
 
 function playlistDelete(playlistName) {
-  return (dispatch, getState, { ws }) => {
-    ws.sendBestEffortMessage(types.PLAYLIST_DELETE, { playlistName })
+  return async (dispatch, getState, { ws }) => {
+    await ws.sendAckedMessage(types.PLAYLIST_DELETE, { playlistName })
     dispatch({ type: types.PLAYLIST_DELETE, playlistName })
   }
 }
 
 function playlistMove(src, dest) {
-  return (dispatch, getState, { ws }) => {
-    ws.sendBestEffortMessage(types.PLAYLIST_MOVE, { src, dest })
+  return async (dispatch, getState, { ws }) => {
+    await ws.sendAckedMessage(types.PLAYLIST_MOVE, { src, dest })
     dispatch({ type: types.PLAYLIST_MOVE, src, dest })
   }
 }
@@ -50,11 +50,11 @@ function playlistAdd(source, dest) {
 function playlistCreate(playlistName) {
   return async (dispatch, getState, { ws }) => {
     const addTracks = []
-    await ws.sendAckedMessage(types.PLAYLIST_ADD, {
+    dispatch({ type: types.PLAYLIST_ADD, playlistName, addTracks })
+    ws.sendBestEffortMessage(types.PLAYLIST_ADD, {
       playlistName,
       trackIds: addTracks
     })
-    dispatch({ type: types.PLAYLIST_ADD, playlistName, addTracks })
   }
 }
 
@@ -75,9 +75,9 @@ function playlistReorder(playlistName, insertAt) {
       newSelection,
       newIndex
     })
-    ws.sendBestEffortMessage(types.PLAYLIST_REORDER, {
+    await ws.sendAckedMessage(types.PLAYLIST_REORDER, {
       playlistName,
-      selection: [...filteredSelection.keys()],
+      selection: [...filteredSelection.entries()],
       insertAt
     })
   }

@@ -34,9 +34,13 @@ class Track extends React.PureComponent {
     actions.modalSet({ type: modalTypes.TRACKS_DELETE })
   }
 
-  tracksRemove = () => {
+  tracksRemove = async () => {
     const { actions, playlistName } = this.props
-    actions.tracksRemove(playlistName)
+    try {
+      await actions.tracksRemove(playlistName)
+    } catch (err) {
+      actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
+    }
   }
 
   nowPlayingAdd = () => {

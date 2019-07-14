@@ -4,7 +4,6 @@ const { URLSearchParams } = require('url')
 const sinon = require('sinon')
 
 const actions = require('../../src/tracks')
-const { toastAdd } = require('../../src/toasts')
 
 const types = require('waves-action-types')
 const {
@@ -412,11 +411,11 @@ describe('#tracks()', async () => {
 
     const wsMock = sinon.mock(ws)
     const wsExpect = wsMock
-      .expects('sendBestEffortMessage')
+      .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.TRACKS_REMOVE, {
         playlistName: testPlaylistName1,
-        deleteIndexes
+        selection: [[0, track1.id], [1, track2.id]]
       })
 
     thunk(dispatchMock, () => ({ tracks, account }), { ws })
@@ -425,7 +424,7 @@ describe('#tracks()', async () => {
     wsMock.verify()
   })
 
-  it('#tracksInfoUpdate()', () => {
+  it('#tracksInfoUpdate()', async () => {
     const ws = new WavesSocket(() => ({}))
 
     const id = track1.id
@@ -446,11 +445,11 @@ describe('#tracks()', async () => {
 
     const wsMock = sinon.mock(ws)
     const wsExpect = wsMock
-      .expects('sendBestEffortMessage')
+      .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.TRACKS_INFO_UPDATE, { id, key, value })
 
-    thunk(dispatchMock, undefined, { ws })
+    await thunk(dispatchMock, undefined, { ws })
 
     dispatchMock.verify()
     wsMock.verify()

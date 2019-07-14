@@ -410,7 +410,7 @@ function trackUploadsDelete() {
 }
 
 function tracksRemove(playlistName) {
-  return (dispatch, getState, { player, ws }) => {
+  return async (dispatch, getState, { player, ws }) => {
     console.log(`Removing from playlist ${playlistName}`)
     const state = getState()
     const { tracks } = state
@@ -443,9 +443,9 @@ function tracksRemove(playlistName) {
       index,
       deletePlaying
     })
-    ws.sendBestEffortMessage(types.TRACKS_REMOVE, {
+    await ws.sendAckedMessage(types.TRACKS_REMOVE, {
       playlistName,
-      deleteIndexes
+      selection: [...removedSelection.entries()]
     })
   }
 }
@@ -609,9 +609,13 @@ function tracksLocalInfoUpdate(id, key, value, libType) {
 }
 
 function tracksInfoUpdate(id, key, value, libType) {
-  return (dispatch, getState, { ws }) => {
+  return async (dispatch, getState, { ws }) => {
     dispatch({ type: types.TRACKS_INFO_UPDATE, ids: [id], key, value, libType })
-    ws.sendBestEffortMessage(types.TRACKS_INFO_UPDATE, { id, key, value })
+    try {
+      await ws.sendAckedMessage(types.TRACKS_INFO_UPDATE, { id, key, value })
+    } catch (err) {
+      dispatch(toastAdd({ type: toastTypes.Error, msg: err.toString() }))
+    }
   }
 }
 

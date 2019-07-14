@@ -178,15 +178,15 @@ const BEST_EFFORT_MESSAGE_TIMEOUT =
       it('tracks remove', async () => {
         const user = TEST_USER1
         const playlistName = TEST_PLAYLIST_NAME1
-        const deleteIndexes = [3, 2, 1]
+        const selection = [[1, '1'], [2, '2'], [3, '3']]
 
         const storageMock = sinon.mock(storage)
         const storageUserExpect = storageMock
           .expects('tracksRemove')
           .once()
-          .withArgs(user, playlistName, deleteIndexes)
+          .withArgs(user, playlistName, selection)
 
-        const data = { playlistName, deleteIndexes }
+        const data = { playlistName, selection }
         await wavesSocket.sendAckedMessage(types.TRACKS_REMOVE, data)
         storageMock.verify()
       })

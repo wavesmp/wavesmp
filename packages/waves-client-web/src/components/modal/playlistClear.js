@@ -14,7 +14,12 @@ const MESSAGE = 'This will clear the Now Playing playlist. Are you sure?'
 class ClearPlaylistModal extends React.PureComponent {
   onDelete = async () => {
     const { actions } = this.props
-    actions.playlistDelete(DEFAULT_PLAYLIST)
+    try {
+      await actions.playlistDelete(DEFAULT_PLAYLIST)
+    } catch (err) {
+      actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
+      return false
+    }
     return true
   }
 

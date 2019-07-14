@@ -227,11 +227,18 @@ export default class Table extends React.PureComponent {
    *
    * If no top index is available, insert immediately before bottom
    * index. */
-  onRowDrop = () => {
+  onRowDrop = async () => {
     this.setState({ reorderTopIndex: null, reorderBottomIndex: null })
     const { actions, playlistName } = this.props
     const insertAt = this.getInsertAt()
-    actions.playlistReorder(playlistName, insertAt)
+    try {
+      await actions.playlistReorder(playlistName, insertAt)
+    } catch (err) {
+      actions.toastAdd({
+        type: constants.toastTypes.Error,
+        msg: err.toString()
+      })
+    }
   }
 
   onDragStart = ev => {

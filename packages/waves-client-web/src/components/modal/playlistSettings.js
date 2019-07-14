@@ -29,7 +29,12 @@ class PlaylistSettingsModal extends React.PureComponent {
       actions.toastAdd({ type: toastTypes.Error, msg: 'Invalid playlist name' })
       return false
     }
-    actions.playlistMove(playlistName, playlistSaveName)
+    try {
+      await actions.playlistMove(playlistName, playlistSaveName)
+    } catch (err) {
+      actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
+      return false
+    }
     const { search } = playlists[playlistName]
     const to = { pathname: `/playlist/${playlistSaveName}`, search }
     history.push(to)
@@ -39,7 +44,12 @@ class PlaylistSettingsModal extends React.PureComponent {
 
   onDelete = async () => {
     const { actions, playlists, playlistName, history } = this.props
-    actions.playlistDelete(playlistName)
+    try {
+      await actions.playlistDelete(playlistName)
+    } catch (err) {
+      actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
+      return false
+    }
     const { search } = playlists[DEFAULT_PLAYLIST]
     const to = { pathname: routes.defaultRoute, search }
     history.push(to)

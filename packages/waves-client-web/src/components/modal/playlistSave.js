@@ -29,7 +29,12 @@ class SavePlaylistModal extends React.PureComponent {
       actions.toastAdd({ type: toastTypes.Error, msg: 'Invalid playlist name' })
       return false
     }
-    actions.playlistCopy(DEFAULT_PLAYLIST, playlistSaveName)
+    try {
+      await actions.playlistCopy(DEFAULT_PLAYLIST, playlistSaveName)
+    } catch (err) {
+      actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
+      return false
+    }
     actions.toastAdd({ type: toastTypes.Success, msg: 'Saved playlist' })
     return true
   }
