@@ -252,7 +252,7 @@ const BEST_EFFORT_MESSAGE_TIMEOUT =
           .withArgs(user, id, expectedUpdate)
 
         const data = { id, key, value }
-        await wavesSocket.sendAckedMessage(types.LIBRARY_TRACK_UPDATE, data)
+        await wavesSocket.sendAckedMessage(types.TRACKS_INFO_UPDATE, data)
         storageMock.verify()
       })
 

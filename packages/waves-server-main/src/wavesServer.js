@@ -70,13 +70,13 @@ class Server {
         await this.storage.deletePlaylist(user, playlistName)
       },
 
-      [types.LIBRARY_TRACK_UPDATE]: async (ws, user, data) => {
+      [types.TRACKS_INFO_UPDATE]: async (ws, user, data) => {
         log.info('Updating track info')
         const { id, key, value } = data
         const updateObj = { [key]: value }
         await this.storage.updateTrack(user, id, updateObj)
       },
-      [types.TRACKS_UPDATE]: async (ws, user, data) => {
+      [types.TRACKS_ADD]: async (ws, user, data) => {
         const { tracks } = data
         log.info('Importing tracks to library', tracks)
         await this.storage.addTracks(user, tracks)
@@ -147,7 +147,7 @@ class Server {
             this.sendMessage(ws, type, { ...user }, reqId)
 
             const library = await this.storage.getLibrary(user)
-            this.sendMessage(ws, types.TRACKS_UPDATE, library)
+            this.sendMessage(ws, types.TRACKS_ADD, library)
 
             const playlists = await this.storage.getPlaylists(user)
             this.sendMessage(ws, types.PLAYLISTS_UPDATE, playlists)
