@@ -56,7 +56,7 @@ class WavesSocket {
   }
 
   setOnLibraryUpdate(onLibraryUpdate) {
-    this.messageMap[types.TRACKS_UPDATE] = onLibraryUpdate
+    this.messageMap[types.TRACKS_ADD] = onLibraryUpdate
   }
 
   setOnPlaylistsUpdate(onPlaylistsUpdate) {
