@@ -61,6 +61,8 @@ export default class TrackSlider extends React.PureComponent {
         value={value}
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
+        onTouchStart={this.onMouseDown}
+        onTouchEnd={this.onMouseUp}
         onChange={this.onChange}
         className='trackslider'
       />
