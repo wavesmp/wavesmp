@@ -41,13 +41,11 @@ describe('#account()', () => {
     const columns = new Set(['title', 'artist', 'genre'])
     const rowsPerPage = 25
     const theme = 'testTheme'
-    const thunk = actions.accountSetSettings(columns, rowsPerPage, theme)
+    const thunk = actions.accountSetSettings({ columns, rowsPerPage, theme })
 
     const action = {
       type: types.ACCOUNT_SET_SETTINGS,
-      columns,
-      rowsPerPage,
-      theme
+      settings: { columns, rowsPerPage, theme }
     }
 
     const dispatchMock = sinon.mock()
@@ -60,7 +58,7 @@ describe('#account()', () => {
 
     const firstLocalStateCall = localStateExpect.firstCall
     assert.isTrue(
-      firstLocalStateCall.calledWithExactly('columns', [...columns.keys()])
+      firstLocalStateCall.calledWithExactly('columns', [...columns])
     )
 
     const secondLocalStateCall = localStateExpect.secondCall

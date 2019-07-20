@@ -4,13 +4,22 @@ function accountSetFetchingUser(fetchingUser) {
   return { type: types.ACCOUNT_SET_FETCHING_USER, fetchingUser }
 }
 
-function accountSetSettings(columns, rowsPerPage, theme) {
-  document.documentElement.className = `theme-${theme}`
+function accountSetSettings(settings) {
+  const { theme } = settings
+  if (theme) {
+    document.documentElement.className = `theme-${theme}`
+  }
   return (dispatch, getState, { localState }) => {
-    dispatch({ type: types.ACCOUNT_SET_SETTINGS, columns, rowsPerPage, theme })
-    localState.setItem('columns', [...columns.keys()])
-    localState.setItem('rowsPerPage', rowsPerPage)
-    localState.setItem('theme', theme)
+    dispatch({ type: types.ACCOUNT_SET_SETTINGS, settings })
+    for (const settingKey in settings) {
+      const settingVal = settings[settingKey]
+      if (settingKey === 'columns') {
+        /* Setting must by JSON serializable */
+        localState.setItem('columns', [...settingVal])
+      } else {
+        localState.setItem(settingKey, settingVal)
+      }
+    }
   }
 }
 
