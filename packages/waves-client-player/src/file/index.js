@@ -28,6 +28,22 @@ class FilePlayer {
     this.stream.removeEventListener('timeupdate', onTimeUpdate)
   }
 
+  addOnVolumeChange(onVolumeChange) {
+    this.stream.addEventListener('volumechange', onVolumeChange)
+  }
+
+  removeOnVolumeChange(onVolumeChange) {
+    this.stream.removeEventListener('volumechange', onVolumeChange)
+  }
+
+  getVolume() {
+    return this.stream.volume
+  }
+
+  setVolume(volume) {
+    this.stream.volume = volume
+  }
+
   async trackNext(track, isPlaying) {
     if (this.trackUrl) {
       URL.revokeObjectURL(this.trackUrl)

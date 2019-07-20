@@ -56,6 +56,36 @@ class Player {
     }
   }
 
+  addOnVolumeChange(onVolumeChange) {
+    for (const source in this.players) {
+      const player = this.players[source]
+      player.addOnVolumeChange(onVolumeChange)
+    }
+  }
+
+  removeOnVolumeChange(onVolumeChange) {
+    for (const source in this.players) {
+      const player = this.players[source]
+      player.removeOnVolumeChange(onVolumeChange)
+    }
+  }
+
+  getVolume() {
+    for (const source in this.players) {
+      const player = this.players[source]
+      /* Player vol should be in sync.
+       * Return the first one */
+      return player.getVolume()
+    }
+  }
+
+  setVolume(volume) {
+    for (const source in this.players) {
+      const player = this.players[source]
+      player.setVolume(volume)
+    }
+  }
+
   setOnToastAdd(onToastAdd) {
     for (const source in this.players) {
       const player = this.players[source]
