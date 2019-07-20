@@ -38,9 +38,7 @@ describe('#account()', () => {
     const theme = 'testTheme'
     action = {
       type: actionTypes.ACCOUNT_SET_SETTINGS,
-      columns,
-      rowsPerPage,
-      theme
+      settings: { columns, rowsPerPage, theme }
     }
     state = assertNewState(account, state, action)
 

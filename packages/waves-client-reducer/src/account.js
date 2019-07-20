@@ -16,8 +16,8 @@ function account(state = initialState, action) {
       return { ...state, user, fetchingUser: false }
     }
     case actionTypes.ACCOUNT_SET_SETTINGS: {
-      const { columns, rowsPerPage, theme } = action
-      return { ...state, columns, rowsPerPage, theme }
+      const { settings } = action
+      return { ...state, ...settings }
     }
     case actionTypes.ACCOUNT_SET_FETCHING_USER: {
       const { fetchingUser } = action
