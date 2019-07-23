@@ -33,7 +33,6 @@ constants.modalTypes = keyMirror({
   PLAYLIST_CREATE: null,
   PLAYLIST_SAVE: null,
   PLAYLIST_SETTINGS: null,
-  SETTINGS: null,
   TRACKS_DELETE: null,
   TRACKS_UPLOAD: null
 })
@@ -59,7 +58,8 @@ constants.routes = {
   library: '/library',
   upload: '/upload',
   playlist: '/playlist/:playlist',
-  playlistBase: '/playlist/'
+  playlistBase: '/playlist/',
+  settings: '/settings'
 }
 
 constants.DROPDOWN_DATA_VALUE = 'dropdown'
