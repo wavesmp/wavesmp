@@ -179,7 +179,7 @@ class Upload extends React.PureComponent {
     // TODO add progress bar?
     return (
       <ContentPage
-        title={'Upload Files'}
+        title='Upload Files'
         sidebar={sidebar}
         isPlayerVisible={playing.track !== null}
         transitions={transitions}

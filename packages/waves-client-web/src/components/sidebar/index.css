@@ -53,17 +53,7 @@
   text-align: left;
 }
 
-#sidebar-container.sidebar-container-wide > ul > li > span.sidebar-divider {
-  border-bottom: 2px solid;
-  font-size: 13px;
-  padding-bottom: 5px;
-  cursor: default;
-}
-
-#sidebar-container.sidebar-container-wide
-  > ul
-  > li
-  > span.sidebar-divider:hover {
+#sidebar-container.sidebar-container-wide > ul > li {
   background: var(--sidebar-color);
   color: var(--sidebar-icons-color);
 }
@@ -117,12 +107,6 @@
   bottom: 0px;
   transform: translateY(100%);
   transition: transform SIDEBAR_LEAVE_TIMEOUTms ease;
-}
-
-@media only screen and (min-width: 516px) {
-  .nav > li.sidebar-profile-link {
-    display: none;
-  }
 }
 
 @media only screen and (min-width: 768px) {

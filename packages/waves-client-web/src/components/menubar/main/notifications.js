@@ -6,21 +6,24 @@ import Dropdown from './dropdown'
 
 export default class Notifications extends React.PureComponent {
   items = [
-    {
-      text: 'File name mismatches',
-      classes: 'fa fa-file-text menubar-dropdown-item-icon',
-      onClick: this.onUnsupportedClick
-    },
-    {
-      text: 'Missing metadata',
-      classes: 'fa fa-tags menubar-dropdown-item-icon',
-      onClick: this.onUnsupportedClick
-    },
-    {
-      text: 'Missing files',
-      classes: 'fa fa-file-o menubar-dropdown-item-icon',
-      onClick: this.onUnsupportedClick
-    }
+    <li key={0}>
+      <div className='menubar-dropdown-item' onClick={this.onUnsupportedClick}>
+        File name mismatches
+        <i className='fa fa-file-text menubar-dropdown-item-icon' />
+      </div>
+    </li>,
+    <li key={1}>
+      <div className='menubar-dropdown-item' onClick={this.onUnsupportedClick}>
+        Missing metadata
+        <i className='fa fa-tags menubar-dropdown-item-icon' />
+      </div>
+    </li>,
+    <li key={2}>
+      <div className='menubar-dropdown-item' onClick={this.onUnsupportedClick}>
+        Missing files
+        <i className='fa fa-file-o menubar-dropdown-item-icon' />
+      </div>
+    </li>
   ]
 
   onUnsupportedClick = () => {

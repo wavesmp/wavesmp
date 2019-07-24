@@ -21,6 +21,7 @@ import NowPlaying from '../nowplaying'
 import Playlist from '../playlist'
 import Toasts from '../toasts'
 import Library from '../library'
+import Settings from '../settings'
 
 class MainApp extends React.PureComponent {
   ancestorHasAttribute(node, key, val) {
@@ -81,6 +82,7 @@ class MainApp extends React.PureComponent {
           <Route path={routes.library} component={Library} />
           <Route path={routes.upload} component={Upload} />
           <Route path={routes.playlist} component={Playlist} />
+          <Route path={routes.settings} component={Settings} />
           <SideBar
             actions={actions}
             sidebar={sidebar}

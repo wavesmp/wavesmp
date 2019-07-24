@@ -1,6 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-import { modalTypes, dropdownTypes } from 'waves-client-constants'
+import { dropdownTypes, routes } from 'waves-client-constants'
 
 import Dropdown from './dropdown'
 
@@ -11,22 +12,19 @@ export default class UserSettings extends React.PureComponent {
     history.push('/')
   }
 
-  onAccountSettingsClick = () => {
-    const { actions } = this.props
-    actions.modalSet({ type: modalTypes.SETTINGS })
-  }
-
   items = [
-    {
-      text: 'Account Settings',
-      classes: 'fa fa-cog menubar-dropdown-item-icon',
-      onClick: this.onAccountSettingsClick
-    },
-    {
-      text: 'Sign Out',
-      classes: 'fa fa-sign-out menubar-dropdown-item-icon',
-      onClick: this.signOut
-    }
+    <li key={0}>
+      <Link className='menubar-dropdown-item' to={routes.settings}>
+        Account Settings
+        <i className='fa fa-cog menubar-dropdown-item-icon' />
+      </Link>
+    </li>,
+    <li key={1}>
+      <div className='menubar-dropdown-item' onClick={this.signOut}>
+        Sign Out
+        <i className='fa fa-sign-out menubar-dropdown-item-icon' />
+      </div>
+    </li>
   ]
 
   render() {

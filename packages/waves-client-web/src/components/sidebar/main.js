@@ -9,11 +9,6 @@ export default class MainBar extends React.PureComponent {
     actions.sidebarModeSet('playlist')
   }
 
-  onSettingsClick = () => {
-    const { actions } = this.props
-    actions.sidebarModeSet('settings')
-  }
-
   render() {
     const { pathname, playlists, isPlayerVisible } = this.props
     let className = 'sidebar-container-narrow'
@@ -62,10 +57,15 @@ export default class MainBar extends React.PureComponent {
               <i className='fa-fw fa fa-lg fa-cloud-upload' />
             </Link>
           </li>
-          <li className='sidebar-profile-link'>
-            <span onClick={this.onSettingsClick}>
+          <li>
+            <Link
+              className={
+                pathname === constants.routes.settings ? 'sidebar-active' : ''
+              }
+              to={constants.routes.settings}
+            >
               <i className='fa-fw fa fa-lg fa-cog' />
-            </span>
+            </Link>
           </li>
         </ul>
       </div>

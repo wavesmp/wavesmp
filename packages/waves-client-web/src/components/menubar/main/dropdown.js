@@ -21,15 +21,7 @@ export default class Dropdown extends React.PureComponent {
           <i className={headerClass} />
         </li>
         <li className='menubar-dropdown-divider' />
-        {items &&
-          items.map(({ text, classes, onClick }, i) => (
-            <li key={i}>
-              <div className='menubar-dropdown-item' onClick={onClick}>
-                {text}
-                <i className={classes} />
-              </div>
-            </li>
-          ))}
+        {items}
       </ul>
     )
   }

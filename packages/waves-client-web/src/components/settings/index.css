@@ -1,0 +1,54 @@
+.settings-slider-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.settings-volume-icon {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.settings-volume-slider {
+  width: 100%;
+}
+
+.settings-columns {
+  display: flex;
+  margin-top: 20px;
+}
+
+.settings-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.settings-column-label {
+  margin-bottom: 5px;
+}
+
+.settings-column-item {
+  width: 100px;
+  cursor: pointer;
+  padding: 1px;
+  padding-left: 8px;
+  border-radius: 4px;
+}
+
+.settings-column-item:hover {
+  background-color: var(--separator-color);
+}
+
+.settings-add-icon {
+  color: #19b698;
+}
+
+.settings-del-icon {
+  color: #c11313;
+}
+
+.settings-select-width {
+  width: 25%;
+}

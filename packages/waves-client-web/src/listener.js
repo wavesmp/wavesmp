@@ -56,16 +56,29 @@ export default async (store, ws, player, localState, history) => {
   })
 
   /* When localStorage is loaded, update the state */
-  const [columns, rowsPerPage, lastIdp, machineId, theme] = await Promise.all([
+  const [
+    columns,
+    rowsPerPage,
+    lastIdp,
+    machineId,
+    theme,
+    volume
+  ] = await Promise.all([
     localState.getItem('columns'),
     localState.getItem('rowsPerPage'),
     localState.getItem('lastIdp'),
     localState.getItem('machineId'),
-    localState.getItem('theme')
+    localState.getItem('theme'),
+    localState.getItem('volume')
   ])
   store.dispatch(
-    WavesActions.accountSetSettings(new Set(columns), rowsPerPage, theme)
+    WavesActions.accountSetSettings({
+      columns: new Set(columns),
+      rowsPerPage,
+      theme
+    })
   )
+  player.setVolume(volume)
   ObjectID.setMachineID(machineId)
   if (lastIdp) {
     try {

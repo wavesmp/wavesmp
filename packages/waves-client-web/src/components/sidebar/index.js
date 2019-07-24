@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import './index.css'
 import MainBar from './main'
 import PlaylistBar from './playlist'
-import SettingsBar from './settings'
 
 export default class SideBar extends React.PureComponent {
   render() {
@@ -20,7 +19,6 @@ export default class SideBar extends React.PureComponent {
     let isPlayerVisible = playing.track !== null
     let playlistBar = null
     let mainBar = null
-    let settingsBar = null
     if (sidebar === 'playlist') {
       playlistBar = (
         <PlaylistBar
@@ -28,15 +26,6 @@ export default class SideBar extends React.PureComponent {
           isPlayerVisible={isPlayerVisible}
           actions={actions}
           playlists={playlists}
-        />
-      )
-    } else if (sidebar === 'settings') {
-      settingsBar = (
-        <SettingsBar
-          key={0}
-          isPlayerVisible={isPlayerVisible}
-          actions={actions}
-          userName={userName}
         />
       )
     } else {
@@ -65,13 +54,6 @@ export default class SideBar extends React.PureComponent {
           transitionLeaveTimeout={SIDEBAR_LEAVE_TIMEOUT}
         >
           {playlistBar}
-        </CSSTransitionGroup>
-        <CSSTransitionGroup
-          transitionName='playlistbartransition'
-          transitionEnterTimeout={SIDEBAR_ENTER_TIMEOUT}
-          transitionLeaveTimeout={SIDEBAR_LEAVE_TIMEOUT}
-        >
-          {settingsBar}
         </CSSTransitionGroup>
       </span>
     )
