@@ -20,14 +20,16 @@ describe('waves-client-local-state', async () => {
       rowsPerPage: 5,
       lastIdp: '',
       machineId: 1010,
-      theme: 'testTheme'
+      theme: 'testTheme',
+      volume: 1.0
     }
     const expectedConfig = {
       columns: ['Name', 'State', 'Time'],
       rowsPerPage: 5,
       lastIdp: '',
       machineId: 1010,
-      theme: 'testTheme'
+      theme: 'testTheme',
+      volume: 1.0
     }
     localStorage.setItem(CONFIG_KEY, JSON.stringify(config))
 
@@ -41,7 +43,7 @@ describe('waves-client-local-state', async () => {
     )
 
     const localStateKeys = await localState.keys()
-    assert.lengthOf(localStateKeys, 5)
+    assert.lengthOf(localStateKeys, 6)
     const actualColumns = await localState.getItem('columns')
     assert.deepEqual(actualColumns, expectedConfig.columns)
     const actualRowsPerPage = await localState.getItem('rowsPerPage')
@@ -52,6 +54,8 @@ describe('waves-client-local-state', async () => {
     assert.strictEqual(actualMachineId, expectedConfig.machineId)
     const actualTheme = await localState.getItem('theme')
     assert.strictEqual(actualTheme, expectedConfig.theme)
+    const actualVolume = await localState.getItem('volume')
+    assert.strictEqual(actualVolume, expectedConfig.volume)
 
     localStorage._deleteLocation()
   })
@@ -65,7 +69,8 @@ describe('waves-client-local-state', async () => {
       rowsPerPage: 25,
       lastIdp: '',
       machineId: ObjectID.getMachineID(),
-      theme: 'light'
+      theme: 'light',
+      volume: 1.0
     }
 
     assert.lengthOf(localStorage, 1)
@@ -76,7 +81,7 @@ describe('waves-client-local-state', async () => {
     )
 
     const localStateKeys = await localState.keys()
-    assert.lengthOf(localStateKeys, 5)
+    assert.lengthOf(localStateKeys, 6)
     let actualColumns = await localState.getItem('columns')
     assert.deepEqual(actualColumns, defaultConfig.columns)
     let actualRowsPerPage = await localState.getItem('rowsPerPage')
@@ -87,6 +92,8 @@ describe('waves-client-local-state', async () => {
     assert.strictEqual(actualMachineId, defaultConfig.machineId)
     let actualTheme = await localState.getItem('theme')
     assert.strictEqual(actualTheme, defaultConfig.theme)
+    let actualVolume = await localState.getItem('volume')
+    assert.strictEqual(actualVolume, defaultConfig.volume)
 
     const newColumns = ['Name', 'State', 'Time']
     localState.setItem('columns', newColumns)
@@ -103,6 +110,9 @@ describe('waves-client-local-state', async () => {
     const newTheme = 'dark'
     localState.setItem('theme', newTheme)
 
+    const newVolume = 0.5
+    localState.setItem('volume', newVolume)
+
     actualColumns = await localState.getItem('columns')
     assert.deepEqual(actualColumns, newColumns)
     actualRowsPerPage = await localState.getItem('rowsPerPage')
@@ -113,6 +123,8 @@ describe('waves-client-local-state', async () => {
     assert.strictEqual(actualMachineId, newMachineId)
     actualTheme = await localState.getItem('theme')
     assert.strictEqual(actualTheme, newTheme)
+    actualVolume = await localState.getItem('volume')
+    assert.strictEqual(actualVolume, newVolume)
     localStorage._deleteLocation()
   })
 })

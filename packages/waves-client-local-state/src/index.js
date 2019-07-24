@@ -8,7 +8,8 @@ const DEFAULT_LOCAL_CONFIG = {
   rowsPerPage: 25,
   lastIdp: '',
   machineId: ObjectID.getMachineID(),
-  theme: 'light'
+  theme: 'light',
+  volume: 1.0
 }
 
 /* Exposes get/set methods that sit above the
