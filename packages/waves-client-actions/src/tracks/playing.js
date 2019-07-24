@@ -37,15 +37,40 @@ function seek(newTime) {
   }
 }
 
-function addOnTimeUpdate(setOnTimeUpdate) {
+function addOnTimeUpdate(onTimeUpdate) {
   return (dispatch, getState, { player }) => {
-    player.addOnTimeUpdate(setOnTimeUpdate)
+    player.addOnTimeUpdate(onTimeUpdate)
   }
 }
 
-function removeOnTimeUpdate(setOnTimeUpdate) {
+function removeOnTimeUpdate(onTimeUpdate) {
   return (dispatch, getState, { player }) => {
-    player.removeOnTimeUpdate(setOnTimeUpdate)
+    player.removeOnTimeUpdate(onTimeUpdate)
+  }
+}
+
+function getVolume() {
+  return (dispatch, getState, { player }) => {
+    return player.getVolume()
+  }
+}
+
+function setVolume(volume) {
+  return (dispatch, getState, { player, localState }) => {
+    player.setVolume(volume)
+    localState.setItem('volume', volume)
+  }
+}
+
+function addOnVolumeChange(onVolumeChange) {
+  return (dispatch, getState, { player }) => {
+    player.addOnVolumeChange(onVolumeChange)
+  }
+}
+
+function removeOnVolumeChange(onVolumeChange) {
+  return (dispatch, getState, { player }) => {
+    player.removeOnVolumeChange(onVolumeChange)
   }
 }
 
@@ -56,3 +81,7 @@ module.exports.shuffleToggle = shuffleToggle
 module.exports.seek = seek
 module.exports.addOnTimeUpdate = addOnTimeUpdate
 module.exports.removeOnTimeUpdate = removeOnTimeUpdate
+module.exports.getVolume = getVolume
+module.exports.setVolume = setVolume
+module.exports.addOnVolumeChange = addOnVolumeChange
+module.exports.removeOnVolumeChange = removeOnVolumeChange
