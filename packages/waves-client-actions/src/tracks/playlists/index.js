@@ -1,6 +1,14 @@
 const types = require('waves-action-types')
-const { DEFAULT_PLAYLIST } = require('waves-client-constants')
+const {
+  DEFAULT_PLAYLIST,
+  FULL_PLAYLIST,
+  libTypes
+} = require('waves-client-constants')
 const { getFilteredSelection } = require('waves-client-selectors')
+const {
+  getOrCreatePlaylistSelectors,
+  getLibraryPlaylistSearch
+} = require('waves-client-selectors')
 
 const { reorder } = require('./reorder')
 
@@ -83,6 +91,39 @@ function playlistReorder(playlistName, insertAt) {
   }
 }
 
+/* Only supports waves library */
+function playlistSort(sortKey, ascending) {
+  return async (dispatch, getState, { ws }) => {
+    const state = getState()
+    const search = getLibraryPlaylistSearch(state)
+    const { getRouterQueryParams } = getOrCreatePlaylistSelectors(
+      FULL_PLAYLIST,
+      URLSearchParams,
+      libTypes.WAVES
+    )
+    const qp = new URLSearchParams(getRouterQueryParams(state, search))
+    qp.set('sortKey', sortKey)
+    qp.set('order', ascending ? 'asc' : 'desc')
+
+    const { tracks } = state
+    const { libraries } = tracks
+    const lib = libraries[libTypes.WAVES]
+
+    dispatch({
+      type: types.PLAYLIST_SEARCH_UPDATE,
+      name: FULL_PLAYLIST,
+      search: qp.toString()
+    })
+    dispatch({
+      type: types.PLAYLIST_SORT,
+      lib,
+      name: FULL_PLAYLIST,
+      sortKey,
+      ascending
+    })
+  }
+}
+
 module.exports.playlistsUpdate = playlistsUpdate
 module.exports.playlistCopy = playlistCopy
 module.exports.playlistDelete = playlistDelete
@@ -90,5 +131,6 @@ module.exports.playlistMove = playlistMove
 module.exports.playlistAdd = playlistAdd
 module.exports.playlistCreate = playlistCreate
 module.exports.playlistReorder = playlistReorder
+module.exports.playlistSort = playlistSort
 
 Object.assign(module.exports, require('./selection'))

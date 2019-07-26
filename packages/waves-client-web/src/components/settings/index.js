@@ -3,9 +3,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
+import { FULL_PLAYLIST, libTypes } from 'waves-client-constants'
+import {
+  getOrCreatePlaylistSelectors,
+  getLibraryPlaylistSearch
+} from 'waves-client-selectors'
 
+import { libraryColumns } from '../table/columns'
 import ContentPage from '../contentpage'
-import ActionSettings from './actionsettings'
 import ColumnSettings from './columnsettings'
 import SelectSettings from './selectsettings'
 import VolumeSlider from './volumeslider'
@@ -21,7 +26,10 @@ class Settings extends React.PureComponent {
       isPlayerVisible,
       columns,
       rowsPerPage,
-      theme
+      theme,
+      libraryColumns,
+      librarySortKey,
+      libraryAscending
     } = this.props
     return (
       <ContentPage
@@ -37,8 +45,11 @@ class Settings extends React.PureComponent {
             actions={actions}
             rowsPerPage={rowsPerPage}
             theme={theme}
+            history={history}
+            libraryColumns={libraryColumns}
+            librarySortKey={librarySortKey}
+            libraryAscending={libraryAscending}
           />
-          <ActionSettings actions={actions} history={history} />
         </div>
       </ContentPage>
     )
@@ -49,13 +60,24 @@ function mapStateToProps(state) {
   const { account, transitions, sidebar, tracks } = state
   const { columns, rowsPerPage, theme } = account
   const { playing } = tracks
+  const { getRouterAscending, getRouterSortKey } = getOrCreatePlaylistSelectors(
+    FULL_PLAYLIST,
+    URLSearchParams,
+    libTypes.WAVES
+  )
+  const search = getLibraryPlaylistSearch(state)
+  const sortKey = getRouterSortKey(state, search)
+  const ascending = getRouterAscending(state, search)
   return {
     columns,
     rowsPerPage,
     theme,
     sidebar,
     transitions,
-    isPlayerVisible: playing.track !== null
+    isPlayerVisible: playing.track !== null,
+    libraryColumns: libraryColumns.filter(c => c.sortable),
+    librarySortKey: sortKey,
+    libraryAscending: ascending
   }
 }
 
