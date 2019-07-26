@@ -1,14 +1,9 @@
 import React from 'react'
 
 export default class SelectSettings extends React.PureComponent {
-  onAscending = ev => {
-    const { actions, librarySortKey } = this.props
-    actions.playlistSort(librarySortKey, true)
-  }
-
-  onDescending = ev => {
-    const { actions, librarySortKey } = this.props
-    actions.playlistSort(librarySortKey, false)
+  onOrderChange = () => {
+    const { actions, librarySortKey, libraryAscending } = this.props
+    actions.playlistSort(librarySortKey, !libraryAscending)
   }
 
   onSortKeyChange = ev => {
@@ -93,22 +88,22 @@ export default class SelectSettings extends React.PureComponent {
             </div>
           </div>
           <div className='settings-column'>
-            <label>
-              <input
-                type='radio'
-                checked={libraryAscending}
-                onChange={this.onAscending}
-              />
-              Ascending
-            </label>
-            <label>
-              <input
-                type='radio'
-                checked={!libraryAscending}
-                onChange={this.onDescending}
-              />
-              Descending
-            </label>
+            <label>Library Sort Order</label>
+            <button
+              type='button'
+              className='btn btn-dropdown'
+              onClick={this.onOrderChange}
+            >
+              {libraryAscending ? (
+                <span>
+                  <i className='fa fa-lg fa-arrow-up' /> Ascending
+                </span>
+              ) : (
+                <span>
+                  <i className='fa fa-lg fa-arrow-down' /> Descending
+                </span>
+              )}
+            </button>
           </div>
         </div>
         <div className='settings-columns'>
@@ -116,7 +111,7 @@ export default class SelectSettings extends React.PureComponent {
             <label>Actions</label>
             <button
               type='button'
-              className='btn btn-dropdown pull-left'
+              className='btn btn-dropdown'
               onClick={this.onSignOut}
             >
               <i className='fa fa-lg fa-sign-out' /> Sign Out
