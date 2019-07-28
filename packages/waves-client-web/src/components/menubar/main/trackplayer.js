@@ -5,17 +5,20 @@ import * as WavesActions from 'waves-client-actions'
 import { toastTypes } from 'waves-client-constants'
 import './trackplayer.css'
 
+const MAX_TITLE_LEN = 21
+const MAX_ARTIST_LEN = 28
+
 class TrackInfo extends React.PureComponent {
+  shorten(s, maxLength) {
+    if (s && s.length > maxLength) {
+      return s.substring(0, maxLength + 1)
+    }
+    return s
+  }
+
   render() {
-    let { trackTitle, trackArtist } = this.props
-    const maxTitleLength = 21
-    if (trackTitle && trackTitle.length > maxTitleLength) {
-      trackTitle = trackTitle.substring(0, maxTitleLength + 1) + '...'
-    }
-    const maxArtistLength = 28
-    if (trackArtist && trackArtist.length > maxArtistLength) {
-      trackArtist = trackArtist.substring(0, maxArtistLength + 1) + '...'
-    }
+    const trackTitle = this.shorten(this.props.trackTitle, MAX_TITLE_LEN)
+    const trackArtist = this.shorten(this.props.trackArtist, MAX_TITLE_LEN)
     return (
       <div className='trackplayer trackplayer-info'>
         <p className='trackplayer-info-title'>{trackTitle}</p>

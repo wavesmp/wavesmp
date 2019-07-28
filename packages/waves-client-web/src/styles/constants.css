@@ -14,8 +14,6 @@
   --modal-title-color: DARK_MODAL_TITLE_COLOR;
   --separator-color: DARK_SEPARATOR_COLOR;
 
-  --menubar-color: DARK_MENUBAR_COLOR;
-
   --sidebar-color: DARK_SIDEBAR_COLOR;
   --sidebar-color-hover: DARK_SIDEBAR_COLOR_HOVER;
   --sidebar-color-active-icon: DARK_SIDEBAR_COLOR_ACTIVE_ICON;
@@ -60,8 +58,6 @@
   --title-color: LIGHT_TITLE_COLOR;
   --modal-title-color: LIGHT_MODAL_TITLE_COLOR;
   --separator-color: LIGHT_SEPARATOR_COLOR;
-
-  --menubar-color: LIGHT_MENUBAR_COLOR;
 
   --sidebar-color: LIGHT_SIDEBAR_COLOR;
   --sidebar-color-hover: LIGHT_SIDEBAR_COLOR_HOVER;

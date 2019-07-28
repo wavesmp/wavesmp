@@ -38,8 +38,6 @@ module.exports = {
   DARK_TITLE_COLOR: white,
   DARK_MODAL_TITLE_COLOR: gray,
 
-  DARK_MENUBAR_COLOR: '#252830',
-
   DARK_SEPARATOR_COLOR: grayHover,
 
   DARK_SIDEBAR_COLOR: '#30343E',
@@ -85,8 +83,6 @@ module.exports = {
   LIGHT_MODAL_TITLE_COLOR: '#333',
 
   LIGHT_SEPARATOR_COLOR: '#eee',
-
-  LIGHT_MENUBAR_COLOR: white,
 
   LIGHT_SIDEBAR_COLOR: '#eee',
   LIGHT_SIDEBAR_COLOR_HOVER: '#f7f7f7',

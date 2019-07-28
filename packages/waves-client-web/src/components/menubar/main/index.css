@@ -1,23 +1,18 @@
 .menubar-main-header {
   min-height: var(--menubar-height);
   /* Needed to hide content in case user scrolls up */
-  background: var(--menubar-color);
+  background: var(--body-color);
   position: fixed;
   width: 100%;
-}
-
-.menubar-main-container {
-  width: 100%;
-  min-height: var(--menubar-height);
   font-family: 'Open Sans', sans-serif;
 }
 
 /* Logo */
 .menubar-main-logo {
   display: inline;
+  position: relative;
   width: 102px;
   height: auto;
-  position: relative;
   top: 14px;
   left: 36px;
   opacity: 1;
@@ -44,12 +39,6 @@
     transform: scaleX(0.565);
   }
 }
-
-/* @media only screen and (min-width: 641px) {
- *   .menubar-main-logo.menubar-player-visible {
- *   }
- * }
- */
 
 @media only screen and (min-width: 768px) {
   .menubar-main-logo.menubar-player-visible {

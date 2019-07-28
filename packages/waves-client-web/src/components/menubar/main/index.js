@@ -44,27 +44,26 @@ export default class MenuBar extends React.PureComponent {
 
     return (
       <header className='menubar-main-header'>
-        <div className='menubar-main-container'>
-          <Link to={routes.defaultRoute}>
-            <LogoSvg className={logoClassName} />
-            <span className={logoNameClassName}>WAVES</span>
-          </Link>
-          <CSSTransitionGroup
-            transitionName='fade'
-            transitionEnterTimeout={800}
-            transitionLeaveTimeout={300}
-          >
-            {trackPlayer}
-          </CSSTransitionGroup>
-          <Notifications actions={actions} dropdown={dropdown} />
-          <UserSettings
-            actions={actions}
-            dropdown={dropdown}
-            history={history}
-            userName={userName}
-          />
-        </div>
+        <Link to={routes.defaultRoute}>
+          <LogoSvg className={logoClassName} />
+          <span className={logoNameClassName}>WAVES</span>
+        </Link>
         <CSSTransitionGroup
+          transitionName='fade'
+          transitionEnterTimeout={800}
+          transitionLeaveTimeout={300}
+        >
+          {trackPlayer}
+        </CSSTransitionGroup>
+        <Notifications actions={actions} dropdown={dropdown} />
+        <UserSettings
+          actions={actions}
+          dropdown={dropdown}
+          history={history}
+          userName={userName}
+        />
+        <CSSTransitionGroup
+          component='div'
           transitionName='fade'
           transitionEnterTimeout={800}
           transitionLeaveTimeout={300}

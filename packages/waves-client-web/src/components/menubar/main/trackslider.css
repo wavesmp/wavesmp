@@ -1,6 +1,6 @@
 .trackslider {
   position: absolute;
-  top: 60px;
+  top: calc(var(--menubar-height) - 5px);
   cursor: pointer;
   width: 100%;
 }
