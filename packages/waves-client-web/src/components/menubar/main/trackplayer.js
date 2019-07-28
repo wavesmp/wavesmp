@@ -20,9 +20,9 @@ class TrackInfo extends React.PureComponent {
     const trackTitle = this.shorten(this.props.trackTitle, MAX_TITLE_LEN)
     const trackArtist = this.shorten(this.props.trackArtist, MAX_TITLE_LEN)
     return (
-      <div className='trackplayer trackplayer-info'>
-        <p className='trackplayer-info-title'>{trackTitle}</p>
-        <p className='trackplayer-info-artist'>{trackArtist}</p>
+      <div>
+        <div className='trackplayer-info-title'>{trackTitle}</div>
+        <div className='trackplayer-info-artist'>{trackArtist}</div>
       </div>
     )
   }
@@ -45,25 +45,23 @@ class LeftButtons extends React.PureComponent {
     let playOrPauseClass
     let onPlayPauseClick
     if (isPlaying) {
-      playOrPauseClass = 'fa fa-lg fa-pause trackplayer-btn-lg'
+      playOrPauseClass = 'fa fa-lg fa-pause trackplayer-btn'
       onPlayPauseClick = actions.pause
     } else {
-      playOrPauseClass = 'fa fa-lg fa-play trackplayer-btn-lg'
+      playOrPauseClass = 'fa fa-lg fa-play trackplayer-btn'
       onPlayPauseClick = actions.play
     }
     return (
-      <div className='trackplayer trackplayer-left'>
-        <span className='trackplayer-left-btns'>
-          <i
-            className='fa fa-backward trackplayer-btn'
-            onClick={this.onTrackPrevious}
-          />
-          <i className={playOrPauseClass} onClick={onPlayPauseClick} />
-          <i
-            className='fa fa-forward trackplayer-btn'
-            onClick={this.onTrackNext}
-          />
-        </span>
+      <div className='trackplayer-left'>
+        <i
+          className='fa fa-backward trackplayer-btn'
+          onClick={this.onTrackPrevious}
+        />
+        <i className={playOrPauseClass} onClick={onPlayPauseClick} />
+        <i
+          className='fa fa-forward trackplayer-btn'
+          onClick={this.onTrackNext}
+        />
       </div>
     )
   }
@@ -90,21 +88,19 @@ class RightButtons extends React.PureComponent {
     const { playing } = this.props
     const { repeat, shuffle } = playing
 
-    let repeatButtonClass = 'fa fa-repeat trackplayer-btn'
+    let repeatButtonClass = 'fa fa-lg fa-repeat trackplayer-btn'
     if (repeat) {
       repeatButtonClass += ' trackplayer-btn-active'
     }
 
-    let shuffleButtonClass = 'fa fa-random trackplayer-btn'
+    let shuffleButtonClass = 'fa fa-lg fa-random trackplayer-btn'
     if (shuffle) {
       shuffleButtonClass += ' trackplayer-btn-active'
     }
     return (
-      <div className='trackplayer trackplayer-right'>
-        <span className='trackplayer-right-btns'>
-          <i className={shuffleButtonClass} onClick={this.onShuffleClick} />
-          <i className={repeatButtonClass} onClick={this.onRepeatClick} />
-        </span>
+      <div className='trackplayer-right'>
+        <i className={shuffleButtonClass} onClick={this.onShuffleClick} />
+        <i className={repeatButtonClass} onClick={this.onRepeatClick} />
       </div>
     )
   }
@@ -115,11 +111,11 @@ export default class TrackPlayer extends React.PureComponent {
     const { playing, actions } = this.props
     const { track } = playing
     return (
-      <React.Fragment>
-        <TrackInfo trackTitle={track.title} trackArtist={track.artist} />
+      <div className='trackplayer'>
         <LeftButtons playing={playing} actions={actions} />
+        <TrackInfo trackTitle={track.title} trackArtist={track.artist} />
         <RightButtons playing={playing} actions={actions} />
-      </React.Fragment>
+      </div>
     )
   }
 }
