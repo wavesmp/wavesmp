@@ -2,15 +2,27 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  height: 51px;
-  width: 320px;
-  top: 7px;
+  height: 100%;
+  width: 100%;
+  top: 0px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 2px solid var(--trackplayer-border-color);
-  border-radius: 25px;
   background-color: var(--trackplayer-background-color);
+  border: 2px solid var(--trackplayer-background-color);
+  border-radius: 0;
+  transition: height 1s ease, width 1s ease, top 1s ease, border 1s ease,
+    border-radius 1s ease;
+}
+
+@media only screen and (min-width: 516px) {
+  .trackplayer {
+    height: 51px;
+    width: 320px;
+    top: 7px;
+    border: 2px solid var(--trackplayer-border-color);
+    border-radius: 25px;
+  }
 }
 
 .trackplayer-info-title {

@@ -81,14 +81,17 @@
   margin: 20px 20px 0 0;
   list-style: none;
   font-size: 14px;
-  display: none;
   float: right;
   position: relative;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
 }
 
 @media only screen and (min-width: 516px) {
   .menubar-dropdown-icon-container {
-    display: block;
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
