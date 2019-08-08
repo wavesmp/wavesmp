@@ -165,6 +165,7 @@ class Server {
             `Error processing message ${type} for ${name}: ${errString}`
           )
           log.error(err)
+          log.error(err.stack)
           if (reqId) {
             this.sendMessage(ws, type, { err: errString }, reqId)
           }
