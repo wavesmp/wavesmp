@@ -147,7 +147,6 @@ class Upload extends React.PureComponent {
         columns={columns}
         currentPage={currentPage}
         lastPage={lastPage}
-        displayItems={displayItems}
         draggable={false}
         orderable={false}
         isPlaying={playing.isPlaying}
@@ -234,7 +233,7 @@ function mapStateToProps(state, ownProps) {
     libTypes.UPLOADS
   )
   const { account, sidebar, transitions, tracks } = state
-  const { playing, uploads } = tracks
+  const { playing } = tracks
   const { location } = ownProps
   const { pathname, search } = location
   const columns = uploadColumns.filter(c => account.columns.has(c.title))
@@ -242,7 +241,6 @@ function mapStateToProps(state, ownProps) {
     rowsPerPage: account.rowsPerPage,
     pathname,
     qp: getRouterQueryParams(undefined, search),
-    uploads,
     playing,
     columns,
     sidebar,
