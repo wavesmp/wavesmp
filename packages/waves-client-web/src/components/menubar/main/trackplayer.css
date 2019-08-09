@@ -12,7 +12,8 @@
   border: 2px solid var(--trackplayer-background-color);
   border-radius: 0;
   transition: height 1s ease, width 1s ease, top 1s ease, border 1s ease,
-    border-radius 1s ease;
+    border-radius 1s ease, padding 1s ease;
+  padding: 0 15px;
 }
 
 @media only screen and (min-width: 516px) {
@@ -22,6 +23,7 @@
     top: 7px;
     border: 2px solid var(--trackplayer-border-color);
     border-radius: 25px;
+    padding: 0;
   }
 }
 
