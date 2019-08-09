@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { UPLOAD_PLAYLIST as playlistName } from 'waves-client-constants'
-import { normalizeTrack } from 'waves-client-util'
+import { UPLOAD_PLAYLIST as playlistName, libTypes } from 'waves-client-constants'
+import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 
 import Modal from './util'
-import { playlistColumns } from '../table/columns'
+import { uploadColumns } from '../table/columns'
 
 class TracksUploadModal extends React.PureComponent {
   constructor(props) {
@@ -24,9 +24,7 @@ class TracksUploadModal extends React.PureComponent {
   }
 
   renderUploadItems() {
-    const { playlist } = this.props
-    const { tracks } = playlist
-    const { columns, isPlaying, uploads, index } = this.props
+    const { displayItems, columns, index, isPlaying } = this.props
     return (
       <div>
         <div>
@@ -39,14 +37,14 @@ class TracksUploadModal extends React.PureComponent {
               </tr>
             </thead>
             <tbody>
-              {tracks.map((track, i) => (
-                <tr key={track}>
+              {displayItems.map((sample, i) => (
+                <tr key={sample.id}>
                   {columns.map(column => (
                     <column.Component
                       key={column.title}
                       isPlaying={isPlaying}
                       index={index}
-                      sample={normalizeTrack(uploads[track], i)}
+                      sample={sample}
                       editable={false}
                     />
                   ))}
@@ -61,8 +59,8 @@ class TracksUploadModal extends React.PureComponent {
 
   render() {
     const { uploading } = this.state
-    const { actions, uploads } = this.props
-    const plurality = hasMoreThanOne(uploads) ? 's' : ''
+    const { actions, displayItems } = this.props
+    const plurality = displayItems.length ? 's' : ''
     const message = `This will upload the track${plurality} below.`
     return (
       <Modal
@@ -81,32 +79,25 @@ class TracksUploadModal extends React.PureComponent {
   }
 }
 
-function hasMoreThanOne(obj) {
-  let i = 0
-  for (const key in obj) {
-    if (i > 0) {
-      return true
-    }
-    i += 1
-  }
-  return false
-}
-
-function mapStateToProps(state) {
-  const { account, tracks } = state
-  const { playing, playlists, uploads } = tracks
-  const playlist = playlists[playlistName]
-  const { index } = playlist
-  const columns = playlistColumns.filter(
-    c => account.columns.has(c.title) && c.title !== 'Created At'
+function mapStateToProps(state, ownProps) {
+  const {
+    getPlaylistProps
+  } = getOrCreatePlaylistSelectors(
+    playlistName,
+    URLSearchParams,
+    libTypes.UPLOADS
   )
+
+  const { account, tracks } = state
+  const { playing } = tracks
   const { isPlaying } = playing
+  const { location } = ownProps
+  const { search } = location
+  const columns = uploadColumns.filter(c => account.columns.has(c.title))
   return {
-    playlist,
-    columns,
-    uploads,
     isPlaying,
-    index
+    columns,
+    ...getPlaylistProps(state, search)
   }
 }
 

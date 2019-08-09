@@ -23,7 +23,7 @@ const MODALS = {
 
 export default class Modal extends React.PureComponent {
   render() {
-    const { history, modal } = this.props
+    const { history, location, modal } = this.props
     if (!modal) {
       return null
     }
@@ -32,7 +32,7 @@ export default class Modal extends React.PureComponent {
     return (
       <React.Fragment>
         <div className='fixed-full-page modal-backdrop' />
-        <Component history={history} {...props} />
+        <Component history={history} location={location} {...props} />
       </React.Fragment>
     )
   }

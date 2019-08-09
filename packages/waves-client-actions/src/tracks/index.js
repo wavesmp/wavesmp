@@ -208,6 +208,7 @@ async function handleUploadPromises(promises, dispatch) {
         const track = await promise
         const { file } = track
         delete track.file
+        unprocessTrack(track)
         dispatch(
           toastAdd({ type: toastTypes.Success, msg: `Uploaded ${file.name}` })
         )
@@ -453,9 +454,7 @@ function tracksRemove(playlistName) {
 function updateLibraryById(libraryById, update) {
   for (const item of update) {
     addMissingTags(item)
-    const epoch = parseInt(item.id.substring(0, 8), 16)
-    item.createdAt = epoch
-    item.createdAtPretty = new Date(epoch * 1000).toLocaleString()
+    processTrack(item)
     libraryById[item.id] = item
   }
   return libraryById
@@ -617,6 +616,17 @@ function tracksInfoUpdate(id, key, value, libType) {
       dispatch(toastAdd({ type: toastTypes.Error, msg: err.toString() }))
     }
   }
+}
+
+function processTrack(track) {
+  const epoch = parseInt(track.id.substring(0, 8), 16)
+  track.createdAt = epoch
+  track.createdAtPretty = new Date(epoch * 1000).toLocaleString()
+}
+
+function unprocessTrack(track) {
+  delete track.createdAt
+  delete track.createdAtPretty
 }
 
 module.exports.trackToggle = trackToggle
