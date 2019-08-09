@@ -141,7 +141,7 @@ class S3Player {
       await this.client.putTrack(track.id, track.file)
       return track
     } catch (err) {
-      throw new UploadError(track, cause)
+      throw new UploadError(track, err)
     }
   }
 
