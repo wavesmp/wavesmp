@@ -16,9 +16,9 @@ const actionTypes = keyMirror({
 
   MODAL_SET: null,
 
-  SIDEBAR_MODE_SET: null,
+  SIDEBAR_SET: null,
 
-  TRANSITION_MAIN_SET: null,
+  TRANSITION_SET: null,
 
   PLAYING_PLAY: null,
   PLAYING_PAUSE: null,

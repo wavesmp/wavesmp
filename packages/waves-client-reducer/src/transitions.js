@@ -4,7 +4,7 @@ const initialState = false
 
 function transitions(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.TRANSITION_MAIN_SET:
+    case actionTypes.TRANSITION_SET:
       return action.on
     default:
       return state

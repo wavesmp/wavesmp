@@ -7,7 +7,7 @@ const initialState = false
 
 function sidebar(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SIDEBAR_MODE_SET:
+    case actionTypes.SIDEBAR_SET:
       return action.sidebar
     default:
       return state

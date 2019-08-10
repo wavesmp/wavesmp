@@ -6,9 +6,9 @@ const actions = require('../src/transitions')
 
 describe('#transitions()', () => {
   it('#transitionMainSet()', () => {
-    assert.isDefined(types.TRANSITION_MAIN_SET)
+    assert.isDefined(types.TRANSITION_SET)
     const on = false
-    const expectedAction = { type: types.TRANSITION_MAIN_SET, on }
+    const expectedAction = { type: types.TRANSITION_SET, on }
     assert.deepEqual(actions.transitionMainSet(on), expectedAction)
   })
 })

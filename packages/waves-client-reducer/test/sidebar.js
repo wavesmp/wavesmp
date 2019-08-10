@@ -16,7 +16,7 @@ describe('#sidebar()', () => {
   })
 
   it('set sidebar mode', () => {
-    action = { type: actionTypes.SIDEBAR_MODE_SET, sidebar: true }
+    action = { type: actionTypes.SIDEBAR_SET, sidebar: true }
     state = assertNewState(sidebar, state, action)
 
     assert.strictEqual(state, true)

@@ -16,7 +16,7 @@ describe('#transitions()', () => {
   })
 
   it('set to true', () => {
-    action = { type: actionTypes.TRANSITION_MAIN_SET, on: true }
+    action = { type: actionTypes.TRANSITION_SET, on: true }
     state = assertNewState(transitions, state, action)
     assert.isTrue(state)
   })
