@@ -3,7 +3,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { UPLOAD_PLAYLIST as playlistName, libTypes } from 'waves-client-constants'
+import {
+  UPLOAD_PLAYLIST as playlistName,
+  libTypes
+} from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 
 import Modal from './util'
@@ -80,9 +83,7 @@ class TracksUploadModal extends React.PureComponent {
 }
 
 function mapStateToProps(state, ownProps) {
-  const {
-    getPlaylistProps
-  } = getOrCreatePlaylistSelectors(
+  const { getPlaylistProps } = getOrCreatePlaylistSelectors(
     playlistName,
     URLSearchParams,
     libTypes.UPLOADS
