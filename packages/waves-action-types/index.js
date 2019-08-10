@@ -14,6 +14,8 @@ const actionTypes = keyMirror({
 
   DROPDOWN_SET: null,
 
+  MENUBAR_SET: null,
+
   MODAL_SET: null,
 
   SIDEBAR_SET: null,
