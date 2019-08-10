@@ -6,7 +6,7 @@ import constants from 'waves-client-constants'
 export default class PlaylistBar extends React.PureComponent {
   onBackClick = () => {
     const { actions } = this.props
-    actions.sidebarModeSet('main')
+    actions.sidebarModeSet(false)
   }
 
   onDragOver(ev) {

@@ -57,7 +57,7 @@ class NowPlaying extends React.PureComponent {
 
   getButtons() {
     const { sidebar } = this.props
-    if (sidebar === 'playlist') {
+    if (sidebar) {
       return this.getPlaylistButtons()
     }
     return this.defaultButtons

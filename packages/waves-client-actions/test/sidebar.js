@@ -6,9 +6,9 @@ const actions = require('../src/sidebar')
 
 describe('#sidebar()', () => {
   it('#sidebarSet()', () => {
-    const mode = 'testMode'
+    const sidebar = true
     assert.isDefined(types.SIDEBAR_MODE_SET)
-    const expectedAction = { type: types.SIDEBAR_MODE_SET, mode }
-    assert.deepEqual(actions.sidebarModeSet(mode), expectedAction)
+    const expectedAction = { type: types.SIDEBAR_MODE_SET, sidebar }
+    assert.deepEqual(actions.sidebarModeSet(sidebar), expectedAction)
   })
 })

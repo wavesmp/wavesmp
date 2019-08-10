@@ -1,16 +1,14 @@
 const actionTypes = require('waves-action-types')
 
-/* Controls the sidebar contents. Supported values:
- * - main
- * - playlists
- * - settings
- */
-const initialState = 'main'
+/* Controls the sidebar contents.
+ * - false: main sidebar
+ * - true: playlists sidebar */
+const initialState = false
 
 function sidebar(state = initialState, action) {
   switch (action.type) {
     case actionTypes.SIDEBAR_MODE_SET:
-      return action.mode
+      return action.sidebar
     default:
       return state
   }

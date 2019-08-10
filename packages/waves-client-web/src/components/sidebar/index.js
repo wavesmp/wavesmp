@@ -19,7 +19,7 @@ export default class SideBar extends React.PureComponent {
     let isPlayerVisible = playing.track !== null
     let playlistBar = null
     let mainBar = null
-    if (sidebar === 'playlist') {
+    if (sidebar) {
       playlistBar = (
         <PlaylistBar
           key={0}

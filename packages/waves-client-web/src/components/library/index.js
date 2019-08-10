@@ -33,7 +33,7 @@ class Library extends React.PureComponent {
 
   getButtons() {
     const { sidebar } = this.props
-    if (sidebar === 'playlist') {
+    if (sidebar) {
       return this.getPlaylistButtons()
     }
     return null

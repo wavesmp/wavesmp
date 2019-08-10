@@ -12,7 +12,7 @@ export default class ContentPage extends React.PureComponent {
       className = ''
     }
     className += 'contentpage-container contentpage-container-'
-    if (sidebar !== 'main') {
+    if (sidebar) {
       className += 'wide'
     } else {
       className += 'narrow'

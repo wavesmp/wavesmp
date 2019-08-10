@@ -12,13 +12,13 @@ describe('#sidebar()', () => {
 
   it('initial state', () => {
     state = assertNewState(sidebar, undefined, UNKNOWN_ACTION)
-    assert.strictEqual(state, 'main')
+    assert.strictEqual(state, false)
   })
 
   it('set sidebar mode', () => {
-    action = { type: actionTypes.SIDEBAR_MODE_SET, mode: 'mode' }
+    action = { type: actionTypes.SIDEBAR_MODE_SET, sidebar: true }
     state = assertNewState(sidebar, state, action)
 
-    assert.strictEqual(state, 'mode')
+    assert.strictEqual(state, true)
   })
 })

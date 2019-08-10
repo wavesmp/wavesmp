@@ -6,7 +6,7 @@ import constants from 'waves-client-constants'
 export default class MainBar extends React.PureComponent {
   onPlaylistClick = () => {
     const { actions } = this.props
-    actions.sidebarModeSet('playlist')
+    actions.sidebarModeSet(true)
   }
 
   render() {
