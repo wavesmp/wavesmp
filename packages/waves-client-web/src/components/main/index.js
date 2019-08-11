@@ -10,6 +10,8 @@ import {
   MODAL_DATA_VALUE,
   routes
 } from 'waves-client-constants'
+const { getFilteredSelection } = require('waves-client-selectors')
+const { getPlaylistNameFromRoute } = require('waves-client-util')
 
 import Boundary from '../boundary'
 import SideBar from '../sidebar'
@@ -62,6 +64,8 @@ class MainApp extends React.PureComponent {
   render() {
     const {
       err,
+      menubar,
+      numSelected,
       modal,
       sidebar,
       playlists,
@@ -94,6 +98,8 @@ class MainApp extends React.PureComponent {
           <MenuBar
             actions={actions}
             dropdown={dropdown}
+            menubar={menubar}
+            numSelected={numSelected}
             playing={playing}
             history={history}
             userName={user.name}
@@ -107,13 +113,28 @@ class MainApp extends React.PureComponent {
   }
 }
 
-function mapStateToProps(state) {
+function getNumSelected(state, pathname) {
+  const playlistName = getPlaylistNameFromRoute(pathname)
+  if (!playlistName) {
+    return 0
+  }
+  const filteredSelection = getFilteredSelection(state, playlistName)
+  return filteredSelection.size
+}
+
+function mapStateToProps(state, ownProps) {
+  const { menubar } = state
+  const { location } = ownProps
+  const { pathname } = location
+  const numSelected = menubar && getNumSelected(state, pathname)
   return {
     playlists: state.tracks.playlists,
     playing: state.tracks.playing,
     sidebar: state.sidebar,
     contextmenu: state.contextmenu,
     err: state.err,
+    menubar,
+    numSelected,
     modal: state.modal,
     toasts: state.toasts,
     account: state.account,
