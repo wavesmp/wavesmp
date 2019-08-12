@@ -15,7 +15,15 @@ let prevPlayerVisible = false
 
 export default class MenuBar extends React.PureComponent {
   render() {
-    const { actions, dropdown, playing, history, userName } = this.props
+    const {
+      actions,
+      dropdown,
+      playing,
+      history,
+      userName,
+      menubar,
+      numSelected
+    } = this.props
     const { isPlaying, track } = playing
 
     let trackSlider = null
@@ -39,7 +47,15 @@ export default class MenuBar extends React.PureComponent {
       logoClassName += ' menubar-player-visible'
       logoNameClassName += ' menubar-player-visible'
       trackSlider = <TrackSlider actions={actions} playing={playing} key={0} />
-      trackPlayer = <TrackPlayer actions={actions} playing={playing} key={0} />
+      trackPlayer = (
+        <TrackPlayer
+          key={0}
+          actions={actions}
+          menubar={menubar}
+          numSelected={numSelected}
+          playing={playing}
+        />
+      )
     }
 
     return (
