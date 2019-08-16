@@ -10,6 +10,7 @@ import getDragCanvas from './dragbox'
 
 const CONTEXT_MENU_BUTTON = 2
 const DOUBLE_CLICK_THRESHOLD = 500
+const LONG_PRESS_THRESHOLD = 600
 
 export default class Table extends React.PureComponent {
   constructor(props) {
@@ -28,6 +29,9 @@ export default class Table extends React.PureComponent {
     this.clearOnMouseUpIndex = null
     this.clearOnMouseUpTrackId = null
 
+    this.clearOnTouchEndIndex = null
+    this.clearOnTouchEndTrackId = null
+
     this.lastClickTime = 0
     this.lastClickIndex = null
     this.lastClickWasForEdit = false
@@ -43,6 +47,42 @@ export default class Table extends React.PureComponent {
     return filterSelection(displayItems, selection)
   }
 
+  onShowMenuOptions = () => {
+    const { actions, playlistName, displayItems } = this.props
+    actions.menubarSet(true)
+    actions.selectionClearAndAdd(
+      playlistName,
+      this.clearOnTouchEndIndex,
+      this.clearOnTouchEndTrackId,
+      displayItems
+    )
+  }
+
+  onTouchStart = ev => {
+    this.longPressTimeout = setTimeout(
+      this.onShowMenuOptions,
+      LONG_PRESS_THRESHOLD
+    )
+    const itemIndex = parseInt(
+      ev.currentTarget.getAttribute(constants.INDEX_ATTR)
+    )
+    const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR)
+    this.clearOnTouchEndIndex = itemIndex
+    this.clearOnTouchEndTrackId = trackId
+  }
+
+  onTouchEnd = () => {
+    clearTimeout(this.longPressTimeout)
+  }
+
+  onTouchCancel = () => {
+    clearTimeout(this.longPressTimeout)
+  }
+
+  onTouchMove = () => {
+    clearTimeout(this.longPressTimeout)
+  }
+
   onRowDoubleClick(ev) {
     const { actions, playlistName } = this.props
     const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR)
@@ -51,7 +91,14 @@ export default class Table extends React.PureComponent {
   }
 
   onRowMouseDown = ev => {
-    const { actions, playlistName, index, selection, displayItems } = this.props
+    const {
+      actions,
+      playlistName,
+      index,
+      selection,
+      menubar,
+      displayItems
+    } = this.props
 
     const clickTarget = ev.target
     const clickWasForEdit = clickTarget.nodeName.toLowerCase() === 'span'
@@ -66,7 +113,7 @@ export default class Table extends React.PureComponent {
     )
     const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR)
 
-    if (ev.altKey) {
+    if (ev.altKey || menubar) {
       if (selection.has(itemIndex)) {
         actions.selectionRemove(playlistName, itemIndex)
       } else {
@@ -334,6 +381,10 @@ export default class Table extends React.PureComponent {
                   draggable={draggable}
                   onDragStart={this.onDragStart}
                   onDragEnd={this.onDragEnd}
+                  onTouchStart={this.onTouchStart}
+                  onTouchEnd={this.onTouchEnd}
+                  onTouchMove={this.onTouchMove}
+                  onTouchCancel={this.onTouchCancel}
                   className={className}
                 >
                   {columns.map(column => (
