@@ -9,6 +9,6 @@ describe('#sidebar()', () => {
     const sidebar = true
     assert.isDefined(types.SIDEBAR_SET)
     const expectedAction = { type: types.SIDEBAR_SET, sidebar }
-    assert.deepEqual(actions.sidebarModeSet(sidebar), expectedAction)
+    assert.deepEqual(actions.sidebarSet(sidebar), expectedAction)
   })
 })

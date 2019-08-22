@@ -9,6 +9,6 @@ describe('#menubar()', () => {
     const menubar = true
     assert.isDefined(types.MENUBAR_SET)
     const expectedAction = { type: types.MENUBAR_SET, menubar }
-    assert.deepEqual(actions.menubarModeSet(menubar), expectedAction)
+    assert.deepEqual(actions.menubarSet(menubar), expectedAction)
   })
 })
