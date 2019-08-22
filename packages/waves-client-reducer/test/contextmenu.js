@@ -3,12 +3,10 @@ const { assert } = require('chai')
 const actionTypes = require('waves-action-types')
 
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
-const {
-  TEST_CONTEXTMENU1: menu1,
-  TEST_CONTEXTMENU2: menu2
-} = require('waves-test-data')
 
 const contextmenu = require('../src/contextmenu')
+
+const menu1 = { transform: 'transform1' }
 
 describe('#contextmenu()', () => {
   let state
@@ -35,16 +33,14 @@ describe('#contextmenu()', () => {
   it('next', () => {
     action = {
       type: actionTypes.CONTEXTMENU_NEXT,
-      menu: menu2
+      menu: {}
     }
     state = assertNewState(contextmenu, state, action)
 
     assert.isArray(state)
     assert.lengthOf(state, 2)
     assert.strictEqual(state[0], menu1)
-    assert.strictEqual(state[1], menu2)
-    assert.strictEqual(state[1].x, 'x1')
-    assert.strictEqual(state[1].y, 'y1')
+    assert.deepEqual(state[1], menu1)
   })
 
   it('back', () => {

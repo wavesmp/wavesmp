@@ -26,8 +26,7 @@ function contextmenu(state = initialState, action) {
       const { menu } = action
       const numMenus = state.length
       const oldMenu = state[numMenus - 1]
-      menu.x = oldMenu.x
-      menu.y = oldMenu.y
+      menu.transform = oldMenu.transform
       return [...state, menu]
     }
     // Context menu next should be called before this

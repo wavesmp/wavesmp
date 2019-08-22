@@ -5,20 +5,6 @@
       "prop": "prop1"
     }
   },
-  "TEST_CONTEXTMENU1": {
-    "type": "type1",
-    "x": "x1",
-    "y": "y1",
-    "props": {
-      "prop": "prop1"
-    }
-  },
-  "TEST_CONTEXTMENU2": {
-    "type": "type2",
-    "props": {
-      "prop": "prop2"
-    }
-  },
   "TEST_USER1": {
     "idp": "testIdp1",
     "idpId": "testIdpId1",

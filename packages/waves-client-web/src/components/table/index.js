@@ -154,8 +154,7 @@ export default class Table extends React.PureComponent {
        * the operation is on a single item. */
       const bulk = isSelected && this.getFilteredSelection().size > 1
       actions.contextmenuSet({
-        x: ev.pageX,
-        y: ev.pageY,
+        ev,
         type: constants.contextmenuTypes.TRACK,
         props: { itemIndex, trackId, bulk, playlistName, index }
       })

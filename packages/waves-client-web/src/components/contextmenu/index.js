@@ -24,13 +24,10 @@ export default class ContextMenu extends React.PureComponent {
     }
 
     const menu = contextmenu[numMenus - 1]
-    const { type, props, x, y } = menu
+    const { type, props, transform } = menu
     const Component = CONTEXT_MENUS[type]
+    const style = { transform }
 
-    const style = {
-      left: `${x}px`,
-      top: `${y}px`
-    }
     return (
       <menu className='contextmenu contextmenu-active' style={style}>
         <Component {...props} />
