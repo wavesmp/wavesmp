@@ -22,7 +22,9 @@ export default class MenuBar extends React.PureComponent {
       history,
       userName,
       menubar,
-      numSelected
+      filteredSelection,
+      index,
+      playlistName
     } = this.props
     const { isPlaying, track } = playing
 
@@ -52,7 +54,9 @@ export default class MenuBar extends React.PureComponent {
           key={0}
           actions={actions}
           menubar={menubar}
-          numSelected={numSelected}
+          index={index}
+          filteredSelection={filteredSelection}
+          playlistName={playlistName}
           playing={playing}
         />
       )

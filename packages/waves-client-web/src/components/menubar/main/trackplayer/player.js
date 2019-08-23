@@ -1,9 +1,6 @@
 import React from 'react'
 
-import { bindActionCreators } from 'redux'
-import * as WavesActions from 'waves-client-actions'
 import { toastTypes } from 'waves-client-constants'
-import './trackplayer.css'
 
 const MAX_TITLE_LEN = 21
 const MAX_ARTIST_LEN = 28
@@ -106,7 +103,7 @@ class RightButtons extends React.PureComponent {
   }
 }
 
-export default class TrackPlayer extends React.PureComponent {
+export default class Player extends React.PureComponent {
   render() {
     const { playing, actions } = this.props
     const { track } = playing
