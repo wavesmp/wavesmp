@@ -113,7 +113,7 @@
   /* Desktop */
   #sidebar-container {
     height: 100%;
-    top: 65px;
+    top: var(--menubar-height);
     transition: top 0.8s cubic-bezier(0.02, 0.01, 0.47, 1);
   }
 
@@ -126,7 +126,7 @@
   }
 
   #sidebar-container.sidebar-container-player-visible {
-    top: calc(65px + var(--trackslider-width));
+    top: calc(var(--menubar-height) + var(--trackslider-width));
   }
 
   #sidebar-container > ul > li {
