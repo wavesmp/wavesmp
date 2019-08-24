@@ -94,7 +94,7 @@ function mapStateToProps(state, ownProps) {
     URLSearchParams,
     libTypes.WAVES
   )
-  const { tracks, account, menubar, sidebar, transitions } = state
+  const { tracks, account, menubar, sidebar, layout } = state
   const { playing } = tracks
   const { isPlaying } = playing
   const isPlayerVisible = playing.track != null
@@ -114,7 +114,7 @@ function mapStateToProps(state, ownProps) {
     menubar,
     sidebar,
     theme,
-    transitions,
+    layout,
     ...getPlaylistProps(state, search)
   }
 }

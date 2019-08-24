@@ -188,7 +188,7 @@ export default class Table extends React.PureComponent {
   /* After mousedown, either mouseup or dragstart is called (not both) */
 
   onRowMouseUp = ev => {
-    const { actions, playlistName, transitions, displayItems } = this.props
+    const { actions, playlistName, layout, displayItems } = this.props
     if (this.clearOnMouseUpIndex != null) {
       actions.selectionClearAndAdd(
         playlistName,
@@ -200,7 +200,8 @@ export default class Table extends React.PureComponent {
       this.clearOnMouseUpTrackId = null
     }
     if (this.editOnMouseUpIndex != null) {
-      if (transitions) {
+      /* Disable inline editing for small layouts */
+      if (layout > 1) {
         this.setState({
           editingIndex: this.editOnMouseUpIndex,
           editingTitle: this.editOnMouseUpTitle
@@ -328,7 +329,7 @@ export default class Table extends React.PureComponent {
       ascending,
       columns,
       isPlaying,
-      transitions,
+      layout,
       selection,
       numItems,
       displayItems,
@@ -396,7 +397,7 @@ export default class Table extends React.PureComponent {
                       index={index}
                       sample={sample}
                       editable={
-                        transitions &&
+                        layout &&
                         this.state.editingIndex === sample.index &&
                         this.state.editingTitle === column.title
                       }

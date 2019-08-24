@@ -4,9 +4,14 @@ import './index.css'
 
 export default class ContentPage extends React.PureComponent {
   render() {
-    const { title, sidebar, isPlayerVisible, transitions } = this.props
+    const { title, sidebar, isPlayerVisible, layout } = this.props
     let className
-    if (transitions) {
+    /* Usually, transitions are enabled on this element. However,
+     * disable the transitions when moving from layouts, so that
+     * the element can snap into place. Adding a new transition
+     * for this case would conflict with the current one, so handle
+     * it programmatically (no pure-CSS solution available AFAIK) */
+    if (layout > 1) {
       className = 'contentpage-container-transition '
     } else {
       className = ''

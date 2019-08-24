@@ -38,18 +38,21 @@ export default async (store, ws, player, localState, history) => {
     store.dispatch(WavesActions.playlistsUpdate(playlists))
   })
 
-  /* Listen for media queries to prevent transitions */
-  enquire.register('only screen and (min-width: 768px)', {
-    /* On big screens, enable sidebar transitions */
-    match: () => {
-      store.dispatch(WavesActions.transitionMainSet(true))
-    },
-    /* When going from small to big screen (big format change),
-     * disable sidebar transitions. Sidebar snaps into place */
-    unmatch: () => {
-      store.dispatch(WavesActions.transitionMainSet(false))
-    }
-  })
+  /* Listen for media queries to set layout state */
+  const layout0Mql = window.matchMedia('only screen and (min-width: 516px)')
+  const layout1Mql = window.matchMedia('only screen and (min-width: 768px)')
+  let layout = 0
+
+  function onLayout0(ev) {
+    layout = ev.matches ? Math.max(layout, 1) : 0
+    store.dispatch(WavesActions.layoutSet(layout))
+  }
+  function onLayout1(ev) {
+    layout = ev.matches ? 2 : Math.min(layout, 1)
+    store.dispatch(WavesActions.layoutSet(layout))
+  }
+  layout0Mql.addEventListener('change', onLayout0)
+  layout1Mql.addEventListener('change', onLayout1)
 
   document.addEventListener('keydown', ev => {
     store.dispatch(WavesActions.tracksKeyDown(ev, history))

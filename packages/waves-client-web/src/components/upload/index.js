@@ -137,7 +137,7 @@ class Upload extends React.PureComponent {
       qp,
       actions,
       playing,
-      transitions,
+      layout,
       currentPage,
       lastPage
     } = this.props
@@ -158,7 +158,7 @@ class Upload extends React.PureComponent {
         numItems={numItems}
         onItemEdit={this.onItemEdit}
         index={index}
-        transitions={transitions}
+        layout={layout}
         selection={selection}
         playlistName={playlistName}
       />
@@ -166,7 +166,7 @@ class Upload extends React.PureComponent {
   }
 
   render() {
-    const { playing, actions, sidebar, transitions } = this.props
+    const { playing, actions, sidebar, layout } = this.props
 
     let dropZoneClass = 'upload-drop-zone'
     if (this.state.dragging) {
@@ -181,7 +181,7 @@ class Upload extends React.PureComponent {
         title='Upload Files'
         sidebar={sidebar}
         isPlayerVisible={playing.track !== null}
-        transitions={transitions}
+        layout={layout}
       >
         <div>
           <h4>Select files from your device</h4>
@@ -232,7 +232,7 @@ function mapStateToProps(state, ownProps) {
     URLSearchParams,
     libTypes.UPLOADS
   )
-  const { account, sidebar, transitions, tracks } = state
+  const { account, sidebar, layout, tracks } = state
   const { playing } = tracks
   const { location } = ownProps
   const { pathname, search } = location
@@ -244,7 +244,7 @@ function mapStateToProps(state, ownProps) {
     playing,
     columns,
     sidebar,
-    transitions,
+    layout,
     ...getPlaylistProps(state, search)
   }
 }

@@ -76,6 +76,7 @@ class MainApp extends React.PureComponent {
       contextmenu,
       dropdown,
       account,
+      layout,
       location,
       history,
       toasts
@@ -100,6 +101,7 @@ class MainApp extends React.PureComponent {
           <MenuBar
             actions={actions}
             dropdown={dropdown}
+            layout={layout}
             menubar={menubar}
             filteredSelection={filteredSelection}
             index={index}
@@ -127,6 +129,7 @@ function mapStateToProps(state, ownProps) {
     sidebar: state.sidebar,
     contextmenu: state.contextmenu,
     err: state.err,
+    layout: state.layout,
     menubar,
     modal: state.modal,
     toasts: state.toasts,

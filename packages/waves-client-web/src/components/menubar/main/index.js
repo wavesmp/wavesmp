@@ -21,6 +21,7 @@ export default class MenuBar extends React.PureComponent {
       playing,
       history,
       userName,
+      layout,
       menubar,
       filteredSelection,
       index,
@@ -34,11 +35,12 @@ export default class MenuBar extends React.PureComponent {
     let logoClassName = 'menubar-main-logo'
     let logoNameClassName = 'menubar-main-logo-name'
     if (isPlayerVisible) {
-      /* Avoid transition when trackplayer takes entire space. */
-      if (
-        !prevPlayerVisible &&
-        !window.matchMedia('only screen and (min-width: 516px)').matches
-      ) {
+      /* Usually, transitions are enabled when the player is visible.
+       * However, disable the transition when player is becoming visible
+       * and the user is on a small screen. Adding a new transition
+       * for this case would conflict with the current one, so handle
+       * it programmatically (no pure-CSS solution available AFAIK). */
+      if (!prevPlayerVisible && layout === 0) {
         setTimeout(() => this.forceUpdate(), 0)
       } else {
         logoClassName += ' menubar-transition'
