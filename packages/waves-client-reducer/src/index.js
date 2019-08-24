@@ -9,7 +9,7 @@ const modal = require('./modal')
 const sidebar = require('./sidebar')
 const toasts = require('./toasts')
 const tracks = require('./tracks')
-const transitions = require('./transitions')
+const layout = require('./layout')
 
 const combined = combineReducers({
   tracks,
@@ -20,7 +20,7 @@ const combined = combineReducers({
   modal,
   sidebar,
   toasts,
-  transitions,
+  layout,
   account
 })
 
