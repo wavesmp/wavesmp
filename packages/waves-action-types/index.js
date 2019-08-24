@@ -20,7 +20,7 @@ const actionTypes = keyMirror({
 
   SIDEBAR_SET: null,
 
-  TRANSITION_SET: null,
+  LAYOUT_SET: null,
 
   PLAYING_PLAY: null,
   PLAYING_PAUSE: null,
