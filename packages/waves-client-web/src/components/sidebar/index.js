@@ -16,7 +16,7 @@ export default class SideBar extends React.PureComponent {
       pathname,
       userName
     } = this.props
-    let isPlayerVisible = playing.track !== null
+    const isPlayerVisible = playing.track != null
     let playlistBar = null
     let mainBar = null
     if (sidebar) {

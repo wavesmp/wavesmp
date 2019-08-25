@@ -97,7 +97,6 @@ function mapStateToProps(state, ownProps) {
   const { tracks, account, menubar, sidebar, layout } = state
   const { playing } = tracks
   const { isPlaying } = playing
-  const isPlayerVisible = playing.track != null
   const { location } = ownProps
   const { pathname, search } = location
   const { theme } = account
@@ -109,7 +108,6 @@ function mapStateToProps(state, ownProps) {
     libraryPlaylistSearch: getLibraryPlaylistSearch(state),
     pathname,
     isPlaying,
-    isPlayerVisible,
     columns,
     menubar,
     sidebar,

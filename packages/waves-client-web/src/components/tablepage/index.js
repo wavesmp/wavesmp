@@ -7,15 +7,10 @@ import './index.css'
 
 export default class TablePage extends React.PureComponent {
   render() {
-    const { title, sidebar, isPlayerVisible, layout, ...other } = this.props
+    const { title, ...other } = this.props
     return (
-      <ContentPage
-        title={title}
-        sidebar={sidebar}
-        isPlayerVisible={isPlayerVisible}
-        layout={layout}
-      >
-        <TablePageData {...other} layout={layout} />
+      <ContentPage title={title}>
+        <TablePageData {...other} />
       </ContentPage>
     )
   }

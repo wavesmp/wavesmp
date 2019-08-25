@@ -1,8 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import './index.css'
 
-export default class ContentPage extends React.PureComponent {
+class ContentPage extends React.PureComponent {
   render() {
     const { title, sidebar, isPlayerVisible, layout } = this.props
     let className
@@ -37,3 +38,14 @@ export default class ContentPage extends React.PureComponent {
     )
   }
 }
+
+function mapStateToProps(state) {
+  const { layout, tracks, sidebar } = state
+  return {
+    layout,
+    isPlayerVisible: tracks.playing.track != null,
+    sidebar
+  }
+}
+
+export default connect(mapStateToProps)(ContentPage)

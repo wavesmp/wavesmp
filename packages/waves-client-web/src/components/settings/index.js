@@ -21,9 +21,6 @@ class Settings extends React.PureComponent {
     const {
       actions,
       history,
-      sidebar,
-      layout,
-      isPlayerVisible,
       columns,
       rowsPerPage,
       theme,
@@ -32,12 +29,7 @@ class Settings extends React.PureComponent {
       libraryAscending
     } = this.props
     return (
-      <ContentPage
-        title='Settings'
-        sidebar={sidebar}
-        isPlayerVisible={isPlayerVisible}
-        layout={layout}
-      >
+      <ContentPage title='Settings'>
         <div>
           <VolumeSlider actions={actions} />
           <ColumnSettings actions={actions} columns={columns} />
@@ -57,9 +49,8 @@ class Settings extends React.PureComponent {
 }
 
 function mapStateToProps(state) {
-  const { account, layout, sidebar, tracks } = state
+  const { account } = state
   const { columns, rowsPerPage, theme } = account
-  const { playing } = tracks
   const { getRouterAscending, getRouterSortKey } = getOrCreatePlaylistSelectors(
     FULL_PLAYLIST,
     URLSearchParams,
@@ -72,9 +63,6 @@ function mapStateToProps(state) {
     columns,
     rowsPerPage,
     theme,
-    sidebar,
-    layout,
-    isPlayerVisible: playing.track !== null,
     libraryColumns: libraryColumns.filter(c => c.sortable),
     librarySortKey: sortKey,
     libraryAscending: ascending

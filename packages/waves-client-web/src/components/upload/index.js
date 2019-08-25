@@ -136,7 +136,7 @@ class Upload extends React.PureComponent {
       pathname,
       qp,
       actions,
-      playing,
+      isPlaying,
       layout,
       currentPage,
       lastPage
@@ -149,7 +149,7 @@ class Upload extends React.PureComponent {
         lastPage={lastPage}
         draggable={false}
         orderable={false}
-        isPlaying={playing.isPlaying}
+        isPlaying={isPlaying}
         pathname={pathname}
         qp={qp}
         currentPage={currentPage}
@@ -166,7 +166,7 @@ class Upload extends React.PureComponent {
   }
 
   render() {
-    const { playing, actions, sidebar, layout } = this.props
+    const { actions } = this.props
 
     let dropZoneClass = 'upload-drop-zone'
     if (this.state.dragging) {
@@ -177,12 +177,7 @@ class Upload extends React.PureComponent {
 
     // TODO add progress bar?
     return (
-      <ContentPage
-        title='Upload Files'
-        sidebar={sidebar}
-        isPlayerVisible={playing.track !== null}
-        layout={layout}
-      >
+      <ContentPage title='Upload Files'>
         <div>
           <h4>Select files from your device</h4>
           <form>
@@ -232,8 +227,9 @@ function mapStateToProps(state, ownProps) {
     URLSearchParams,
     libTypes.UPLOADS
   )
-  const { account, sidebar, layout, tracks } = state
+  const { account, layout, tracks } = state
   const { playing } = tracks
+  const { isPlaying } = playing
   const { location } = ownProps
   const { pathname, search } = location
   const columns = uploadColumns.filter(c => account.columns.has(c.title))
@@ -241,9 +237,8 @@ function mapStateToProps(state, ownProps) {
     rowsPerPage: account.rowsPerPage,
     pathname,
     qp: getRouterQueryParams(undefined, search),
-    playing,
+    isPlaying,
     columns,
-    sidebar,
     layout,
     ...getPlaylistProps(state, search)
   }

@@ -27,11 +27,10 @@ export default class MenuBar extends React.PureComponent {
       index,
       playlistName
     } = this.props
-    const { isPlaying, track } = playing
 
     let trackSlider = null
     let trackPlayer = null
-    let isPlayerVisible = track !== null
+    let isPlayerVisible = playing.track != null
     let logoClassName = 'menubar-main-logo'
     let logoNameClassName = 'menubar-main-logo-name'
     if (isPlayerVisible) {
@@ -50,7 +49,7 @@ export default class MenuBar extends React.PureComponent {
       prevPlayerVisible = true
       logoClassName += ' menubar-player-visible'
       logoNameClassName += ' menubar-player-visible'
-      trackSlider = <TrackSlider actions={actions} playing={playing} key={0} />
+      trackSlider = <TrackSlider key={0} actions={actions} playing={playing} />
       trackPlayer = (
         <TrackPlayer
           key={0}
