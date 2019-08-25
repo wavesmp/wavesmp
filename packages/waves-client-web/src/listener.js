@@ -41,7 +41,7 @@ export default async (store, ws, player, localState, history) => {
   /* Listen for media queries to set layout state */
   const layout0Mql = window.matchMedia('only screen and (min-width: 516px)')
   const layout1Mql = window.matchMedia('only screen and (min-width: 768px)')
-  let layout = 0
+  let layout
 
   function onLayout0(ev) {
     layout = ev.matches ? Math.max(layout, 1) : 0
@@ -53,6 +53,8 @@ export default async (store, ws, player, localState, history) => {
   }
   layout0Mql.addEventListener('change', onLayout0)
   layout1Mql.addEventListener('change', onLayout1)
+  layout = layout1Mql.matches ? 2 : layout0Mql.matches ? 1 : 0
+  store.dispatch(WavesActions.layoutSet(layout))
 
   document.addEventListener('keydown', ev => {
     store.dispatch(WavesActions.tracksKeyDown(ev, history))
