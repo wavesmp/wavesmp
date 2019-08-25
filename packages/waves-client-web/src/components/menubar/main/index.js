@@ -30,9 +30,10 @@ export default class MenuBar extends React.PureComponent {
 
     let trackSlider = null
     let trackPlayer = null
-    let isPlayerVisible = playing.track != null
     let logoClassName = 'menubar-main-logo'
     let logoNameClassName = 'menubar-main-logo-name'
+    const isSliderVisible = playing.track != null
+    const isPlayerVisible = isSliderVisible || menubar
     if (isPlayerVisible) {
       /* Usually, transitions are enabled when the player is visible.
        * However, disable the transition when player is becoming visible
@@ -49,7 +50,6 @@ export default class MenuBar extends React.PureComponent {
       prevPlayerVisible = true
       logoClassName += ' menubar-player-visible'
       logoNameClassName += ' menubar-player-visible'
-      trackSlider = <TrackSlider key={0} actions={actions} playing={playing} />
       trackPlayer = (
         <TrackPlayer
           key={0}
@@ -61,6 +61,12 @@ export default class MenuBar extends React.PureComponent {
           playing={playing}
         />
       )
+    } else {
+      prevPlayerVisible = false
+    }
+
+    if (isSliderVisible) {
+      trackSlider = <TrackSlider key={0} actions={actions} playing={playing} />
     }
 
     return (

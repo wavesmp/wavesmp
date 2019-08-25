@@ -16,14 +16,14 @@ export default class SideBar extends React.PureComponent {
       pathname,
       userName
     } = this.props
-    const isPlayerVisible = playing.track != null
+    const isSliderVisible = playing.track != null
     let playlistBar = null
     let mainBar = null
     if (sidebar) {
       playlistBar = (
         <PlaylistBar
           key={0}
-          isPlayerVisible={isPlayerVisible}
+          isSliderVisible={isSliderVisible}
           actions={actions}
           playlists={playlists}
         />
@@ -33,7 +33,7 @@ export default class SideBar extends React.PureComponent {
         <MainBar
           key={0}
           actions={actions}
-          isPlayerVisible={isPlayerVisible}
+          isSliderVisible={isSliderVisible}
           playlists={playlists}
           pathname={pathname}
         />

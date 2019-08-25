@@ -49,13 +49,13 @@ export default class Table extends React.PureComponent {
 
   onShowMenuOptions = () => {
     const { actions, playlistName, displayItems } = this.props
-    actions.menubarSet(true)
     actions.selectionClearAndAdd(
       playlistName,
       this.clearOnTouchEndIndex,
       this.clearOnTouchEndTrackId,
       displayItems
     )
+    actions.menubarSet(true)
   }
 
   onTouchStart = ev => {

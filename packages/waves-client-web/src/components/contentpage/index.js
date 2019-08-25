@@ -5,7 +5,7 @@ import './index.css'
 
 class ContentPage extends React.PureComponent {
   render() {
-    const { title, sidebar, isPlayerVisible, layout } = this.props
+    const { title, sidebar, isSliderVisible, layout } = this.props
     let className
     /* Usually, transitions are enabled on this element. However,
      * disable the transitions when moving from layouts, so that
@@ -23,7 +23,7 @@ class ContentPage extends React.PureComponent {
     } else {
       className += 'narrow'
     }
-    if (isPlayerVisible) {
+    if (isSliderVisible) {
       className += ' contentpage-container-player-visible'
     }
     return (
@@ -43,7 +43,7 @@ function mapStateToProps(state) {
   const { layout, tracks, sidebar } = state
   return {
     layout,
-    isPlayerVisible: tracks.playing.track != null,
+    isSliderVisible: tracks.playing.track != null,
     sidebar
   }
 }

@@ -41,7 +41,7 @@ export default class PlaylistBar extends React.PureComponent {
   }
 
   render() {
-    const { playlists, isPlayerVisible } = this.props
+    const { playlists, isSliderVisible } = this.props
     const playlistObjs = Object.values(playlists).filter(
       p =>
         p.name !== constants.DEFAULT_PLAYLIST &&
@@ -49,7 +49,7 @@ export default class PlaylistBar extends React.PureComponent {
         p.name !== constants.UPLOAD_PLAYLIST
     )
     let className = 'sidebar-container-wide'
-    if (isPlayerVisible) {
+    if (isSliderVisible) {
       className += ' sidebar-container-player-visible'
     }
     return (

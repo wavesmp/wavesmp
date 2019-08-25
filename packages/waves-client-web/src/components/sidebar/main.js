@@ -10,9 +10,9 @@ export default class MainBar extends React.PureComponent {
   }
 
   render() {
-    const { pathname, playlists, isPlayerVisible } = this.props
+    const { pathname, playlists, isSliderVisible } = this.props
     let className = 'sidebar-container-narrow'
-    if (isPlayerVisible) {
+    if (isSliderVisible) {
       className += ' sidebar-container-player-visible'
     }
 
