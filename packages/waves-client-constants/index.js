@@ -23,11 +23,6 @@ constants.ALL_COLUMNS = [
 
 constants.PLAYLIST_TYPE = 'application/wp'
 
-constants.libTypes = keyMirror({
-  UPLOADS: null,
-  WAVES: null
-})
-
 constants.modalTypes = keyMirror({
   PLAYLIST_CLEAR: null,
   PLAYLIST_CREATE: null,
