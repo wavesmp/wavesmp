@@ -6,7 +6,7 @@ const types = require('waves-action-types')
 const {
   NOW_PLAYING_NAME,
   LIBRARY_NAME,
-  libTypes,
+  UPLOADS_NAME,
   routes
 } = require('waves-client-constants')
 const { getPlaylistNameFromRoute } = require('waves-client-util')
@@ -24,8 +24,8 @@ const lib = {
   [track2.id]: track2
 }
 const libraries = {
-  [libTypes.WAVES]: lib,
-  [libTypes.UPLOADS]: lib
+  [LIBRARY_NAME]: lib,
+  [UPLOADS_NAME]: lib
 }
 
 const actions = require('../src/router')

@@ -3,7 +3,7 @@ const mongoid = require('mongoid-js')
 const sinon = require('sinon')
 
 const types = require('waves-action-types')
-const { libTypes, toastTypes } = require('waves-client-constants')
+const { LIBRARY_NAME, toastTypes } = require('waves-client-constants')
 const Player = require('waves-client-player')
 
 const actions = require('../../src/tracks/sideEffects')
@@ -20,7 +20,7 @@ const library = {
   [track2.id]: track2
 }
 const libraries = {
-  [libTypes.WAVES]: library
+  [LIBRARY_NAME]: library
 }
 
 describe('#sideEffects()', async () => {

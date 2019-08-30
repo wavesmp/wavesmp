@@ -7,9 +7,9 @@ const actions = require('../../src/tracks')
 
 const types = require('waves-action-types')
 const {
+  LIBRARY_NAME,
   NOW_PLAYING_NAME,
   UPLOADS_NAME,
-  libTypes,
   toastTypes
 } = require('waves-client-constants')
 const Player = require('waves-client-player')
@@ -23,7 +23,7 @@ const {
 } = require('waves-test-data')
 
 const SEARCH_QUERY_KEY = 'search'
-const libType = 'testLibType'
+const libName = 'testLibName'
 const id1 = '5c3d93000000000000000000'
 const createdAt1 = 1547539200
 const createAtPretty1 = '1/15/2019, 8:00:00 AM'
@@ -37,8 +37,8 @@ const lib = {
   [id2]: track2
 }
 const libraries = {
-  [libTypes.WAVES]: lib,
-  [libTypes.UPLOADS]: lib
+  [LIBRARY_NAME]: lib,
+  [UPLOADS_NAME]: lib
 }
 
 describe('#tracks()', async () => {
@@ -176,7 +176,7 @@ describe('#tracks()', async () => {
       [track2Copy.id]: track2Copy
     }
     const librariesCopy = {
-      [libTypes.WAVES]: libraryCopy
+      [LIBRARY_NAME]: libraryCopy
     }
 
     const player = new Player({})
@@ -214,12 +214,12 @@ describe('#tracks()', async () => {
 
   it('initial library add', async () => {
     const lib = null
-    const getState = () => ({ tracks: { libraries: { [libType]: null } } })
+    const getState = () => ({ tracks: { libraries: { [libName]: null } } })
     const update = [track1]
     const updatedLib = { [track1.id]: track1 }
-    const thunk = actions.tracksAdd(update, libType)
+    const thunk = actions.tracksAdd(update, libName)
 
-    const action = { type: types.TRACKS_ADD, lib: updatedLib, libType }
+    const action = { type: types.TRACKS_ADD, lib: updatedLib, libName }
 
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs(action)
@@ -232,7 +232,7 @@ describe('#tracks()', async () => {
   it('library update', async () => {
     const track2Copy = { ...track2, title: '' }
     const lib = { [track1.id]: track1 }
-    const getState = () => ({ tracks: { libraries: { [libType]: lib } } })
+    const getState = () => ({ tracks: { libraries: { [libName]: lib } } })
     const update = [track2Copy]
     const updatedLibrary = {
       [track1.id]: track1,
@@ -243,9 +243,9 @@ describe('#tracks()', async () => {
         createdAtPretty: createdAtPretty2
       }
     }
-    const thunk = actions.tracksAdd(update, libType)
+    const thunk = actions.tracksAdd(update, libName)
 
-    const action = { type: types.TRACKS_ADD, lib: updatedLibrary, libType }
+    const action = { type: types.TRACKS_ADD, lib: updatedLibrary, libName }
 
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs(action)
@@ -276,8 +276,8 @@ describe('#tracks()', async () => {
     const playlists = { [UPLOADS_NAME]: uploadPlaylist }
     const uploadValues = Object.values(uploads)
     const testLibraries = {
-      [libTypes.WAVES]: null,
-      [libTypes.UPLOADS]: uploads
+      [LIBRARY_NAME]: null,
+      [UPLOADS_NAME]: uploads
     }
     const getState = () => ({
       tracks: { playing, playlists, libraries: testLibraries }
@@ -318,7 +318,7 @@ describe('#tracks()', async () => {
         ids: uploadIds,
         key: 'state',
         value: 'uploading',
-        libType: libTypes.UPLOADS
+        libName: UPLOADS_NAME
       })
     )
 
@@ -329,7 +329,7 @@ describe('#tracks()', async () => {
         ids: uploadIds,
         key: 'uploadProgress',
         value: 0,
-        libType: libTypes.UPLOADS
+        libName: UPLOADS_NAME
       })
     )
 
@@ -356,7 +356,7 @@ describe('#tracks()', async () => {
       fifthDispatchCall.calledWithExactly({
         type: types.TRACKS_DELETE,
         deleteIds: uploadedIds,
-        libType: libTypes.UPLOADS
+        libName: UPLOADS_NAME
       })
     )
 
@@ -435,9 +435,9 @@ describe('#tracks()', async () => {
       ids: [id],
       key,
       value,
-      libType
+      libName
     }
-    const thunk = actions.tracksInfoUpdate(id, key, value, libType)
+    const thunk = actions.tracksInfoUpdate(id, key, value, libName)
 
     assert.isDefined(types.TRACKS_INFO_UPDATE)
     const dispatchMock = sinon.mock()
@@ -465,10 +465,10 @@ describe('#tracks()', async () => {
       ids: [id],
       key,
       value,
-      libType
+      libName
     }
     assert.deepEqual(
-      actions.tracksLocalInfoUpdate(id, key, value, libType),
+      actions.tracksLocalInfoUpdate(id, key, value, libName),
       expectedAction
     )
   })

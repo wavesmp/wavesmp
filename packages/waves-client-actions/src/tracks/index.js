@@ -7,7 +7,6 @@ const {
   NOW_PLAYING_NAME,
   LIBRARY_NAME,
   UPLOADS_NAME,
-  libTypes,
   toastTypes
 } = require('waves-client-constants')
 const {
@@ -25,19 +24,19 @@ const {
 
 const { toastAdd } = require('../toasts')
 
-function getLibTypeForPlaylist(playlistName) {
+function getLibNameForPlaylistName(playlistName) {
   if (playlistName === UPLOADS_NAME) {
-    return libTypes.UPLOADS
+    return UPLOADS_NAME
   }
-  return libTypes.WAVES
+  return LIBRARY_NAME
 }
 
 function trackToggle(id, playlistName, index) {
   return (dispatch, getState, { player, ws }) => {
     const { tracks } = getState()
     const { libraries, playing } = tracks
-    const libType = getLibTypeForPlaylist(playlistName)
-    const track = libraries[libType][id]
+    const libName = getLibNameForPlaylistName(playlistName)
+    const track = libraries[libName][id]
     const { playlist: oldPlaylistName } = playing
 
     player.trackToggle(track)
@@ -98,13 +97,13 @@ async function _trackNext(
   const { libraries, playing, playlists } = state.tracks
   const { playlist: playlistName, isPlaying, shuffle } = playing
   const playlist = playlists[playlistName]
-  const libType = getLibTypeForPlaylist(playlistName)
-  const lib = libraries[libType]
+  const libName = getLibNameForPlaylistName(playlistName)
+  const lib = libraries[libName]
 
   const { getSearchItems } = getOrCreatePlaylistSelectors(
     playlistName,
     URLSearchParams,
-    libType
+    libName
   )
   const searchItems = getSearchItems(state, playlist.search)
   const nextTrack = getNextTrack(searchItems, playlist, shuffle, prev, lib)
@@ -189,13 +188,13 @@ function getNextTrack(searchItems, playlist, shuffle, prev, lib) {
   return null
 }
 
-function tracksAdd(update, libType) {
+function tracksAdd(update, libName) {
   return (dispatch, getState) => {
     const { tracks } = getState()
     const { libraries } = tracks
-    const libraryById = { ...libraries[libType] }
+    const libraryById = { ...libraries[libName] }
     updateLibraryById(libraryById, update)
-    dispatch({ type: types.TRACKS_ADD, lib: libraryById, libType })
+    dispatch({ type: types.TRACKS_ADD, lib: libraryById, libName })
   }
 }
 
@@ -242,21 +241,21 @@ function tracksUpload(trackSource) {
     const { tracks } = getState()
     const { playing, libraries, playlists } = tracks
     const { track } = playing
-    const uploads = libraries[libTypes.UPLOADS]
+    const uploads = libraries[UPLOADS_NAME]
     const uploadIds = Object.keys(uploads)
     dispatch({
       type: types.TRACKS_INFO_UPDATE,
       ids: uploadIds,
       key: 'state',
       value: 'uploading',
-      libType: libTypes.UPLOADS
+      libName: UPLOADS_NAME
     })
     dispatch({
       type: types.TRACKS_INFO_UPDATE,
       ids: uploadIds,
       key: 'uploadProgress',
       value: 0,
-      libType: libTypes.UPLOADS
+      libName: UPLOADS_NAME
     })
     const uploadValues = Object.values(uploads)
     const uploadPromises = await player.upload(trackSource, uploadValues)
@@ -286,9 +285,9 @@ function tracksUpload(trackSource) {
     dispatch({
       type: types.TRACKS_DELETE,
       deleteIds: uploadedIds,
-      libType: libTypes.UPLOADS
+      libName: UPLOADS_NAME
     })
-    dispatch(tracksAdd(uploaded, libTypes.WAVES))
+    dispatch(tracksAdd(uploaded, LIBRARY_NAME))
     return result
   }
 }
@@ -341,7 +340,7 @@ function tracksDelete() {
     const state = getState()
     const { tracks } = state
     const { libraries, playing, playlists } = tracks
-    const library = libraries[libTypes.WAVES]
+    const library = libraries[LIBRARY_NAME]
     const selection = getFilteredSelection(state, LIBRARY_NAME)
 
     const { track } = playing
@@ -352,7 +351,7 @@ function tracksDelete() {
       ids: deleteIds,
       key: 'state',
       value: 'pending',
-      libType: libTypes.WAVES
+      libName: LIBRARY_NAME
     })
     const deleteTracks = deleteIds.map(deleteId => library[deleteId])
     const deletePromises = await player.deleteTracks(deleteTracks)
@@ -383,7 +382,7 @@ function tracksDelete() {
     dispatch({
       type: types.TRACKS_DELETE,
       deleteIds: deletedIds,
-      libType: libTypes.WAVES
+      libName: LIBRARY_NAME
     })
     return result
   }
@@ -405,7 +404,7 @@ function trackUploadsDelete() {
     dispatch({
       type: types.TRACKS_DELETE,
       deleteIds,
-      libType: libTypes.UPLOADS
+      libName: UPLOADS_NAME
     })
   }
 }
@@ -603,13 +602,13 @@ function tracksKeyDown(ev, history) {
   }
 }
 
-function tracksLocalInfoUpdate(id, key, value, libType) {
-  return { type: types.TRACKS_INFO_UPDATE, ids: [id], key, value, libType }
+function tracksLocalInfoUpdate(id, key, value, libName) {
+  return { type: types.TRACKS_INFO_UPDATE, ids: [id], key, value, libName }
 }
 
-function tracksInfoUpdate(id, key, value, libType) {
+function tracksInfoUpdate(id, key, value, libName) {
   return async (dispatch, getState, { ws }) => {
-    dispatch({ type: types.TRACKS_INFO_UPDATE, ids: [id], key, value, libType })
+    dispatch({ type: types.TRACKS_INFO_UPDATE, ids: [id], key, value, libName })
     try {
       await ws.sendAckedMessage(types.TRACKS_INFO_UPDATE, { id, key, value })
     } catch (err) {

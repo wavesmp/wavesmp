@@ -1,4 +1,4 @@
-const { libTypes, toastTypes } = require('waves-client-constants')
+const { LIBRARY_NAME, toastTypes } = require('waves-client-constants')
 
 const { toastAdd } = require('../toasts')
 
@@ -6,7 +6,7 @@ function download(id) {
   return async (dispatch, getState, { player }) => {
     const { tracks } = getState()
     const { libraries } = tracks
-    const lib = libraries[libTypes.WAVES]
+    const lib = libraries[LIBRARY_NAME]
     const track = lib[id]
 
     try {
