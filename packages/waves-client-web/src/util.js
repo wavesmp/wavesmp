@@ -7,8 +7,8 @@ export function isPlaylistNameValid(name) {
 
 export function isInternalPlaylist(name) {
   return (
-    name === constants.DEFAULT_PLAYLIST ||
-    name === constants.FULL_PLAYLIST ||
-    name === constants.UPLOAD_PLAYLIST
+    name === constants.NOW_PLAYING_NAME ||
+    name === constants.LIBRARY_NAME ||
+    name === constants.UPLOADS_NAME
   )
 }

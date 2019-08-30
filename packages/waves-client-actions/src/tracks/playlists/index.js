@@ -1,7 +1,7 @@
 const types = require('waves-action-types')
 const {
-  DEFAULT_PLAYLIST,
-  FULL_PLAYLIST,
+  NOW_PLAYING_NAME,
+  LIBRARY_NAME,
   libTypes
 } = require('waves-client-constants')
 const { getFilteredSelection } = require('waves-client-selectors')
@@ -97,7 +97,7 @@ function playlistSort(sortKey, ascending) {
     const state = getState()
     const search = getLibraryPlaylistSearch(state)
     const { getRouterQueryParams } = getOrCreatePlaylistSelectors(
-      FULL_PLAYLIST,
+      LIBRARY_NAME,
       URLSearchParams,
       libTypes.WAVES
     )
@@ -111,13 +111,13 @@ function playlistSort(sortKey, ascending) {
 
     dispatch({
       type: types.PLAYLIST_SEARCH_UPDATE,
-      name: FULL_PLAYLIST,
+      name: LIBRARY_NAME,
       search: qp.toString()
     })
     dispatch({
       type: types.PLAYLIST_SORT,
       lib,
-      name: FULL_PLAYLIST,
+      name: LIBRARY_NAME,
       sortKey,
       ascending
     })

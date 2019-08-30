@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { FULL_PLAYLIST, libTypes } from 'waves-client-constants'
+import { LIBRARY_NAME, libTypes } from 'waves-client-constants'
 import {
   getOrCreatePlaylistSelectors,
   getLibraryPlaylistSearch
@@ -52,7 +52,7 @@ function mapStateToProps(state) {
   const { account } = state
   const { columns, rowsPerPage, theme } = account
   const { getRouterAscending, getRouterSortKey } = getOrCreatePlaylistSelectors(
-    FULL_PLAYLIST,
+    LIBRARY_NAME,
     URLSearchParams,
     libTypes.WAVES
   )

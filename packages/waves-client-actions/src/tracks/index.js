@@ -4,9 +4,9 @@ const playing = require('./playing')
 const playlists = require('./playlists')
 
 const {
-  DEFAULT_PLAYLIST,
-  FULL_PLAYLIST,
-  UPLOAD_PLAYLIST,
+  NOW_PLAYING_NAME,
+  LIBRARY_NAME,
+  UPLOADS_NAME,
   libTypes,
   toastTypes
 } = require('waves-client-constants')
@@ -26,7 +26,7 @@ const {
 const { toastAdd } = require('../toasts')
 
 function getLibTypeForPlaylist(playlistName) {
-  if (playlistName === UPLOAD_PLAYLIST) {
+  if (playlistName === UPLOADS_NAME) {
     return libTypes.UPLOADS
   }
   return libTypes.WAVES
@@ -53,7 +53,7 @@ function trackToggle(id, playlistName, index) {
      * Unless, it it part of certain playlists */
     if (shouldAddToDefaultPlaylist(playlistName)) {
       ws.sendBestEffortMessage(types.PLAYLIST_ADD, {
-        playlistName: DEFAULT_PLAYLIST,
+        playlistName: NOW_PLAYING_NAME,
         trackIds: [id]
       })
     }
@@ -117,7 +117,7 @@ async function _trackNext(
   if (nextTrack) {
     if (shouldAddToDefaultPlaylist(playlistName)) {
       ws.sendBestEffortMessage(types.PLAYLIST_ADD, {
-        playlistName: DEFAULT_PLAYLIST,
+        playlistName: NOW_PLAYING_NAME,
         trackIds: [nextTrack.id]
       })
     }
@@ -342,7 +342,7 @@ function tracksDelete() {
     const { tracks } = state
     const { libraries, playing, playlists } = tracks
     const library = libraries[libTypes.WAVES]
-    const selection = getFilteredSelection(state, FULL_PLAYLIST)
+    const selection = getFilteredSelection(state, LIBRARY_NAME)
 
     const { track } = playing
 
@@ -393,7 +393,7 @@ function trackUploadsDelete() {
   return (dispatch, getState, { player, ws }) => {
     const { playing, playlists } = getState().tracks
     const { track } = playing
-    const playlist = playlists[UPLOAD_PLAYLIST]
+    const playlist = playlists[UPLOADS_NAME]
     const { selection } = playlist
     const deleteIds = new Set(selection.values())
     if (track && deleteIds.has(track.id)) {

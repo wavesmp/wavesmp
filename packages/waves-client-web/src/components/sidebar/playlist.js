@@ -44,9 +44,9 @@ export default class PlaylistBar extends React.PureComponent {
     const { playlists, isSliderVisible } = this.props
     const playlistObjs = Object.values(playlists).filter(
       p =>
-        p.name !== constants.DEFAULT_PLAYLIST &&
-        p.name !== constants.FULL_PLAYLIST &&
-        p.name !== constants.UPLOAD_PLAYLIST
+        p.name !== constants.NOW_PLAYING_NAME &&
+        p.name !== constants.LIBRARY_NAME &&
+        p.name !== constants.UPLOADS_NAME
     )
     let className = 'sidebar-container-wide'
     if (isSliderVisible) {

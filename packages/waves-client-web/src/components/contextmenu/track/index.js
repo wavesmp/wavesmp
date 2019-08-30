@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
 import {
-  DEFAULT_PLAYLIST,
-  FULL_PLAYLIST,
-  UPLOAD_PLAYLIST,
+  NOW_PLAYING_NAME,
+  LIBRARY_NAME,
+  UPLOADS_NAME,
   contextmenuTypes,
   modalTypes,
   toastTypes
@@ -45,7 +45,7 @@ class Track extends React.PureComponent {
 
   nowPlayingAdd = () => {
     const { actions, playlistName } = this.props
-    actions.playlistAdd(playlistName, DEFAULT_PLAYLIST)
+    actions.playlistAdd(playlistName, NOW_PLAYING_NAME)
   }
 
   playlistAdd = ev => {
@@ -76,10 +76,10 @@ class Track extends React.PureComponent {
 
   getRemoveAction() {
     const { actions, playlistName } = this.props
-    if (playlistName === FULL_PLAYLIST) {
+    if (playlistName === LIBRARY_NAME) {
       return <LibraryDelete onClick={this.tracksDelete} />
     }
-    if (playlistName === UPLOAD_PLAYLIST) {
+    if (playlistName === UPLOADS_NAME) {
       return <PlaylistRemove onClick={actions.trackUploadsDelete} />
     }
     return <PlaylistRemove onClick={this.tracksRemove} />
@@ -91,16 +91,15 @@ class Track extends React.PureComponent {
       <React.Fragment>
         {!bulk && this.getPlayOrPauseAction()}
 
-        {playlistName !== DEFAULT_PLAYLIST &&
-          playlistName !== UPLOAD_PLAYLIST && (
-            <NowPlayingAdd onClick={this.nowPlayingAdd} />
-          )}
+        {playlistName !== NOW_PLAYING_NAME && playlistName !== UPLOADS_NAME && (
+          <NowPlayingAdd onClick={this.nowPlayingAdd} />
+        )}
 
-        {playlistName !== UPLOAD_PLAYLIST && (
+        {playlistName !== UPLOADS_NAME && (
           <PlaylistAdd onClick={this.playlistAdd} />
         )}
 
-        {!bulk && playlistName !== UPLOAD_PLAYLIST && (
+        {!bulk && playlistName !== UPLOADS_NAME && (
           <Download onClick={this.download} />
         )}
 

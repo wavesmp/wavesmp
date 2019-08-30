@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { DEFAULT_PLAYLIST } from 'waves-client-constants'
+import { NOW_PLAYING_NAME } from 'waves-client-constants'
 
 import Modal from './util'
 
@@ -15,7 +15,7 @@ class ClearPlaylistModal extends React.PureComponent {
   onDelete = async () => {
     const { actions } = this.props
     try {
-      await actions.playlistDelete(DEFAULT_PLAYLIST)
+      await actions.playlistDelete(NOW_PLAYING_NAME)
     } catch (err) {
       actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
       return false

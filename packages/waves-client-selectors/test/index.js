@@ -3,7 +3,7 @@ const zip = require('lodash.zip')
 const mongoid = require('mongoid-js')
 const { URLSearchParams } = require('url')
 
-const { DEFAULT_PLAYLIST, FULL_PLAYLIST } = require('waves-client-constants')
+const { NOW_PLAYING_NAME, LIBRARY_NAME } = require('waves-client-constants')
 const {
   TEST_SEARCH: testSearch,
   TEST_PLAYLIST_NAME1: testPlaylistName,
@@ -42,7 +42,7 @@ const libraries = {
 }
 
 describe('waves-client-selectors', () => {
-  const playlistNames = [DEFAULT_PLAYLIST, FULL_PLAYLIST]
+  const playlistNames = [NOW_PLAYING_NAME, LIBRARY_NAME]
   const getPlaylistSearchFuncs = [
     getDefaultPlaylistSearch,
     getLibraryPlaylistSearch

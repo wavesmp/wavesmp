@@ -3,9 +3,9 @@ const mongoid = require('mongoid-js')
 
 const actionTypes = require('waves-action-types')
 const {
-  DEFAULT_PLAYLIST,
-  FULL_PLAYLIST,
-  UPLOAD_PLAYLIST,
+  NOW_PLAYING_NAME,
+  LIBRARY_NAME,
+  UPLOADS_NAME,
   libTypes
 } = require('waves-client-constants')
 
@@ -47,8 +47,8 @@ describe('#playlists()', () => {
     }
     state = assertNewState(playlists, state, action)
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'title',
         ascending: true,
         selection: new Map(),
@@ -64,7 +64,7 @@ describe('#playlists()', () => {
       type: actionTypes.PLAYLISTS_UPDATE,
       update: [
         {
-          name: DEFAULT_PLAYLIST,
+          name: NOW_PLAYING_NAME,
           tracks: [track1.id]
         }
       ]
@@ -73,8 +73,8 @@ describe('#playlists()', () => {
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'title',
         ascending: true,
         selection: new Map(),
@@ -82,8 +82,8 @@ describe('#playlists()', () => {
         index: null,
         tracks: [track1.id, track2.id]
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         index: null,
@@ -96,15 +96,15 @@ describe('#playlists()', () => {
     action = {
       type: actionTypes.TRACK_TOGGLE,
       oldPlaylistName: null,
-      playlistName: FULL_PLAYLIST,
+      playlistName: LIBRARY_NAME,
       index: 1,
       track: track2
     }
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'title',
         ascending: true,
         selection: new Map(),
@@ -112,8 +112,8 @@ describe('#playlists()', () => {
         tracks: [track1.id, track2.id],
         index: 1
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [track1.id, track2.id],
@@ -125,7 +125,7 @@ describe('#playlists()', () => {
   it('library playlist track next', () => {
     action = {
       type: actionTypes.TRACK_NEXT,
-      playlistName: FULL_PLAYLIST,
+      playlistName: LIBRARY_NAME,
       nextTrack: null
     }
     const newState = playlists(state, action)
@@ -135,14 +135,14 @@ describe('#playlists()', () => {
   it('library playlist track prev', () => {
     action = {
       type: actionTypes.TRACK_NEXT,
-      playlistName: FULL_PLAYLIST,
+      playlistName: LIBRARY_NAME,
       nextTrack: { ...track1, index: 0 }
     }
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'title',
         ascending: true,
         selection: new Map(),
@@ -150,8 +150,8 @@ describe('#playlists()', () => {
         tracks: [track1.id, track2.id],
         index: 0
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [track1.id, track2.id, track1.id],
@@ -163,14 +163,14 @@ describe('#playlists()', () => {
   it('library playlist search', () => {
     action = {
       type: actionTypes.PLAYLIST_SEARCH_UPDATE,
-      name: FULL_PLAYLIST,
+      name: LIBRARY_NAME,
       search: testSearch
     }
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'title',
         ascending: true,
         selection: new Map(),
@@ -178,8 +178,8 @@ describe('#playlists()', () => {
         tracks: [track1.id, track2.id],
         index: 0
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [track1.id, track2.id, track1.id],
@@ -191,7 +191,7 @@ describe('#playlists()', () => {
   it('library sort key update', () => {
     action = {
       type: actionTypes.PLAYLIST_SORT,
-      name: FULL_PLAYLIST,
+      name: LIBRARY_NAME,
       sortKey: 'artist',
       ascending: false,
       lib: testLib
@@ -200,8 +200,8 @@ describe('#playlists()', () => {
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -209,8 +209,8 @@ describe('#playlists()', () => {
         tracks: [track2.id, track1.id],
         index: 1
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [track1.id, track2.id, track1.id],
@@ -228,8 +228,8 @@ describe('#playlists()', () => {
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -237,8 +237,8 @@ describe('#playlists()', () => {
         tracks: [track2.id, track1.id],
         index: 1
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [track1.id, track2.id, track1.id],
@@ -265,8 +265,8 @@ describe('#playlists()', () => {
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -274,8 +274,8 @@ describe('#playlists()', () => {
         tracks: [track2.id, track1.id],
         index: 1
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [track1.id, track2.id, track1.id],
@@ -294,7 +294,7 @@ describe('#playlists()', () => {
   it('Remove from default playlist', () => {
     action = {
       type: actionTypes.TRACKS_REMOVE,
-      playlistName: DEFAULT_PLAYLIST,
+      playlistName: NOW_PLAYING_NAME,
       deleteIndexes: [1, 0],
       selection: new Map(),
       index: 0
@@ -302,8 +302,8 @@ describe('#playlists()', () => {
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -311,8 +311,8 @@ describe('#playlists()', () => {
         tracks: [track2.id, track1.id],
         index: 1
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [track1.id],
@@ -331,14 +331,14 @@ describe('#playlists()', () => {
   it('copy default playlist to playlistName1', () => {
     action = {
       type: actionTypes.PLAYLIST_COPY,
-      src: DEFAULT_PLAYLIST,
+      src: NOW_PLAYING_NAME,
       dest: playlistName1
     }
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -346,8 +346,8 @@ describe('#playlists()', () => {
         tracks: [track2.id, track1.id],
         index: 1
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [track1.id],
@@ -373,13 +373,13 @@ describe('#playlists()', () => {
   it('clear the default playlist', () => {
     action = {
       type: actionTypes.PLAYLIST_DELETE,
-      playlistName: DEFAULT_PLAYLIST
+      playlistName: NOW_PLAYING_NAME
     }
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -387,8 +387,8 @@ describe('#playlists()', () => {
         tracks: [track2.id, track1.id],
         index: 1
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [],
@@ -415,8 +415,8 @@ describe('#playlists()', () => {
     action = { type: actionTypes.PLAYLIST_DELETE, playlistName: playlistName1 }
     state = assertNewState(playlists, state, action)
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -424,8 +424,8 @@ describe('#playlists()', () => {
         tracks: [track2.id, track1.id],
         index: 1
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [],
@@ -449,8 +449,8 @@ describe('#playlists()', () => {
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -458,8 +458,8 @@ describe('#playlists()', () => {
         tracks: [track1.id],
         index: 0
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [],
@@ -485,8 +485,8 @@ describe('#playlists()', () => {
     state = assertNewState(playlists, state, action)
 
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -494,15 +494,15 @@ describe('#playlists()', () => {
         tracks: [track1.id],
         index: 0
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [],
         index: null
       },
-      [UPLOAD_PLAYLIST]: {
-        name: UPLOAD_PLAYLIST,
+      [UPLOADS_NAME]: {
+        name: UPLOADS_NAME,
         sortKey: 'title',
         ascending: true,
         selection: new Map(),
@@ -521,12 +521,12 @@ describe('#playlists()', () => {
   })
 
   it('delete uploads', () => {
-    const playlistName = UPLOAD_PLAYLIST
+    const playlistName = UPLOADS_NAME
     action = { type: actionTypes.PLAYLIST_DELETE, playlistName }
     state = assertNewState(playlists, state, action)
     assert.deepEqual(state, {
-      [FULL_PLAYLIST]: {
-        name: FULL_PLAYLIST,
+      [LIBRARY_NAME]: {
+        name: LIBRARY_NAME,
         sortKey: 'artist',
         ascending: false,
         selection: new Map(),
@@ -534,8 +534,8 @@ describe('#playlists()', () => {
         tracks: [track1.id],
         index: 0
       },
-      [DEFAULT_PLAYLIST]: {
-        name: DEFAULT_PLAYLIST,
+      [NOW_PLAYING_NAME]: {
+        name: NOW_PLAYING_NAME,
         selection: new Map(),
         search: '',
         tracks: [],

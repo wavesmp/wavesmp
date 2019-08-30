@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 
 import * as WavesActions from 'waves-client-actions'
 import {
-  DEFAULT_PLAYLIST as playlistName,
-  FULL_PLAYLIST,
+  NOW_PLAYING_NAME as playlistName,
+  LIBRARY_NAME,
   libTypes,
   modalTypes,
   routes

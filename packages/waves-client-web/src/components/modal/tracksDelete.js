@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { FULL_PLAYLIST } from 'waves-client-constants'
+import { LIBRARY_NAME } from 'waves-client-constants'
 import { getFilteredSelection } from 'waves-client-selectors'
 import { normalizeTrack } from 'waves-client-util'
 
@@ -90,11 +90,11 @@ class TracksDeleteModal extends React.PureComponent {
 function mapStateToProps(state) {
   const { account, tracks } = state
   const { library, playlists, playing } = tracks
-  const playlist = playlists[FULL_PLAYLIST]
+  const playlist = playlists[LIBRARY_NAME]
   const { index } = playlist
   const { isPlaying } = playing
   const columns = libraryColumns.filter(c => account.columns.has(c.title))
-  const selection = getFilteredSelection(state, FULL_PLAYLIST)
+  const selection = getFilteredSelection(state, LIBRARY_NAME)
   return {
     columns,
     library,

@@ -4,8 +4,8 @@ const sinon = require('sinon')
 
 const types = require('waves-action-types')
 const {
-  DEFAULT_PLAYLIST,
-  FULL_PLAYLIST,
+  NOW_PLAYING_NAME,
+  LIBRARY_NAME,
   libTypes,
   routes
 } = require('waves-client-constants')
@@ -51,7 +51,7 @@ describe('#router()', () => {
     assert.isDefined(types.PLAYLIST_SEARCH_UPDATE)
     const action = {
       type: types.PLAYLIST_SEARCH_UPDATE,
-      name: DEFAULT_PLAYLIST,
+      name: NOW_PLAYING_NAME,
       search: testSearch
     }
 

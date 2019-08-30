@@ -20,13 +20,13 @@ export default class MainBar extends React.PureComponent {
       {
         name: 'Now Playing',
         pathname: constants.routes.nowplaying,
-        playlistName: constants.DEFAULT_PLAYLIST,
+        playlistName: constants.NOW_PLAYING_NAME,
         className: 'fa-fw fa fa-lg fa-headphones'
       },
       {
         name: 'Library',
         pathname: constants.routes.library,
-        playlistName: constants.FULL_PLAYLIST,
+        playlistName: constants.LIBRARY_NAME,
         className: 'fa-fw fa fa-lg fa-book'
       }
     ]

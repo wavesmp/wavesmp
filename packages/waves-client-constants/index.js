@@ -2,9 +2,9 @@ const keyMirror = require('keymirror')
 
 const constants = {}
 
-constants.DEFAULT_PLAYLIST = '__nowplaying'
-constants.FULL_PLAYLIST = '__library'
-constants.UPLOAD_PLAYLIST = '__upload'
+constants.NOW_PLAYING_NAME = '__nowplaying'
+constants.LIBRARY_NAME = '__library'
+constants.UPLOADS_NAME = '__upload'
 
 constants.TOAST_ID_ATTR = 'data-toast'
 constants.TRACK_ID_ATTR = 'data-trackid'

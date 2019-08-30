@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { DEFAULT_PLAYLIST, toastTypes, routes } from 'waves-client-constants'
+import { NOW_PLAYING_NAME, toastTypes, routes } from 'waves-client-constants'
 
 import { ModalInput } from './util'
 import { isPlaylistNameValid } from '../../util'
@@ -50,7 +50,7 @@ class PlaylistSettingsModal extends React.PureComponent {
       actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
       return false
     }
-    const { search } = playlists[DEFAULT_PLAYLIST]
+    const { search } = playlists[NOW_PLAYING_NAME]
     const to = { pathname: routes.defaultRoute, search }
     history.push(to)
     actions.toastAdd({ type: toastTypes.Success, msg: 'Deleted playlist' })

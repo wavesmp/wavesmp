@@ -1,8 +1,8 @@
 const actionTypes = require('waves-action-types')
 const {
-  DEFAULT_PLAYLIST,
-  FULL_PLAYLIST,
-  UPLOAD_PLAYLIST,
+  NOW_PLAYING_NAME,
+  LIBRARY_NAME,
+  UPLOADS_NAME,
   libTypes
 } = require('waves-client-constants')
 const { shouldAddToDefaultPlaylist } = require('waves-client-util')
@@ -10,8 +10,8 @@ const { shouldAddToDefaultPlaylist } = require('waves-client-util')
 const reducerSelection = require('./selection')
 
 const libTypeToPlaylistName = {
-  [libTypes.WAVES]: FULL_PLAYLIST,
-  [libTypes.UPLOADS]: UPLOAD_PLAYLIST
+  [libTypes.WAVES]: LIBRARY_NAME,
+  [libTypes.UPLOADS]: UPLOADS_NAME
 }
 
 /* Maps playlist names to playlists. Playlists contain:
@@ -58,7 +58,7 @@ function getDefaultLibraryPlaylist(playlistName) {
 
 function getDefaultPlaylist() {
   const playlist = {
-    name: DEFAULT_PLAYLIST,
+    name: NOW_PLAYING_NAME,
     tracks: []
   }
   addPlaylistDefaults(playlist)
@@ -112,8 +112,8 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         playlistsUpdate[playlist.name] = playlist
       }
 
-      if (!playlistsUpdate[DEFAULT_PLAYLIST]) {
-        playlistsUpdate[DEFAULT_PLAYLIST] = getDefaultPlaylist()
+      if (!playlistsUpdate[NOW_PLAYING_NAME]) {
+        playlistsUpdate[NOW_PLAYING_NAME] = getDefaultPlaylist()
       }
       return playlistsUpdate
     }
@@ -236,8 +236,8 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const { playlistName } = action
       const playlistsUpdate = { ...playlists }
       delete playlistsUpdate[playlistName]
-      if (!playlistsUpdate[DEFAULT_PLAYLIST]) {
-        playlistsUpdate[DEFAULT_PLAYLIST] = getDefaultPlaylist()
+      if (!playlistsUpdate[NOW_PLAYING_NAME]) {
+        playlistsUpdate[NOW_PLAYING_NAME] = getDefaultPlaylist()
       }
       return playlistsUpdate
     }
@@ -250,9 +250,9 @@ function trackNext(playlistsUpdate, playlistName, source, id, index) {
   /* Add track to default playlist by default.
    * Unless it is part of certain playlists. */
   if (shouldAddToDefaultPlaylist(playlistName)) {
-    const defaultPlaylist = playlistsUpdate[DEFAULT_PLAYLIST]
+    const defaultPlaylist = playlistsUpdate[NOW_PLAYING_NAME]
     const { tracks } = defaultPlaylist
-    playlistsUpdate[DEFAULT_PLAYLIST] = {
+    playlistsUpdate[NOW_PLAYING_NAME] = {
       ...defaultPlaylist,
       tracks: [...tracks, id],
       index: tracks.length

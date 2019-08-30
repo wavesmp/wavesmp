@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import {
-  DEFAULT_PLAYLIST,
-  FULL_PLAYLIST as playlistName,
+  NOW_PLAYING_NAME,
+  LIBRARY_NAME as playlistName,
   libTypes,
   routes
 } from 'waves-client-constants'

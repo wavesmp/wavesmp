@@ -1,15 +1,15 @@
 const types = require('waves-action-types')
 const {
-  FULL_PLAYLIST,
-  UPLOAD_PLAYLIST,
+  LIBRARY_NAME,
+  UPLOADS_NAME,
   libTypes
 } = require('waves-client-constants')
 const { getOrCreatePlaylistSelectors } = require('waves-client-selectors')
 const { getPlaylistNameFromRoute } = require('waves-client-util')
 
 const playlistNameToLibType = {
-  [FULL_PLAYLIST]: libTypes.WAVES,
-  [UPLOAD_PLAYLIST]: libTypes.UPLOADS
+  [LIBRARY_NAME]: libTypes.WAVES,
+  [UPLOADS_NAME]: libTypes.UPLOADS
 }
 
 function routerChange(location) {

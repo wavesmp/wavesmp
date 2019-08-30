@@ -7,8 +7,8 @@ const actions = require('../../src/tracks')
 
 const types = require('waves-action-types')
 const {
-  DEFAULT_PLAYLIST,
-  UPLOAD_PLAYLIST,
+  NOW_PLAYING_NAME,
+  UPLOADS_NAME,
   libTypes,
   toastTypes
 } = require('waves-client-constants')
@@ -65,7 +65,7 @@ describe('#tracks()', async () => {
       .expects('sendBestEffortMessage')
       .once()
       .withExactArgs(types.PLAYLIST_ADD, {
-        playlistName: DEFAULT_PLAYLIST,
+        playlistName: NOW_PLAYING_NAME,
         trackIds: [track2.id]
       })
 
@@ -89,13 +89,13 @@ describe('#tracks()', async () => {
 
     const player = new Player({})
 
-    const thunk = actions.trackToggle(track2.id, DEFAULT_PLAYLIST, testIndex)
+    const thunk = actions.trackToggle(track2.id, NOW_PLAYING_NAME, testIndex)
 
     assert.isDefined(types.TRACK_TOGGLE)
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.once().withExactArgs({
       type: types.TRACK_TOGGLE,
-      playlistName: DEFAULT_PLAYLIST,
+      playlistName: NOW_PLAYING_NAME,
       index: testIndex,
       track: track2,
       oldPlaylistName: testPlaylistName1
@@ -136,7 +136,7 @@ describe('#tracks()', async () => {
       .expects('sendBestEffortMessage')
       .once()
       .withExactArgs(types.PLAYLIST_ADD, {
-        playlistName: DEFAULT_PLAYLIST,
+        playlistName: NOW_PLAYING_NAME,
         trackIds: [track2.id]
       })
 
@@ -169,7 +169,7 @@ describe('#tracks()', async () => {
     const track1Copy = { ...track1, title: searchString }
     const expectedTrack1 = normalizeTrack(track1Copy, 0)
     const track2Copy = { ...track2, title: searchString }
-    const playlistName = DEFAULT_PLAYLIST
+    const playlistName = NOW_PLAYING_NAME
 
     const libraryCopy = {
       [track1Copy.id]: track1Copy,
@@ -273,7 +273,7 @@ describe('#tracks()', async () => {
       index: 1,
       selection: new Map()
     }
-    const playlists = { [UPLOAD_PLAYLIST]: uploadPlaylist }
+    const playlists = { [UPLOADS_NAME]: uploadPlaylist }
     const uploadValues = Object.values(uploads)
     const testLibraries = {
       [libTypes.WAVES]: null,

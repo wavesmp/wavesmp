@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import * as WavesActions from 'waves-client-actions'
 import {
-  UPLOAD_PLAYLIST as playlistName,
+  UPLOADS_NAME as playlistName,
   libTypes,
   modalTypes,
   toastTypes
