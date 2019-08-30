@@ -32,13 +32,13 @@ const DEFAULT_SEARCH_STRING = ''
 const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }
 
-const libType = 'testLibType'
+const libName = 'testLibName'
 const testLib = {
   [track1.id]: track1,
   [track2.id]: track2
 }
 const libraries = {
-  [libType]: testLib
+  [libName]: testLib
 }
 
 describe('waves-client-selectors', () => {
@@ -105,7 +105,7 @@ describe('waves-client-selectors', () => {
       getRouterSortKey,
       getPlaylistProps,
       getSearchItems
-    } = getOrCreatePlaylistSelectors(testPlaylistName, URLSearchParams, libType)
+    } = getOrCreatePlaylistSelectors(testPlaylistName, URLSearchParams, libName)
 
     describe('#getPlaylistProps()', () => {
       it('playlist is null', () => {
@@ -222,8 +222,8 @@ describe('waves-client-selectors', () => {
         const searchString = 'thisisaveryspecificsearchstring'
 
         const track1Copy = { ...track1, title: searchString }
-        const libCopy = { ...libraries[libType], [track1Copy.id]: track1Copy }
-        const librariesCopy = { ...libraries, [libType]: libCopy }
+        const libCopy = { ...libraries[libName], [track1Copy.id]: track1Copy }
+        const librariesCopy = { ...libraries, [libName]: libCopy }
 
         const search = `${SEARCH_QUERY_KEY}=${searchString}`
         const playlists = {

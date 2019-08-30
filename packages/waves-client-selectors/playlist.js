@@ -21,13 +21,13 @@ const DEFAULT_SORT_KEY = 'title'
 const DEFAULT_SEARCH_STRING = ''
 
 const playlistSelectors = {}
-function getOrCreatePlaylistSelectors(playlistName, URLSearchParams, libType) {
+function getOrCreatePlaylistSelectors(playlistName, URLSearchParams, libName) {
   let playlistSelector = playlistSelectors[playlistName]
   if (!playlistSelector) {
     playlistSelector = createPlaylistSelectors(
       playlistName,
       URLSearchParams,
-      libType
+      libName
     )
     playlistSelectors[playlistName] = playlistSelector
   }
@@ -48,9 +48,9 @@ function normalizePage(currentPage, lastPage) {
   return currentPage
 }
 
-function createPlaylistSelectors(playlistName, URLSearchParams, libType) {
+function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
   function getLib(state) {
-    return state.tracks.libraries[libType]
+    return state.tracks.libraries[libName]
   }
 
   /* router query params */
