@@ -5,8 +5,7 @@ const actionTypes = require('waves-action-types')
 const {
   NOW_PLAYING_NAME,
   LIBRARY_NAME,
-  UPLOADS_NAME,
-  libTypes
+  UPLOADS_NAME
 } = require('waves-client-constants')
 
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
@@ -43,7 +42,7 @@ describe('#playlists()', () => {
     action = {
       type: actionTypes.TRACKS_ADD,
       lib: testLib,
-      libType: libTypes.WAVES
+      libName: LIBRARY_NAME
     }
     state = assertNewState(playlists, state, action)
     assert.deepEqual(state, {
@@ -479,7 +478,7 @@ describe('#playlists()', () => {
     action = {
       type: actionTypes.TRACKS_ADD,
       lib: testLib,
-      libType: libTypes.UPLOADS
+      libName: UPLOADS_NAME
     }
 
     state = assertNewState(playlists, state, action)

@@ -1,18 +1,8 @@
 const actionTypes = require('waves-action-types')
-const {
-  NOW_PLAYING_NAME,
-  LIBRARY_NAME,
-  UPLOADS_NAME,
-  libTypes
-} = require('waves-client-constants')
+const { NOW_PLAYING_NAME } = require('waves-client-constants')
 const { shouldAddToDefaultPlaylist } = require('waves-client-util')
 
 const reducerSelection = require('./selection')
-
-const libTypeToPlaylistName = {
-  [libTypes.WAVES]: LIBRARY_NAME,
-  [libTypes.UPLOADS]: UPLOADS_NAME
-}
 
 /* Maps playlist names to playlists. Playlists contain:
  * - name
@@ -81,14 +71,13 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
 
     case actionTypes.TRACKS_ADD: {
-      const { lib, libType } = action
+      const { lib, libName } = action
       const libPlaylistTracks = Object.keys(lib)
-      const playlistName = libTypeToPlaylistName[libType]
       let libPlaylist
-      if (playlists && playlists[playlistName]) {
-        libPlaylist = { ...playlists[playlistName] }
+      if (playlists && playlists[libName]) {
+        libPlaylist = { ...playlists[libName] }
       } else {
-        libPlaylist = getDefaultLibraryPlaylist(playlistName)
+        libPlaylist = getDefaultLibraryPlaylist(libName)
       }
       const { sortKey, ascending, index: oldIndex } = libPlaylist
       const index = sortPlaylist(
@@ -101,7 +90,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       libPlaylist.tracks = libPlaylistTracks
       libPlaylist.index = index
 
-      return { ...playlists, [playlistName]: libPlaylist }
+      return { ...playlists, [libName]: libPlaylist }
     }
     case actionTypes.PLAYLISTS_UPDATE: {
       const { update } = action

@@ -11,7 +11,7 @@ const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
 
 const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }
-const libType = 'testLibType'
+const libName = 'testLibName'
 const updateKey = 'title'
 const testLib = {
   [track1.id]: track1,
@@ -32,9 +32,9 @@ describe('#libraries()', () => {
 
   it('tracks add', () => {
     assert.isDefined(actionTypes.TRACKS_ADD)
-    action = { type: actionTypes.TRACKS_ADD, lib: testLib, libType }
+    action = { type: actionTypes.TRACKS_ADD, lib: testLib, libName }
     state = assertNewState(libraries, state, action)
-    assert.deepEqual(state, { [libType]: testLib })
+    assert.deepEqual(state, { [libName]: testLib })
   })
 
   it('libraries track update', () => {
@@ -44,11 +44,11 @@ describe('#libraries()', () => {
       ids: [track1.id],
       key: updateKey,
       value: update1[updateKey],
-      libType
+      libName
     }
     state = assertNewState(libraries, state, action)
     const expectedState = {
-      [libType]: {
+      [libName]: {
         ...testLib,
         [track1.id]: {
           ...track1,
@@ -63,11 +63,11 @@ describe('#libraries()', () => {
     action = {
       type: actionTypes.TRACKS_DELETE,
       deleteIds: new Set([track2.id]),
-      libType
+      libName
     }
     state = assertNewState(libraries, state, action)
     const expectedState = {
-      [libType]: {
+      [libName]: {
         [track1.id]: {
           ...track1,
           [updateKey]: update1[updateKey]
