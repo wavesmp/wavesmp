@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { LIBRARY_NAME, libTypes } from 'waves-client-constants'
+import { LIBRARY_NAME } from 'waves-client-constants'
 import {
   getOrCreatePlaylistSelectors,
   getLibraryPlaylistSearch
@@ -54,7 +54,7 @@ function mapStateToProps(state) {
   const { getRouterAscending, getRouterSortKey } = getOrCreatePlaylistSelectors(
     LIBRARY_NAME,
     URLSearchParams,
-    libTypes.WAVES
+    LIBRARY_NAME
   )
   const search = getLibraryPlaylistSearch(state)
   const sortKey = getRouterSortKey(state, search)

@@ -7,7 +7,6 @@ import * as WavesActions from 'waves-client-actions'
 import {
   NOW_PLAYING_NAME,
   LIBRARY_NAME,
-  libTypes,
   modalTypes,
   routes
 } from 'waves-client-constants'
@@ -53,7 +52,7 @@ class Playlist extends React.PureComponent {
 
   onItemEdit = (id, attr, update) => {
     const { actions } = this.props
-    actions.tracksInfoUpdate(id, attr, update, libTypes.WAVES)
+    actions.tracksInfoUpdate(id, attr, update, LIBRARY_NAME)
   }
 
   render() {
@@ -78,11 +77,7 @@ function mapStateToProps(state, ownProps) {
     getRouterSearchString,
     getRouterQueryParams,
     getPlaylistProps
-  } = getOrCreatePlaylistSelectors(
-    playlistName,
-    URLSearchParams,
-    libTypes.WAVES
-  )
+  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, LIBRARY_NAME)
   const { tracks, account, menubar, layout } = state
   const { playing } = tracks
   const { isPlaying } = playing

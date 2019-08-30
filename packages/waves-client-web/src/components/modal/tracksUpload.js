@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { UPLOADS_NAME as playlistName, libTypes } from 'waves-client-constants'
+import { UPLOADS_NAME as playlistName } from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 
 import Modal from './util'
@@ -83,7 +83,7 @@ function mapStateToProps(state, ownProps) {
   const { getPlaylistProps } = getOrCreatePlaylistSelectors(
     playlistName,
     URLSearchParams,
-    libTypes.UPLOADS
+    playlistName
   )
 
   const { account, tracks } = state
