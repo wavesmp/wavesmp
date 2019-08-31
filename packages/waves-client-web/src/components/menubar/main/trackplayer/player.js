@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { toastTypes } from 'waves-client-constants'
-
 const MAX_TITLE_LEN = 21
 const MAX_ARTIST_LEN = 28
 
@@ -70,7 +68,7 @@ class RightButtons extends React.PureComponent {
     const { shuffle } = playing
     actions.shuffleToggle()
     const msg = `Shuffle ${shuffle ? 'Dis' : 'En'}abled`
-    actions.toastAdd({ type: toastTypes.Success, msg })
+    actions.toastSuccess(msg)
   }
 
   onRepeatClick = ev => {
@@ -78,7 +76,7 @@ class RightButtons extends React.PureComponent {
     const { repeat } = playing
     actions.repeatToggle()
     const msg = `Repeat ${repeat ? 'Dis' : 'En'}abled`
-    actions.toastAdd({ type: toastTypes.Success, msg })
+    actions.toastSuccess(msg)
   }
 
   render() {

@@ -5,8 +5,7 @@ import { connect } from 'react-redux'
 import * as WavesActions from 'waves-client-actions'
 import {
   UPLOADS_NAME as playlistName,
-  modalTypes,
-  toastTypes
+  modalTypes
 } from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 
@@ -53,10 +52,7 @@ class Upload extends React.PureComponent {
       return true
     }
     const { actions } = this.props
-    actions.toastAdd({
-      type: toastTypes.Error,
-      msg: `${f.name}: Invalid file type`
-    })
+    actions.toastErr(`${f.name}: Invalid file type`)
     return false
   }
 
@@ -87,10 +83,7 @@ class Upload extends React.PureComponent {
       return await processTrack(file)
     } catch (err) {
       const { actions } = this.props
-      actions.toastAdd({
-        type: toastTypes.Error,
-        msg: `${file.name}: Failed to read track info: ${err}`
-      })
+      actions.toastErr(`${file.name}: Failed to read track info: ${err}`)
       console.log(err)
       console.log(err.stack)
     }
@@ -108,10 +101,7 @@ class Upload extends React.PureComponent {
     const { actions, numItems, rowsPerPage } = this.props
     if (numItems + validNewUploads.length > rowsPerPage) {
       /* TODO look into command line utility */
-      actions.toastAdd({
-        type: toastTypes.Error,
-        msg: `Cannot upload more than ${rowsPerPage} items`
-      })
+      actions.toastErr(`Cannot upload more than ${rowsPerPage} items`)
       return
     }
     actions.tracksAdd(validNewUploads, playlistName)

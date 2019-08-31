@@ -9,8 +9,7 @@ const types = require('waves-action-types')
 const {
   LIBRARY_NAME,
   NOW_PLAYING_NAME,
-  UPLOADS_NAME,
-  toastTypes
+  UPLOADS_NAME
 } = require('waves-client-constants')
 const Player = require('waves-client-player')
 const { normalizeTrack } = require('waves-client-util')

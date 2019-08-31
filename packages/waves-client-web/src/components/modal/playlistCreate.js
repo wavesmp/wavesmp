@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { toastTypes } from 'waves-client-constants'
 import { getFilteredSelection } from 'waves-client-selectors'
 
 import { ModalInput } from './util'
@@ -29,11 +28,11 @@ class CreatePlaylistModal extends React.PureComponent {
       try {
         await actions.playlistCreate(name)
       } catch (err) {
-        actions.toastAdd({ type: toastTypes.Error, msg: err.message })
+        actions.toastErr(`${err}`)
         console.log(`Error creating playlist: ${err}`)
         return false
       }
-      actions.toastAdd({ type: toastTypes.Success, msg: 'Created playlist' })
+      actions.toastSuccess('Created playlist')
       return true
     }
   }

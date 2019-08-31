@@ -25,8 +25,8 @@ export default async (store, ws, player, localState, history) => {
     )
   })
 
-  player.setOnToastAdd(toast => {
-    store.dispatch(WavesActions.toastAdd(toast))
+  player.setOnToastErr(msg => {
+    store.dispatch(WavesActions.toastErr(msg))
   })
 
   /* Recieve data from server */

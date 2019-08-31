@@ -86,10 +86,10 @@ class Player {
     }
   }
 
-  setOnToastAdd(onToastAdd) {
+  setOnToastErr(onToastErr) {
     for (const source in this.players) {
       const player = this.players[source]
-      player.setOnToastAdd(onToastAdd)
+      player.setOnToastErr(onToastErr)
     }
   }
 

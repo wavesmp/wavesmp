@@ -281,10 +281,7 @@ export default class Table extends React.PureComponent {
     try {
       await actions.playlistReorder(playlistName, insertAt)
     } catch (err) {
-      actions.toastAdd({
-        type: constants.toastTypes.Error,
-        msg: `${err}`
-      })
+      actions.toastErr(`${err}`)
     }
   }
 

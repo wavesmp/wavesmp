@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { NOW_PLAYING_NAME, toastTypes, routes } from 'waves-client-constants'
+import { NOW_PLAYING_NAME, routes } from 'waves-client-constants'
 
 import { ModalInput } from './util'
 import { isPlaylistNameValid } from '../../util'
@@ -26,19 +26,19 @@ class PlaylistSettingsModal extends React.PureComponent {
     const { playlistSaveName } = this.state
     const { actions, playlists, playlistName, history } = this.props
     if (!isPlaylistNameValid(playlistSaveName)) {
-      actions.toastAdd({ type: toastTypes.Error, msg: 'Invalid playlist name' })
+      actions.toastErr('Invalid playlist name')
       return false
     }
     try {
       await actions.playlistMove(playlistName, playlistSaveName)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: `${err}` })
+      actions.toastErr(`${err}`)
       return false
     }
     const { search } = playlists[playlistName]
     const to = { pathname: `/playlist/${playlistSaveName}`, search }
     history.push(to)
-    actions.toastAdd({ type: toastTypes.Success, msg: 'Renamed playlist' })
+    actions.toastSuccess('Renamed playlist')
     return true
   }
 
@@ -47,13 +47,13 @@ class PlaylistSettingsModal extends React.PureComponent {
     try {
       await actions.playlistDelete(playlistName)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: `${err}` })
+      actions.toastErr(`${err}`)
       return false
     }
     const { search } = playlists[NOW_PLAYING_NAME]
     const to = { pathname: routes.defaultRoute, search }
     history.push(to)
-    actions.toastAdd({ type: toastTypes.Success, msg: 'Deleted playlist' })
+    actions.toastSuccess('Deleted playlist')
     return true
   }
 

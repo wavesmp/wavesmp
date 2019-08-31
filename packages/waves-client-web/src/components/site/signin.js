@@ -1,13 +1,13 @@
 import React from 'react'
 
-import { routes, toastTypes } from 'waves-client-constants'
+import { routes } from 'waves-client-constants'
 
 import UserInput from './userInput'
 
 export default class SignIn extends React.PureComponent {
   onUnsupportedClick = () => {
     const { actions } = this.props
-    actions.toastAdd({ type: toastTypes.Error, msg: 'Feature Unavailable' })
+    actions.toastErr('Feature Unavailable')
   }
 
   signIn = async () => {
@@ -19,10 +19,7 @@ export default class SignIn extends React.PureComponent {
       const from = location.state.from || { pathname: routes.defaultRoute }
       history.push(from)
     } catch (err) {
-      actions.toastAdd({
-        type: toastTypes.Error,
-        msg: err.error || `${err}`
-      })
+      actions.toastErr(err.error || `${err}`)
       console.log('Error signing in')
       console.log(err)
     }

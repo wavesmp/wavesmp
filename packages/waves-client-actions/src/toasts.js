@@ -1,4 +1,5 @@
 const types = require('waves-action-types')
+const { toastTypes } = require('waves-client-constants')
 
 const DEFAULT_TIMEOUT = 3000
 
@@ -19,5 +20,15 @@ function toastAdd(toast) {
   }
 }
 
+function toastErr(msg) {
+  return toastAdd({ type: toastTypes.Error, msg })
+}
+
+function toastSuccess(msg) {
+  return toastAdd({ type: toastTypes.Success, msg })
+}
+
+module.exports.toastErr = toastErr
+module.exports.toastSuccess = toastSuccess
 module.exports.toastAdd = toastAdd
 module.exports.toastRemove = toastRemove

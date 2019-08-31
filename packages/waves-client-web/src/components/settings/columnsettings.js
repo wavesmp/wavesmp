@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ALL_COLUMNS, toastTypes } from 'waves-client-constants'
+import { ALL_COLUMNS } from 'waves-client-constants'
 
 const COLUMN_NAME_ATTR = 'data-columnname'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { dropdownTypes, toastTypes } from 'waves-client-constants'
+import { dropdownTypes } from 'waves-client-constants'
 
 import Dropdown from './dropdown'
 
@@ -28,8 +28,7 @@ export default class Notifications extends React.PureComponent {
 
   onUnsupportedClick = () => {
     const { actions } = this.props
-    const msg = 'Feature Unavailable'
-    actions.toastAdd({ type: toastTypes.Error, msg })
+    actions.toastErr('Feature Unavailable')
   }
 
   render() {

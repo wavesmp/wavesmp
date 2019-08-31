@@ -16,7 +16,7 @@ class FilePlayer {
     // No local upload supported
   }
 
-  setOnToastAdd(onToastAdd) {
+  setOnToastErr(onToastErr) {
     // No use case for this currently
   }
 

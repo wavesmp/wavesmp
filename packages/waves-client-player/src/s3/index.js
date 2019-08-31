@@ -1,4 +1,3 @@
-const { toastTypes } = require('waves-client-constants')
 const { UploadError } = require('waves-client-errors')
 
 const S3Client = require('./client')
@@ -50,8 +49,8 @@ class S3Player {
     this.client.setOnUploadProgress(onUploadProgress)
   }
 
-  setOnToastAdd(onToastAdd) {
-    this.onToastAdd = onToastAdd
+  setOnToastErr(onToastErr) {
+    this.onToastErr = onToastErr
   }
 
   async trackNext(track, isPlaying) {
@@ -79,15 +78,12 @@ class S3Player {
         await this.stream.play(true)
         return
       } catch (err) {
-        this.onToastAdd({ type: toastTypes.Error, msg: `Stream error: ${err}` })
+        this.onToastErr(`Stream error: ${err}`)
         console.log('Error attempting to reload and play')
         console.log(err)
       }
     }
-    this.onToastAdd({
-      type: toastTypes.Error,
-      msg: `Stream error: ${err.message}`
-    })
+    this.onToastErr(`Stream error: ${err.message}`)
     console.log('Unexpected stream error')
     console.log(`message: ${err.message}`)
     console.log(`code: ${err.code}`)

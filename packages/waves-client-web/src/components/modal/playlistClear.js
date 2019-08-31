@@ -17,7 +17,7 @@ class ClearPlaylistModal extends React.PureComponent {
     try {
       await actions.playlistDelete(NOW_PLAYING_NAME)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: `${err}` })
+      actions.toastErr(`${err}`)
       return false
     }
     return true

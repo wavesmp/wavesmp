@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { contextmenuTypes, toastTypes } from 'waves-client-constants'
+import { contextmenuTypes } from 'waves-client-constants'
 
 class TrackInfo extends React.PureComponent {
   render() {
@@ -35,10 +35,7 @@ class RightButtons extends React.PureComponent {
   onOptionsClick = ev => {
     const { actions, filteredSelection, index, playlistName } = this.props
     if (!filteredSelection || filteredSelection.size === 0) {
-      actions.toastAdd({
-        type: toastTypes.Error,
-        msg: 'No selection found'
-      })
+      actions.toastErr('No selection found')
       return
     }
 

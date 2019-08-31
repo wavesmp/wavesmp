@@ -6,8 +6,7 @@ const playlists = require('./playlists')
 const {
   NOW_PLAYING_NAME,
   LIBRARY_NAME,
-  UPLOADS_NAME,
-  toastTypes
+  UPLOADS_NAME
 } = require('waves-client-constants')
 const {
   getOrCreatePlaylistSelectors,
@@ -22,7 +21,7 @@ const {
   shouldAddToDefaultPlaylist
 } = require('waves-client-util')
 
-const { toastAdd } = require('../toasts')
+const { toastErr, toastSuccess } = require('../toasts')
 
 function getLibNameForPlaylistName(playlistName) {
   if (playlistName === UPLOADS_NAME) {
@@ -123,7 +122,7 @@ async function _trackNext(
     try {
       await player.trackNext(nextTrack, isPlaying)
     } catch (err) {
-      dispatch(toastAdd({ type: toastTypes.Error, msg: `${err}` }))
+      dispatch(toastErr(`${err}`))
     }
   } else {
     player.pause()
@@ -208,24 +207,17 @@ async function handleUploadPromises(promises, dispatch) {
         const { file } = track
         delete track.file
         unprocessTrack(track)
-        dispatch(
-          toastAdd({ type: toastTypes.Success, msg: `Uploaded ${file.name}` })
-        )
+        dispatch(toastSuccess(`Uploaded ${file.name}`))
         uploaded.push(track)
       } catch (err) {
         if (err instanceof UploadError) {
-          dispatch(
-            toastAdd({
-              type: toastTypes.Error,
-              msg: `${err.track.file.name}: ${err.cause}`
-            })
-          )
+          dispatch(toastErr(`${err.track.file.name}: ${err.cause}`))
           console.log('Track upload failure')
           console.log(err)
           console.log(err.cause)
         } else {
-          // Should not be reached. Here temporarily
-          dispatch(toastAdd({ type: toastTypes.Error, msg: `${err}` }))
+          // Should not be reached
+          dispatch(toastErr(`${err}`))
           console.log('Expected upload error but got:')
           console.log(err)
         }
@@ -266,12 +258,7 @@ function tracksUpload(trackSource) {
     } catch (serverErr) {
       console.log('Failed to upload tracks to server')
       console.log(serverErr)
-      dispatch(
-        toastAdd({
-          type: toastTypes.Error,
-          msg: `Upload failure: ${serverErr}`
-        })
-      )
+      dispatch(toastErr(`Upload failure: ${serverErr}`))
       result.serverErr = serverErr
       return result
     }
@@ -295,7 +282,7 @@ function tracksUpload(trackSource) {
 function handleDeleteErr(err, dispatch) {
   const { track, code, message } = err
   const name = track.title || track.artist || track.album || track.genre
-  dispatch(toastAdd({ type: toastTypes.Error, msg: `${name}: ${message}` }))
+  dispatch(toastErr(`${name}: ${message}`))
   console.log(`Failed to delete track ${name}: ${code} - ${message}`)
 }
 
@@ -314,15 +301,11 @@ async function handleDeletePromises(promises, dispatch) {
           handleDeleteErr(err, dispatch)
         }
         for (const track of deleted) {
-          dispatch(
-            toastAdd({ type: toastTypes.Success, msg: `Deleted ${name}` })
-          )
+          dispatch(toastSuccess(`Deleted ${name}`))
         }
       } catch (err) {
         serverErrs.push(err)
-        dispatch(
-          toastAdd({ type: toastTypes.Error, msg: `Delete failure: ${err}` })
-        )
+        dispatch(toastErr(`Delete failure: ${err}`))
         console.log('Error deleting from server:')
         console.log(err)
       }
@@ -364,9 +347,7 @@ function tracksDelete() {
         deleteIds: [...deletedIds]
       })
     } catch (err) {
-      dispatch(
-        toastAdd({ type: toastTypes.Error, msg: `Delete failure: ${err}` })
-      )
+      dispatch(toastErr(`Delete failure: ${err}`))
       result.serverErrs.push(err)
       console.log('Failed to delete tracks from server')
       console.log(err)
@@ -612,7 +593,7 @@ function tracksInfoUpdate(id, key, value, libName) {
     try {
       await ws.sendAckedMessage(types.TRACKS_INFO_UPDATE, { id, key, value })
     } catch (err) {
-      dispatch(toastAdd({ type: toastTypes.Error, msg: `${err}` }))
+      dispatch(toastErr(`${err}`))
     }
   }
 }

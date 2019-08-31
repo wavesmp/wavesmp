@@ -8,8 +8,7 @@ import {
   LIBRARY_NAME,
   UPLOADS_NAME,
   contextmenuTypes,
-  modalTypes,
-  toastTypes
+  modalTypes
 } from 'waves-client-constants'
 
 import {
@@ -39,7 +38,7 @@ class Track extends React.PureComponent {
     try {
       await actions.tracksRemove(playlistName)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: `${err}` })
+      actions.toastErr(`${err}`)
     }
   }
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WavesActions from 'waves-client-actions'
-import { NOW_PLAYING_NAME, toastTypes } from 'waves-client-constants'
+import { NOW_PLAYING_NAME } from 'waves-client-constants'
 
 import { ModalInput } from './util'
 import { isPlaylistNameValid } from '../../util'
@@ -26,16 +26,16 @@ class SavePlaylistModal extends React.PureComponent {
     const { actions } = this.props
     const { playlistSaveName } = this.state
     if (!isPlaylistNameValid(playlistSaveName)) {
-      actions.toastAdd({ type: toastTypes.Error, msg: 'Invalid playlist name' })
+      actions.toastErr('Invalid playlist name')
       return false
     }
     try {
       await actions.playlistCopy(NOW_PLAYING_NAME, playlistSaveName)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: `${err}` })
+      actions.toastErr(`${err}`)
       return false
     }
-    actions.toastAdd({ type: toastTypes.Success, msg: 'Saved playlist' })
+    actions.toastSuccess('Saved playlist')
     return true
   }
 

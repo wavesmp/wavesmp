@@ -1,6 +1,6 @@
-const { LIBRARY_NAME, toastTypes } = require('waves-client-constants')
+const { LIBRARY_NAME } = require('waves-client-constants')
 
-const { toastAdd } = require('../toasts')
+const { toastErr, toastSuccess } = require('../toasts')
 
 function download(id) {
   return async (dispatch, getState, { player }) => {
@@ -11,13 +11,11 @@ function download(id) {
 
     try {
       await player.download(track)
-      dispatch(toastAdd({ type: toastTypes.Success, msg: 'Download started' }))
+      dispatch(toastSuccess('Download started'))
     } catch (err) {
       console.log('Download failed')
       console.log(err)
-      dispatch(
-        toastAdd({ type: toastTypes.Error, msg: `Download failed: ${err}` })
-      )
+      dispatch(toastErr(`Download failed: ${err}`))
     }
   }
 }
