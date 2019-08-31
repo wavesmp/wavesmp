@@ -8,7 +8,7 @@ DB_NAME=mongo
 
 CERTS_TAR=certs.tar.gz
 
-PACKAGES_DIR=../packages
+PACKAGES_DIR=../../packages
 
 CLIENT_CONFIG_FILE="${PACKAGES_DIR}/waves-client-web/src/config.js"
 SERVER_CONFIG_FILE="${PACKAGES_DIR}/waves-server-main/config.js"
