@@ -123,7 +123,7 @@ async function _trackNext(
     try {
       await player.trackNext(nextTrack, isPlaying)
     } catch (err) {
-      dispatch(toastAdd({ type: toastTypes.Error, msg: err.toString() }))
+      dispatch(toastAdd({ type: toastTypes.Error, msg: `${err}` }))
     }
   } else {
     player.pause()
@@ -225,7 +225,7 @@ async function handleUploadPromises(promises, dispatch) {
           console.log(err.cause)
         } else {
           // Should not be reached. Here temporarily
-          dispatch(toastAdd({ type: toastTypes.Error, msg: err.toString() }))
+          dispatch(toastAdd({ type: toastTypes.Error, msg: `${err}` }))
           console.log('Expected upload error but got:')
           console.log(err)
         }
@@ -612,7 +612,7 @@ function tracksInfoUpdate(id, key, value, libName) {
     try {
       await ws.sendAckedMessage(types.TRACKS_INFO_UPDATE, { id, key, value })
     } catch (err) {
-      dispatch(toastAdd({ type: toastTypes.Error, msg: err.toString() }))
+      dispatch(toastAdd({ type: toastTypes.Error, msg: `${err}` }))
     }
   }
 }

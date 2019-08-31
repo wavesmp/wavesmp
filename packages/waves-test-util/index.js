@@ -15,7 +15,7 @@ async function _assertThrows(fnName, fn, args, errFn, errVal, thisArg) {
 }
 
 async function assertThrows(fnName, fn, args, msg, thisArg) {
-  await _assertThrows(fnName, fn, args, err => err.toString(), msg, thisArg)
+  await _assertThrows(fnName, fn, args, err => `${err}`, msg, thisArg)
 }
 
 async function assertThrowsMessage(fnName, fn, args, msg, thisArg) {

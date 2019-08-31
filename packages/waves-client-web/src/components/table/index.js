@@ -283,7 +283,7 @@ export default class Table extends React.PureComponent {
     } catch (err) {
       actions.toastAdd({
         type: constants.toastTypes.Error,
-        msg: err.toString()
+        msg: `${err}`
       })
     }
   }

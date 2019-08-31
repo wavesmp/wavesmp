@@ -32,7 +32,7 @@ class PlaylistSettingsModal extends React.PureComponent {
     try {
       await actions.playlistMove(playlistName, playlistSaveName)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
+      actions.toastAdd({ type: toastTypes.Error, msg: `${err}` })
       return false
     }
     const { search } = playlists[playlistName]
@@ -47,7 +47,7 @@ class PlaylistSettingsModal extends React.PureComponent {
     try {
       await actions.playlistDelete(playlistName)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
+      actions.toastAdd({ type: toastTypes.Error, msg: `${err}` })
       return false
     }
     const { search } = playlists[NOW_PLAYING_NAME]

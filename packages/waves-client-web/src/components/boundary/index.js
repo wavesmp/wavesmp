@@ -25,7 +25,7 @@ export default class Boundary extends React.PureComponent {
             </div>
           </div>
           <details className='pre-wrap'>
-            {err.toString()}
+            {`${err}`}
             <br />
             {errStack}
           </details>

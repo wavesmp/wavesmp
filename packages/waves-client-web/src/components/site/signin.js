@@ -21,7 +21,7 @@ export default class SignIn extends React.PureComponent {
     } catch (err) {
       actions.toastAdd({
         type: toastTypes.Error,
-        msg: err.error || err.toString()
+        msg: err.error || `${err}`
       })
       console.log('Error signing in')
       console.log(err)

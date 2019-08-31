@@ -32,7 +32,7 @@ class SavePlaylistModal extends React.PureComponent {
     try {
       await actions.playlistCopy(NOW_PLAYING_NAME, playlistSaveName)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
+      actions.toastAdd({ type: toastTypes.Error, msg: `${err}` })
       return false
     }
     actions.toastAdd({ type: toastTypes.Success, msg: 'Saved playlist' })

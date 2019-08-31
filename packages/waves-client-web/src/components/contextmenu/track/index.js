@@ -39,7 +39,7 @@ class Track extends React.PureComponent {
     try {
       await actions.tracksRemove(playlistName)
     } catch (err) {
-      actions.toastAdd({ type: toastTypes.Error, msg: err.toString() })
+      actions.toastAdd({ type: toastTypes.Error, msg: `${err}` })
     }
   }
 

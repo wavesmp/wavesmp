@@ -134,7 +134,7 @@ class Server {
               user = await this.auth.login(idp, token)
             } catch (err) {
               log.error(`Failed to authenticate user: ${err}`)
-              const resp = { err: err.toString() }
+              const resp = { err: `${err}` }
               if (reqId) {
                 this.sendMessage(ws, type, resp, reqId)
               }
@@ -159,7 +159,7 @@ class Server {
             this.sendMessage(ws, type, resp || {}, reqId)
           }
         } catch (err) {
-          const errString = err.message || err.toString()
+          const errString = err.message || `${err}`
           const name = user ? user.name : ''
           log.error(
             `Error processing message ${type} for ${name}: ${errString}`
