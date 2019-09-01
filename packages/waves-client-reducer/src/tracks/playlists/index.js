@@ -21,40 +21,6 @@ const initialPlaylistsSearch = {}
 const initialPlaylistsSortKey = {}
 const initialPlaylistsAscending = {}
 
-function addPlaylistDefaults(playlist) {
-  const { name } = playlist
-  playlist.selection = new Map()
-  playlist.search = initialPlaylistsSearch[name] || ''
-  delete initialPlaylistsSearch[name]
-  playlist.index = null
-}
-
-/* Only library playlists support sorting */
-function getDefaultLibraryPlaylist(playlistName) {
-  const playlist = {
-    name: playlistName,
-    sortKey: initialPlaylistsSortKey[playlistName] || 'title'
-  }
-  if (playlistName in initialPlaylistsAscending) {
-    playlist.ascending = initialPlaylistsAscending[playlistName]
-    delete initialPlaylistsAscending[playlistName]
-  } else {
-    playlist.ascending = true
-  }
-  delete initialPlaylistsSortKey[playlistName]
-  addPlaylistDefaults(playlist)
-  return playlist
-}
-
-function getDefaultPlaylist() {
-  const playlist = {
-    name: NOW_PLAYING_NAME,
-    tracks: []
-  }
-  addPlaylistDefaults(playlist)
-  return playlist
-}
-
 function reducerPlaylists(playlists = initialPlaylists, action) {
   switch (action.type) {
     case actionTypes.SELECTION_ADD:
@@ -66,7 +32,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const playlist = playlists[name]
       return {
         ...playlists,
-        [name]: reducerSelection[action.type](playlist, action)
+        [name]: reducerSelection(playlist, action)
       }
     }
 
@@ -233,6 +199,40 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     default:
       return playlists
   }
+}
+
+function addPlaylistDefaults(playlist) {
+  const { name } = playlist
+  playlist.selection = new Map()
+  playlist.search = initialPlaylistsSearch[name] || ''
+  delete initialPlaylistsSearch[name]
+  playlist.index = null
+}
+
+/* Only library playlists support sorting */
+function getDefaultLibraryPlaylist(playlistName) {
+  const playlist = {
+    name: playlistName,
+    sortKey: initialPlaylistsSortKey[playlistName] || 'title'
+  }
+  if (playlistName in initialPlaylistsAscending) {
+    playlist.ascending = initialPlaylistsAscending[playlistName]
+    delete initialPlaylistsAscending[playlistName]
+  } else {
+    playlist.ascending = true
+  }
+  delete initialPlaylistsSortKey[playlistName]
+  addPlaylistDefaults(playlist)
+  return playlist
+}
+
+function getDefaultPlaylist() {
+  const playlist = {
+    name: NOW_PLAYING_NAME,
+    tracks: []
+  }
+  addPlaylistDefaults(playlist)
+  return playlist
 }
 
 function trackNext(playlistsUpdate, playlistName, source, id, index) {
