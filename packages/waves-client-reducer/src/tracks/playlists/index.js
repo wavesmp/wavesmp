@@ -60,30 +60,30 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.PLAYLISTS_UPDATE: {
       const { update } = action
-      let playlistsUpdate = { ...playlists }
+      let newPlaylists = { ...playlists }
 
       for (const playlist of update) {
         addPlaylistDefaults(playlist)
-        playlistsUpdate[playlist.name] = playlist
+        newPlaylists[playlist.name] = playlist
       }
 
-      if (!playlistsUpdate[NOW_PLAYING_NAME]) {
-        playlistsUpdate[NOW_PLAYING_NAME] = getDefaultPlaylist()
+      if (!newPlaylists[NOW_PLAYING_NAME]) {
+        newPlaylists[NOW_PLAYING_NAME] = getDefaultPlaylist()
       }
-      return playlistsUpdate
+      return newPlaylists
     }
     case actionTypes.TRACK_TOGGLE: {
       const { oldPlaylistName, playlistName, index, track } = action
       const { id, source } = track
-      const playlistsUpdate = { ...playlists }
+      const newPlaylists = { ...playlists }
 
       /* Remove play id from old playlist, if it exists*/
-      const oldPlaylist = playlistsUpdate[oldPlaylistName]
+      const oldPlaylist = newPlaylists[oldPlaylistName]
       if (oldPlaylist) {
-        playlistsUpdate[oldPlaylistName] = { ...oldPlaylist, index: null }
+        newPlaylists[oldPlaylistName] = { ...oldPlaylist, index: null }
       }
 
-      return trackNext(playlistsUpdate, playlistName, source, id, index)
+      return trackNext(newPlaylists, playlistName, source, id, index)
     }
     case actionTypes.TRACK_NEXT: {
       const { nextTrack, playlistName } = action
@@ -124,15 +124,15 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.TRACKS_DELETE: {
       const { deleteIds } = action
-      const playlistsUpdate = {}
+      const newPlaylists = {}
       for (const playlistName in playlists) {
         const playlist = playlists[playlistName]
-        playlistsUpdate[playlistName] = tracksDeleteFromPlaylist(
+        newPlaylists[playlistName] = tracksDeleteFromPlaylist(
           playlist,
           deleteIds
         )
       }
-      return playlistsUpdate
+      return newPlaylists
     }
     case actionTypes.PLAYLIST_ADD: {
       const { addTracks, playlistName } = action
@@ -155,13 +155,13 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.PLAYLIST_MOVE: {
       const { src, dest } = action
-      const playlistsUpdate = { ...playlists }
-      playlistsUpdate[dest] = {
+      const newPlaylists = { ...playlists }
+      newPlaylists[dest] = {
         ...playlists[src],
         name: dest
       }
-      delete playlistsUpdate[src]
-      return playlistsUpdate
+      delete newPlaylists[src]
+      return newPlaylists
     }
     case actionTypes.TRACKS_REMOVE: {
       const { deleteIndexes, playlistName, selection, index } = action
@@ -189,12 +189,12 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.PLAYLIST_DELETE: {
       const { playlistName } = action
-      const playlistsUpdate = { ...playlists }
-      delete playlistsUpdate[playlistName]
-      if (!playlistsUpdate[NOW_PLAYING_NAME]) {
-        playlistsUpdate[NOW_PLAYING_NAME] = getDefaultPlaylist()
+      const newPlaylists = { ...playlists }
+      delete newPlaylists[playlistName]
+      if (!newPlaylists[NOW_PLAYING_NAME]) {
+        newPlaylists[NOW_PLAYING_NAME] = getDefaultPlaylist()
       }
-      return playlistsUpdate
+      return newPlaylists
     }
     default:
       return playlists
@@ -235,13 +235,13 @@ function getDefaultPlaylist() {
   return playlist
 }
 
-function trackNext(playlistsUpdate, playlistName, source, id, index) {
+function trackNext(newPlaylists, playlistName, source, id, index) {
   /* Add track to default playlist by default.
    * Unless it is part of certain playlists. */
   if (shouldAddToDefaultPlaylist(playlistName)) {
-    const defaultPlaylist = playlistsUpdate[NOW_PLAYING_NAME]
+    const defaultPlaylist = newPlaylists[NOW_PLAYING_NAME]
     const { tracks } = defaultPlaylist
-    playlistsUpdate[NOW_PLAYING_NAME] = {
+    newPlaylists[NOW_PLAYING_NAME] = {
       ...defaultPlaylist,
       tracks: [...tracks, id],
       index: tracks.length
@@ -249,8 +249,8 @@ function trackNext(playlistsUpdate, playlistName, source, id, index) {
   }
 
   /* Update playlist play id */
-  playlistsUpdate[playlistName] = { ...playlistsUpdate[playlistName], index }
-  return playlistsUpdate
+  newPlaylists[playlistName] = { ...newPlaylists[playlistName], index }
+  return newPlaylists
 }
 
 function sortPlaylist(tracks, lib, sortKey, ascending, oldIndex) {
