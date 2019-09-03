@@ -2,6 +2,8 @@ const types = require('waves-action-types')
 const { LIBRARY_NAME } = require('waves-client-constants')
 const { getFilteredSelection } = require('waves-client-selectors')
 
+const { toastErr, toastSuccess } = require('../toasts')
+
 function tracksDelete() {
   return async (dispatch, getState, { player, ws }) => {
     /* Update state of deleting tracks */

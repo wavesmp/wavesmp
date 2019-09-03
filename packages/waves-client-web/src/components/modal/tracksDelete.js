@@ -89,7 +89,8 @@ class TracksDeleteModal extends React.PureComponent {
 
 function mapStateToProps(state) {
   const { account, tracks } = state
-  const { library, playlists, playing } = tracks
+  const { libraries, playlists, playing } = tracks
+  const library = libraries[LIBRARY_NAME]
   const playlist = playlists[LIBRARY_NAME]
   const { index } = playlist
   const { isPlaying } = playing
