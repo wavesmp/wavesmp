@@ -2,9 +2,6 @@
 /node_modules
 /packages/*/node_modules
 
-# Ignore vim swap files
-*.swp
-
 # Ignore web client build artifacts
 /packages/waves-client-web/build
 
