@@ -62,9 +62,15 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const { update } = action
       let newPlaylists = { ...playlists }
 
-      for (const playlist of update) {
-        addPlaylistDefaults(playlist)
-        newPlaylists[playlist.name] = playlist
+      for (const newPlaylist of update) {
+        const { name } = newPlaylist
+        if (name in newPlaylists) {
+          const playlist = newPlaylists[name]
+          newPlaylists[name] = mergePlaylists(playlist, newPlaylist)
+        } else {
+          addPlaylistDefaults(newPlaylist)
+          newPlaylists[name] = newPlaylist
+        }
       }
 
       if (!newPlaylists[NOW_PLAYING_NAME]) {
@@ -207,6 +213,33 @@ function addPlaylistDefaults(playlist) {
   playlist.search = initialPlaylistsSearch[name] || ''
   delete initialPlaylistsSearch[name]
   playlist.index = null
+}
+
+function mergeSelection(newTracks, selection) {
+  const newSelection = new Map()
+  for (const [index, id] of selection) {
+    if (newTracks[index] === id) {
+      newSelection.set(index, id)
+    }
+  }
+  return newSelection
+}
+
+function mergePlaylists(playlist, newPlaylist) {
+  const { index, selection, tracks } = playlist
+  const { tracks: newTracks } = newPlaylist
+  let newIndex = null
+  if (index != null && tracks[index] === newTracks[index]) {
+    newIndex = index
+  }
+
+  const newSelection = mergeSelection(newTracks, selection)
+  return {
+    ...playlist,
+    tracks: newTracks,
+    selection: newSelection,
+    index: newIndex
+  }
 }
 
 /* Only library playlists support sorting */
