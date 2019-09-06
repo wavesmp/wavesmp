@@ -45,16 +45,18 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       } else {
         libPlaylist = getDefaultLibraryPlaylist(libName)
       }
-      const { sortKey, ascending, index: oldIndex } = libPlaylist
-      const index = sortPlaylist(
+      const { sortKey, ascending, index, selection } = libPlaylist
+      const { newIndex, newSelection } = sortPlaylist(
         libPlaylistTracks,
         lib,
         sortKey,
         ascending,
-        oldIndex
+        index,
+        selection
       )
       libPlaylist.tracks = libPlaylistTracks
-      libPlaylist.index = index
+      libPlaylist.index = newIndex
+      libPlaylist.selection = newSelection
 
       return { ...playlists, [libName]: libPlaylist }
     }
@@ -119,13 +121,27 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         return playlists
       }
       const playlist = playlists[name]
-      const { index: oldIndex } = playlist
+      const { index, selection } = playlist
       const tracks = [...playlist.tracks]
 
-      const index = sortPlaylist(tracks, lib, sortKey, ascending, oldIndex)
+      const { newIndex, newSelection } = sortPlaylist(
+        tracks,
+        lib,
+        sortKey,
+        ascending,
+        index,
+        selection
+      )
       return {
         ...playlists,
-        [name]: { ...playlist, sortKey, ascending, tracks, index }
+        [name]: {
+          ...playlist,
+          sortKey,
+          ascending,
+          tracks,
+          index: newIndex,
+          selection: newSelection
+        }
       }
     }
     case actionTypes.TRACKS_DELETE: {
@@ -286,9 +302,17 @@ function trackNext(newPlaylists, playlistName, source, id, index) {
   return newPlaylists
 }
 
-function sortPlaylist(tracks, lib, sortKey, ascending, oldIndex) {
+function invert(m) {
+  const inverted = new Map()
+  for (const [k, v] of m) {
+    inverted.set(v, k)
+  }
+  return inverted
+}
+
+function sortPlaylist(tracks, lib, sortKey, ascending, index, selection) {
   const factor = ascending ? 1 : -1
-  const oldTrack = oldIndex != null && tracks[oldIndex]
+  const indexTrack = index != null && tracks[index]
 
   if (sortKey === 'duration' || sortKey === 'createdAt') {
     tracks.sort((a, b) => factor * (lib[a][sortKey] - lib[b][sortKey]))
@@ -300,11 +324,30 @@ function sortPlaylist(tracks, lib, sortKey, ascending, oldIndex) {
     })
   }
 
-  if (oldTrack) {
+  const resp = {}
+  if (indexTrack) {
     // Possible to binary search here
-    return tracks.findIndex(track => track === oldTrack)
+    resp.newIndex = tracks.findIndex(track => track === indexTrack)
+  } else {
+    resp.newIndex = null
   }
-  return oldIndex
+
+  if (selection.size) {
+    const invertedSelection = invert(selection)
+    const newSelection = new Map()
+    const n = tracks.length
+    for (let i = 0; i < n; i += 1) {
+      const track = tracks[i]
+      if (invertedSelection.has(track)) {
+        newSelection.set(i, track)
+      }
+    }
+    resp.newSelection = newSelection
+  } else {
+    resp.newSelection = selection
+  }
+
+  return resp
 }
 
 function playlistAdd(addTracks, playlistName, playlists) {
