@@ -14,9 +14,11 @@ class AckMessenger {
     for (const reqId in this.ackMessages) {
       const ackMessage = this.ackMessages[reqId]
 
-      ws.send(ackMessage.data)
-      clearTimeout(ackMessage.sentTimeout)
-      ackMessage.sentResolve()
+      if (ackMessage.sentResolve) {
+        ws.send(ackMessage.data)
+        clearTimeout(ackMessage.sentTimeout)
+        ackMessage.sentResolve()
+      }
     }
   }
 
