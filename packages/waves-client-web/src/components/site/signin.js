@@ -2,7 +2,7 @@ import React from 'react'
 
 import { routes } from 'waves-client-constants'
 
-import UserInput from './userInput'
+// import UserInput from './userInput'
 
 export default class SignIn extends React.PureComponent {
   onUnsupportedClick = () => {
@@ -14,7 +14,7 @@ export default class SignIn extends React.PureComponent {
     const { history, actions, location } = this.props
     try {
       const idp = 'google'
-      const user = await actions.signIn(idp)
+      // const user = await actions.signIn(idp)
       actions.retryLoginOnConnect(idp)
       const from = location.state.from || { pathname: routes.defaultRoute }
       history.push(from)

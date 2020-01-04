@@ -73,6 +73,7 @@ async function handleDeletePromises(promises, dispatch) {
           handleDeleteErr(err, dispatch)
         }
         for (const track of deleted) {
+          const name = track.title || track.artist || track.album || track.genre
           dispatch(toastSuccess(`Deleted ${name}`))
         }
       } catch (err) {

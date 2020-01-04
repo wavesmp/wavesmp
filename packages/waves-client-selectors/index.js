@@ -1,5 +1,3 @@
-const { createSelector } = require('reselect')
-
 const { NOW_PLAYING_NAME, LIBRARY_NAME } = require('waves-client-constants')
 
 const { getPlaylistSearch } = require('./base')

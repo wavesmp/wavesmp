@@ -187,7 +187,7 @@ export default class Table extends React.PureComponent {
 
   /* After mousedown, either mouseup or dragstart is called (not both) */
 
-  onRowMouseUp = ev => {
+  onRowMouseUp = () => {
     const { actions, playlistName, layout, displayItems } = this.props
     if (this.clearOnMouseUpIndex != null) {
       actions.selectionClearAndAdd(
@@ -328,7 +328,6 @@ export default class Table extends React.PureComponent {
       isPlaying,
       layout,
       selection,
-      numItems,
       displayItems,
       currentPage,
       lastPage,

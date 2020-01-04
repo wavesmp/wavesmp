@@ -4,7 +4,7 @@ const { UPLOADS_NAME } = require('waves-client-constants')
 const { toastErr } = require('../toasts')
 
 function trackUploadsDelete() {
-  return (dispatch, getState, { player, ws }) => {
+  return (dispatch, getState, { player }) => {
     const { playing, playlists } = getState().tracks
     const { track } = playing
     const playlist = playlists[UPLOADS_NAME]

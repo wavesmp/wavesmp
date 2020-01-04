@@ -30,7 +30,7 @@ export default class ColumnSettings extends React.PureComponent {
       <div className='settings-columns'>
         <div className='settings-column'>
           <label className='settings-column-label'>Hidden Columns</label>
-          {hiddenColumns.map((sample, index) => (
+          {hiddenColumns.map(sample => (
             <div
               key={sample}
               className='settings-column-item'
@@ -44,7 +44,7 @@ export default class ColumnSettings extends React.PureComponent {
         </div>
         <div className='settings-column'>
           <label className='settings-column-label'>Active Columns</label>
-          {activeColumns.map((sample, index) => (
+          {activeColumns.map(sample => (
             <div
               key={sample}
               className='settings-column-item'

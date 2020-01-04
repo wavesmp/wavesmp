@@ -10,7 +10,7 @@ function pause() {
 }
 
 function play() {
-  return async (dispatch, getState, { player }) => {
+  return async (dispatch, _, { player }) => {
     try {
       dispatch({ type: types.PLAYING_PLAY })
       await player.play()

@@ -10,14 +10,14 @@ describe('#playing()', () => {
   it('#pause()', () => {
     const player = new Player({})
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock
+    playerMock
       .expects('pause')
       .once()
       .withExactArgs()
 
     const dispatchMock = sinon.mock()
     assert.isDefined(types.PLAYING_PAUSE)
-    const dispatchExpect = dispatchMock.once().withExactArgs({
+    dispatchMock.once().withExactArgs({
       type: types.PLAYING_PAUSE
     })
 
@@ -31,19 +31,19 @@ describe('#playing()', () => {
   it('#play()', () => {
     const player = new Player({})
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock
+    playerMock
       .expects('play')
       .once()
       .withExactArgs()
 
     const dispatchMock = sinon.mock()
     assert.isDefined(types.PLAYING_PLAY)
-    const dispatchExpect = dispatchMock.once().withExactArgs({
+    dispatchMock.once().withExactArgs({
       type: types.PLAYING_PLAY
     })
 
     const thunk = actions.play()
-    thunk(dispatchMock, () => ({ tracks }), { player })
+    thunk(dispatchMock, null, { player })
 
     dispatchMock.verify()
     playerMock.verify()
@@ -53,7 +53,7 @@ describe('#playing()', () => {
     const newTime = 3
     const player = new Player({})
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock
+    playerMock
       .expects('seek')
       .once()
       .withExactArgs(newTime)

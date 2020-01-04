@@ -83,7 +83,7 @@ class WavesSocket {
     }
   }
 
-  onOpen(err) {
+  onOpen() {
     this.ackMsgr.process(this.ws)
     this.bestEffortMsgr.process(this.ws)
     if (this.onConnect) {

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Name, State, Time, Artist, Album, Genre, CreatedAt } from './rows'
 
 export const playlistColumns = [

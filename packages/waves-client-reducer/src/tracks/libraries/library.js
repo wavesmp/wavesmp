@@ -9,7 +9,7 @@ function reducerLibrary(state = initialState, action) {
     case actionTypes.TRACKS_DELETE: {
       const { deleteIds } = action
       state = { ...state }
-      for (deleteId of deleteIds) {
+      for (const deleteId of deleteIds) {
         delete state[deleteId]
       }
       return state

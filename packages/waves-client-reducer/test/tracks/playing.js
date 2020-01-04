@@ -16,7 +16,6 @@ const track2 = { ...baseTrack2, id: mongoid() }
 
 describe('#playing()', () => {
   let state
-  let action
 
   it('initial state', () => {
     state = assertNewState(playing, undefined, UNKNOWN_ACTION)

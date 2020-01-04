@@ -25,7 +25,7 @@ export default class TrackSlider extends React.PureComponent {
     this.props.actions.removeOnTimeUpdate(this.onTimeUpdate)
   }
 
-  onMouseDown = ev => {
+  onMouseDown = () => {
     this.setState({ seeking: true })
   }
 

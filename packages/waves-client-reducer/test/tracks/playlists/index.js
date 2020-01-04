@@ -14,7 +14,6 @@ const {
   TEST_TRACK2: baseTrack2,
   TEST_PLAYLIST_NAME1: playlistName1,
   TEST_PLAYLIST_NAME2: playlistName2,
-  TEST_TRACK1_UPDATE: update1,
   TEST_SEARCH: testSearch
 } = require('waves-test-data')
 

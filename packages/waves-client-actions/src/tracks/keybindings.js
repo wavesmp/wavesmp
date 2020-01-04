@@ -6,7 +6,7 @@ const { selectionClearAndAdd } = require('./playlists')
 const { trackToggle } = require('./toggle')
 
 function tracksKeyDown(ev, history) {
-  return async (dispatch, getState, { player, ws }) => {
+  return async (dispatch, getState) => {
     const { key, target } = ev
     const { tagName, contentEditable } = target
     if (tagName === 'INPUT' || contentEditable === 'true') {
@@ -25,8 +25,8 @@ function tracksKeyDown(ev, history) {
           }
           return
         }
-        // Fall through (treat as track toggle)
       }
+      // Fall through (treat as track toggle)
       case 'Enter':
       case 'j':
       case 'k':
@@ -59,7 +59,6 @@ function playlistKeyDown(ev, history, dispatch, key, playlistName, props) {
       if (currentPage < 1) {
         return
       }
-      const { location } = history
       const { search, pathname } = history
       const qp = new URLSearchParams(search)
       qp.set('page', currentPage - 1)
@@ -71,7 +70,6 @@ function playlistKeyDown(ev, history, dispatch, key, playlistName, props) {
       if (currentPage >= lastPage) {
         return
       }
-      const { location } = history
       const { search, pathname } = history
       const qp = new URLSearchParams(search)
       qp.set('page', currentPage + 1)

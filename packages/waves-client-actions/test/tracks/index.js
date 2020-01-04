@@ -1,5 +1,4 @@
 const { assert } = require('chai')
-const mongoid = require('mongoid-js')
 const { URLSearchParams } = require('url')
 const sinon = require('sinon')
 
@@ -24,8 +23,6 @@ const {
 const SEARCH_QUERY_KEY = 'search'
 const libName = 'testLibName'
 const id1 = '5c3d93000000000000000000'
-const createdAt1 = 1547539200
-const createAtPretty1 = '1/15/2019, 8:00:00 AM'
 const id2 = '5a5c5f800000000000000000'
 const createdAt2 = 1516003200
 const createdAtPretty2 = '1/15/2018, 8:00:00 AM'
@@ -51,7 +48,7 @@ describe('#tracks()', async () => {
     const thunk = actions.trackToggle(track2.id, testPlaylistName2, testIndex)
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs({
+    dispatchMock.once().withExactArgs({
       type: types.TRACK_TOGGLE,
       playlistName: testPlaylistName2,
       index: testIndex,
@@ -60,7 +57,7 @@ describe('#tracks()', async () => {
     })
 
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendBestEffortMessage')
       .once()
       .withExactArgs(types.PLAYLIST_ADD, {
@@ -69,7 +66,7 @@ describe('#tracks()', async () => {
       })
 
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock
+    playerMock
       .expects('trackToggle')
       .once()
       .withExactArgs(track2)
@@ -92,7 +89,7 @@ describe('#tracks()', async () => {
 
     assert.isDefined(types.TRACK_TOGGLE)
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs({
+    dispatchMock.once().withExactArgs({
       type: types.TRACK_TOGGLE,
       playlistName: NOW_PLAYING_NAME,
       index: testIndex,
@@ -101,7 +98,7 @@ describe('#tracks()', async () => {
     })
 
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock
+    playerMock
       .expects('trackToggle')
       .once()
       .withExactArgs(track2)
@@ -124,14 +121,14 @@ describe('#tracks()', async () => {
     assert.isDefined(types.TRACK_NEXT)
     const expectedTrack = normalizeTrack(track2, 1)
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs({
+    dispatchMock.once().withExactArgs({
       type: types.TRACK_NEXT,
       nextTrack: expectedTrack,
       playlistName: playlistName
     })
 
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendBestEffortMessage')
       .once()
       .withExactArgs(types.PLAYLIST_ADD, {
@@ -141,7 +138,7 @@ describe('#tracks()', async () => {
 
     const isPlaying = true
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock
+    playerMock
       .expects('trackNext')
       .once()
       .withExactArgs(expectedTrack, isPlaying)
@@ -184,7 +181,7 @@ describe('#tracks()', async () => {
 
     assert.isDefined(types.TRACK_NEXT)
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs({
+    dispatchMock.once().withExactArgs({
       type: types.TRACK_NEXT,
       nextTrack: expectedTrack1,
       playlistName: playlistName
@@ -192,7 +189,7 @@ describe('#tracks()', async () => {
 
     const isPlaying = true
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock
+    playerMock
       .expects('trackNext')
       .once()
       .withExactArgs(expectedTrack1, isPlaying)
@@ -212,7 +209,6 @@ describe('#tracks()', async () => {
   })
 
   it('initial library add', async () => {
-    const lib = null
     const getState = () => ({ tracks: { libraries: { [libName]: null } } })
     const update = [track1]
     const updatedLib = { [track1.id]: track1 }
@@ -221,7 +217,7 @@ describe('#tracks()', async () => {
     const action = { type: types.TRACKS_ADD, lib: updatedLib, libName }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     thunk(dispatchMock, getState)
 
@@ -247,7 +243,7 @@ describe('#tracks()', async () => {
     const action = { type: types.TRACKS_ADD, lib: updatedLibrary, libName }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     thunk(dispatchMock, getState)
 
@@ -262,7 +258,6 @@ describe('#tracks()', async () => {
     const fileName1 = 'testFileName1'
     const fileName2 = 'testFileName2'
     const playing = { track: { ...track1, file: { name: fileName1 } } }
-    const library = null
     const uploads = {
       [track1.id]: { ...track1, file: { name: fileName1 } },
       [track2.id]: { ...track2, file: { name: fileName2 } }
@@ -285,7 +280,7 @@ describe('#tracks()', async () => {
     const thunk = actions.tracksUpload(sourceType)
 
     const playerMock = sinon.mock(player)
-    const playerUploadExpect = playerMock
+    playerMock
       .expects('upload')
       .once()
       .withExactArgs(sourceType, uploadValues)
@@ -293,12 +288,12 @@ describe('#tracks()', async () => {
 
     assert.isDefined(types.TRACKS_ADD)
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.TRACKS_ADD, { tracks: uploadValues })
 
-    const playerPauseExpect = playerMock
+    playerMock
       .expects('pause')
       .once()
       .withExactArgs()
@@ -406,10 +401,10 @@ describe('#tracks()', async () => {
     }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.TRACKS_REMOVE, {
@@ -440,10 +435,10 @@ describe('#tracks()', async () => {
 
     assert.isDefined(types.TRACKS_INFO_UPDATE)
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.TRACKS_INFO_UPDATE, { id, key, value })

@@ -1,4 +1,3 @@
-const { assert } = require('chai')
 const { ObjectID } = require('mongodb')
 
 const { assertThrows, generateString } = require('waves-test-util')
@@ -131,7 +130,6 @@ module.exports = () => {
     it('validate track required properties', async () => {
       const requiredStringProps = ['source']
       for (const prop of requiredStringProps) {
-        const msg = `Error: ${prop} must be a string`
         for (const notStringVal of NOT_STRING_VALS) {
           const track = { ...TEST_TRACK1, [prop]: notStringVal }
           await assertThrows(
@@ -186,7 +184,6 @@ module.exports = () => {
 
     it('validate track optional properties', async () => {
       for (const prop of EDITABLE_TRACK_PROPS) {
-        const msg = `Error: ${prop} must be a string`
         for (const notStringVal of NOT_STRING_VALS) {
           const track = { ...TEST_TRACK1, [prop]: notStringVal }
           await assertThrows(

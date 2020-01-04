@@ -4,12 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import * as WavesActions from 'waves-client-actions'
-import {
-  NOW_PLAYING_NAME,
-  LIBRARY_NAME,
-  modalTypes,
-  routes
-} from 'waves-client-constants'
+import { LIBRARY_NAME, modalTypes, routes } from 'waves-client-constants'
 import {
   getOrCreatePlaylistSelectors,
   getLibraryPlaylistSearch,

@@ -4,7 +4,7 @@ class FilePlayer {
   }
 
   // Must be called to initialize
-  login(idp, idpId, token) {
+  login() {
     // No auth needed
   }
 
@@ -12,11 +12,11 @@ class FilePlayer {
     this.stream.addEventListener('ended', onTrackEnded)
   }
 
-  setOnUploadProgress(onUploadProgress) {
+  setOnUploadProgress() {
     // No local upload supported
   }
 
-  setOnToastErr(onToastErr) {
+  setOnToastErr() {
     // No use case for this currently
   }
 

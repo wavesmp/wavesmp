@@ -85,7 +85,7 @@ class Track extends React.PureComponent {
   }
 
   render() {
-    const { actions, bulk, playlistName } = this.props
+    const { bulk, playlistName } = this.props
     return (
       <React.Fragment>
         {!bulk && this.getPlayOrPauseAction()}
@@ -108,7 +108,7 @@ class Track extends React.PureComponent {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   const { tracks } = state
   const { playing } = tracks
   const { isPlaying } = playing

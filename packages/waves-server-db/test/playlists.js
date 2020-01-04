@@ -1,7 +1,7 @@
 const { assert } = require('chai')
 const zip = require('lodash.zip')
 
-const { assertThrows, generateString } = require('waves-test-util')
+const { assertThrows } = require('waves-test-util')
 const {
   TEST_USER1,
   TEST_USER2,
@@ -341,7 +341,7 @@ module.exports = getStorage => {
       const playlistName = TEST_PLAYLIST_MOVE_NAME1
       const selection = [[0, TEST_TRACK1.id]]
       const insertAt = 2
-      const playlists = await getStorage().playlistReorder(
+      await getStorage().playlistReorder(
         user,
         playlistName,
         selection,

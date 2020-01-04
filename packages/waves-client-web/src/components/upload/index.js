@@ -14,7 +14,7 @@ import Table from '../table'
 import { uploadColumns } from '../table/columns'
 import processTrack from './processTrack'
 
-import defaultTrackLogoUrl from './default-track-image.png'
+// import defaultTrackLogoUrl from './default-track-image.png'
 import './index.css'
 
 const ACCEPTED_FILE_TYPES = 'audio/mp3,audio/mpeg'
@@ -36,7 +36,7 @@ class Upload extends React.PureComponent {
     ev.preventDefault()
   }
 
-  onDragLeave = ev => {
+  onDragLeave = () => {
     this.setState({ dragging: false })
   }
 
@@ -141,9 +141,7 @@ class Upload extends React.PureComponent {
         isPlaying={isPlaying}
         pathname={pathname}
         qp={qp}
-        currentPage={currentPage}
         displayItems={displayItems}
-        lastPage={lastPage}
         numItems={numItems}
         onItemEdit={this.onItemEdit}
         index={index}
@@ -155,8 +153,6 @@ class Upload extends React.PureComponent {
   }
 
   render() {
-    const { actions } = this.props
-
     let dropZoneClass = 'upload-drop-zone'
     if (this.state.dragging) {
       dropZoneClass += ' upload-drop-zone-dragging'

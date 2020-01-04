@@ -9,7 +9,6 @@ const selection = require('../../../src/tracks/playlists/selection')
 
 describe('#selection()', () => {
   let state = { name: playlistName, selection: new Map() }
-  let action
 
   it('Initial clear and add', () => {
     const action = {
@@ -18,7 +17,7 @@ describe('#selection()', () => {
       trackId: 'trackId0',
       displayItems: []
     }
-    state = assertNewState(selection[action.type], state, action)
+    state = assertNewState(selection, state, action)
     const expectedSelection = new Map()
     expectedSelection.set(0, 'trackId0')
     assert.deepEqual(state.selection, expectedSelection)
@@ -30,7 +29,7 @@ describe('#selection()', () => {
       index: 1,
       trackId: 'trackId1'
     }
-    state = assertNewState(selection[action.type], state, action)
+    state = assertNewState(selection, state, action)
     const expectedSelection = new Map()
     expectedSelection.set(0, 'trackId0')
     expectedSelection.set(1, 'trackId1')
@@ -42,7 +41,7 @@ describe('#selection()', () => {
       type: actionTypes.SELECTION_REMOVE,
       index: 0
     }
-    state = assertNewState(selection[action.type], state, action)
+    state = assertNewState(selection, state, action)
     const expectedSelection = new Map()
     expectedSelection.set(1, 'trackId1')
     assert.deepEqual(state.selection, expectedSelection)
@@ -60,7 +59,7 @@ describe('#selection()', () => {
       startIndex: 12,
       endIndex: 15
     }
-    state = assertNewState(selection[action.type], state, action)
+    state = assertNewState(selection, state, action)
     const expectedSelection = new Map()
     expectedSelection.set(1, 'trackId1')
     expectedSelection.set(12, 'trackId12')
@@ -82,7 +81,7 @@ describe('#selection()', () => {
       trackId: 'trackId5',
       displayItems: items
     }
-    state = assertNewState(selection[action.type], state, action)
+    state = assertNewState(selection, state, action)
     const expectedSelection = new Map()
     expectedSelection.set(1, 'trackId1')
     expectedSelection.set(5, 'trackId5')

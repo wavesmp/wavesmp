@@ -13,7 +13,7 @@ class TrackInfo extends React.PureComponent {
 
   render() {
     const trackTitle = this.shorten(this.props.trackTitle, MAX_TITLE_LEN)
-    const trackArtist = this.shorten(this.props.trackArtist, MAX_TITLE_LEN)
+    const trackArtist = this.shorten(this.props.trackArtist, MAX_ARTIST_LEN)
     return (
       <div>
         <div className='trackplayer-info-title'>{trackTitle}</div>
@@ -63,7 +63,7 @@ class LeftButtons extends React.PureComponent {
 }
 
 class RightButtons extends React.PureComponent {
-  onShuffleClick = ev => {
+  onShuffleClick = () => {
     const { playing, actions } = this.props
     const { shuffle } = playing
     actions.shuffleToggle()
@@ -71,7 +71,7 @@ class RightButtons extends React.PureComponent {
     actions.toastSuccess(msg)
   }
 
-  onRepeatClick = ev => {
+  onRepeatClick = () => {
     const { playing, actions } = this.props
     const { repeat } = playing
     actions.repeatToggle()

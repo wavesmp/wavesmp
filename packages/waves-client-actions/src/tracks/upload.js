@@ -9,7 +9,7 @@ function tracksUpload(trackSource) {
   return async (dispatch, getState, { player, ws }) => {
     /* Transition tracks to uploading state */
     const { tracks } = getState()
-    const { playing, libraries, playlists } = tracks
+    const { playing, libraries } = tracks
     const { track } = playing
     const uploads = libraries[UPLOADS_NAME]
     const uploadIds = Object.keys(uploads)

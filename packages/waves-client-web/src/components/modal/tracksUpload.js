@@ -37,7 +37,7 @@ class TracksUploadModal extends React.PureComponent {
               </tr>
             </thead>
             <tbody>
-              {displayItems.map((sample, i) => (
+              {displayItems.map(sample => (
                 <tr key={sample.id}>
                   {columns.map(column => (
                     <column.Component

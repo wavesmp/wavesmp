@@ -1,7 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-
-import constants from 'waves-client-constants'
 
 import ContentEditable from './contenteditable'
 

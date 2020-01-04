@@ -3,11 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import {
-  NOW_PLAYING_NAME,
-  LIBRARY_NAME as playlistName,
-  routes
-} from 'waves-client-constants'
+import { LIBRARY_NAME as playlistName, routes } from 'waves-client-constants'
 import * as WavesActions from 'waves-client-actions'
 import {
   getOrCreatePlaylistSelectors,

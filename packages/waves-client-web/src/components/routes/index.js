@@ -24,7 +24,7 @@ class PrivateRoute extends React.PureComponent {
     this.state = { loading: false }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadingTimeout = setTimeout(this.onLoadingTimeout, LOADING_TIMEOUT)
   }
 
@@ -70,7 +70,7 @@ class PublicRoute extends React.PureComponent {
     this.state = { loading: false }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadingTimeout = setTimeout(this.onLoadingTimeout, LOADING_TIMEOUT)
   }
 

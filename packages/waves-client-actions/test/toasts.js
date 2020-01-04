@@ -2,7 +2,7 @@ const { assert } = require('chai')
 const sinon = require('sinon')
 
 const types = require('waves-action-types')
-const { TEST_TOAST1: toast1, TEST_TOAST2: toast2 } = require('waves-test-data')
+const { TEST_TOAST1: toast1 } = require('waves-test-data')
 
 const actions = require('../src/toasts')
 

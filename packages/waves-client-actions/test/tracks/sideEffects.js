@@ -33,7 +33,7 @@ describe('#sideEffects()', async () => {
     const thunk = actions.download(track1.id)
 
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock
+    playerMock
       .expects('download')
       .once()
       .withExactArgs(track1)

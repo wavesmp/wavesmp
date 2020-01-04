@@ -196,7 +196,6 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
       numItems,
       currentPage,
       lastPage,
-      numItems,
       displayItems
     }
   }

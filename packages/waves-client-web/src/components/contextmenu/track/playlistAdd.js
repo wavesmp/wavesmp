@@ -21,7 +21,7 @@ class PlaylistAdd extends React.PureComponent {
   }
 
   getPlaylistAddItems() {
-    const { actions, playlists } = this.props
+    const { playlists } = this.props
     const items = []
 
     for (const playlist in playlists) {
@@ -50,7 +50,7 @@ class PlaylistAdd extends React.PureComponent {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     playlists: state.tracks.playlists
   }

@@ -56,7 +56,7 @@ describe('#router()', () => {
     }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     thunk(dispatchMock)
     dispatchMock.verify()
@@ -77,7 +77,7 @@ describe('#router()', () => {
     }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     thunk(dispatchMock)
     dispatchMock.verify()

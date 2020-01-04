@@ -35,7 +35,7 @@ export default class TableBar extends React.PureComponent {
   }
 
   render() {
-    const { buttons, onSettingsClick, history } = this.props
+    const { buttons, onSettingsClick } = this.props
     let settingsComponent = null
     if (onSettingsClick) {
       settingsComponent = (

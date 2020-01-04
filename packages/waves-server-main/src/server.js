@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-const fs = require('fs')
-
 const args = require('commander')
 
 const Auth = require('waves-server-auth')

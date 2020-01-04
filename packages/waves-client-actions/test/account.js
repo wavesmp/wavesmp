@@ -49,7 +49,7 @@ describe('#account()', () => {
     }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     const localStateMock = sinon.mock(localState)
     const localStateExpect = localStateMock.expects('setItem').thrice()
@@ -87,27 +87,27 @@ describe('#account()', () => {
     const action = { type: types.ACCOUNT_LOGIN, user: null }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     const authMock = sinon.mock(auth)
-    const authExpect = authMock
+    authMock
       .expects('signOut')
       .once()
       .withExactArgs(testIdp)
 
     const localStateMock = sinon.mock(localState)
-    const localStateGetExpect = localStateMock
+    localStateMock
       .expects('getItem')
       .once()
       .withExactArgs('lastIdp')
       .returns(testIdp)
-    const localStateSetExpect = localStateMock
+    localStateMock
       .expects('setItem')
       .once()
       .withExactArgs('lastIdp', '')
 
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('setOnConnect')
       .once()
       .withExactArgs(null)
@@ -128,11 +128,11 @@ describe('#account()', () => {
     const thunk = actions.signIn(testIdp)
 
     const authMock = sinon.mock(auth)
-    const authFirstExpect = authMock
+    authMock
       .expects('signIn')
       .once()
       .withExactArgs(testIdp)
-    const authSecondExpect = authMock
+    authMock
       .expects('tryAutoLogin')
       .once()
       .withExactArgs(testIdp)
@@ -140,7 +140,7 @@ describe('#account()', () => {
 
     const wsMock = sinon.mock(ws)
     const loginErr = new Error('Waves internal server error')
-    const wsExpect = wsMock
+    wsMock
       .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.ACCOUNT_LOGIN, { token: testToken, idp: testIdp })
@@ -169,34 +169,34 @@ describe('#account()', () => {
     const action = { type: types.ACCOUNT_LOGIN, user: testUser }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     const authMock = sinon.mock(auth)
-    const authFirstExpect = authMock
+    authMock
       .expects('signIn')
       .once()
       .withExactArgs(testIdp)
-    const authSecondExpect = authMock
+    authMock
       .expects('tryAutoLogin')
       .once()
       .withExactArgs(testIdp)
       .returns({ token: testToken })
 
     const localStateMock = sinon.mock(localState)
-    const localStateExpect = localStateMock
+    localStateMock
       .expects('setItem')
       .once()
       .withExactArgs('lastIdp', testIdp)
 
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.ACCOUNT_LOGIN, { token: testToken, idp: testIdp })
       .resolves(testUser)
 
     const playerMock = sinon.mock(player)
-    const playerExpect = playerMock
+    playerMock
       .expects('login')
       .once()
       .withExactArgs(testIdp, testUser.idpId, testToken)

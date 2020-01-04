@@ -89,7 +89,7 @@ function playlistReorder(playlistName, insertAt) {
 
 /* Only supports waves library */
 function playlistSort(sortKey, ascending) {
-  return async (dispatch, getState, { ws }) => {
+  return async (dispatch, getState) => {
     const state = getState()
     const search = getLibraryPlaylistSearch(state)
     const { getRouterQueryParams } = getOrCreatePlaylistSelectors(

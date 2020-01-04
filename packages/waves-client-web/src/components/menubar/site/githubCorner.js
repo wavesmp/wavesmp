@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 import GithubCornerSvg from './github-corner-right.svg'
 

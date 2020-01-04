@@ -1,6 +1,5 @@
 import React from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
-import { Link } from 'react-router-dom'
 
 import './index.css'
 import MainBar from './main'
@@ -8,14 +7,7 @@ import PlaylistBar from './playlist'
 
 export default class SideBar extends React.PureComponent {
   render() {
-    const {
-      actions,
-      playing,
-      playlists,
-      sidebar,
-      pathname,
-      userName
-    } = this.props
+    const { actions, playing, playlists, sidebar, pathname } = this.props
     const isSliderVisible = playing.track != null
     let playlistBar = null
     let mainBar = null

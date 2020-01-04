@@ -8,7 +8,6 @@ const WavesSocket = require('waves-socket')
 const {
   TEST_PLAYLIST_NAME1: testPlaylistName1,
   TEST_PLAYLIST_NAME2: testPlaylistName2,
-  TEST_SEARCH: testSearch,
   TEST_TRACK1: baseTrack1,
   TEST_TRACK2: baseTrack2
 } = require('waves-test-data')
@@ -45,11 +44,11 @@ describe('#playlists()', () => {
     }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     const data = { src: testPlaylistName1, dest: testPlaylistName2 }
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.PLAYLIST_COPY, data)
@@ -72,10 +71,10 @@ describe('#playlists()', () => {
     }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.PLAYLIST_DELETE, { playlistName: testPlaylistName1 })
@@ -99,10 +98,10 @@ describe('#playlists()', () => {
     }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendAckedMessage')
       .once()
       .withExactArgs(types.PLAYLIST_MOVE, {
@@ -150,10 +149,10 @@ describe('#playlists()', () => {
     }
 
     const dispatchMock = sinon.mock()
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
     const wsMock = sinon.mock(ws)
-    const wsExpect = wsMock
+    wsMock
       .expects('sendBestEffortMessage')
       .once()
       .withExactArgs(types.PLAYLIST_ADD, {
@@ -184,9 +183,9 @@ describe('#playlists()', () => {
       addTracks
     }
 
-    const dispatchExpect = dispatchMock.once().withExactArgs(action)
+    dispatchMock.once().withExactArgs(action)
 
-    const wsExpect = wsMock
+    wsMock
       .expects('sendBestEffortMessage')
       .once()
       .withExactArgs(types.PLAYLIST_ADD, { playlistName, trackIds: addTracks })
