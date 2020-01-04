@@ -26,5 +26,6 @@ docker run \
     pip install --upgrade pip
     pip install --upgrade pipenv
     pipenv install --dev
+    pipenv run black --target-version py37 -S *.py
     pipenv run python check.py ${BUCKET_NAME}
     "
