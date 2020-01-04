@@ -3,7 +3,7 @@
         "test": "lerna run test",
         "build": "lerna run --scope waves-client-web build",
         "watch": "lerna run --stream --scope waves-client-web watch",
-        "prettier": "prettier --write --no-semi --single-quote --jsx-single-quote 'packages/**/*.@(js|json|css|md)'"
+        "prettier": "prettier --write '**/*.@(js|json|css|md)'"
     },
     "devDependencies": {
         "@babel/core": "^7.4.4",

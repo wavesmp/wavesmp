@@ -1,5 +1,28 @@
-vendor
-build
+# Ignore node_modules, package.json, and package-lock.json for all packages
+/node_modules
+/packages/*/node_modules
+
+/package.json
+/packages/*/package.json
+
+/package-lock.json
+/package-locks/*/package-lock.json
+
+# Ignore web client build artifacts
+/packages/waves-client-web/build
+
+# Ignore web client config file
+/packages/waves-client-web/src/config.js
+
+# Ignore web client certs
+/packages/waves-client-web/rootfs/etc/letsencrypt
+/packages/waves-client-web/rootfs/etc/ssl
+
+# Ignore server config file
+/packages/waves-server-main/config.js
+
+# istanbuljs code coverage output
 .nyc_output
-.config
-rootfs
+
+# TODO remove reliance on vendor code
+/packages/waves-client-web/vendor

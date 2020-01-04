@@ -1,17 +1,17 @@
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": [
-                "s3:PostObject",
-                "s3:GetObject",
-                "s3:PutObject",
-                "s3:DeleteObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::BUCKET_NAME/google/${accounts.google.com:sub}/*"
-            ],
-            "Effect": "Allow"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:PostObject",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::BUCKET_NAME/google/${accounts.google.com:sub}/*"
+      ],
+      "Effect": "Allow"
+    }
+  ]
 }
