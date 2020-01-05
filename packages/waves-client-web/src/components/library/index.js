@@ -44,8 +44,8 @@ class Library extends React.PureComponent {
       <TablePage
         {...this.props}
         buttons={this.getButtons()}
-        draggable={true}
-        orderable={false}
+        draggable
+        orderable
         noDataMsg={NO_DATA_MSG}
         onItemEdit={this.onItemEdit}
         playlistName={playlistName}

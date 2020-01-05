@@ -11,7 +11,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    'airbnb-base',
+    'airbnb',
     'prettier',
     'prettier/babel',
     'prettier/react'
@@ -25,6 +25,12 @@ module.exports = {
     'guard-for-in': 'off',
     /* Seeing import warning due to this being a monorepo */
     'import/no-extraneous-dependencies': 'off',
+    /* react-a11y is deprecated. Disable a11y rules */
+    'jsx-a11y/alt-text': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/label-has-associated-control': 'off',
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
     /* Allow multiple classes for convenience */
     'max-classes-per-file': 'off',
     /* Allow awaits in loops */
@@ -44,8 +50,14 @@ module.exports = {
     'no-unused-vars': ['error', { varsIgnorePattern: '^_$' }],
     /* Use hoisting feature */
     'no-use-before-define': 'off',
+    'react/destructuring-assignment': 'off',
+    'react/jsx-filename-extension': 'off',
+    'react/jsx-fragments': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/no-danger': 'off',
     /* Avoid prop types for now. May want to look into TypeScript instead */
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
+    'react/sort-comp': 'off'
   }
 }
 

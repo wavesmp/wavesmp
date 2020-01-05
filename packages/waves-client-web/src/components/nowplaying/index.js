@@ -32,12 +32,18 @@ class NowPlaying extends React.PureComponent {
   }
 
   defaultButtons = [
-    <button key='Clear' className='btn btn-primary' onClick={this.onClear}>
+    <button
+      key='Clear'
+      className='btn btn-primary'
+      type='button'
+      onClick={this.onClear}
+    >
       Clear
     </button>,
     <button
       key='Save'
       className='btn btn-primary'
+      type='button'
       onClick={this.onPlaylistSave}
     >
       Save
@@ -72,8 +78,8 @@ class NowPlaying extends React.PureComponent {
       <TablePage
         {...this.props}
         buttons={this.getButtons()}
-        draggable={true}
-        orderable={true}
+        draggable
+        orderable
         noDataMsg={NO_DATA_MSG}
         onItemEdit={this.onItemEdit}
         playlistName={playlistName}

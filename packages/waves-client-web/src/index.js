@@ -38,7 +38,7 @@ render(
   <Provider store={store}>
     <Router history={history}>
       <Switch>
-        <PublicRoute path='/' exact={true} component={Site} />
+        <PublicRoute path='/' exact component={Site} />
         <PrivateRoute path='/' component={MainApp} />
       </Switch>
     </Router>
