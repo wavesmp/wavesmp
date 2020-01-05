@@ -51,6 +51,7 @@ class Playlist extends React.PureComponent {
   }
 
   render() {
+    const { playlistName } = this.state
     return (
       <TablePage
         {...this.props}
@@ -60,7 +61,7 @@ class Playlist extends React.PureComponent {
         noDataMsg={NO_DATA_MSG}
         onItemEdit={this.onItemEdit}
         onSettingsClick={this.onSettingsClick}
-        title={this.props.playlistName}
+        title={playlistName}
       />
     )
   }

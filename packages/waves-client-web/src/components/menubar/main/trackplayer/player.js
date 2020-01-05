@@ -12,7 +12,9 @@ class TrackInfo extends React.PureComponent {
   }
 
   render() {
+    /* eslint-disable-next-line react/destructuring-assignment */
     const trackTitle = this.shorten(this.props.trackTitle, MAX_TITLE_LEN)
+    /* eslint-disable-next-line react/destructuring-assignment */
     const trackArtist = this.shorten(this.props.trackArtist, MAX_ARTIST_LEN)
     return (
       <div>

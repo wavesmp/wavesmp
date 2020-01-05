@@ -153,8 +153,9 @@ class Upload extends React.PureComponent {
   }
 
   render() {
+    const { dragging, uploading } = this.state
     let dropZoneClass = 'upload-drop-zone'
-    if (this.state.dragging) {
+    if (dragging) {
       dropZoneClass += ' upload-drop-zone-dragging'
     }
 
@@ -178,10 +179,10 @@ class Upload extends React.PureComponent {
               <button
                 type='button'
                 className='btn btn-sm btn-primary'
-                disabled={uploads == null || this.state.uploading}
+                disabled={uploads == null || uploading}
                 onClick={this.onUpload}
               >
-                {this.state.uploading ? 'Uploading' : 'Upload files'}
+                {uploading ? 'Uploading' : 'Upload files'}
               </button>
             </div>
           </form>

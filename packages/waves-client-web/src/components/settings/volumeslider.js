@@ -13,11 +13,13 @@ export default class VolumeSlider extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.actions.addOnVolumeChange(this.onVolumeChange)
+    const { actions } = this.props
+    actions.addOnVolumeChange(this.onVolumeChange)
   }
 
   componentWillUnmount() {
-    this.props.actions.removeOnVolumeChange(this.onVolumeChange)
+    const { actions } = this.props
+    actions.removeOnVolumeChange(this.onVolumeChange)
   }
 
   onVolumeInputChange = ev => {

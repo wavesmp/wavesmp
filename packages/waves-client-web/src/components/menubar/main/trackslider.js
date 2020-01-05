@@ -18,11 +18,13 @@ export default class TrackSlider extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.actions.addOnTimeUpdate(this.onTimeUpdate)
+    const { actions } = this.props
+    actions.addOnTimeUpdate(this.onTimeUpdate)
   }
 
   componentWillUnmount() {
-    this.props.actions.removeOnTimeUpdate(this.onTimeUpdate)
+    const { actions } = this.props
+    actions.removeOnTimeUpdate(this.onTimeUpdate)
   }
 
   onMouseDown = () => {
@@ -46,8 +48,9 @@ export default class TrackSlider extends React.PureComponent {
     if (seeking) {
       return seekingValue
     }
-    const { duration } = this.props.playing.track
-    return currentTime / duration
+    /* eslint-disable-next-line react/destructuring-assignment */
+    const { playing } = this.props
+    return currentTime / playing.track.duration
   }
 
   render() {

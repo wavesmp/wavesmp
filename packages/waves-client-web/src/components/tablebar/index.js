@@ -45,6 +45,7 @@ export default class TableBar extends React.PureComponent {
         />
       )
     }
+    const { searchValue } = this.state
 
     return (
       <div className='tablebar'>
@@ -55,11 +56,11 @@ export default class TableBar extends React.PureComponent {
           <input
             className='tablebar-input'
             type='text'
-            value={this.state.searchValue}
+            value={searchValue}
             onKeyDown={this.onKeyDown}
             onChange={this.onChange}
           />
-          {this.state.searchValue && (
+          {searchValue && (
             <i
               className='fa fa-lg fa-times tablebar-reset-icon'
               onClick={this.onSearchReset}

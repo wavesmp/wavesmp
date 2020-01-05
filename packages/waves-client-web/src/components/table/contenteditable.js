@@ -12,15 +12,17 @@ export default class ContentEditable extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    const { editable } = this.props
     return (
-      this.props.editable !== nextProps.editable ||
+      editable !== nextProps.editable ||
       (!nextProps.editable &&
         htmlEscape(nextProps.html) !== this.spanRef.current.innerHTML)
     )
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.editable && this.props.editable) {
+    const { editable } = this.props
+    if (!prevProps.editable && editable) {
       this.spanRef.current.focus()
     }
   }
@@ -34,12 +36,12 @@ export default class ContentEditable extends React.Component {
   }
 
   onBlur = () => {
-    const lastHtml = this.props.html.trim()
+    const { html: lastHtml, onBlur, onChange } = this.props
     const html = htmlUnescape(this.spanRef.current.innerHTML.trim())
-    if (html && html !== lastHtml) {
-      this.props.onChange(html)
+    if (html && html !== lastHtml.trim()) {
+      onChange(html)
     }
-    this.props.onBlur()
+    onBlur()
   }
 
   render() {

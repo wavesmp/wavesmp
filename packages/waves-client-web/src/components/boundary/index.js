@@ -11,10 +11,12 @@ export default class Boundary extends React.PureComponent {
   }
 
   render() {
+    const { children } = this.props
+    /* eslint-disable-next-line react/destructuring-assignment */
     const err = this.props.err || this.state.err
     if (err) {
-      const errStack =
-        (this.state.errInfo && this.state.errInfo.componentStack) || err.stack
+      const { errInfo } = this.state
+      const errStack = (errInfo && errInfo.componentStack) || err.stack
       return (
         <div className='main-err-container absolute-center'>
           <div className='main-err-sign'>
@@ -32,6 +34,6 @@ export default class Boundary extends React.PureComponent {
         </div>
       )
     }
-    return this.props.children
+    return children
   }
 }

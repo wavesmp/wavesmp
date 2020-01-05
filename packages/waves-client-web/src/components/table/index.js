@@ -333,7 +333,12 @@ export default class Table extends React.PureComponent {
       onItemEdit,
       draggable
     } = this.props
-    const { reorderTopIndex, reorderBottomIndex } = this.state
+    const {
+      reorderTopIndex,
+      reorderBottomIndex,
+      editingIndex,
+      editingTitle
+    } = this.state
     return (
       <div>
         <table className='table table-hover'>
@@ -393,8 +398,8 @@ export default class Table extends React.PureComponent {
                       sample={sample}
                       editable={
                         layout &&
-                        this.state.editingIndex === sample.index &&
-                        this.state.editingTitle === column.title
+                        editingIndex === sample.index &&
+                        editingTitle === column.title
                       }
                     />
                   ))}

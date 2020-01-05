@@ -50,7 +50,7 @@ module.exports = {
     'no-unused-vars': ['error', { varsIgnorePattern: '^_$' }],
     /* Use hoisting feature */
     'no-use-before-define': 'off',
-    'react/destructuring-assignment': 'off',
+    /* Allow js file extension with jsx */
     'react/jsx-filename-extension': 'off',
     /* Use props spreading */
     'react/jsx-props-no-spreading': 'off',
@@ -58,6 +58,7 @@ module.exports = {
     'react/no-danger': 'off',
     /* Avoid prop types for now. May want to look into TypeScript instead */
     'react/prop-types': 'off',
+    /* Allow different component method orderings */
     'react/sort-comp': 'off'
   }
 }

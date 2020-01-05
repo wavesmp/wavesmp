@@ -7,6 +7,7 @@ const COLUMN_NAME_ATTR = 'data-columnname'
 export default class ColumnSettings extends React.PureComponent {
   addColumn = ev => {
     const { actions } = this.props
+    /* eslint-disable-next-line react/destructuring-assignment */
     const columns = new Set(this.props.columns)
     const colToAdd = ev.currentTarget.getAttribute(COLUMN_NAME_ATTR)
     columns.add(colToAdd)
@@ -15,6 +16,7 @@ export default class ColumnSettings extends React.PureComponent {
 
   removeColumn = ev => {
     const { actions } = this.props
+    /* eslint-disable-next-line react/destructuring-assignment */
     const columns = new Set(this.props.columns)
     const colToDelete = ev.currentTarget.getAttribute(COLUMN_NAME_ATTR)
     columns.delete(colToDelete)

@@ -29,16 +29,18 @@ class PrivateRoute extends React.PureComponent {
   }
 
   onLoadingTimeout = () => {
-    if (this.props.account.fetchingUser) {
+    const { account } = this.props
+    if (account.fetchingUser) {
       this.setState({ loading: true })
     }
   }
 
   renderRoute = routeProps => {
     const { account, component: Component } = this.props
+    const { loading } = this.state
     const { fetchingUser, user } = account
     if (fetchingUser) {
-      if (this.state.loading) {
+      if (loading) {
         return <LoadingComponent />
       }
       /* May want to display loading icon if this takes long */
@@ -75,16 +77,18 @@ class PublicRoute extends React.PureComponent {
   }
 
   onLoadingTimeout = () => {
-    if (this.props.account.fetchingUser) {
+    const { account } = this.props
+    if (account.fetchingUser) {
       this.setState({ loading: true })
     }
   }
 
   renderRoute = routeProps => {
     const { account, component: Component } = this.props
+    const { loading } = this.state
     const { fetchingUser, user } = account
     if (fetchingUser) {
-      if (this.state.loading) {
+      if (loading) {
         return <LoadingComponent />
       }
       return null

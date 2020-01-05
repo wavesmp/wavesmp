@@ -5,7 +5,7 @@ import './index.css'
 
 class ContentPage extends React.PureComponent {
   render() {
-    const { title, sidebar, isSliderVisible, layout } = this.props
+    const { children, title, sidebar, isSliderVisible, layout } = this.props
     let className
     /* Usually, transitions are enabled on this element. However,
      * disable the transitions when moving from layouts, so that
@@ -32,7 +32,7 @@ class ContentPage extends React.PureComponent {
           <div className='contentpage-title'>
             <h1>{title}</h1>
           </div>
-          {this.props.children}
+          {children}
         </div>
       </div>
     )
