@@ -14,7 +14,7 @@ export default class SelectSettings extends React.PureComponent {
 
   onRowsPerPageChange = ev => {
     const { actions } = this.props
-    const rowsPerPage = parseInt(ev.target.value)
+    const rowsPerPage = parseInt(ev.target.value, 10)
     actions.accountSetSettings({ rowsPerPage })
   }
 

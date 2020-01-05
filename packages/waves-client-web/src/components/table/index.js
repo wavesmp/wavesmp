@@ -63,9 +63,8 @@ export default class Table extends React.PureComponent {
       this.onShowMenuOptions,
       LONG_PRESS_THRESHOLD
     )
-    const itemIndex = parseInt(
-      ev.currentTarget.getAttribute(constants.INDEX_ATTR)
-    )
+    const itemIndexAttr = ev.currentTarget.getAttribute(constants.INDEX_ATTR)
+    const itemIndex = parseInt(itemIndexAttr, 10)
     const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR)
     this.clearOnTouchEndIndex = itemIndex
     this.clearOnTouchEndTrackId = trackId
@@ -86,7 +85,8 @@ export default class Table extends React.PureComponent {
   onRowDoubleClick(ev) {
     const { actions, playlistName } = this.props
     const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR)
-    const index = parseInt(ev.currentTarget.getAttribute(constants.INDEX_ATTR))
+    const indexAttr = ev.currentTarget.getAttribute(constants.INDEX_ATTR)
+    const index = parseInt(indexAttr, 10)
     actions.trackToggle(trackId, playlistName, index)
   }
 
@@ -108,9 +108,8 @@ export default class Table extends React.PureComponent {
     /* Shift for select of consecutive elements
      * Alt for toggle of individually selected items
      * No modifier for single select */
-    const itemIndex = parseInt(
-      ev.currentTarget.getAttribute(constants.INDEX_ATTR)
-    )
+    const itemIndexAttr = ev.currentTarget.getAttribute(constants.INDEX_ATTR)
+    const itemIndex = parseInt(itemIndexAttr, 10)
     const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR)
 
     if (ev.altKey || menubar) {
@@ -217,17 +216,17 @@ export default class Table extends React.PureComponent {
     const { top, height } = ct.getBoundingClientRect()
     const midY = top + height / 2
     if (ev.clientY <= midY) {
-      const bottomIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR))
+      const bottomIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR), 10)
       const topIndex =
         ct.previousSibling &&
-        parseInt(ct.previousSibling.getAttribute(constants.INDEX_ATTR))
+        parseInt(ct.previousSibling.getAttribute(constants.INDEX_ATTR), 10)
       return { topIndex, bottomIndex }
     }
 
-    const topIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR))
+    const topIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR), 10)
     const bottomIndex =
       ct.nextSibling &&
-      parseInt(ct.nextSibling.getAttribute(constants.INDEX_ATTR))
+      parseInt(ct.nextSibling.getAttribute(constants.INDEX_ATTR), 10)
     return { topIndex, bottomIndex }
   }
 

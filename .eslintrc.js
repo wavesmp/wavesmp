@@ -40,7 +40,7 @@ module.exports = {
     'no-unused-vars': ['error', { varsIgnorePattern: '^_$' }],
     /* Use hoisting feature */
     'no-use-before-define': 'off',
-    radix: 'off',
+    /* Avoid prop types for now. May want to look into TypeScript instead */
     'react/prop-types': 'off'
   }
 }
