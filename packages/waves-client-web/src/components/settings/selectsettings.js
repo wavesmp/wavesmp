@@ -39,7 +39,7 @@ export default class SelectSettings extends React.PureComponent {
       libraryAscending
     } = this.props
     return (
-      <React.Fragment>
+      <>
         <div className='settings-columns'>
           <div className='settings-column'>
             <label>Theme</label>
@@ -119,7 +119,7 @@ export default class SelectSettings extends React.PureComponent {
           </div>
           <div className='settings-column' />
         </div>
-      </React.Fragment>
+      </>
     )
   }
 }

@@ -41,10 +41,10 @@ class PlaylistAdd extends React.PureComponent {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Back onClick={this.onBackClick} />
         {this.getPlaylistAddItems()}
-      </React.Fragment>
+      </>
     )
   }
 }

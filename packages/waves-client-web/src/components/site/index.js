@@ -16,12 +16,12 @@ class Site extends React.PureComponent {
     const { actions, err, location, history, theme, toasts } = this.props
     return (
       <Boundary err={err}>
-        <React.Fragment>
+        <>
           <MenuBar />
           <SignIn actions={actions} location={location} history={history} />
           <Preview theme={theme} />
           <Toasts actions={actions} toasts={toasts} />
-        </React.Fragment>
+        </>
       </Boundary>
     )
   }

@@ -87,7 +87,7 @@ class Track extends React.PureComponent {
   render() {
     const { bulk, playlistName } = this.props
     return (
-      <React.Fragment>
+      <>
         {!bulk && this.getPlayOrPauseAction()}
 
         {playlistName !== NOW_PLAYING_NAME && playlistName !== UPLOADS_NAME && (
@@ -103,7 +103,7 @@ class Track extends React.PureComponent {
         )}
 
         {this.getRemoveAction()}
-      </React.Fragment>
+      </>
     )
   }
 }

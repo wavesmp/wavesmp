@@ -54,7 +54,7 @@ export class State extends React.PureComponent {
       case 'pending':
         return this.renderIcon('fa-spinner fa-pulse')
       case 'uploading':
-        return <React.Fragment>{`${sample.uploadProgress}%`}</React.Fragment>
+        return <>{`${sample.uploadProgress}%`}</>
       default:
         return this.renderIcon('fa-check-circle common-table-status-ok')
     }

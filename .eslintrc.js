@@ -52,8 +52,9 @@ module.exports = {
     'no-use-before-define': 'off',
     'react/destructuring-assignment': 'off',
     'react/jsx-filename-extension': 'off',
-    'react/jsx-fragments': 'off',
+    /* Use props spreading */
     'react/jsx-props-no-spreading': 'off',
+    /* Ignore dangerous function warning */
     'react/no-danger': 'off',
     /* Avoid prop types for now. May want to look into TypeScript instead */
     'react/prop-types': 'off',

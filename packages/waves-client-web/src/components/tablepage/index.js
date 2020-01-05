@@ -75,7 +75,7 @@ class TablePageData extends React.PureComponent {
       return <h3 className='tablepage-msg'>{noDataMsg}</h3>
     }
     return (
-      <React.Fragment>
+      <>
         <TableBar
           buttons={buttons}
           pathname={pathname}
@@ -85,7 +85,7 @@ class TablePageData extends React.PureComponent {
           history={history}
         />
         <Table {...other} pathname={pathname} qp={qp} numItems={numItems} />
-      </React.Fragment>
+      </>
     )
   }
 }

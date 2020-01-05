@@ -30,10 +30,10 @@ export default class Modal extends React.PureComponent {
     const { type, props } = modal
     const Component = MODALS[type]
     return (
-      <React.Fragment>
+      <>
         <div className='fixed-full-page modal-backdrop' />
         <Component history={history} location={location} {...props} />
-      </React.Fragment>
+      </>
     )
   }
 }
