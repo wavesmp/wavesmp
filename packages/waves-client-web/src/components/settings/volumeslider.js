@@ -33,12 +33,10 @@ export default class VolumeSlider extends React.PureComponent {
     if (volume > 0) {
       this.resetVolumeVal = volume
       actions.setVolume(0)
+    } else if (this.resetVolumeVal) {
+      actions.setVolume(this.resetVolumeVal)
     } else {
-      if (this.resetVolumeVal) {
-        actions.setVolume(this.resetVolumeVal)
-      } else {
-        actions.setVolume(0.05)
-      }
+      actions.setVolume(0.05)
     }
   }
 

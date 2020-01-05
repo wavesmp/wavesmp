@@ -35,14 +35,10 @@ function addMissingTags(item) {
       const [artist, title] = parts
       item.artist = item.artist || artist.trim()
       item.title = item.title || title.trim()
+    } else if (item.title) {
+      item.artist = fileName.trim()
     } else {
-      if (!item.title) {
-        item.title = fileName.trim()
-        item.artist = item.artist || `Unknown artist`
-      } else {
-        item.artist = fileName.trim()
-        item.title = item.title || `Unknown title`
-      }
+      item.title = fileName.trim()
     }
   }
   const tag = 'genre'

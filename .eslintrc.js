@@ -21,13 +21,16 @@ module.exports = {
   rules: {
     /* For implmenting interfaces, methods without `this` may be needed */
     'class-methods-use-this': 'off',
+    /* for-in loops without guard is fine for simple objects */
     'guard-for-in': 'off',
+    /* Seeing import warning due to this being a monorepo */
     'import/no-extraneous-dependencies': 'off',
+    /* Allow multiple classes for convenience */
     'max-classes-per-file': 'off',
     'no-await-in-loop': 'off',
+    /* Allow console for debugging */
     'no-console': 'off',
     'no-continue': 'off',
-    'no-lonely-if': 'off',
     'no-nested-ternary': 'off',
     'no-param-reassign': 'off',
     'no-restricted-syntax': 'off',
