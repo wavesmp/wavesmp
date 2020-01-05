@@ -53,7 +53,7 @@ export default async (store, ws, player, localState, history) => {
   }
   layout0Mql.addEventListener('change', onLayout0)
   layout1Mql.addEventListener('change', onLayout1)
-  layout = layout1Mql.matches ? 2 : layout0Mql.matches ? 1 : 0
+  layout = getInitialLayout(layout0Mql, layout1Mql)
   store.dispatch(WavesActions.layoutSet(layout))
 
   document.addEventListener('keydown', ev => {
@@ -96,4 +96,14 @@ export default async (store, ws, player, localState, history) => {
   } else {
     store.dispatch(WavesActions.accountSetFetchingUser(false))
   }
+}
+
+function getInitialLayout(layout0Mql, layout1Mql) {
+  if (layout1Mql.matches) {
+    return 2
+  }
+  if (layout0Mql.matches) {
+    return 1
+  }
+  return 0
 }

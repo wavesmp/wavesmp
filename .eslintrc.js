@@ -31,7 +31,6 @@ module.exports = {
     /* Allow console for debugging */
     'no-console': 'off',
     'no-continue': 'off',
-    'no-nested-ternary': 'off',
     'no-param-reassign': 'off',
     'no-restricted-syntax': 'off',
     'no-shadow': 'off',
