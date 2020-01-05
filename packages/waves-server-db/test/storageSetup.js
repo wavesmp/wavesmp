@@ -27,7 +27,7 @@ class StorageSetup {
       Image: DB_CONTAINER_IMAGE_NAME,
       Cmd: DB_CONTAINER_CMD,
       ExposedPorts: {
-        [DB_CONTAINER_PORT + '/tcp']: {}
+        [`${DB_CONTAINER_PORT}/tcp`]: {}
       },
       HostConfig: {
         NetworkMode: 'host'
@@ -62,7 +62,7 @@ class StorageSetup {
   async cleanTestDb() {
     const containers = await this.docker.listContainers()
     const dbContainers = containers
-      .filter(c => c.Names.indexOf('/' + DB_CONTAINER_NAME) > -1)
+      .filter(c => c.Names.indexOf(`/${DB_CONTAINER_NAME}`) > -1)
       .map(
         /* Create container entity. Does not query API */
         c => this.docker.getContainer(c.Id)

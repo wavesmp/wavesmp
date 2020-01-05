@@ -68,7 +68,7 @@ class TracksDeleteModal extends React.PureComponent {
     const { deleting } = this.state
     const deleteTitle = deleting ? 'Deleting' : 'Delete'
     const plurality = selection.size > 1 ? 's' : ''
-    const title = 'Delete track' + plurality
+    const title = `Delete track${plurality}`
     const message = `This will delete the track${plurality} below. Are you sure?`
     return (
       <Modal

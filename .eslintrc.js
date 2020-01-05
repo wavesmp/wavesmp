@@ -32,12 +32,14 @@ module.exports = {
     'no-console': 'off',
     'no-continue': 'off',
     'no-param-reassign': 'off',
+    /* Don't restrict features such as for-of loops
+     * See https://github.com/airbnb/javascript/issues/1271 */
     'no-restricted-syntax': 'off',
     'no-shadow': 'off',
     'no-underscore-dangle': 'off',
     'no-unused-vars': ['error', { varsIgnorePattern: '^_$' }],
+    /* Use hoisting feature */
     'no-use-before-define': 'off',
-    'prefer-template': 'off',
     radix: 'off',
     'react/prop-types': 'off'
   }

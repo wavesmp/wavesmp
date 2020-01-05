@@ -22,11 +22,15 @@ class S3Client {
       WebIdentityToken: token
     })
 
-    this.baseUrl = idp + '/' + idpId + '/'
+    this.baseUrl = `${idp}/${idpId}/`
+  }
+
+  getTrackKey(trackId) {
+    return `${this.baseUrl}${trackId}.mp3`
   }
 
   getSignedUrl(trackId) {
-    const objKey = this.baseUrl + trackId + '.mp3'
+    const objKey = this.getTrackKey(trackId)
     const params = {
       Key: objKey
       // TODO these are probably used for put...
@@ -50,7 +54,7 @@ class S3Client {
 
   // TODO support multiple file types
   putTrack(trackId, file) {
-    const objKey = this.baseUrl + trackId + '.mp3'
+    const objKey = this.getTrackKey(trackId)
     const params = {
       Key: objKey,
       Body: file,
@@ -71,7 +75,7 @@ class S3Client {
   // TODO not used at the moment
   putImage(trackId, picture) {
     const { data, format } = picture
-    const objKey = this.baseUrl + trackId + '.' + format
+    const objKey = `${this.baseUrl}${trackId}.${format}`
 
     // AWS.putObject does not support promise:
     // https://github.com/aws/aws-sdk-js/issues/1008
@@ -109,7 +113,7 @@ class S3Client {
     }
     const keyToTrack = {}
     for (const track of tracks) {
-      keyToTrack[this.baseUrl + track.id + '.mp3'] = track
+      keyToTrack[this.getTrackKey(track.id)] = track
     }
     const params = {
       Delete: {
