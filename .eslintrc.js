@@ -19,8 +19,8 @@ module.exports = {
   globals: getGlobals(),
   plugins: ['babel', 'react'],
   rules: {
+    /* For implmenting interfaces, methods without `this` may be needed */
     'class-methods-use-this': 'off',
-    'consistent-return': 'off',
     'guard-for-in': 'off',
     'import/no-extraneous-dependencies': 'off',
     'max-classes-per-file': 'off',

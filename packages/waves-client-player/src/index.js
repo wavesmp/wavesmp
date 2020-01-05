@@ -77,6 +77,7 @@ class Player {
        * Return the first one */
       return player.getVolume()
     }
+    return null
   }
 
   setVolume(volume) {

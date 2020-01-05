@@ -50,7 +50,8 @@ function reducerSelection(playlist, action) {
       selection.delete(index)
       return { ...playlist, selection }
     }
-    // no default
+    default:
+      throw new Error(`Unexpected action type ${action.type}`)
   }
 }
 

@@ -67,7 +67,7 @@ async function _tryAutoLogin(dispatch, idp, auth, player, ws) {
   if (!authResp) {
     /* Not logged in */
     dispatch({ type: types.ACCOUNT_LOGIN, user: null })
-    return
+    return null
   }
   const { token } = authResp
 
