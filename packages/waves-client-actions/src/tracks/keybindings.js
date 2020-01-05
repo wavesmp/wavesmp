@@ -48,6 +48,7 @@ function tracksKeyDown(ev, history) {
         }
         playlistKeyDown(ev, history, dispatch, key, playlistName, props)
       }
+      // no default
     }
   }
 }
@@ -134,6 +135,7 @@ function playlistKeyDown(ev, history, dispatch, key, playlistName, props) {
         }
       }
     }
+    // no default
   }
 }
 

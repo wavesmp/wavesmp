@@ -18,7 +18,7 @@ function init(storage, defaultConfig) {
 function removeUnknownItems(storage) {
   for (let i = 0; i < storage.length; i += 1) {
     const key = storage.key(i)
-    if (key != CONFIG_KEY && !key.startsWith('@')) {
+    if (key !== CONFIG_KEY && !key.startsWith('@')) {
       console.log(`Removing unknown entry in storage: ${key}`)
       storage.removeItem(key)
     }

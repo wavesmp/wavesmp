@@ -11,7 +11,8 @@ function toastRemove(id) {
 
 function toastAdd(toast) {
   return dispatch => {
-    toast.id = ++id
+    id += 1
+    toast.id = id
     dispatch({ type: types.TOAST_ADD, toast })
     setTimeout(
       () => dispatch(toastRemove(toast.id)),

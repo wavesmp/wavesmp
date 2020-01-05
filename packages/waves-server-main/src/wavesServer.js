@@ -32,19 +32,19 @@ class Server {
       [types.PLAYLIST_ADD]: async (ws, user, data) => {
         log.info('Track added to playlist')
         const { playlistName, trackIds } = data
-        return await this.storage.playlistAdd(user, playlistName, trackIds)
+        return this.storage.playlistAdd(user, playlistName, trackIds)
       },
 
       [types.TRACKS_REMOVE]: async (ws, user, data) => {
         log.info('Track removed from playlist')
         const { playlistName, selection } = data
-        return await this.storage.tracksRemove(user, playlistName, selection)
+        return this.storage.tracksRemove(user, playlistName, selection)
       },
 
       [types.PLAYLIST_REORDER]: async (ws, user, data) => {
         const { playlistName, selection, insertAt } = data
         log.info(`Reordering playlist ${playlistName}`)
-        return await this.storage.playlistReorder(
+        return this.storage.playlistReorder(
           user,
           playlistName,
           selection,

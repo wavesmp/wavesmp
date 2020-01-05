@@ -138,8 +138,8 @@ export default class Table extends React.PureComponent {
       return
     }
 
-    let isSelected = selection.has(itemIndex)
-    let isContextMenu = ev.button === CONTEXT_MENU_BUTTON
+    const isSelected = selection.has(itemIndex)
+    const isContextMenu = ev.button === CONTEXT_MENU_BUTTON
     if (!isSelected) {
       actions.selectionClearAndAdd(
         playlistName,

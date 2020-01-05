@@ -142,17 +142,17 @@ class S3Player {
   }
 
   async deleteTracks(tracks) {
-    return await this.client.deleteTracks(tracks)
+    return this.client.deleteTracks(tracks)
   }
 }
 
 // Taken from https://github.com/PixelsCommander/Download-File-JS
 function downloadFile(url) {
-  //Creating new link node.
+  // Creating new link node.
   const link = document.createElement('a')
   link.href = url
 
-  //Dispatching click event.
+  // Dispatching click event.
   const e = document.createEvent('MouseEvents')
   e.initEvent('click', true, true)
   link.dispatchEvent(e)

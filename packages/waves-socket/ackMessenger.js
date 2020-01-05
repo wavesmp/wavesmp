@@ -39,18 +39,18 @@ class AckMessenger {
         this.ackMessages[reqId].sentResolve = resolve
         this.ackMessages[reqId].sentTimeout = setTimeout(() => {
           delete this.ackMessages[reqId]
-          reject(`Message ${reqId} not sent in time`)
+          reject(new Error(`Message ${reqId} not sent in time`))
         }, ACK_MESSAGE_SEND_TIMEOUT)
       })
     }
 
-    return await sentPromise.then(() => {
+    return sentPromise.then(() => {
       const receivedPromise = new Promise((resolve, reject) => {
         this.ackMessages[reqId].receivedResolve = resolve
         this.ackMessages[reqId].receivedReject = reject
         this.ackMessages[reqId].receivedTimeout = setTimeout(() => {
           delete this.ackMessages[reqId]
-          reject(`Message ${reqId} not received in time`)
+          reject(new Error(`Message ${reqId} not received in time`))
         }, ACK_MESSAGE_RECEIVE_TIMEOUT)
       })
       return receivedPromise

@@ -13,7 +13,7 @@ const ICONS = {
 export default class Toasts extends React.PureComponent {
   onCloseClick = ev => {
     const { actions } = this.props
-    const toastId = parseInt(ev.currentTarget.getAttribute(TOAST_ID_ATTR))
+    const toastId = parseInt(ev.currentTarget.getAttribute(TOAST_ID_ATTR), 10)
     actions.toastRemove(toastId)
   }
 

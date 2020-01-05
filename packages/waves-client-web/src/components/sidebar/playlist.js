@@ -29,7 +29,7 @@ export default class PlaylistBar extends React.PureComponent {
     const playlistDst = ev.currentTarget.getAttribute(
       constants.PLAYLIST_NAME_ATTR
     )
-    if (playlistDst == '__new') {
+    if (playlistDst === '__new') {
       actions.modalSet({
         type: constants.modalTypes.PLAYLIST_CREATE,
         props: { playlistSrc }

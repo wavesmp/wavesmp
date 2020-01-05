@@ -29,7 +29,7 @@ class MainApp extends React.PureComponent {
   ancestorHasAttribute(node, key, val) {
     /* document object does not have parent node.
      * Can't just check for node here, since document
-     * does not have getAttribute method*/
+     * does not have getAttribute method */
     while (node.parentNode) {
       if (node.getAttribute(key) === val) {
         return true

@@ -9,9 +9,9 @@ class Auth {
     this.idps = {}
     for (const idp in idps) {
       const idpArgs = idps[idp]
-      const idpClass = idpClasses[idp]
+      const IdpClass = idpClasses[idp]
 
-      this.idps[idp] = new idpClass(idpArgs)
+      this.idps[idp] = new IdpClass(idpArgs)
     }
   }
 
@@ -20,7 +20,7 @@ class Auth {
     if (!idpAuth) {
       throw new Error(`Invalid identity provider: ${idp}`)
     }
-    return await idpAuth.login(token)
+    return idpAuth.login(token)
   }
 }
 

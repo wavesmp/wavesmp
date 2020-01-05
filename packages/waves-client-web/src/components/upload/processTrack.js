@@ -31,7 +31,7 @@ function addMissingTags(item) {
   if (!item.title || !item.artist) {
     const fileName = trimFileExt(item.file.name.trim())
     const parts = fileName.split('-')
-    if (parts.length == 2) {
+    if (parts.length === 2) {
       const [artist, title] = parts
       item.artist = item.artist || artist.trim()
       item.title = item.title || title.trim()

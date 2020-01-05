@@ -73,14 +73,14 @@ class Upload extends React.PureComponent {
 
   onFileSelect = ev => {
     /* Files should only be valid types due to the input accept clause */
-    const files = ev.currentTarget.files
+    const { files } = ev.currentTarget
     this.processFiles(files)
   }
 
   /* Wrap the processTrack call, and handle errors */
   async wrapProcessTrack(file) {
     try {
-      return await processTrack(file)
+      return processTrack(file)
     } catch (err) {
       const { actions } = this.props
       actions.toastErr(`${file.name}: Failed to read track info: ${err}`)

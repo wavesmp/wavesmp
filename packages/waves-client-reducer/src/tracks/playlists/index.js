@@ -62,7 +62,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
     }
     case actionTypes.PLAYLISTS_UPDATE: {
       const { update } = action
-      let newPlaylists = { ...playlists }
+      const newPlaylists = { ...playlists }
 
       for (const newPlaylist of update) {
         const { name } = newPlaylist
@@ -85,7 +85,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const { id, source } = track
       const newPlaylists = { ...playlists }
 
-      /* Remove play id from old playlist, if it exists*/
+      /* Remove play id from old playlist, if it exists */
       const oldPlaylist = newPlaylists[oldPlaylistName]
       if (oldPlaylist) {
         newPlaylists[oldPlaylistName] = { ...oldPlaylist, index: null }

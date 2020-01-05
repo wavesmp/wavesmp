@@ -37,7 +37,7 @@ function reducerSelection(playlist, action) {
           continue
         }
         selection.set(item.index, item.id)
-        if (item.index == endIndex || item.index === startIndex) {
+        if (item.index === endIndex || item.index === startIndex) {
           break
         }
       }
@@ -50,6 +50,7 @@ function reducerSelection(playlist, action) {
       selection.delete(index)
       return { ...playlist, selection }
     }
+    // no default
   }
 }
 

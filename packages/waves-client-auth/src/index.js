@@ -9,24 +9,24 @@ class Auth {
     this.idps = {}
     for (const idp in idps) {
       const idpArgs = idps[idp]
-      const idpClass = idpClasses[idp]
+      const IdpClass = idpClasses[idp]
 
-      this.idps[idp] = new idpClass(idpArgs)
+      this.idps[idp] = new IdpClass(idpArgs)
     }
   }
 
   async signIn(idp) {
-    return await this.idps[idp].signIn()
+    return this.idps[idp].signIn()
   }
 
   async signOut(idp) {
-    return await this.idps[idp].signOut()
+    return this.idps[idp].signOut()
   }
 
   /* If the user is already logged in, return the token.
    * Otherwise, return null */
   async tryAutoLogin(idp) {
-    return await this.idps[idp].tryAutoLogin()
+    return this.idps[idp].tryAutoLogin()
   }
 }
 

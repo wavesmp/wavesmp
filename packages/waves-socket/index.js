@@ -93,7 +93,7 @@ class WavesSocket {
 
   async sendAckedMessage(type, data) {
     this.reconnectIfClosed()
-    return await this.ackMsgr.send(this.ws, { type, data })
+    return this.ackMsgr.send(this.ws, { type, data })
   }
 
   sendBestEffortMessage(type, data) {

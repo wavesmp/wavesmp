@@ -2,8 +2,6 @@ const { assert } = require('chai')
 const { URLSearchParams } = require('url')
 const sinon = require('sinon')
 
-const actions = require('../../src/tracks')
-
 const types = require('waves-action-types')
 const {
   LIBRARY_NAME,
@@ -19,6 +17,8 @@ const {
   TEST_TRACK1: baseTrack1,
   TEST_TRACK2: baseTrack2
 } = require('waves-test-data')
+
+const actions = require('../../src/tracks')
 
 const SEARCH_QUERY_KEY = 'search'
 const libName = 'testLibName'
@@ -124,7 +124,7 @@ describe('#tracks()', async () => {
     dispatchMock.once().withExactArgs({
       type: types.TRACK_NEXT,
       nextTrack: expectedTrack,
-      playlistName: playlistName
+      playlistName
     })
 
     const wsMock = sinon.mock(ws)
@@ -184,7 +184,7 @@ describe('#tracks()', async () => {
     dispatchMock.once().withExactArgs({
       type: types.TRACK_NEXT,
       nextTrack: expectedTrack1,
-      playlistName: playlistName
+      playlistName
     })
 
     const isPlaying = true
@@ -421,7 +421,7 @@ describe('#tracks()', async () => {
   it('#tracksInfoUpdate()', async () => {
     const ws = new WavesSocket(() => ({}))
 
-    const id = track1.id
+    const { id } = track1
     const key = 'title'
     const value = 'newTitle'
     const action = {

@@ -1,6 +1,11 @@
 const { ObjectID } = require('mongodb')
 
 const { assertThrows, generateString } = require('waves-test-util')
+const {
+  TEST_TRACK1,
+  TEST_TRACK2,
+  TEST_PLAYLIST_NAME1
+} = require('waves-test-data')
 
 const {
   validateSelection,
@@ -14,12 +19,6 @@ const {
   MAX_DURATION,
   MIN_DURATION
 } = require('../validators')
-
-const {
-  TEST_TRACK1,
-  TEST_TRACK2,
-  TEST_PLAYLIST_NAME1
-} = require('waves-test-data')
 
 const TEST_TRACKS = [TEST_TRACK1, TEST_TRACK2]
 const TEST_PROP = 'testProp'

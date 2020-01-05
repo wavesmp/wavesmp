@@ -37,7 +37,7 @@ export default class PaginationButtons extends React.PureComponent {
       }
       qp.set('page', pageNum)
       paginationButtons.push({
-        className: className,
+        className,
         search: `${qp}`,
         pageNum
       })

@@ -8,7 +8,7 @@ const {
 } = require('waves-client-constants')
 
 function shouldAddToDefaultPlaylist(playlistName) {
-  return playlistName !== NOW_PLAYING_NAME && playlistName != UPLOADS_NAME
+  return playlistName !== NOW_PLAYING_NAME && playlistName !== UPLOADS_NAME
 }
 
 function normalizeTrack(track, index) {

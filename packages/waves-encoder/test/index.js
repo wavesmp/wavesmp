@@ -1,5 +1,6 @@
-const Encoder = require('../')
 const { assert } = require('chai')
+
+const Encoder = require('../')
 
 describe('Encoder', () => {
   const encoder = new Encoder()

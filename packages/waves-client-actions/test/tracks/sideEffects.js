@@ -5,13 +5,12 @@ const sinon = require('sinon')
 const types = require('waves-action-types')
 const { LIBRARY_NAME, toastTypes } = require('waves-client-constants')
 const Player = require('waves-client-player')
-
-const actions = require('../../src/tracks/sideEffects')
-
 const {
   TEST_TRACK1: baseTrack1,
   TEST_TRACK2: baseTrack2
 } = require('waves-test-data')
+
+const actions = require('../../src/tracks/sideEffects')
 
 const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }

@@ -24,17 +24,16 @@ class CreatePlaylistModal extends React.PureComponent {
     if (numItems) {
       actions.playlistAdd(playlistSrc, name)
       return true
-    } else {
-      try {
-        await actions.playlistCreate(name)
-      } catch (err) {
-        actions.toastErr(`${err}`)
-        console.log(`Error creating playlist: ${err}`)
-        return false
-      }
-      actions.toastSuccess('Created playlist')
-      return true
     }
+    try {
+      await actions.playlistCreate(name)
+    } catch (err) {
+      actions.toastErr(`${err}`)
+      console.log(`Error creating playlist: ${err}`)
+      return false
+    }
+    actions.toastSuccess('Created playlist')
+    return true
   }
 
   getTitle() {

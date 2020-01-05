@@ -21,6 +21,7 @@ function parseConfig() {
   const { configFile } = args
 
   try {
+    /* eslint-disable-next-line global-require, import/no-dynamic-require */
     const overrideConfig = require(configFile)
     log.debug(`Using config file: ${configFile}`)
     return { ...baseConfig, ...overrideConfig }

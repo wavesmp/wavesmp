@@ -30,7 +30,6 @@ export default class ContentEditable extends React.Component {
     if (key === 'Enter') {
       this.spanRef.current.blur()
       ev.preventDefault()
-      return
     }
   }
 
