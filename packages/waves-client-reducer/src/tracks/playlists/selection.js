@@ -25,20 +25,18 @@ function reducerSelection(playlist, action) {
       let startSelection = false
 
       for (const item of displayItems) {
-        if (
-          !startSelection &&
-          (item.index === startIndex || item.index === endIndex)
-        ) {
+        if (startSelection) {
+          selection.set(item.index, item.id)
+          if (item.index === endIndex || item.index === startIndex) {
+            break
+          }
+        } else if (item.index === startIndex || item.index === endIndex) {
           startSelection = true
           selection.set(item.index, item.id)
-          continue
-        }
-        if (!startSelection) {
-          continue
-        }
-        selection.set(item.index, item.id)
-        if (item.index === endIndex || item.index === startIndex) {
-          break
+
+          if (item.index === startIndex && item.index === endIndex) {
+            break
+          }
         }
       }
       return { ...playlist, selection }

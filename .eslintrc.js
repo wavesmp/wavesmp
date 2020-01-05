@@ -27,16 +27,20 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     /* Allow multiple classes for convenience */
     'max-classes-per-file': 'off',
+    /* Allow awaits in loops */
     'no-await-in-loop': 'off',
     /* Allow console for debugging */
     'no-console': 'off',
-    'no-continue': 'off',
+    /* Allow parameter modifying/reassigning */
     'no-param-reassign': 'off',
     /* Don't restrict features such as for-of loops
      * See https://github.com/airbnb/javascript/issues/1271 */
     'no-restricted-syntax': 'off',
+    /* Use shadowing feature */
     'no-shadow': 'off',
+    /* Allow dangling underscore in identifiers */
     'no-underscore-dangle': 'off',
+    /* Update ignored var pattern */
     'no-unused-vars': ['error', { varsIgnorePattern: '^_$' }],
     /* Use hoisting feature */
     'no-use-before-define': 'off',

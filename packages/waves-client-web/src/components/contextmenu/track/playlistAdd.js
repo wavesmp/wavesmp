@@ -25,16 +25,15 @@ class PlaylistAdd extends React.PureComponent {
     const items = []
 
     for (const playlist in playlists) {
-      if (isInternalPlaylist(playlist)) {
-        continue
+      if (!isInternalPlaylist(playlist)) {
+        items.push(
+          <PlaylistAddItem
+            key={playlist}
+            name={playlist}
+            onPlaylistAdd={this.onPlaylistAdd}
+          />
+        )
       }
-      items.push(
-        <PlaylistAddItem
-          key={playlist}
-          name={playlist}
-          onPlaylistAdd={this.onPlaylistAdd}
-        />
-      )
     }
 
     return items

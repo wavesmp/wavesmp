@@ -85,10 +85,9 @@ class Storage {
     }
     const failedItems = []
     for (let i = 0; i < items.length; i += 1) {
-      if (i in insertedIds) {
-        continue
+      if (!(i in insertedIds)) {
+        failedItems.push(items[i])
       }
-      failedItems.push(items[i])
     }
 
     console.log('insertMany() failed. Failed Docs:')
