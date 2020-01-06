@@ -2,25 +2,34 @@ import React from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
 import { Link } from 'react-router-dom'
 
-import { routes } from 'waves-client-constants'
+import { menuTypes, routes } from 'waves-client-constants'
 
 import './index.css'
-import Notifications from './notifications'
 import TrackPlayer from './trackplayer'
 import TrackSlider from './trackslider'
-import UserSettings from './userSettings'
 import LogoSvg from '../common/logo-wide.svg'
 
 let prevPlayerVisible = false
 
 export default class MenuBar extends React.PureComponent {
+  onNotificationsClick = ev => {
+    const { actions } = this.props
+    actions.menuSetElem({ ev, type: menuTypes.NOTIFICATIONS })
+  }
+
+  onUserSettingsClick = ev => {
+    const { actions, history } = this.props
+    actions.menuSetElem({
+      ev,
+      type: menuTypes.USER_SETTINGS,
+      props: { history }
+    })
+  }
+
   render() {
     const {
       actions,
-      dropdown,
       playing,
-      history,
-      userName,
       layout,
       menubar,
       filteredSelection,
@@ -82,12 +91,13 @@ export default class MenuBar extends React.PureComponent {
         >
           {trackPlayer}
         </CSSTransitionGroup>
-        <Notifications actions={actions} dropdown={dropdown} />
-        <UserSettings
-          actions={actions}
-          dropdown={dropdown}
-          history={history}
-          userName={userName}
+        <i
+          className='fa fa-lg fa-globe menubar-dropdown-icon'
+          onClick={this.onNotificationsClick}
+        />
+        <i
+          className='fa fa-lg fa-user menubar-dropdown-icon'
+          onClick={this.onUserSettingsClick}
         />
         <CSSTransitionGroup
           component='div'

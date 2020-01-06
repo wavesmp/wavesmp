@@ -6,7 +6,6 @@ import { Route } from 'react-router-dom'
 import * as WavesActions from 'waves-client-actions'
 import {
   TOGGLE_DATA_KEY,
-  DROPDOWN_DATA_VALUE,
   MODAL_DATA_VALUE,
   routes
 } from 'waves-client-constants'
@@ -40,17 +39,10 @@ class MainApp extends React.PureComponent {
   }
 
   onClick = ev => {
-    const { actions, menu, dropdown, modal } = this.props
+    const { actions, menu, modal } = this.props
     const { target } = ev
     if (menu.length !== 0) {
       actions.menuReset()
-    }
-
-    if (
-      dropdown &&
-      !this.ancestorHasAttribute(target, TOGGLE_DATA_KEY, DROPDOWN_DATA_VALUE)
-    ) {
-      actions.dropdownSet(null)
     }
 
     if (
@@ -74,14 +66,11 @@ class MainApp extends React.PureComponent {
       playing,
       actions,
       menu,
-      dropdown,
-      account,
       layout,
       location,
       history,
       toasts
     } = this.props
-    const { user } = account
     return (
       <Boundary err={err}>
         <div onClick={this.onClick}>
@@ -96,11 +85,9 @@ class MainApp extends React.PureComponent {
             playlists={playlists}
             playing={playing}
             pathname={location.pathname}
-            userName={user.name}
           />
           <MenuBar
             actions={actions}
-            dropdown={dropdown}
             layout={layout}
             menubar={menubar}
             filteredSelection={filteredSelection}
@@ -108,7 +95,6 @@ class MainApp extends React.PureComponent {
             playlistName={playlistName}
             playing={playing}
             history={history}
-            userName={user.name}
           />
           <Menu menu={menu} />
           <Modal history={history} location={location} modal={modal} />
@@ -132,9 +118,7 @@ function mapStateToProps(state, ownProps) {
     layout: state.layout,
     menubar,
     modal: state.modal,
-    toasts: state.toasts,
-    account: state.account,
-    dropdown: state.dropdown
+    toasts: state.toasts
   }
   if (menubar) {
     const playlistName = getPlaylistNameFromRoute(pathname)

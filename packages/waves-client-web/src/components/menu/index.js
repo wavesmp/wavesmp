@@ -4,12 +4,16 @@ import { menuTypes } from 'waves-client-constants'
 
 import Track from './track'
 import PlaylistAdd from './track/playlistAdd'
+import Notifications from './notifications'
+import UserSettings from './usersettings'
 
 import './index.css'
 
 const MENUS = {
   [menuTypes.TRACK]: Track,
-  [menuTypes.PLAYLIST_ADD]: PlaylistAdd
+  [menuTypes.PLAYLIST_ADD]: PlaylistAdd,
+  [menuTypes.NOTIFICATIONS]: Notifications,
+  [menuTypes.USER_SETTINGS]: UserSettings
 }
 
 const EMPTY_MENU = <menu className='menu' />

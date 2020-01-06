@@ -77,26 +77,22 @@
   }
 }
 
-.menubar-dropdown-icon-container {
+.menubar-dropdown-icon {
   margin: 20px 20px 0 0;
   list-style: none;
   font-size: 14px;
   float: right;
-  position: relative;
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease;
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 516px) {
-  .menubar-dropdown-icon-container {
+  .menubar-dropdown-icon {
     opacity: 1;
     pointer-events: auto;
   }
-}
-
-.menubar-dropdown-icon {
-  cursor: pointer;
 }
 
 .menubar-dropdown-menu {

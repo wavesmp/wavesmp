@@ -1,7 +1,6 @@
 const { combineReducers } = require('redux')
 
 const account = require('./account')
-const dropdown = require('./dropdown')
 const err = require('./err')
 const layout = require('./layout')
 const menu = require('./menu')
@@ -13,7 +12,6 @@ const tracks = require('./tracks')
 
 const combined = combineReducers({
   account,
-  dropdown,
   err,
   layout,
   menu,

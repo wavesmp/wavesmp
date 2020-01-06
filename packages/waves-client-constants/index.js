@@ -34,12 +34,9 @@ constants.modalTypes = keyMirror({
 
 constants.menuTypes = keyMirror({
   TRACK: null,
-  PLAYLIST_ADD: null
-})
-
-constants.dropdownTypes = keyMirror({
-  USER_SETTINGS: null,
-  NOTIFICATIONS: null
+  PLAYLIST_ADD: null,
+  NOTIFICATIONS: null,
+  USER_SETTINGS: null
 })
 
 constants.toastTypes = keyMirror({
@@ -57,7 +54,6 @@ constants.routes = {
   settings: '/settings'
 }
 
-constants.DROPDOWN_DATA_VALUE = 'dropdown'
 constants.MODAL_DATA_VALUE = 'modal'
 constants.TOGGLE_DATA_KEY = 'data-toggle'
 
