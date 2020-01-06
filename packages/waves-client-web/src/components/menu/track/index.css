@@ -1,0 +1,44 @@
+.menu-track-item {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+  border-color: var(--dropdown-color);
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-track-item:hover {
+  color: #262626;
+  background-color: var(--dropdown-color-light);
+}
+
+.menu-track-delete {
+  color: #696969;
+}
+
+.menu-track-remove {
+  color: #c11313;
+}
+
+.menu-track-play {
+  color: #52ca19;
+}
+.menu-track-pause {
+  color: #f17b10;
+}
+
+.menu-track-add {
+  color: #4aa3df;
+}
+
+.menu-track-download {
+  color: #505050;
+}
+
+.menu-track-back {
+  color: #4aa3df;
+}

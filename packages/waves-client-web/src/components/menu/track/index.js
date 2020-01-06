@@ -11,6 +11,8 @@ import {
   modalTypes
 } from 'waves-client-constants'
 
+import './index.css'
+
 import {
   NowPlayingAdd,
   PlayResume,

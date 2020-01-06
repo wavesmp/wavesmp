@@ -12,7 +12,7 @@ const MENUS = {
   [menuTypes.PLAYLIST_ADD]: PlaylistAdd
 }
 
-const EMPTY_MENU = <menu className='contextmenu' />
+const EMPTY_MENU = <menu className='menu' />
 
 /* Menu used is used for table rows */
 export default class Menu extends React.PureComponent {
@@ -28,7 +28,7 @@ export default class Menu extends React.PureComponent {
     const style = { transform }
 
     return (
-      <menu className='contextmenu contextmenu-active' style={style}>
+      <menu className='menu menu-active' style={style}>
         <Component {...props} />
       </menu>
     )

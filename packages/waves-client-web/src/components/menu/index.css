@@ -1,62 +1,17 @@
-.contextmenu {
+.menu {
   display: none;
   position: absolute;
   left: 0;
   top: 0;
   margin: 0px;
   padding: 5px 0px;
-  width: var(--contextmenu-width);
+  width: var(--menu-width);
   background-color: var(--dropdown-color);
   border: solid 1px #dfdfdf;
   box-shadow: 1px 1px 2px #cfcfcf;
   border-radius: 4px;
 }
 
-.contextmenu-active {
+.menu-active {
   display: block;
-}
-
-.contextmenu-item {
-  display: block;
-  padding: 3px 20px;
-  clear: both;
-  font-weight: 400;
-  line-height: 1.42857143;
-  color: #333;
-  white-space: nowrap;
-  border-color: var(--dropdown-color);
-  text-align: left;
-  cursor: pointer;
-}
-
-.contextmenu-item:hover {
-  color: #262626;
-  background-color: var(--dropdown-color-light);
-}
-
-.contextmenu-delete {
-  color: #696969;
-}
-
-.contextmenu-remove {
-  color: #c11313;
-}
-
-.contextmenu-play {
-  color: #52ca19;
-}
-.contextmenu-pause {
-  color: #f17b10;
-}
-
-.contextmenu-add {
-  color: #4aa3df;
-}
-
-.contextmenu-download {
-  color: #505050;
-}
-
-.contextmenu-back {
-  color: #4aa3df;
 }
