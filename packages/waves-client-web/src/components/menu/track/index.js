@@ -7,7 +7,7 @@ import {
   NOW_PLAYING_NAME,
   LIBRARY_NAME,
   UPLOADS_NAME,
-  contextmenuTypes,
+  menuTypes,
   modalTypes
 } from 'waves-client-constants'
 
@@ -49,8 +49,8 @@ class Track extends React.PureComponent {
 
   playlistAdd = ev => {
     const { actions, playlistName } = this.props
-    actions.contextmenuNext({
-      type: contextmenuTypes.PLAYLIST_ADD,
+    actions.menuNext({
+      type: menuTypes.PLAYLIST_ADD,
       props: { currentPlaylist: playlistName }
     })
     ev.preventDefault()

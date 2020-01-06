@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { contextmenuTypes } from 'waves-client-constants'
+import { menuTypes } from 'waves-client-constants'
 
 class TrackInfo extends React.PureComponent {
   render() {
@@ -46,9 +46,9 @@ class RightButtons extends React.PureComponent {
     } else {
       props.bulk = true
     }
-    actions.contextmenuSetElem({
+    actions.menuSetElem({
       ev,
-      type: contextmenuTypes.TRACK,
+      type: menuTypes.TRACK,
       props
     })
   }

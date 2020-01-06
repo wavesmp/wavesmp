@@ -6,7 +6,7 @@
     (var(--sidebar-width) + var(--playlistbar-width)) / 2
   );
   --trackslider-width: TRACKSLIDER_WIDTH;
-  --contextmenu-width: CONTEXTMENU_WIDTHpx;
+  --menu-width: MENU_WIDTHpx;
 }
 
 :root.theme-dark {

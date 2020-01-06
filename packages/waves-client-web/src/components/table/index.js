@@ -152,9 +152,9 @@ export default class Table extends React.PureComponent {
       /* In case we selected a new item at click time,
        * the operation is on a single item. */
       const bulk = isSelected && this.getFilteredSelection().size > 1
-      actions.contextmenuSet({
+      actions.menuSet({
         ev,
-        type: constants.contextmenuTypes.TRACK,
+        type: constants.menuTypes.TRACK,
         props: { itemIndex, trackId, bulk, playlistName, index }
       })
       ev.preventDefault()

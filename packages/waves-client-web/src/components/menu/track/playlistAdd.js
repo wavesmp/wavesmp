@@ -10,7 +10,7 @@ import { isInternalPlaylist } from '../../../util'
 class PlaylistAdd extends React.PureComponent {
   onBackClick = ev => {
     const { actions } = this.props
-    actions.contextmenuBack()
+    actions.menuBack()
     ev.preventDefault()
     ev.stopPropagation()
   }

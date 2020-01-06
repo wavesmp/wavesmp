@@ -32,7 +32,7 @@ constants.modalTypes = keyMirror({
   TRACKS_UPLOAD: null
 })
 
-constants.contextmenuTypes = keyMirror({
+constants.menuTypes = keyMirror({
   TRACK: null,
   PLAYLIST_ADD: null
 })

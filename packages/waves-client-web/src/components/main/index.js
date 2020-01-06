@@ -17,7 +17,7 @@ import Boundary from '../boundary'
 import SideBar from '../sidebar'
 import MenuBar from '../menubar/main'
 import Upload from '../upload'
-import ContextMenu from '../contextmenu'
+import Menu from '../menu'
 import Modal from '../modal'
 import NowPlaying from '../nowplaying'
 import Playlist from '../playlist'
@@ -40,10 +40,10 @@ class MainApp extends React.PureComponent {
   }
 
   onClick = ev => {
-    const { actions, contextmenu, dropdown, modal } = this.props
+    const { actions, menu, dropdown, modal } = this.props
     const { target } = ev
-    if (contextmenu.length !== 0) {
-      actions.contextmenuReset()
+    if (menu.length !== 0) {
+      actions.menuReset()
     }
 
     if (
@@ -73,7 +73,7 @@ class MainApp extends React.PureComponent {
       playlists,
       playing,
       actions,
-      contextmenu,
+      menu,
       dropdown,
       account,
       layout,
@@ -110,7 +110,7 @@ class MainApp extends React.PureComponent {
             history={history}
             userName={user.name}
           />
-          <ContextMenu contextmenu={contextmenu} />
+          <Menu menu={menu} />
           <Modal history={history} location={location} modal={modal} />
           <Toasts actions={actions} toasts={toasts} />
         </div>
@@ -127,7 +127,7 @@ function mapStateToProps(state, ownProps) {
     playlists: state.tracks.playlists,
     playing: state.tracks.playing,
     sidebar: state.sidebar,
-    contextmenu: state.contextmenu,
+    menu: state.menu,
     err: state.err,
     layout: state.layout,
     menubar,

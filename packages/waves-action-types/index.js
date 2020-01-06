@@ -1,10 +1,10 @@
 const keyMirror = require('keymirror')
 
 const actionTypes = keyMirror({
-  CONTEXTMENU_BACK: null,
-  CONTEXTMENU_NEXT: null,
-  CONTEXTMENU_RESET: null,
-  CONTEXTMENU_SET: null,
+  MENU_BACK: null,
+  MENU_NEXT: null,
+  MENU_RESET: null,
+  MENU_SET: null,
 
   ACCOUNT_LOGIN: null,
   ACCOUNT_SET_FETCHING_USER: null,

@@ -4,26 +4,26 @@ const actionTypes = require('waves-action-types')
 
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
 
-const contextmenu = require('../src/contextmenu')
+const menu = require('../src/menu')
 
 const menu1 = { transform: 'transform1' }
 
-describe('#contextmenu()', () => {
+describe('#menu()', () => {
   let state
   let action
 
   it('initial state', () => {
-    state = assertNewState(contextmenu, undefined, UNKNOWN_ACTION)
+    state = assertNewState(menu, undefined, UNKNOWN_ACTION)
     assert.isArray(state)
     assert.lengthOf(state, 0)
   })
 
   it('set', () => {
     action = {
-      type: actionTypes.CONTEXTMENU_SET,
+      type: actionTypes.MENU_SET,
       menu: menu1
     }
-    state = assertNewState(contextmenu, state, action)
+    state = assertNewState(menu, state, action)
 
     assert.isArray(state)
     assert.lengthOf(state, 1)
@@ -32,10 +32,10 @@ describe('#contextmenu()', () => {
 
   it('next', () => {
     action = {
-      type: actionTypes.CONTEXTMENU_NEXT,
+      type: actionTypes.MENU_NEXT,
       menu: {}
     }
-    state = assertNewState(contextmenu, state, action)
+    state = assertNewState(menu, state, action)
 
     assert.isArray(state)
     assert.lengthOf(state, 2)
@@ -44,8 +44,8 @@ describe('#contextmenu()', () => {
   })
 
   it('back', () => {
-    action = { type: actionTypes.CONTEXTMENU_BACK }
-    state = assertNewState(contextmenu, state, action)
+    action = { type: actionTypes.MENU_BACK }
+    state = assertNewState(menu, state, action)
 
     assert.isArray(state)
     assert.lengthOf(state, 1)
@@ -53,8 +53,8 @@ describe('#contextmenu()', () => {
   })
 
   it('reset', () => {
-    action = { type: actionTypes.CONTEXTMENU_RESET }
-    state = assertNewState(contextmenu, state, action)
+    action = { type: actionTypes.MENU_RESET }
+    state = assertNewState(menu, state, action)
     assert.isArray(state)
     assert.lengthOf(state, 0)
   })
