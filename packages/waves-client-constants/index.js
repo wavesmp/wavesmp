@@ -54,6 +54,7 @@ constants.routes = {
   settings: '/settings'
 }
 
+constants.MENU_DATA_VALUE = 'modal'
 constants.MODAL_DATA_VALUE = 'modal'
 constants.TOGGLE_DATA_KEY = 'data-toggle'
 

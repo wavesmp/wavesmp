@@ -10,34 +10,31 @@ class UserSettings extends React.PureComponent {
   signOut = () => {
     const { actions, history } = this.props
     actions.signOut()
+    actions.menuReset()
     history.push('/')
   }
-
-  items = [
-    <li key={0}>
-      <Link className='menubar-dropdown-item' to={routes.settings}>
-        Account Settings
-        <i className='fa fa-cog menubar-dropdown-item-icon' />
-      </Link>
-    </li>,
-    <li key={1}>
-      <div className='menubar-dropdown-item' onClick={this.signOut}>
-        Sign Out
-        <i className='fa fa-sign-out menubar-dropdown-item-icon' />
-      </div>
-    </li>
-  ]
 
   render() {
     const { userName } = this.props
     return (
-      <ul className='menubar-dropdown-menu'>
-        <li className='menubar-dropdown-header'>
+      <ul className='menu-bar'>
+        <li className='menu-bar-header'>
           {userName}
-          <i className='fa fa-user menubar-dropdown-item-icon' />
+          <i className='fa fa-user menu-bar-item-icon' />
         </li>
-        <li className='menubar-dropdown-divider' />
-        {this.items}
+        <li className='menu-bar-divider' />
+        <li>
+          <Link className='menu-bar-item' to={routes.settings}>
+            Account Settings
+            <i className='fa fa-cog menu-bar-item-icon' />
+          </Link>
+        </li>
+        <li>
+          <div className='menu-bar-item' onClick={this.signOut}>
+            Sign Out
+            <i className='fa fa-sign-out menu-bar-item-icon' />
+          </div>
+        </li>
       </ul>
     )
   }
@@ -45,8 +42,9 @@ class UserSettings extends React.PureComponent {
 
 function mapStateToProps(state) {
   const { account } = state
+  const { user } = account
   return {
-    userName: account.user.name
+    userName: user && user.name
   }
 }
 

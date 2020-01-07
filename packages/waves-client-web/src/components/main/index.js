@@ -6,6 +6,7 @@ import { Route } from 'react-router-dom'
 import * as WavesActions from 'waves-client-actions'
 import {
   TOGGLE_DATA_KEY,
+  MENU_DATA_VALUE,
   MODAL_DATA_VALUE,
   routes
 } from 'waves-client-constants'
@@ -38,10 +39,15 @@ class MainApp extends React.PureComponent {
     return false
   }
 
+  /* Add top-level click handler to dismiss overlay (e.g. modal or menu) */
   onClick = ev => {
     const { actions, menu, modal } = this.props
     const { target } = ev
-    if (menu.length !== 0) {
+
+    if (
+      menu.length &&
+      !this.ancestorHasAttribute(target, TOGGLE_DATA_KEY, MENU_DATA_VALUE)
+    ) {
       actions.menuReset()
     }
 
@@ -73,7 +79,7 @@ class MainApp extends React.PureComponent {
     } = this.props
     return (
       <Boundary err={err}>
-        <div onClick={this.onClick}>
+        <div onClick={this.onClick} onContextMenu={this.onContextMenu}>
           <Route path={routes.nowplaying} component={NowPlaying} />
           <Route path={routes.library} component={Library} />
           <Route path={routes.upload} component={Upload} />

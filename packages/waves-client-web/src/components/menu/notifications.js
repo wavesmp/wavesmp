@@ -10,36 +10,32 @@ class Notifications extends React.PureComponent {
     actions.toastErr('Feature Unavailable')
   }
 
-  items = [
-    <li key={0}>
-      <div className='menubar-dropdown-item' onClick={this.onUnsupportedClick}>
-        File name mismatches
-        <i className='fa fa-file-text menubar-dropdown-item-icon' />
-      </div>
-    </li>,
-    <li key={1}>
-      <div className='menubar-dropdown-item' onClick={this.onUnsupportedClick}>
-        Missing metadata
-        <i className='fa fa-tags menubar-dropdown-item-icon' />
-      </div>
-    </li>,
-    <li key={2}>
-      <div className='menubar-dropdown-item' onClick={this.onUnsupportedClick}>
-        Missing files
-        <i className='fa fa-file-o menubar-dropdown-item-icon' />
-      </div>
-    </li>
-  ]
-
   render() {
     return (
-      <ul className='menubar-dropdown-menu'>
-        <li className='menubar-dropdown-header'>
+      <ul className='menu-bar'>
+        <li className='menu-bar-header'>
           Notifications
-          <i className='fa fa-globe menubar-dropdown-item-icon' />
+          <i className='fa fa-globe menu-bar-item-icon' />
         </li>
-        <li className='menubar-dropdown-divider' />
-        {this.items}
+        <li className='menu-bar-divider' />
+        <li>
+          <div className='menu-bar-item' onClick={this.onUnsupportedClick}>
+            File name mismatches
+            <i className='fa fa-file-text menu-bar-item-icon' />
+          </div>
+        </li>
+        <li>
+          <div className='menu-bar-item' onClick={this.onUnsupportedClick}>
+            Missing metadata
+            <i className='fa fa-tags menu-bar-item-icon' />
+          </div>
+        </li>
+        <li>
+          <div className='menu-bar-item' onClick={this.onUnsupportedClick}>
+            Missing files
+            <i className='fa fa-file-o menu-bar-item-icon' />
+          </div>
+        </li>
       </ul>
     )
   }

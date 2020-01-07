@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { menuTypes } from 'waves-client-constants'
+import { menuTypes, MENU_DATA_VALUE } from 'waves-client-constants'
 
 import Track from './track'
 import PlaylistAdd from './track/playlistAdd'
@@ -18,8 +18,11 @@ const MENUS = {
 
 const EMPTY_MENU = <menu className='menu' />
 
-/* Menu used is used for table rows */
 export default class Menu extends React.PureComponent {
+  onContextMenu(ev) {
+    ev.preventDefault()
+  }
+
   render() {
     const { menu } = this.props
     const numMenus = menu.length
@@ -32,7 +35,12 @@ export default class Menu extends React.PureComponent {
     const style = { transform }
 
     return (
-      <menu className='menu menu-active' style={style}>
+      <menu
+        className='menu menu-active'
+        data-toggle={MENU_DATA_VALUE}
+        style={style}
+        onContextMenu={this.onContextMenu}
+      >
         <Component {...props} />
       </menu>
     )

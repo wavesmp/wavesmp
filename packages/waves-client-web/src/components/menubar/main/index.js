@@ -92,11 +92,11 @@ export default class MenuBar extends React.PureComponent {
           {trackPlayer}
         </CSSTransitionGroup>
         <i
-          className='fa fa-lg fa-globe menubar-dropdown-icon'
+          className='fa fa-lg fa-globe menu-bar-icon'
           onClick={this.onNotificationsClick}
         />
         <i
-          className='fa fa-lg fa-user menubar-dropdown-icon'
+          className='fa fa-lg fa-user menu-bar-icon'
           onClick={this.onUserSettingsClick}
         />
         <CSSTransitionGroup

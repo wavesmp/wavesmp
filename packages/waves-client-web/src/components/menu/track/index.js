@@ -28,17 +28,32 @@ class Track extends React.PureComponent {
   trackToggle = () => {
     const { actions, playlistName, itemIndex, trackId } = this.props
     actions.trackToggle(trackId, playlistName, itemIndex)
+    actions.menuReset()
+  }
+
+  pause = () => {
+    const { actions } = this.props
+    actions.pause()
+    actions.menuReset()
+  }
+
+  play = () => {
+    const { actions } = this.props
+    actions.play()
+    actions.menuReset()
   }
 
   tracksDelete = () => {
     const { actions } = this.props
     actions.modalSet({ type: modalTypes.TRACKS_DELETE })
+    actions.menuReset()
   }
 
   tracksRemove = async () => {
     const { actions, playlistName } = this.props
     try {
       await actions.tracksRemove(playlistName)
+      actions.menuReset()
     } catch (err) {
       actions.toastErr(`${err}`)
     }
@@ -47,30 +62,30 @@ class Track extends React.PureComponent {
   nowPlayingAdd = () => {
     const { actions, playlistName } = this.props
     actions.playlistAdd(playlistName, NOW_PLAYING_NAME)
+    actions.menuReset()
   }
 
-  playlistAdd = ev => {
+  playlistAdd = () => {
     const { actions, playlistName } = this.props
     actions.menuNext({
       type: menuTypes.PLAYLIST_ADD,
       props: { currentPlaylist: playlistName }
     })
-    ev.preventDefault()
-    ev.stopPropagation()
   }
 
   download = () => {
     const { actions, trackId } = this.props
     actions.download(trackId)
+    actions.menuReset()
   }
 
   getPlayOrPauseAction() {
-    const { actions, isPlaying, index, itemIndex } = this.props
+    const { isPlaying, index, itemIndex } = this.props
     if (index === itemIndex) {
       if (isPlaying) {
-        return <Pause onClick={actions.pause} />
+        return <Pause onClick={this.pause} />
       }
-      return <PlayResume onClick={actions.play} />
+      return <PlayResume onClick={this.play} />
     }
     return <Play onClick={this.trackToggle} />
   }
@@ -89,7 +104,7 @@ class Track extends React.PureComponent {
   render() {
     const { bulk, playlistName } = this.props
     return (
-      <>
+      <div className='menu-track'>
         {!bulk && this.getPlayOrPauseAction()}
 
         {playlistName !== NOW_PLAYING_NAME && playlistName !== UPLOADS_NAME && (
@@ -105,7 +120,7 @@ class Track extends React.PureComponent {
         )}
 
         {this.getRemoveAction()}
-      </>
+      </div>
     )
   }
 }

@@ -8,16 +8,15 @@ import { Back, PlaylistAddItem } from './items'
 import { isInternalPlaylist } from '../../../util'
 
 class PlaylistAdd extends React.PureComponent {
-  onBackClick = ev => {
+  onBackClick = () => {
     const { actions } = this.props
     actions.menuBack()
-    ev.preventDefault()
-    ev.stopPropagation()
   }
 
   onPlaylistAdd = playlist => {
     const { actions, currentPlaylist } = this.props
     actions.playlistAdd(currentPlaylist, playlist)
+    actions.menuReset()
   }
 
   getPlaylistAddItems() {
@@ -41,10 +40,10 @@ class PlaylistAdd extends React.PureComponent {
 
   render() {
     return (
-      <>
+      <div className='menu-track'>
         <Back onClick={this.onBackClick} />
         {this.getPlaylistAddItems()}
-      </>
+      </div>
     )
   }
 }

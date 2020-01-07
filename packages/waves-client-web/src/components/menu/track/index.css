@@ -1,3 +1,13 @@
+.menu-track {
+  margin: 0px;
+  padding: 5px 0px;
+  width: var(--menu-width);
+  background-color: var(--dropdown-color);
+  border: solid 1px #dfdfdf;
+  box-shadow: 1px 1px 2px #cfcfcf;
+  border-radius: 4px;
+}
+
 .menu-track-item {
   display: block;
   padding: 3px 20px;
