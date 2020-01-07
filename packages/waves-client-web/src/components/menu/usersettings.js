@@ -15,7 +15,7 @@ class UserSettings extends React.PureComponent {
   }
 
   render() {
-    const { userName } = this.props
+    const { actions, userName } = this.props
     return (
       <ul className='menu-bar'>
         <li className='menu-bar-header'>
@@ -24,7 +24,7 @@ class UserSettings extends React.PureComponent {
         </li>
         <li className='menu-bar-divider' />
         <li>
-          <Link className='menu-bar-item' to={routes.settings}>
+          <Link className='menu-bar-item' to={routes.settings} onClick={actions.menuReset}>
             Account Settings
             <i className='fa fa-cog menu-bar-item-icon' />
           </Link>
