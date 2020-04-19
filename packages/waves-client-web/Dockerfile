@@ -1,4 +1,4 @@
-FROM nginx:1.15.8
+FROM nginx:1.17.10
 ARG host
 COPY rootfs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 RUN [ ! -d /etc/nginx/sites ]
