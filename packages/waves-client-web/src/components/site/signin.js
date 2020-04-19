@@ -14,9 +14,11 @@ export default class SignIn extends React.PureComponent {
     const { history, actions, location } = this.props
     try {
       const idp = 'google'
-      // const user = await actions.signIn(idp)
+      await actions.signIn(idp)
       actions.retryLoginOnConnect(idp)
-      const from = location.state.from || { pathname: routes.defaultRoute }
+      const from = (location.state && location.state.from) || {
+        pathname: routes.defaultRoute
+      }
       history.push(from)
     } catch (err) {
       actions.toastErr(err.error || `${err}`)

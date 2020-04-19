@@ -29,8 +29,7 @@ class Google {
     }
     const gUser = gAuth.currentUser.get()
     const gAuthResp = gUser.getAuthResponse()
-    const token = gAuthResp.id_token
-    return { token }
+    return gAuthResp.id_token
   }
 }
 

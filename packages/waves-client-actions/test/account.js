@@ -136,7 +136,7 @@ describe('#account()', () => {
       .expects('tryAutoLogin')
       .once()
       .withExactArgs(testIdp)
-      .returns({ token: testToken })
+      .returns(testToken)
 
     const wsMock = sinon.mock(ws)
     const loginErr = new Error('Waves internal server error')
@@ -180,7 +180,7 @@ describe('#account()', () => {
       .expects('tryAutoLogin')
       .once()
       .withExactArgs(testIdp)
-      .returns({ token: testToken })
+      .returns(testToken)
 
     const localStateMock = sinon.mock(localState)
     localStateMock

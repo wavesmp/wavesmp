@@ -36,9 +36,8 @@ function signOut() {
 function signIn(idp) {
   return async (dispatch, getState, { auth, player, ws, localState }) => {
     await auth.signIn(idp)
-    const user = await _tryAutoLogin(dispatch, idp, auth, player, ws)
+    await _tryAutoLogin(dispatch, idp, auth, player, ws)
     localState.setItem('lastIdp', idp)
-    return user
   }
 }
 
@@ -63,18 +62,16 @@ function tryAutoLogin(idp) {
 }
 
 async function _tryAutoLogin(dispatch, idp, auth, player, ws) {
-  const authResp = await auth.tryAutoLogin(idp)
-  if (!authResp) {
+  const token = await auth.tryAutoLogin(idp)
+  if (!token) {
     /* Not logged in */
     dispatch({ type: types.ACCOUNT_LOGIN, user: null })
-    return null
+    return
   }
-  const { token } = authResp
 
   const user = await ws.sendAckedMessage(types.ACCOUNT_LOGIN, { token, idp })
   player.login(idp, user.idpId, token)
   dispatch({ type: types.ACCOUNT_LOGIN, user })
-  return user
 }
 
 module.exports.accountSetFetchingUser = accountSetFetchingUser
