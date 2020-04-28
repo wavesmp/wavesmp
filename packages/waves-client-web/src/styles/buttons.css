@@ -86,8 +86,7 @@ a.btn.disabled {
   border-color: #adadad;
 }
 .btn-default:active:hover,
-.btn-default.active:hover
-.btn-default:active:focus,
+.btn-default.active:hover .btn-default:active:focus,
 .btn-default.active:focus,
 .btn-default:active.focus,
 .btn-default.active.focus {

@@ -24,7 +24,11 @@ class UserSettings extends React.PureComponent {
         </li>
         <li className='menu-bar-divider' />
         <li>
-          <Link className='menu-bar-item' to={routes.settings} onClick={actions.menuReset}>
+          <Link
+            className='menu-bar-item'
+            to={routes.settings}
+            onClick={actions.menuReset}
+          >
             Account Settings
             <i className='fa fa-cog menu-bar-item-icon' />
           </Link>
