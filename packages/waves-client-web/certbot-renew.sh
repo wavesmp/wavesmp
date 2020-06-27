@@ -12,10 +12,10 @@ set -o pipefail
 
 NAME=waves-client-web
 
-if [[ -z "$(sudo docker ps -a -q -f name="${NAME}")" ]]; then
+if [[ -z "$(docker ps -a -q -f name="${NAME}")" ]]; then
     echo "Error: Did not find container: ${NAME}"
 fi
 
-sudo docker exec -it ${NAME} /bin/bash -c \
+docker exec -it ${NAME} /bin/bash -c \
     'apt-get update && apt-get install python-certbot-nginx && certbot renew'
     # 'certbot renew'
