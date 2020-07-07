@@ -43,8 +43,6 @@ server {
 
   location / {
     try_files $uri /index.html;
-    # Cache for 6 hours
-    add_header Cache-Control "max-age=21600, public";
   }
 
   location /ws {
