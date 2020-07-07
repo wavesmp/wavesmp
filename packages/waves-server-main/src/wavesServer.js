@@ -8,9 +8,10 @@ const log = require('waves-server-logger')
 const HEARTBEAT_INTERVAL = 25000
 
 class Server {
-  constructor(port, storage, auth) {
+  constructor(port, storage, auth, httpServer) {
     this.storage = storage
     this.auth = auth
+    this.httpServer = httpServer
     this.encoder = new Encoder()
     this.clients = {}
 
@@ -90,7 +91,11 @@ class Server {
   }
 
   async start() {
-    await Promise.all([this.listenPromise, this.storage.connect()])
+    await Promise.all([
+      this.listenPromise,
+      this.storage.connect(),
+      this.httpServer.start()
+    ])
     this.wss.on('connection', this.onConnection)
     this.wss.on('error', this.onServerError)
   }
@@ -230,9 +235,11 @@ class Server {
   }
 
   close() {
-    return new Promise((resolve, reject) => {
+    const wsClosePromise = new Promise((resolve, reject) => {
       this.wss.close(err => (err ? reject(err) : resolve()))
     })
+    const httpClosePromise = this.httpServer.close()
+    return Promise.all([wsClosePromise, httpClosePromise])
   }
 }
 

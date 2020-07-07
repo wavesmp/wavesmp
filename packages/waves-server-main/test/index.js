@@ -18,6 +18,7 @@ const Storage = require('waves-server-db')
 // const log = require('waves-server-logger')
 const WavesSocket = require('waves-socket')
 
+const HttpServer = require('../src/httpServer')
 const WavesServer = require('../src/wavesServer')
 
 const TEST_LIBRARY = [TEST_TRACK1]
@@ -29,7 +30,8 @@ const TEST_PLAYLIST1 = {
 const TEST_PLAYLISTS = [TEST_PLAYLIST1]
 
 const TEST_USER_TOKEN = 'testUserToken'
-const TEST_PORT = 16243
+const TEST_WS_PORT = 16252
+const TEST_HTTP_PORT = 16253
 
 /* Remove app logging since it clutters test output */
 // log.remove(log.transports.Console)
@@ -37,7 +39,8 @@ const TEST_PORT = 16243
 describe('wavesServer', () => {
   const auth = new Auth({})
   const storage = new Storage()
-  const wavesServer = new WavesServer(TEST_PORT, storage, auth)
+  const httpServer = new HttpServer(TEST_HTTP_PORT)
+  const wavesServer = new WavesServer(TEST_WS_PORT, storage, auth, httpServer)
   let wavesSocket
 
   describe('wavesServer', async () => {
@@ -54,7 +57,7 @@ describe('wavesServer', () => {
     })
 
     it('Start client', async () => {
-      const url = `ws://localhost:${TEST_PORT}`
+      const url = `ws://localhost:${TEST_WS_PORT}`
       wavesSocket = new WavesSocket(() => new WebSocket(url))
     })
 

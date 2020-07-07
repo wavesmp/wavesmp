@@ -6,6 +6,7 @@ const log = require('waves-server-logger')
 const Storage = require('waves-server-db')
 
 const baseConfig = require('./baseConfig')
+const HttpServer = require('./httpServer')
 const WavesServer = require('./wavesServer')
 
 function parseConfig() {
@@ -43,7 +44,13 @@ async function main() {
 
     const storage = new Storage(config.db)
     const auth = new Auth(config.auth)
-    const wavesServer = new WavesServer(config.port, storage, auth)
+    const httpServer = new HttpServer(config.ports.http)
+    const wavesServer = new WavesServer(
+      config.ports.ws,
+      storage,
+      auth,
+      httpServer
+    )
     log.debug('Created wavesServer')
 
     await wavesServer.start()

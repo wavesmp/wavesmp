@@ -12,6 +12,8 @@
   "dependencies": {
     "bluebird": "^3.5.4",
     "commander": "^2.20.0",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.3.0",
     "waves-action-types": "file:../waves-action-types",
     "waves-encoder": "file:../waves-encoder",
     "waves-server-auth": "file:../waves-server-auth",

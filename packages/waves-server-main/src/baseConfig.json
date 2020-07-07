@@ -1,5 +1,8 @@
 {
-  "port": 16242,
+  "ports": {
+    "ws": 16242,
+    "http": 16243
+  },
   "auth": {
     "google": {
       "clientIds": []
