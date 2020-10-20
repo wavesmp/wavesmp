@@ -9,6 +9,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+cd "$(dirname "$0")"
 
 NAME=waves-client-web
 
@@ -19,3 +20,5 @@ fi
 docker exec -it ${NAME} /bin/bash -c \
     'apt-get update && apt-get install python-certbot-nginx && certbot renew'
     # 'certbot renew'
+
+sudo chown -R "${USER}:${USER}" rootfs/etc/letsencrypt
