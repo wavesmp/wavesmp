@@ -1,41 +1,6 @@
 server {
-  server_name __HOST__;
   listen [::]:80;
   listen 80;
-  return 301 https://www.$host$request_uri;
-}
-
-server {
-  server_name www.__HOST__;
-  listen [::]:80;
-  listen 80;
-  return 301 https://$host$request_uri;
-}
-
-server {
-  server_name __HOST__;
-  listen [::]:443 ssl http2;
-  listen 443 ssl http2;
-
-  ssl_certificate /etc/letsencrypt/live/__HOST__/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/__HOST__/privkey.pem;
-
-  include /etc/letsencrypt/options-ssl-nginx.conf;
-  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-
-  return 301 https://www.$host$request_uri;
-}
-
-server {
-  server_name www.__HOST__;
-  listen [::]:443 ssl http2;
-  listen 443 ssl http2;
-
-  ssl_certificate /etc/letsencrypt/live/__HOST__/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/__HOST__/privkey.pem;
-
-  include /etc/letsencrypt/options-ssl-nginx.conf;
-  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
   charset utf-8;
 
@@ -51,14 +16,13 @@ server {
     proxy_http_version 1.1;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $host;
-    proxy_pass http://127.0.0.1:16242/ws;
+    proxy_pass http://waves-server-main:16242/ws;
   }
 
   location /csp {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $host;
     proxy_http_version 1.1;
-    proxy_pass http://127.0.0.1:16243/csp;
+    proxy_pass http://waves-server-main:16243/csp;
   }
-
 }

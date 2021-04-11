@@ -6,7 +6,3 @@ Websocket server for the Waves client
 
 - Rename `config.example.json` as `config.json`
 - Substitute Google client id in the config.json
-
-# Running the Sever
-
-- Run `num run start`

@@ -9,6 +9,6 @@
     }
   },
   "db": {
-    "url": "mongodb://localhost/waves"
+    "url": "mongodb://waves-server-db/waves"
   }
 }

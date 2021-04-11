@@ -1,0 +1,94 @@
+version: "3.9"
+
+services:
+  waves-server-db:
+    image: mongo:4.0.10
+    volumes:
+      - waves-server-db:/data/db
+    networks:
+      - wavesmp
+
+  waves-server-main:
+    image: node:14.16.0-buster
+    user: node
+    environment:
+      NODE_ENV: development
+    volumes:
+      - './:/repo'
+    working_dir: /repo
+    networks:
+      - wavesmp
+    depends_on:
+      - waves-server-db
+    entrypoint: bash
+    command:
+    - '-c'
+    - |
+        set -o errexit
+        set -o pipefail
+        set -o nounset
+
+        while ! timeout 2 bash -c "< /dev/tcp/waves-server-db/27017" > /dev/null 2>&1; do
+            echo "Waiting for waves db to start"
+            sleep 1
+        done
+
+        npm install
+        npm run start
+
+  waves-client-web-builder:
+    image: node:14.16.0-buster
+    user: node
+    environment:
+      NODE_ENV: development
+    volumes:
+      - './:/repo'
+    working_dir: /repo
+    networks:
+      - wavesmp
+    depends_on:
+      - waves-server-main
+    entrypoint: bash
+    entrypoint: bash
+    command:
+    - '-c'
+    - |
+        set -o errexit
+        set -o pipefail
+        set -o nounset
+
+        for port in 16242 16243; do
+          while ! timeout 2 bash -c "< /dev/tcp/waves-server-main/$${port}" > /dev/null 2>&1; do
+              echo "Waiting for waves server to start"
+              sleep 1
+          done
+        done
+
+        cp packages/waves-client-web/src/index.html \
+           packages/waves-client-web/src/favicon.ico \
+           packages/waves-client-web/vendor/aws-sdk-2.268.1.min.js \
+           packages/waves-client-web/build
+
+        npm run watch
+
+  waves-client-web:
+    image: nginx:1.15.8
+    networks:
+    - wavesmp
+    depends_on:
+      - waves-server-main
+      - waves-client-web-builder
+    ports:
+    - '127.0.0.1:81:80'
+    volumes:
+    - './packages/waves-client-web/build:/srv/http'
+    - './packages/waves-client-web/rootfs/etc/nginx/nginx.conf:/etc/nginx/nginx.conf'
+    - './packages/waves-client-web/rootfs/etc/nginx/sites/:/etc/nginx/sites/'
+    environment:
+      NODE_ENV: development
+
+volumes:
+  waves-server-db: {}
+
+networks:
+  wavesmp: {}
