@@ -3,6 +3,7 @@
         "build": "lerna run --scope waves-client-web build",
         "eslint": "eslint --ignore-path .gitignore '**/*.js'",
         "prettier": "prettier --write '**/*.@(js|json|css|md)'",
+        "start": "lerna run --stream --scope waves-server-main start",
         "test": "lerna run test",
         "watch": "lerna run --stream --scope waves-client-web watch"
     },
