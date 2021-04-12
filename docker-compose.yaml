@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.7"
 
 services:
   waves-server-db:
@@ -48,7 +48,6 @@ services:
       - wavesmp
     depends_on:
       - waves-server-main
-    entrypoint: bash
     entrypoint: bash
     command:
     - '-c'
