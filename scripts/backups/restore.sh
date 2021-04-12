@@ -1,6 +1,9 @@
 #!/bin/bash
 #
-# Restore DB, certs, and waves config from an S3 bucket
+# Restore DB volume and config from an S3 bucket
+#
+# Requirements:
+# - aws CLI
 #
 
 set -o errexit
@@ -11,80 +14,68 @@ cd "$(dirname "$0")"
 
 source common.sh
 
+# Parse arguments
 [[ "$#" != 1 ]] && usage
 BACKUP_BUCKET="$1"
 [[ -z "${BACKUP_BUCKET}" ]] && usage
 
-BACKUP_VERSION="$(get_latest_backup_version)"
-BACKUP_URL="s3://${BACKUP_BUCKET}/${BACKUP_VERSION}"
+# Get new backup version
+BACKUP_PREFIX="s3://${BACKUP_BUCKET}/waves"
+BACKUP_VERSION="$(get_latest_backup_version "${BACKUP_PREFIX}")"
+BACKUP_URL="${BACKUP_PREFIX}/${BACKUP_VERSION}"
 echo "Using backup version ${BACKUP_VERSION}"
 
-
-# Create mongo db volume if not present
-DB_VOLUME_NAME=mongodata
-if [[ -z "$(docker volume ls -q -f name="${DB_VOLUME_NAME}")" ]]; then
-    docker volume create "${DB_VOLUME_NAME}"
+# Restore the db volume if not present
+DB_VOLUME_NAME=wavesmp_waves-server-db
+if [[ -n "$(docker volume ls --quiet --filter name="${DB_VOLUME_NAME}")" ]]; then
+  echo "Docker volume ${DB_VOLUME_NAME} already present"
 else
-    echo "Docker volume ${DB_VOLUME_NAME} already present"
-fi
 
+  # Create the volume
+  docker volume create "${DB_VOLUME_NAME}"
 
-# Deploy mongo db if not present
-DB_NAME=mongo
-DB_IMAGE=mongo:4.0.10
-DB_VOLUME_DEST=/data/db
-# Mongo docker image defaults to --bind_ip_all flag
-# Restrict to localhost since we run DB on host network
-# See https://github.com/docker-library/mongo/pull/226
-DB_EXTRA_ARGS=("--bind_ip" "127.0.0.1")
-if [[ -z "$(docker ps -a -q -f name="${DB_NAME}")" ]]; then
-    docker run \
-        -d \
-        --net host \
-        --name "${DB_NAME}" \
-        --mount "type=volume,src=${DB_VOLUME_NAME},dst=${DB_VOLUME_DEST},volume-driver=local" \
-        "${DB_IMAGE}" \
-        "${DB_EXTRA_ARGS[@]}"
-else
-    echo "Database already running"
-fi
+  # Deploy the db
+  DB_NAME=waves-server-db-restore
+  DB_IMAGE=mongo:4.0.10
+  DB_VOLUME_DEST=/data/db
+  # Mongo docker image defaults to --bind_ip_all flag
+  # Restrict to localhost since we run on the host network
+  # See https://github.com/docker-library/mongo/pull/226
+  DB_EXTRA_ARGS=("--bind_ip" "127.0.0.1")
+  docker run \
+    --net host \
+    --detach \
+    --interactive \
+    --tty \
+    --name "${DB_NAME}" \
+    --mount "type=volume,src=${DB_VOLUME_NAME},dst=${DB_VOLUME_DEST},volume-driver=local" \
+    "${DB_IMAGE}" \
+    "${DB_EXTRA_ARGS[@]}"
 
+  # Wait for db to come up
+  DB_PORT=27017
+  wait_for_port_listen "${DB_PORT}"
 
-DB_PORT=27017
-wait_for_port_listen "${DB_PORT}"
+  # Create temp dir for downloads
+  DL_DIR="$(mktemp --tmpdir --directory waves-restore-XXXXXXX)"
+  trap 'rm --recursive --force "${DL_DIR}"' EXIT
 
+  # Restore db data
+  aws s3 cp --quiet "${BACKUP_URL}/${DB_DUMP_TAR}" "${DL_DIR}/${DB_DUMP_TAR}"
+  docker cp "${DL_DIR}/${DB_DUMP_TAR}" "${DB_NAME}:${DB_DUMP_WD}/${DB_DUMP_TAR}"
+  rm "${DL_DIR}/${DB_DUMP_TAR}"
+  docker exec "${DB_NAME}" bash -c "
+    set -o errexit
+    set -o nounset
+    set -o pipefail
 
-# Create temp dir for downloads
-DL_DIR="$(mktemp --tmpdir --directory waves-restore-server-XXXXXXX)"
-trap 'rm -rf "${DL_DIR}"' EXIT
-
-
-# Restore db data
-aws s3 cp --quiet "${BACKUP_URL}/${DB_DUMP_TAR}" "${DL_DIR}/${DB_DUMP_TAR}"
-docker cp "${DL_DIR}/${DB_DUMP_TAR}" "${DB_NAME}:${DB_DUMP_WD}/${DB_DUMP_TAR}"
-rm "${DL_DIR}/${DB_DUMP_TAR}"
-docker exec "${DB_NAME}" bash -c "\
-    cd '${DB_DUMP_WD}' && \
-    if [[ -d '${DB_DUMP_DIR}' ]]; then \
-        echo 'Database has already been restored' && \
-        exit 0; \
-    fi && \
-    tar xf '${DB_DUMP_TAR}' && \
-    mongorestore && \
-    echo 'Restored database'"
-
-
-# Restore certs, if not present
-CERTS_DEST="${PACKAGES_DIR}/waves-client-web/rootfs/etc"
-if [[ -e "${CERTS_DEST}/letsencrypt" ]]; then
-    echo "Certs already present in ${CERTS_DEST}/letsencrypt"
-else
-    aws s3 cp --quiet "${BACKUP_URL}/${CERTS_TAR}" "${DL_DIR}/${CERTS_TAR}"
-    tar xC "${DL_DIR}" -f "${DL_DIR}/${CERTS_TAR}"
-    rm "${DL_DIR}/${CERTS_TAR}"
-    mv "${DL_DIR}"/etc/{letsencrypt,ssl} "${CERTS_DEST}"
-    rm -r "${DL_DIR}"/*
-    echo "Restored certs"
+    cd '${DB_DUMP_WD}'
+    tar xf '${DB_DUMP_TAR}'
+    mongorestore
+    echo 'Restored database'
+    "
+  docker stop "${DB_NAME}"
+  docker rm "${DB_NAME}"
 fi
 
 

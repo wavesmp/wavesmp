@@ -4,9 +4,7 @@ BACKUP_VERSION_FORMAT='%03d'
 DB_DUMP_TAR=dump.tar.gz
 DB_DUMP_DIR=dump
 DB_DUMP_WD=/root
-DB_NAME=mongo
-
-CERTS_TAR=certs.tar.gz
+DB_NAME=wavesmp_waves-server-db_1
 
 PACKAGES_DIR=../../packages
 
@@ -17,43 +15,44 @@ SERVER_CONFIG_BACKUP_FILE=waves-server-main-config.js
 
 usage() {
     echo "Usage: $0 <bucket-name>"
-    echo "  bucket-name - AWS backup S3 bucket name"
+    echo "  bucket-name - AWS backup S3 bucket name (e.g. foo.bar.com)"
     exit 1
 }
-
 
 # https://stackoverflow.com/questions/27599839/
 # how-to-wait-for-an-open-port-with-netcat
 wait_for_port_listen() {
-    local port="$1"
+  local port="$1"
 
-    while ! nc -z localhost "${port}"; do
-        echo "Waiting for port ${port} to listen"
-        sleep 3
-    done
+  while ! nc -z localhost "${port}"; do
+      echo "Waiting for port ${port} to listen"
+      sleep 3
+  done
 }
 
 get_backup_versions() {
-    aws s3 ls "s3://${BACKUP_BUCKET}/" | \
-        grep PRE | \
-        awk '{ print $2 }' | \
-        tr -d / | \
-        grep -P "${BACKUP_VERSION_REGEX}"  | \
-        sort
+  local prefix="$1"
+  aws s3 ls "${prefix}/" | \
+    grep PRE | \
+    awk '{ print $2 }' | \
+    tr -d / | \
+    grep -P "${BACKUP_VERSION_REGEX}"  | \
+    sort
 }
 
-
 get_latest_backup_version() {
-    get_backup_versions | tail -n 1
+  local prefix="$1"
+  get_backup_versions "${prefix}" | tail -n 1
 }
 
 get_new_backup_version() {
-    local backup_version="$(get_latest_backup_version)"
+  local prefix="$1"
+  local backup_version="$(get_latest_backup_version "${prefix}")"
 
-    if [[ -z "${backup_version}" ]]; then
-        echo -n 000
-    else
-        ((backup_version+=1))
-        printf "${BACKUP_VERSION_FORMAT}" "${backup_version}"
-    fi
+  if [[ -z "${backup_version}" ]]; then
+      echo -n 000
+  else
+      ((backup_version+=1))
+      printf "${BACKUP_VERSION_FORMAT}" "${backup_version}"
+  fi
 }
