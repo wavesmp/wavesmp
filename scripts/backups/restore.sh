@@ -35,26 +35,24 @@ else
   docker volume create "${DB_VOLUME_NAME}"
 
   # Deploy the db
-  DB_NAME=waves-server-db-restore
   DB_IMAGE=mongo:4.0.10
   DB_VOLUME_DEST=/data/db
   # Mongo docker image defaults to --bind_ip_all flag
-  # Restrict to localhost since we run on the host network
+  # Restrict to localhost for improved security
   # See https://github.com/docker-library/mongo/pull/226
   DB_EXTRA_ARGS=("--bind_ip" "127.0.0.1")
   docker run \
-    --net host \
     --detach \
     --interactive \
     --tty \
-    --name "${DB_NAME}" \
+    --name "${DB_RESTORE_NAME}" \
     --mount "type=volume,src=${DB_VOLUME_NAME},dst=${DB_VOLUME_DEST},volume-driver=local" \
     "${DB_IMAGE}" \
     "${DB_EXTRA_ARGS[@]}"
 
   # Wait for db to come up
   DB_PORT=27017
-  wait_for_port_listen "${DB_PORT}"
+  wait_for_port_listen_in_container "${DB_RESTORE_NAME}" "${DB_PORT}"
 
   # Create temp dir for downloads
   DL_DIR="$(mktemp --tmpdir --directory waves-restore-XXXXXXX)"
@@ -62,9 +60,9 @@ else
 
   # Restore db data
   aws s3 cp --quiet "${BACKUP_URL}/${DB_DUMP_TAR}" "${DL_DIR}/${DB_DUMP_TAR}"
-  docker cp "${DL_DIR}/${DB_DUMP_TAR}" "${DB_NAME}:${DB_DUMP_WD}/${DB_DUMP_TAR}"
+  docker cp "${DL_DIR}/${DB_DUMP_TAR}" "${DB_RESTORE_NAME}:${DB_DUMP_WD}/${DB_DUMP_TAR}"
   rm "${DL_DIR}/${DB_DUMP_TAR}"
-  docker exec "${DB_NAME}" bash -c "
+  docker exec "${DB_RESTORE_NAME}" bash -c "
     set -o errexit
     set -o nounset
     set -o pipefail
@@ -74,8 +72,8 @@ else
     mongorestore
     echo 'Restored database'
     "
-  docker stop "${DB_NAME}"
-  docker rm "${DB_NAME}"
+  docker stop "${DB_RESTORE_NAME}"
+  docker rm "${DB_RESTORE_NAME}"
 fi
 
 

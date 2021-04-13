@@ -5,6 +5,7 @@ DB_DUMP_TAR=dump.tar.gz
 DB_DUMP_DIR=dump
 DB_DUMP_WD=/root
 DB_NAME=wavesmp_waves-server-db_1
+DB_RESTORE_NAME="${DB_NAME}_restore"
 
 PACKAGES_DIR=../../packages
 
@@ -21,13 +22,24 @@ usage() {
 
 # https://stackoverflow.com/questions/27599839/
 # how-to-wait-for-an-open-port-with-netcat
-wait_for_port_listen() {
-  local port="$1"
+wait_for_port_listen_in_container() {
+  local container="$1"
+  local port="$2"
 
-  while ! nc -z localhost "${port}"; do
-      echo "Waiting for port ${port} to listen"
-      sleep 3
-  done
+  docker exec \
+    --interactive \
+    --tty \
+    "${container}" \
+    bash -c "
+    set -o errexit
+    set -o nounset
+    set -o pipefail
+
+    while ! timeout 2 bash -c '< /dev/tcp/localhost/${port}' > /dev/null 2>&1; do
+        echo 'Waiting for port ${port} to listen'
+        sleep 3
+    done
+    "
 }
 
 get_backup_versions() {
