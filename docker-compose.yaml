@@ -7,6 +7,9 @@ services:
       - waves-server-db:/data/db
     networks:
       - wavesmp
+    # May need to expose mongo port to run ad hoc queries
+    # ports:
+    # - '127.0.0.1:27017:27017'
 
   waves-server-main:
     image: node:14.16.0-buster
