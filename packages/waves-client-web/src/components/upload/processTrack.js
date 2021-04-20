@@ -41,8 +41,9 @@ function addMissingTags(item) {
       item.title = fileName.trim()
     }
   }
-  const tag = 'genre'
-  item[tag] = item[tag] || `Unknown ${tag}`
+  for (const tag of ['album', 'genre']) {
+    item[tag] = item[tag] || `Unknown ${tag}`
+  }
 }
 
 function trimFileExt(name) {
