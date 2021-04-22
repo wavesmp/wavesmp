@@ -51,7 +51,7 @@ class Playlist extends React.PureComponent {
   }
 
   render() {
-    const { playlistName } = this.state
+    const { playlistName } = this.props
     return (
       <TablePage
         {...this.props}
