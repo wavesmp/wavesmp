@@ -67,3 +67,8 @@
 .table-blank-icon {
   padding-right: 25px;
 }
+
+.table-input {
+  background-color: inherit;
+  border: none;
+}
