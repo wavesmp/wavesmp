@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ContentEditable from './contenteditable'
+import InputCell from './inputcell'
 
 const PLAY_ICON = <i className='fa fa-lg fa-play table-play-icon' />
 const PAUSE_ICON = <i className='fa fa-lg fa-pause table-pause-icon' />
@@ -27,11 +27,11 @@ export class Name extends React.PureComponent {
     return (
       <td>
         {playPauseIcon}
-        <ContentEditable
+        <InputCell
           onChange={this.emitChange}
           onBlur={onBlur}
           editable={editable}
-          html={sample.title}
+          value={sample.title}
           title={title}
         />
         {playPausePadding}
@@ -84,11 +84,11 @@ export class Artist extends React.PureComponent {
     const { sample, editable, title, onBlur } = this.props
     return (
       <td>
-        <ContentEditable
+        <InputCell
           onChange={this.emitChange}
           onBlur={onBlur}
           editable={editable}
-          html={sample.artist}
+          value={sample.artist}
           title={title}
         />
       </td>
@@ -106,11 +106,11 @@ export class Album extends React.PureComponent {
     const { sample, editable, title, onBlur } = this.props
     return (
       <td>
-        <ContentEditable
+        <InputCell
           onChange={this.emitChange}
           onBlur={onBlur}
           editable={editable}
-          html={sample.album}
+          value={sample.album}
           title={title}
         />
       </td>
@@ -128,11 +128,11 @@ export class Genre extends React.PureComponent {
     const { sample, editable, title, onBlur } = this.props
     return (
       <td>
-        <ContentEditable
+        <InputCell
           onChange={this.emitChange}
           onBlur={onBlur}
           editable={editable}
-          html={sample.genre}
+          value={sample.genre}
           title={title}
         />
       </td>
