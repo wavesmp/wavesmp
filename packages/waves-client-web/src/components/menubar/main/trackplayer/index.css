@@ -55,10 +55,14 @@
 .trackplayer-left {
   width: 72px;
   margin-left: 11px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .trackplayer-right {
   width: 72px;
   text-align: right;
   margin-right: 11px;
+  overflow: hidden;
+  white-space: nowrap;
 }
