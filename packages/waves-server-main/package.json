@@ -19,7 +19,7 @@
     "waves-server-auth": "file:../waves-server-auth",
     "waves-server-db": "file:../waves-server-db",
     "waves-server-logger": "file:../waves-server-logger",
-    "ws": "^7.0.0"
+    "ws": "^6.2.2"
   },
   "devDependencies": {
     "waves-socket": "file:../waves-socket",
