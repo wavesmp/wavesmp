@@ -107,7 +107,7 @@ def main():
     bucket = s3.Bucket(bucket_name)
     s3_track_ids = get_s3_track_ids(bucket)
 
-    col = pymongo.MongoClient().get_database('waves').get_collection('track')
+    col = pymongo.MongoClient("waves-server-db", 27017).get_database('waves').get_collection('track')
     mongo_track_ids = get_mongo_track_ids(col)
 
     s3_mismatch, mongo_mismatch = compare_track_ids(s3_track_ids, mongo_track_ids)
