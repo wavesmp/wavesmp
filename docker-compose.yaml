@@ -67,6 +67,7 @@ services:
         done
 
         cp packages/waves-client-web/src/index.html \
+           packages/waves-client-web/src/privacy.html \
            packages/waves-client-web/src/favicon.ico \
            packages/waves-client-web/vendor/aws-sdk-2.268.1.min.js \
            packages/waves-client-web/build
