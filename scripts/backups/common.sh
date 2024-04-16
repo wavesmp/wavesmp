@@ -4,7 +4,7 @@ BACKUP_VERSION_FORMAT='%03d'
 DB_DUMP_TAR=dump.tar.gz
 DB_DUMP_DIR=dump
 DB_DUMP_WD=/root
-DB_NAME=wavesmp_waves-server-db_1
+DB_NAME=wavesmp-waves-server-db-1
 DB_RESTORE_NAME="${DB_NAME}_restore"
 
 PACKAGES_DIR=../../packages
