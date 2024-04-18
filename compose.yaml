@@ -38,7 +38,7 @@ services:
         npm run start
 
   waves-client-web-builder:
-    image: node:14.16.0-buster
+    image: node:21.7.3-bookworm
     user: node
     environment:
       NODE_ENV: development
