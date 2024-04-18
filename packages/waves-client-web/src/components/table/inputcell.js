@@ -48,7 +48,6 @@ export default class InputCell extends React.Component {
           type='text'
           onBlur={this.onBlur}
           onKeyDown={this.onKeyDown}
-          onChange={this.onChange}
           draggable={false}
           spellCheck='false'
           data-title={title}
@@ -59,7 +58,7 @@ export default class InputCell extends React.Component {
     }
     const { value } = this.props
     return (
-      <span draggable={true} spellCheck='false' data-title={title}>
+      <span draggable spellCheck='false' data-title={title}>
         {value}
       </span>
     )

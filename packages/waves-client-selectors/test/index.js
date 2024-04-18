@@ -19,7 +19,7 @@ const {
   getDefaultPlaylistSearch,
   getLibraryPlaylistSearch,
   getOrCreatePlaylistSelectors
-} = require('../')
+} = require('..')
 
 const ORDER_QUERY_KEY = 'order'
 const SEARCH_QUERY_KEY = 'search'

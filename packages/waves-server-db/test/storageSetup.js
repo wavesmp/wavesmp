@@ -2,7 +2,7 @@ const Docker = require('dockerode')
 const Promise = require('bluebird')
 const waitPort = require('wait-port')
 
-const Storage = require('../')
+const Storage = require('..')
 
 const DB_CONTAINER_IMAGE_NAME = 'mongo:4.0.10'
 const DB_CONTAINER_NAME = 'waves-server-db-test-db'

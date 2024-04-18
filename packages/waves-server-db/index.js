@@ -50,7 +50,7 @@ class Storage {
       // Since mongodb@3.6.0 db.createCollection throws an error (48) if the collection already exists
       // See https://github.com/winstonjs/winston-mongodb/pull/177/files
       if (e.code !== 48) {
-        throw err
+        throw e
       }
       return this.db.collection(collectionName)
     }
