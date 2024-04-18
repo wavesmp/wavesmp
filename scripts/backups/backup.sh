@@ -53,4 +53,6 @@ echo "Backed up web client config"
 # Back up server config
 aws s3 cp --quiet "${SERVER_CONFIG_FILE}" \
     "${BACKUP_URL}/${SERVER_CONFIG_BACKUP_FILE}"
+aws s3 cp --quiet "${SERVER_RUST_CONFIG_FILE}" \
+    "${BACKUP_URL}/${SERVER_RUST_CONFIG_BACKUP_FILE}"
 echo "Backed up server config"

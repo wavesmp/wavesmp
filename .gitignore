@@ -16,3 +16,7 @@
 
 # TODO remove reliance on vendor code
 /packages/waves-client-web/vendor
+
+# Ignore rust build
+/packages/waves-server-rust/target
+/packages/waves-server-rust/config.json

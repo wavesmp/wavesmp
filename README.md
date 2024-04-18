@@ -22,3 +22,4 @@ Manages your personal music collection on the cloud.
 - See the [waves-client-web package](./packages/waves-client-web) for configuring the client
 - See the [waves-server-main package](./packages/waves-server-main) for configuring the server
 - Run `docker-compose up`
+- (tmp) for rust server, run `RUST_LOG=info cargo run`

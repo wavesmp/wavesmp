@@ -11,8 +11,10 @@ PACKAGES_DIR=../../packages
 
 CLIENT_CONFIG_FILE="${PACKAGES_DIR}/waves-client-web/src/config.js"
 SERVER_CONFIG_FILE="${PACKAGES_DIR}/waves-server-main/config.js"
+SERVER_RUST_CONFIG_FILE="${PACKAGES_DIR}/waves-server-rust/config.json"
 CLIENT_CONFIG_BACKUP_FILE=waves-client-web-config.js
 SERVER_CONFIG_BACKUP_FILE=waves-server-main-config.js
+SERVER_RUST_CONFIG_BACKUP_FILE=waves-server-rust-config.json
 
 usage() {
     echo "Usage: $0 <bucket-name>"

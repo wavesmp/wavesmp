@@ -9,6 +9,7 @@ const DEFAULT_LOCAL_CONFIG = {
   lastIdp: '',
   machineId: ObjectID.getMachineID(),
   theme: 'light',
+  server: 'wss://www.wavesmusicplayer.com/ws',
   volume: 1.0
 }
 

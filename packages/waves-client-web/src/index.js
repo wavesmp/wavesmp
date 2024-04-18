@@ -19,34 +19,39 @@ import MainApp from './components/main'
 import Site from './components/site'
 import { PublicRoute, PrivateRoute } from './components/routes'
 
-import { googleAuthOpts, s3Opts, server, defaultTrackSource } from './config'
+import { googleAuthOpts, s3Opts, defaultTrackSource } from './config'
 import storeListener from './listener'
 
-const history = createBrowserHistory()
-const ws = new WavesSocket(() => new WebSocket(server))
-const auth = new Auth({ google: googleAuthOpts })
-const player = new Player({ s3: s3Opts, file: undefined, defaultTrackSource })
-const localState = new LocalState(localStorage)
+async function main() {
+  const history = createBrowserHistory()
+  const localState = new LocalState(localStorage)
+  const server = await localState.getItem('server');
+  const ws = new WavesSocket(() => new WebSocket(server))
+  const auth = new Auth({ google: googleAuthOpts })
+  const player = new Player({ s3: s3Opts, file: undefined, defaultTrackSource })
 
-const reduxMiddleware = applyMiddleware(
-  /* Include extra args for side effects */
-  ReduxThunk.withExtraArgument({ localState, player, ws, auth })
-)
-const store = createStore(rootReducer, reduxMiddleware)
+  const reduxMiddleware = applyMiddleware(
+    /* Include extra args for side effects */
+    ReduxThunk.withExtraArgument({ localState, player, ws, auth })
+  )
+  const store = createStore(rootReducer, reduxMiddleware)
 
-render(
-  <Provider store={store}>
-    <Router history={history}>
-      <Switch>
-        <PublicRoute path='/' exact component={Site} />
-        <PrivateRoute path='/' component={MainApp} />
-      </Switch>
-    </Router>
-  </Provider>,
-  document.getElementById('app')
-)
+  render(
+    <Provider store={store}>
+      <Router history={history}>
+        <Switch>
+          <PublicRoute path='/' exact component={Site} />
+          <PrivateRoute path='/' component={MainApp} />
+        </Switch>
+      </Router>
+    </Provider>,
+    document.getElementById('app')
+  )
 
-/* Objects need store access for dispatching on events
- * e.g. When player track ends, storage is available, location change.
- * Independent from component lifecycle */
-storeListener(store, ws, player, localState, history)
+  /* Objects need store access for dispatching on events
+   * e.g. When player track ends, storage is available, location change.
+   * Independent from component lifecycle */
+  storeListener(store, ws, player, localState, history)
+}
+
+main().catch(e => console.log(`Top level failure: ${e}`))

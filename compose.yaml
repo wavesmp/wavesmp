@@ -6,8 +6,18 @@ services:
     networks:
       - wavesmp
     # May need to expose mongo port to run ad hoc queries
-    # ports:
-    # - '127.0.0.1:27017:27017'
+    ports:
+    - '127.0.0.1:27017:27017'
+
+  waves-server-sql:
+    image: mysql:8.4.0-oraclelinux9
+    volumes:
+      - waves-server-sql:/var/lib/mysql
+    networks:
+      - wavesmp
+    # May need to expose sql port to run ad hoc queries
+    ports:
+    - '127.0.0.1:3306:3306'
 
   waves-server-main:
     image: node:21.7.3-bookworm
@@ -92,6 +102,13 @@ volumes:
   waves-server-db:
     external: true
     name: wavesmp_waves-server-db
+  waves-server-sql:
+    external: true
+    name: waves-server-sql
 
 networks:
-  wavesmp: {}
+  wavesmp:
+    ipam:
+      config:
+        - subnet: 192.168.32.0/20
+          gateway: 192.168.32.1

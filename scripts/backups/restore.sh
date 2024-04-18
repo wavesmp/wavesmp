@@ -95,3 +95,10 @@ else
         > "${SERVER_CONFIG_FILE}"
     echo "Restored server config"
 fi
+if [[ -e "${SERVER_RUST_CONFIG_FILE}" ]]; then
+    echo "Server config already present at ${SERVER_CONFIG_FILE}"
+else
+    aws s3 cp --quiet "${BACKUP_URL}/${SERVER_RUST_CONFIG_BACKUP_FILE}" - \
+        > "${SERVER_RUST_CONFIG_FILE}"
+    echo "Restored server config"
+fi
