@@ -26,21 +26,34 @@ class Storage {
     await this.client.connect()
     this.db = this.client.db('waves')
 
-    this.user = await this.db.createCollection('user')
+    this.user = await this.createCollection('user')
     /* Optimize fetch single user (idp, idpId) */
     this.user.createIndex({ idp: 1, idpId: 1 }, { unique: true, sparse: true })
 
-    this.track = await this.db.createCollection('track')
+    this.track = await this.createCollection('track')
     /* Optimize fetch all for user (idp, idpId) */
     this.track.createIndex({ idp: 1, idpId: 1 }, { sparse: true })
 
-    this.playlist = await this.db.createCollection('playlist')
+    this.playlist = await this.createCollection('playlist')
     /* Optimize fetch all for user (idp, idpId)
      * Names should be unique to throw errors on conflict */
     this.playlist.createIndex(
       { idp: 1, idpId: 1, name: 1 },
       { unique: true, sparse: true }
     )
+  }
+
+  async createCollection(collectionName) {
+    try {
+      return await this.db.createCollection(collectionName)
+    } catch (e) {
+      // Since mongodb@3.6.0 db.createCollection throws an error (48) if the collection already exists
+      // See https://github.com/winstonjs/winston-mongodb/pull/177/files
+      if (e.code !== 48) {
+        throw err
+      }
+      return this.db.collection(collectionName)
+    }
   }
 
   close() {
