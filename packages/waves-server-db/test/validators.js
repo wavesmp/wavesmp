@@ -266,7 +266,10 @@ module.exports = () => {
     })
 
     it('validate selection duplicates', async () => {
-      const selection = [[0, '0'], [0, '0']]
+      const selection = [
+        [0, '0'],
+        [0, '0']
+      ]
       const tracks = ['0', '1']
       const name = TEST_PLAYLIST_NAME1
       await assertThrows(

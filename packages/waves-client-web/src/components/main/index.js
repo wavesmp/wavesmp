@@ -148,7 +148,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainApp)
+export default connect(mapStateToProps, mapDispatchToProps)(MainApp)

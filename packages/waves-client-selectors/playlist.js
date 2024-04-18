@@ -112,10 +112,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
     return parseInt(qp.get(PAGE_QUERY_KEY), 10) || DEFAULT_PAGE
   }
 
-  const getRouterPage = createSelector(
-    [getRouterQueryParams],
-    _getRouterPage
-  )
+  const getRouterPage = createSelector([getRouterQueryParams], _getRouterPage)
 
   function getPlaylist(state) {
     return _getPlaylist(state, playlistName)

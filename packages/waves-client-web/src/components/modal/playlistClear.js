@@ -46,7 +46,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(
-  undefined,
-  mapDispatchToProps
-)(ClearPlaylistModal)
+export default connect(undefined, mapDispatchToProps)(ClearPlaylistModal)

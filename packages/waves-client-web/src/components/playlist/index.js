@@ -104,7 +104,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Playlist)
+export default connect(mapStateToProps, mapDispatchToProps)(Playlist)

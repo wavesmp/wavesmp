@@ -41,7 +41,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Site)
+export default connect(mapStateToProps, mapDispatchToProps)(Site)

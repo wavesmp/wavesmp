@@ -78,7 +78,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreatePlaylistModal)
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePlaylistModal)

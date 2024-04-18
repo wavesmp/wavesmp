@@ -105,7 +105,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TracksUploadModal)
+export default connect(mapStateToProps, mapDispatchToProps)(TracksUploadModal)

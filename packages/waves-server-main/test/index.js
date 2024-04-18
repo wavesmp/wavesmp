@@ -176,7 +176,11 @@ describe('wavesServer', () => {
     it('tracks remove', async () => {
       const user = TEST_USER1
       const playlistName = TEST_PLAYLIST_NAME1
-      const selection = [[1, '1'], [2, '2'], [3, '3']]
+      const selection = [
+        [1, '1'],
+        [2, '2'],
+        [3, '3']
+      ]
 
       const storageMock = sinon.mock(storage)
       storageMock

@@ -111,7 +111,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TracksDeleteModal)
+export default connect(mapStateToProps, mapDispatchToProps)(TracksDeleteModal)

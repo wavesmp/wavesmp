@@ -409,7 +409,10 @@ describe('#tracks()', async () => {
       .once()
       .withExactArgs(types.TRACKS_REMOVE, {
         playlistName: testPlaylistName1,
-        selection: [[0, track1.id], [1, track2.id]]
+        selection: [
+          [0, track1.id],
+          [1, track2.id]
+        ]
       })
 
     thunk(dispatchMock, () => ({ tracks, account }), { ws })
