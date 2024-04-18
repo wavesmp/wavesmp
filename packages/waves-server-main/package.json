@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.5.4",
-    "commander": "^2.20.0",
-    "koa": "^2.11.0",
-    "koa-bodyparser": "^4.3.0",
+    "bluebird": "^3.7.2",
+    "commander": "^2.20.3",
+    "koa": "^2.15.3",
+    "koa-bodyparser": "^4.4.1",
     "waves-action-types": "file:../waves-action-types",
     "waves-encoder": "file:../waves-encoder",
     "waves-server-auth": "file:../waves-server-auth",
@@ -27,7 +27,7 @@
     "waves-test-util": "file:../waves-test-util"
   },
   "optionalDependencies": {
-    "bufferutil": "^4.0.1",
-    "utf-8-validate": "^5.0.2"
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^5.0.10"
   }
 }

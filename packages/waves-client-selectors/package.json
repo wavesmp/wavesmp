@@ -13,8 +13,8 @@
   },
   "license": "ISC",
   "dependencies": {
-    "fuse.js": "^3.4.4",
-    "reselect": "^4.0.0",
+    "fuse.js": "^3.6.1",
+    "reselect": "^4.1.8",
     "waves-client-constants": "file:../waves-client-constants",
     "waves-client-util": "file:../waves-client-util"
   },

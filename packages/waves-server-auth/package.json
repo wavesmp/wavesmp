@@ -10,6 +10,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "google-auth-library": "^4.0.0"
+    "google-auth-library": "^4.2.6"
   }
 }

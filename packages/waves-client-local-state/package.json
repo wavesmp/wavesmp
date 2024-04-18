@@ -13,6 +13,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "bson-objectid": "^1.2.5"
+    "bson-objectid": "^1.3.1"
   }
 }
