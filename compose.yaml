@@ -73,7 +73,7 @@ services:
         npm run watch
 
   waves-client-web:
-    image: nginx:1.15.8
+    image: nginx:1.25.5-bookworm
     networks:
     - wavesmp
     depends_on:
