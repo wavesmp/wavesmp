@@ -11,7 +11,7 @@
     }
   },
   "db": {
-    "url": "mysql://root:root@localhost/waves",
+    "url": "mysql://root:root@waves-server-sql/waves",
     "max_connections": 5
   }
 }
