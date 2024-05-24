@@ -1,0 +1,17 @@
+{
+  "ports": {
+    "ws": 16244,
+    "http": 16245
+  },
+  "auth": {
+    "google": {
+      "client_ids": [
+        "REPLACE_ME"
+      ]
+    }
+  },
+  "db": {
+    "url": "mysql://root:root@localhost/waves",
+    "max_connections": 5
+  }
+}
