@@ -20,5 +20,5 @@ Manages your personal music collection on the cloud.
 
 - Optionally, run the `scripts/backups/restore.sh <bucket_name>` script if restoring from an s3 bucket
 - See the [waves-client-web package](./packages/waves-client-web) for configuring the client
-- See the [waves-server-main package](./packages/waves-server-main) for configuring the server
+- See the [waves-server-rust package](./packages/waves-server-rust) for configuring the server
 - Run `docker-compose up`
