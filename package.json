@@ -3,7 +3,6 @@
         "build": "lerna run --scope waves-client-web build",
         "eslint": "eslint --ignore-path .gitignore '**/*.js'",
         "prettier": "prettier --write '**/*.@(js|json|css|md)'",
-        "start": "lerna run --stream --scope waves-server-main start",
         "test": "lerna run test",
         "watch": "lerna run --stream --scope waves-client-web watch"
     },
@@ -64,10 +63,6 @@
         "waves-client-util": "file:packages/waves-client-util",
         "waves-client-web": "file:packages/waves-client-web",
         "waves-encoder": "file:packages/waves-encoder",
-        "waves-server-auth": "file:packages/waves-server-auth",
-        "waves-server-db": "file:packages/waves-server-db",
-        "waves-server-logger": "file:packages/waves-server-logger",
-        "waves-server-main": "file:packages/waves-server-main",
         "waves-socket": "file:packages/waves-socket",
         "waves-test-data": "file:packages/waves-test-data",
         "waves-test-util": "file:packages/waves-test-util"
