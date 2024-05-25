@@ -18,12 +18,13 @@ pub async fn start_server(rx_shutdown: Receiver<bool>) -> Result<()> {
     let config = parse_config()?;
 
     let mut http_rx_shutdown = rx_shutdown.clone();
-    let http_server_future = start_http_server(&mut http_rx_shutdown, config.ports.http);
+    let http_server_future = start_http_server(&mut http_rx_shutdown, &config.addresses.http);
 
     let db = get_waves_database(&config.db).await?;
     let auth_client = AsyncClient::new_with_vec(&config.auth.google.client_ids);
     let mut ws_rx_shutdown = rx_shutdown.clone();
-    let ws_server_future = start_ws_server(&mut ws_rx_shutdown, config.ports.ws, auth_client, db);
+    let ws_server_future =
+        start_ws_server(&mut ws_rx_shutdown, &config.addresses.ws, auth_client, db);
 
     try_join!(http_server_future, ws_server_future)?;
     Ok(())

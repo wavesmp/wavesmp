@@ -22,10 +22,12 @@ use tokio::sync::watch::Receiver;
 
 const MAX_BODY_SIZE: u64 = 64 * 1024;
 
-pub async fn start_http_server(rx_shutdown: &mut Receiver<bool>, port: u16) -> Result<()> {
-    info!("starting http server on port={}", port);
-    let addr = SocketAddr::from(([127, 0, 0, 1], port));
-    let listener = TcpListener::bind(&addr).await?;
+pub async fn start_http_server(
+    rx_shutdown: &mut Receiver<bool>,
+    address: &SocketAddr,
+) -> Result<()> {
+    info!("starting http server on address={}", address);
+    let listener = TcpListener::bind(&address).await?;
 
     // We start a loop to continuously accept incoming connections
     loop {
@@ -50,7 +52,7 @@ pub async fn start_http_server(rx_shutdown: &mut Receiver<bool>, port: u16) -> R
                 });
             }
             _ = rx_shutdown.changed() => {
-                info!("shutting down http server on port={}", port);
+                info!("shutting down http server on address={}", address);
                 return Ok(());
             }
         }

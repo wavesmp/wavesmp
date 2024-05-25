@@ -4,20 +4,21 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::fs::File;
 use std::io::BufReader;
+use std::net::SocketAddr;
 
 const CONFIG_FILE_PATH: &str = "config.json";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WavesServerConfig {
-    pub ports: WavesServerConfigPorts,
+    pub addresses: WavesServerConfigAddresses,
     pub auth: WavesServerConfigAuth,
     pub db: WavesServerConfigDB,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct WavesServerConfigPorts {
-    pub ws: u16,
-    pub http: u16,
+pub struct WavesServerConfigAddresses {
+    pub ws: SocketAddr,
+    pub http: SocketAddr,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -66,9 +67,9 @@ mod tests {
             config_file,
             "{}",
             r#"{
-              "ports": {
-                "ws": 1,
-                "http": 2
+              "addresses": {
+                "ws": "127.0.0.1:1",
+                "http": "127.0.0.1:2"
               },
               "auth": {
                 "google": {
@@ -86,8 +87,8 @@ mod tests {
         config_file.seek(SeekFrom::Start(0))?;
 
         let config = super::parse_config_file(&config_file)?;
-        assert_eq!(1_u16, config.ports.ws);
-        assert_eq!(2_u16, config.ports.http);
+        assert_eq!("127.0.0.1:1".parse(), Ok(config.addresses.ws));
+        assert_eq!("127.0.0.1:2".parse(), Ok(config.addresses.http));
         assert_eq!(vec!("test_client_id"), config.auth.google.client_ids);
         assert_eq!("test_db_url", config.db.url);
         assert_eq!(3_u32, config.db.max_connections);

@@ -35,14 +35,12 @@ pub mod waves_message_types;
 
 pub async fn start_ws_server(
     rx_shutdown: &mut Receiver<bool>,
-    port: u16,
+    address: &SocketAddr,
     auth_client: AsyncClient,
     db: Database,
 ) -> Result<()> {
-    info!("starting ws server on port={}", port);
-    // let addr = SocketAddr::from(([127, 0, 0, 1], port));
-    let addr = SocketAddr::from(([0, 0, 0, 0], port));
-    let listener = TcpListener::bind(addr).await?;
+    info!("starting ws server on address={}", address);
+    let listener = TcpListener::bind(address).await?;
 
     let waves_service = WavesService { auth_client, db };
 
@@ -72,7 +70,7 @@ pub async fn start_ws_server(
 
             }
             _ = rx_shutdown.changed() => {
-                info!("shutting down ws server on port={}", port);
+                info!("shutting down ws server on address={}", address);
                 return Ok(());
             }
         }
