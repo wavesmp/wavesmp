@@ -9,12 +9,11 @@ services:
     networks:
       - wavesmp
     # May need to expose sql port to run ad hoc queries
-    ports:
-    - '127.0.0.1:3306:3306'
-    # todo add healthcheck?
+    # ports:
+    # - '127.0.0.1:3306:3306'
 
   waves-server-rust:
-    image: waves-server-rust
+    image: osoriano/waves-server-rust:latest
     environment:
       RUST_LOG: info
     volumes:
@@ -43,13 +42,6 @@ services:
         set -o errexit
         set -o pipefail
         set -o nounset
-
-        # for port in 16242 16243; do
-        #   while ! timeout 2 bash -c "< /dev/tcp/waves-server-rust/$${port}" > /dev/null 2>&1; do
-        #       echo "Waiting for waves server to start"
-        #       sleep 1
-        #   done
-        # done
 
         cp packages/waves-client-web/src/index.html \
            packages/waves-client-web/src/privacy.html \
@@ -80,6 +72,7 @@ volumes:
     external: true
     name: wavesmp_waves-server-sql
 
+# Use a stable address for convenience
 networks:
   wavesmp:
     ipam:

@@ -12,5 +12,5 @@ Websocket server for the Waves client
 ```
 export DATABASE_URL=<data-base-url>
 cargo build --release --target=x86_64-unknown-linux-musl
-docker build -t waves-server-rust
+docker build -t waves-server-rust .
 ```
