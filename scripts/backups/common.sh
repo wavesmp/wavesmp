@@ -2,17 +2,20 @@ BACKUP_VERSION_REGEX='^\d{3}$'
 BACKUP_VERSION_FORMAT='%03d'
 
 DB_DUMP_TAR=dump.tar.gz
-DB_DUMP_DIR=dump
+DB_DUMP_FILE=dump.sql
 DB_DUMP_WD=/root
-DB_NAME=wavesmp-waves-server-db-1
+DB_NAME=wavesmp-waves-server-sql-1
+DB_VOLUME_NAME=wavesmp_waves-server-sql
 DB_RESTORE_NAME="${DB_NAME}_restore"
+DB_IMAGE=mysql:8.4.0-oraclelinux9
+DB_VOLUME_DEST=/var/lib/mysql
 
 PACKAGES_DIR=../../packages
 
 CLIENT_CONFIG_FILE="${PACKAGES_DIR}/waves-client-web/src/config.js"
-SERVER_CONFIG_FILE="${PACKAGES_DIR}/waves-server-main/config.js"
+SERVER_CONFIG_FILE="${PACKAGES_DIR}/waves-server-rust/config.json"
 CLIENT_CONFIG_BACKUP_FILE=waves-client-web-config.js
-SERVER_CONFIG_BACKUP_FILE=waves-server-main-config.js
+SERVER_CONFIG_BACKUP_FILE=waves-server-rust-config.json
 
 usage() {
     echo "Usage: $0 <bucket-name>"

@@ -26,7 +26,6 @@ BACKUP_URL="${BACKUP_PREFIX}/${BACKUP_VERSION}"
 echo "Using backup version ${BACKUP_VERSION}"
 
 # Restore the db volume if not present
-DB_VOLUME_NAME=wavesmp_waves-server-db
 if [[ -n "$(docker volume ls --quiet --filter name="${DB_VOLUME_NAME}")" ]]; then
   echo "Docker volume ${DB_VOLUME_NAME} already present"
 else
@@ -35,23 +34,17 @@ else
   docker volume create "${DB_VOLUME_NAME}"
 
   # Deploy the db
-  DB_IMAGE=mongo:4.0.10
-  DB_VOLUME_DEST=/data/db
-  # Mongo docker image defaults to --bind_ip_all flag
-  # Restrict to localhost for improved security
-  # See https://github.com/docker-library/mongo/pull/226
-  DB_EXTRA_ARGS=("--bind_ip" "127.0.0.1")
   docker run \
     --detach \
     --interactive \
     --tty \
     --name "${DB_RESTORE_NAME}" \
     --mount "type=volume,src=${DB_VOLUME_NAME},dst=${DB_VOLUME_DEST},volume-driver=local" \
-    "${DB_IMAGE}" \
-    "${DB_EXTRA_ARGS[@]}"
+    --env MYSQL_ROOT_PASSWORD=root \
+    "${DB_IMAGE}"
 
   # Wait for db to come up
-  DB_PORT=27017
+  DB_PORT=3306
   wait_for_port_listen_in_container "${DB_RESTORE_NAME}" "${DB_PORT}"
 
   # Create temp dir for downloads
@@ -69,7 +62,7 @@ else
 
     cd '${DB_DUMP_WD}'
     tar xf '${DB_DUMP_TAR}'
-    mongorestore
+    mysql -u root -proot < dump.sql
     echo 'Restored database'
     "
   docker stop "${DB_RESTORE_NAME}"

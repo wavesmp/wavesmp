@@ -36,9 +36,9 @@ docker exec "${DB_NAME}" bash -c "
   set -o pipefail
 
   cd '${DB_DUMP_WD}'
-  rm --recursive --force '${DB_DUMP_TAR}' '${DB_DUMP_DIR}'
-  mongodump
-  tar --create --gzip --file '${DB_DUMP_TAR}' '${DB_DUMP_DIR}'
+  rm --recursive --force '${DB_DUMP_TAR}' '${DB_DUMP_FILE}'
+  mysqldump -u root -proot --databases waves > '${DB_DUMP_FILE}'
+  tar --create --gzip --file '${DB_DUMP_TAR}' '${DB_DUMP_FILE}'
   "
 docker cp "${DB_NAME}:${DB_DUMP_WD}/${DB_DUMP_TAR}" "${UPLOAD_DIR}/${DB_DUMP_TAR}"
 aws s3 cp --quiet "${UPLOAD_DIR}/${DB_DUMP_TAR}" "${BACKUP_URL}/${DB_DUMP_TAR}"
