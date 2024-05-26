@@ -1,4 +1,3 @@
-const Encoder = require('waves-encoder')
 const types = require('waves-action-types')
 
 const AckMessenger = require('./ackMessenger')
@@ -25,7 +24,6 @@ class WavesSocket {
 
     this.ackMsgr = new AckMessenger()
     this.bestEffortMsgr = new BestEffortMessenger()
-    this.encoder = new Encoder()
 
     this.messageMap = {}
 
@@ -103,7 +101,7 @@ class WavesSocket {
 
   onMessage(ev) {
     try {
-      const msg = this.encoder.decode(ev.data)
+      const msg = JSON.parse(ev.data)
       const { type, data, reqId } = msg
 
       /* Ack message responses contain a reqId attribute */

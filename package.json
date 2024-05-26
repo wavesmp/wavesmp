@@ -62,7 +62,6 @@
         "waves-client-selectors": "file:packages/waves-client-selectors",
         "waves-client-util": "file:packages/waves-client-util",
         "waves-client-web": "file:packages/waves-client-web",
-        "waves-encoder": "file:packages/waves-encoder",
         "waves-socket": "file:packages/waves-socket",
         "waves-test-data": "file:packages/waves-test-data",
         "waves-test-util": "file:packages/waves-test-util"

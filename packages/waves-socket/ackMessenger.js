@@ -1,5 +1,3 @@
-const Encoder = require('waves-encoder')
-
 const ACK_MESSAGE_SEND_TIMEOUT = 15000
 const ACK_MESSAGE_RECEIVE_TIMEOUT = 15000
 
@@ -7,7 +5,6 @@ class AckMessenger {
   constructor() {
     this.reqId = 1
     this.ackMessages = {}
-    this.encoder = new Encoder()
   }
 
   process(ws) {
@@ -27,7 +24,7 @@ class AckMessenger {
     data.reqId = reqId
     this.reqId += 1
 
-    data = this.encoder.encode(data)
+    data = JSON.stringify(data)
     this.ackMessages[reqId] = { data }
 
     let sentPromise
