@@ -1,6 +1,6 @@
 class FilePlayer {
   constructor() {
-    this.stream = new Audio()
+    this.stream = new Audio();
   }
 
   // Must be called to initialize
@@ -9,7 +9,7 @@ class FilePlayer {
   }
 
   setOnTrackEnded(onTrackEnded) {
-    this.stream.addEventListener('ended', onTrackEnded)
+    this.stream.addEventListener("ended", onTrackEnded);
   }
 
   setOnUploadProgress() {
@@ -21,64 +21,64 @@ class FilePlayer {
   }
 
   addOnTimeUpdate(onTimeUpdate) {
-    this.stream.addEventListener('timeupdate', onTimeUpdate)
+    this.stream.addEventListener("timeupdate", onTimeUpdate);
   }
 
   removeOnTimeUpdate(onTimeUpdate) {
-    this.stream.removeEventListener('timeupdate', onTimeUpdate)
+    this.stream.removeEventListener("timeupdate", onTimeUpdate);
   }
 
   addOnVolumeChange(onVolumeChange) {
-    this.stream.addEventListener('volumechange', onVolumeChange)
+    this.stream.addEventListener("volumechange", onVolumeChange);
   }
 
   removeOnVolumeChange(onVolumeChange) {
-    this.stream.removeEventListener('volumechange', onVolumeChange)
+    this.stream.removeEventListener("volumechange", onVolumeChange);
   }
 
   getVolume() {
-    return this.stream.volume
+    return this.stream.volume;
   }
 
   setVolume(volume) {
-    this.stream.volume = volume
+    this.stream.volume = volume;
   }
 
   async trackNext(track, isPlaying) {
     if (this.trackUrl) {
-      URL.revokeObjectURL(this.trackUrl)
-      this.trackUrl = null
+      URL.revokeObjectURL(this.trackUrl);
+      this.trackUrl = null;
     }
-    this.track = track
-    this.loaded = false
+    this.track = track;
+    this.loaded = false;
     if (isPlaying) {
-      await this.play()
+      await this.play();
     }
   }
 
   async play() {
     if (!this.loaded) {
-      this.load()
+      this.load();
     }
-    this.stream.play()
+    this.stream.play();
   }
 
   pause() {
-    this.stream.pause()
+    this.stream.pause();
   }
 
   seek(pos) {
-    this.stream.currentTime = pos
+    this.stream.currentTime = pos;
   }
 
   load() {
     if (!this.trackUrl) {
-      this.trackUrl = URL.createObjectURL(this.track.file)
+      this.trackUrl = URL.createObjectURL(this.track.file);
     }
-    this.stream.src = this.trackUrl
-    this.stream.currentTime = 0
-    this.loaded = true
+    this.stream.src = this.trackUrl;
+    this.stream.currentTime = 0;
+    this.loaded = true;
   }
 }
 
-module.exports = FilePlayer
+module.exports = FilePlayer;

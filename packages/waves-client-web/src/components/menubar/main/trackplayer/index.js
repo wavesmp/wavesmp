@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
-import Options from './options'
-import Player from './player'
-import './index.css'
+import Options from "./options";
+import Player from "./player";
+import "./index.css";
 
 export default class TrackPlayer extends React.PureComponent {
   render() {
@@ -13,7 +13,7 @@ export default class TrackPlayer extends React.PureComponent {
       index,
       actions,
       playing,
-    } = this.props
+    } = this.props;
     if (menubar) {
       return (
         <Options
@@ -22,8 +22,8 @@ export default class TrackPlayer extends React.PureComponent {
           playlistName={playlistName}
           index={index}
         />
-      )
+      );
     }
-    return <Player actions={actions} playing={playing} />
+    return <Player actions={actions} playing={playing} />;
   }
 }

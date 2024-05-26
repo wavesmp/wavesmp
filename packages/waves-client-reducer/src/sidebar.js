@@ -1,17 +1,17 @@
-const actionTypes = require('waves-action-types')
+const actionTypes = require("waves-action-types");
 
 /* Controls the sidebar contents.
  * - false: main sidebar
  * - true: playlists sidebar */
-const initialState = false
+const initialState = false;
 
 function sidebar(state = initialState, action) {
   switch (action.type) {
     case actionTypes.SIDEBAR_SET:
-      return action.sidebar
+      return action.sidebar;
     default:
-      return state
+      return state;
   }
 }
 
-module.exports = sidebar
+module.exports = sidebar;

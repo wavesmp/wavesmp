@@ -4,9 +4,9 @@
  * So, resolve the babel modules here.
  * See: https://github.com/webpack/webpack/issues/1866 */
 module.exports = {
-  presets: ['@babel/preset-react'].map(require.resolve),
+  presets: ["@babel/preset-react"].map(require.resolve),
   plugins: [
-    '@babel/plugin-proposal-class-properties',
-    'babel-plugin-inline-react-svg',
+    "@babel/plugin-proposal-class-properties",
+    "babel-plugin-inline-react-svg",
   ].map(require.resolve),
-}
+};

@@ -1,30 +1,30 @@
-const path = require('path')
+const path = require("path");
 
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const TerserJSPlugin = require('terser-webpack-plugin')
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserJSPlugin = require("terser-webpack-plugin");
 
-const babelConfig = require('./babel.config')
-const constants = require('./buildConstants')
+const babelConfig = require("./babel.config");
+const constants = require("./buildConstants");
 
 const stringReplacer = {
-  loader: 'string-replace-loader',
+  loader: "string-replace-loader",
   options: {
     multiple: Object.entries(constants)
       .sort(([a], [b]) => {
-        return b.length - a.length
+        return b.length - a.length;
       })
       .map(([key, val]) => ({
         search: key,
         replace: val,
-        flags: 'g',
+        flags: "g",
       })),
   },
-}
+};
 
 const wpConfig = {
-  mode: process.env.NODE_ENV || 'production',
+  mode: process.env.NODE_ENV || "production",
   stats: {
     /* Reduce output for MiniCssExtractPlugin
      * See https://github.com/webpack-contrib/mini-css-extract-plugin/issues/39 */
@@ -35,13 +35,13 @@ const wpConfig = {
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
   },
 
-  entry: path.join(__dirname, 'src', 'index.js'),
+  entry: path.join(__dirname, "src", "index.js"),
 
   output: {
-    path: path.join(__dirname, '/build'),
-    filename: '[name].js',
-    chunkFilename: '[id].chunk.js',
-    publicPath: '/',
+    path: path.join(__dirname, "/build"),
+    filename: "[name].js",
+    chunkFilename: "[id].chunk.js",
+    publicPath: "/",
   },
 
   module: {
@@ -51,7 +51,7 @@ const wpConfig = {
         use: [
           stringReplacer,
           {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: babelConfig,
           },
         ],
@@ -61,27 +61,27 @@ const wpConfig = {
         test: /\.css$/,
         use: [
           { loader: MiniCssExtractPlugin.loader, options: { esModule: true } },
-          'css-loader',
+          "css-loader",
           stringReplacer,
         ],
       },
-      { test: /\.png$/, use: 'file-loader' },
+      { test: /\.png$/, use: "file-loader" },
     ],
   },
 
   plugins: [
-    new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
+    new BundleAnalyzerPlugin({ analyzerMode: "static" }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].chunk.css',
+      filename: "[name].css",
+      chunkFilename: "[id].chunk.css",
     }),
   ],
 
   /* Some libs e.g. musicmetadata require fs,
    * even though it might not actually be used. */
   node: {
-    fs: 'empty',
+    fs: "empty",
   },
-}
+};
 
-module.exports = wpConfig
+module.exports = wpConfig;

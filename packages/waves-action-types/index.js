@@ -1,4 +1,4 @@
-const keyMirror = require('keymirror')
+const keyMirror = require("keymirror");
 
 const actionTypes = keyMirror({
   MENU_BACK: null,
@@ -49,6 +49,6 @@ const actionTypes = keyMirror({
 
   TOAST_ADD: null,
   TOAST_REMOVE: null,
-})
+});
 
-module.exports = actionTypes
+module.exports = actionTypes;

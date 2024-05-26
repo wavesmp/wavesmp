@@ -1,15 +1,15 @@
-const actionTypes = require('waves-action-types')
+const actionTypes = require("waves-action-types");
 
-const initialState = null
+const initialState = null;
 
 function modal(state = initialState, action) {
   switch (action.type) {
     case actionTypes.MODAL_SET: {
-      return action.modal
+      return action.modal;
     }
     default:
-      return state
+      return state;
   }
 }
 
-module.exports = modal
+module.exports = modal;

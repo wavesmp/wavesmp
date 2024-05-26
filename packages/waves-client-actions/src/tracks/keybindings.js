@@ -1,112 +1,112 @@
-const { getPlaylistSelectors } = require('waves-client-selectors')
-const { getPlaylistNameFromRoute } = require('waves-client-util')
+const { getPlaylistSelectors } = require("waves-client-selectors");
+const { getPlaylistNameFromRoute } = require("waves-client-util");
 
-const { pause, play } = require('./playing')
-const { selectionClearAndAdd } = require('./playlists')
-const { trackToggle } = require('./toggle')
+const { pause, play } = require("./playing");
+const { selectionClearAndAdd } = require("./playlists");
+const { trackToggle } = require("./toggle");
 
 function tracksKeyDown(ev, history) {
   return async (dispatch, getState) => {
-    const { key, target } = ev
-    const { tagName, contentEditable } = target
-    if (tagName === 'INPUT' || contentEditable === 'true') {
-      return
+    const { key, target } = ev;
+    const { tagName, contentEditable } = target;
+    if (tagName === "INPUT" || contentEditable === "true") {
+      return;
     }
 
     switch (key) {
-      case ' ': {
-        const { track, isPlaying } = getState().tracks.playing
+      case " ": {
+        const { track, isPlaying } = getState().tracks.playing;
         if (track) {
-          ev.preventDefault()
+          ev.preventDefault();
           if (isPlaying) {
-            dispatch(pause())
+            dispatch(pause());
           } else {
-            await dispatch(play())
+            await dispatch(play());
           }
-          return
+          return;
         }
       }
       // Fall through (treat as track toggle)
-      case 'Enter':
-      case 'j':
-      case 'k':
-      case 'h':
-      case 'l': {
-        const { location } = history
-        const { search, pathname } = location
-        const playlistName = getPlaylistNameFromRoute(pathname)
+      case "Enter":
+      case "j":
+      case "k":
+      case "h":
+      case "l": {
+        const { location } = history;
+        const { search, pathname } = location;
+        const playlistName = getPlaylistNameFromRoute(pathname);
         if (!playlistName) {
-          return
+          return;
         }
-        const playlistSelectors = getPlaylistSelectors(playlistName)
+        const playlistSelectors = getPlaylistSelectors(playlistName);
         if (!playlistSelectors) {
-          return
+          return;
         }
-        const props = playlistSelectors.getPlaylistProps(getState(), search)
+        const props = playlistSelectors.getPlaylistProps(getState(), search);
         if (!props.loaded) {
-          return
+          return;
         }
-        playlistKeyDown(ev, history, dispatch, key, playlistName, props)
+        playlistKeyDown(ev, history, dispatch, key, playlistName, props);
       }
       // no default
     }
-  }
+  };
 }
 
 function playlistKeyDown(ev, history, dispatch, key, playlistName, props) {
   switch (key) {
-    case 'h': {
-      const { currentPage } = props
+    case "h": {
+      const { currentPage } = props;
       if (currentPage < 1) {
-        return
+        return;
       }
-      const { search, pathname } = history
-      const qp = new URLSearchParams(search)
-      qp.set('page', currentPage - 1)
-      history.push({ pathname, search: qp.toString() })
-      break
+      const { search, pathname } = history;
+      const qp = new URLSearchParams(search);
+      qp.set("page", currentPage - 1);
+      history.push({ pathname, search: qp.toString() });
+      break;
     }
-    case 'l': {
-      const { currentPage, lastPage } = props
+    case "l": {
+      const { currentPage, lastPage } = props;
       if (currentPage >= lastPage) {
-        return
+        return;
       }
-      const { search, pathname } = history
-      const qp = new URLSearchParams(search)
-      qp.set('page', currentPage + 1)
-      history.push({ pathname, search: qp.toString() })
-      break
+      const { search, pathname } = history;
+      const qp = new URLSearchParams(search);
+      qp.set("page", currentPage + 1);
+      history.push({ pathname, search: qp.toString() });
+      break;
     }
-    case 'k':
-    case 'j': {
-      const { displayItems, selection } = props
-      const n = displayItems.length
+    case "k":
+    case "j": {
+      const { displayItems, selection } = props;
+      const n = displayItems.length;
       if (n === 0) {
-        return
+        return;
       }
-      let i
-      if (key === 'j') {
-        i = n - 1
+      let i;
+      if (key === "j") {
+        i = n - 1;
         if (selection.has(displayItems[i].index)) {
-          return
+          return;
         }
         while (i > 0) {
-          i -= 1
+          i -= 1;
           if (selection.has(displayItems[i].index)) {
-            i += 1
-            break
+            i += 1;
+            break;
           }
         }
       } else {
-        i = 0
+        i = 0;
         if (selection.has(displayItems[i].index)) {
-          return
+          return;
         }
         while (i < n - 1) {
-          i += 1
+          i += 1;
           if (selection.has(displayItems[i].index)) {
-            i -= 1
-            break
+            i -= 1;
+            break;
           }
         }
       }
@@ -117,21 +117,21 @@ function playlistKeyDown(ev, history, dispatch, key, playlistName, props) {
           displayItems[i].id,
           displayItems,
         ),
-      )
-      break
+      );
+      break;
     }
-    case ' ':
-    case 'Enter': {
-      const { displayItems, selection } = props
+    case " ":
+    case "Enter": {
+      const { displayItems, selection } = props;
       if (displayItems.length === 0 || selection.size === 0) {
-        return
+        return;
       }
       for (const item of displayItems) {
         if (selection.has(item.index)) {
-          if (key === ' ') {
-            ev.preventDefault()
+          if (key === " ") {
+            ev.preventDefault();
           }
-          dispatch(trackToggle(item.id, playlistName, item.index))
+          dispatch(trackToggle(item.id, playlistName, item.index));
         }
       }
     }
@@ -139,4 +139,4 @@ function playlistKeyDown(ev, history, dispatch, key, playlistName, props) {
   }
 }
 
-module.exports.tracksKeyDown = tracksKeyDown
+module.exports.tracksKeyDown = tracksKeyDown;

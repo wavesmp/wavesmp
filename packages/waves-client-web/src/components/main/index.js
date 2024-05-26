@@ -1,29 +1,32 @@
-import React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { Route } from 'react-router-dom'
+import React from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Route } from "react-router-dom";
 
-import * as WavesActions from 'waves-client-actions'
+import * as WavesActions from "waves-client-actions";
 import {
   TOGGLE_DATA_KEY,
   MENU_DATA_VALUE,
   MODAL_DATA_VALUE,
   routes,
-} from 'waves-client-constants'
-import { getPlaylistSelectors, getPlaylistSearch } from 'waves-client-selectors'
-import { getPlaylistNameFromRoute, filterSelection } from 'waves-client-util'
+} from "waves-client-constants";
+import {
+  getPlaylistSelectors,
+  getPlaylistSearch,
+} from "waves-client-selectors";
+import { getPlaylistNameFromRoute, filterSelection } from "waves-client-util";
 
-import Boundary from '../boundary'
-import SideBar from '../sidebar'
-import MenuBar from '../menubar/main'
-import Upload from '../upload'
-import Menu from '../menu'
-import Modal from '../modal'
-import NowPlaying from '../nowplaying'
-import Playlist from '../playlist'
-import Toasts from '../toasts'
-import Library from '../library'
-import Settings from '../settings'
+import Boundary from "../boundary";
+import SideBar from "../sidebar";
+import MenuBar from "../menubar/main";
+import Upload from "../upload";
+import Menu from "../menu";
+import Modal from "../modal";
+import NowPlaying from "../nowplaying";
+import Playlist from "../playlist";
+import Toasts from "../toasts";
+import Library from "../library";
+import Settings from "../settings";
 
 class MainApp extends React.PureComponent {
   ancestorHasAttribute(node, key, val) {
@@ -32,32 +35,32 @@ class MainApp extends React.PureComponent {
      * does not have getAttribute method */
     while (node.parentNode) {
       if (node.getAttribute(key) === val) {
-        return true
+        return true;
       }
-      node = node.parentNode
+      node = node.parentNode;
     }
-    return false
+    return false;
   }
 
   /* Add top-level click handler to dismiss overlay (e.g. modal or menu) */
   onClick = (ev) => {
-    const { actions, menu, modal } = this.props
-    const { target } = ev
+    const { actions, menu, modal } = this.props;
+    const { target } = ev;
 
     if (
       menu.length &&
       !this.ancestorHasAttribute(target, TOGGLE_DATA_KEY, MENU_DATA_VALUE)
     ) {
-      actions.menuReset()
+      actions.menuReset();
     }
 
     if (
       modal &&
       !this.ancestorHasAttribute(target, TOGGLE_DATA_KEY, MODAL_DATA_VALUE)
     ) {
-      actions.modalSet(null)
+      actions.modalSet(null);
     }
-  }
+  };
 
   render() {
     const {
@@ -76,7 +79,7 @@ class MainApp extends React.PureComponent {
       location,
       history,
       toasts,
-    } = this.props
+    } = this.props;
     return (
       <Boundary err={err}>
         <div onClick={this.onClick} onContextMenu={this.onContextMenu}>
@@ -107,14 +110,14 @@ class MainApp extends React.PureComponent {
           <Toasts actions={actions} toasts={toasts} />
         </div>
       </Boundary>
-    )
+    );
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const { menubar } = state
-  const { location } = ownProps
-  const { pathname } = location
+  const { menubar } = state;
+  const { location } = ownProps;
+  const { pathname } = location;
   const props = {
     playlists: state.tracks.playlists,
     playing: state.tracks.playing,
@@ -125,27 +128,30 @@ function mapStateToProps(state, ownProps) {
     menubar,
     modal: state.modal,
     toasts: state.toasts,
-  }
+  };
   if (menubar) {
-    const playlistName = getPlaylistNameFromRoute(pathname)
+    const playlistName = getPlaylistNameFromRoute(pathname);
     if (playlistName) {
-      const search = getPlaylistSearch(state, playlistName)
-      const { getPlaylistProps } = getPlaylistSelectors(playlistName)
-      const { index, selection, displayItems } = getPlaylistProps(state, search)
-      const filteredSelection = filterSelection(displayItems, selection)
+      const search = getPlaylistSearch(state, playlistName);
+      const { getPlaylistProps } = getPlaylistSelectors(playlistName);
+      const { index, selection, displayItems } = getPlaylistProps(
+        state,
+        search,
+      );
+      const filteredSelection = filterSelection(displayItems, selection);
 
-      props.playlistName = playlistName
-      props.index = index
-      props.filteredSelection = filteredSelection
+      props.playlistName = playlistName;
+      props.index = index;
+      props.filteredSelection = filteredSelection;
     }
   }
-  return props
+  return props;
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(WavesActions, dispatch),
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainApp)
+export default connect(mapStateToProps, mapDispatchToProps)(MainApp);

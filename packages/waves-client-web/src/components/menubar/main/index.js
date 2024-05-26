@@ -1,30 +1,30 @@
-import React from 'react'
-import { CSSTransitionGroup } from 'react-transition-group'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { CSSTransitionGroup } from "react-transition-group";
+import { Link } from "react-router-dom";
 
-import { menuTypes, routes } from 'waves-client-constants'
+import { menuTypes, routes } from "waves-client-constants";
 
-import './index.css'
-import TrackPlayer from './trackplayer'
-import TrackSlider from './trackslider'
-import LogoSvg from '../common/logo-wide.svg'
+import "./index.css";
+import TrackPlayer from "./trackplayer";
+import TrackSlider from "./trackslider";
+import LogoSvg from "../common/logo-wide.svg";
 
-let prevPlayerVisible = false
+let prevPlayerVisible = false;
 
 export default class MenuBar extends React.PureComponent {
   onNotificationsClick = (ev) => {
-    const { actions } = this.props
-    actions.menuSetElem({ ev, type: menuTypes.NOTIFICATIONS })
-  }
+    const { actions } = this.props;
+    actions.menuSetElem({ ev, type: menuTypes.NOTIFICATIONS });
+  };
 
   onUserSettingsClick = (ev) => {
-    const { actions, history } = this.props
+    const { actions, history } = this.props;
     actions.menuSetElem({
       ev,
       type: menuTypes.USER_SETTINGS,
       props: { history },
-    })
-  }
+    });
+  };
 
   render() {
     const {
@@ -35,14 +35,14 @@ export default class MenuBar extends React.PureComponent {
       filteredSelection,
       index,
       playlistName,
-    } = this.props
+    } = this.props;
 
-    let trackSlider = null
-    let trackPlayer = null
-    let logoClassName = 'menubar-main-logo'
-    let logoNameClassName = 'menubar-main-logo-name'
-    const isSliderVisible = playing.track != null
-    const isPlayerVisible = isSliderVisible || menubar
+    let trackSlider = null;
+    let trackPlayer = null;
+    let logoClassName = "menubar-main-logo";
+    let logoNameClassName = "menubar-main-logo-name";
+    const isSliderVisible = playing.track != null;
+    const isPlayerVisible = isSliderVisible || menubar;
     if (isPlayerVisible) {
       /* Usually, transitions are enabled when the player is visible.
        * However, disable the transition when player is becoming visible
@@ -50,15 +50,15 @@ export default class MenuBar extends React.PureComponent {
        * for this case would conflict with the current one, so handle
        * it programmatically (no pure-CSS solution available AFAIK). */
       if (!prevPlayerVisible && layout === 0) {
-        setTimeout(() => this.forceUpdate(), 0)
+        setTimeout(() => this.forceUpdate(), 0);
       } else {
-        logoClassName += ' menubar-transition'
-        logoNameClassName += ' menubar-transition'
+        logoClassName += " menubar-transition";
+        logoNameClassName += " menubar-transition";
       }
 
-      prevPlayerVisible = true
-      logoClassName += ' menubar-player-visible'
-      logoNameClassName += ' menubar-player-visible'
+      prevPlayerVisible = true;
+      logoClassName += " menubar-player-visible";
+      logoNameClassName += " menubar-player-visible";
       trackPlayer = (
         <TrackPlayer
           key={0}
@@ -69,45 +69,45 @@ export default class MenuBar extends React.PureComponent {
           playlistName={playlistName}
           playing={playing}
         />
-      )
+      );
     } else {
-      prevPlayerVisible = false
+      prevPlayerVisible = false;
     }
 
     if (isSliderVisible) {
-      trackSlider = <TrackSlider key={0} actions={actions} playing={playing} />
+      trackSlider = <TrackSlider key={0} actions={actions} playing={playing} />;
     }
 
     return (
-      <header className='menubar-main-header'>
+      <header className="menubar-main-header">
         <Link to={routes.defaultRoute}>
           <LogoSvg className={logoClassName} />
           <span className={logoNameClassName}>WAVES</span>
         </Link>
         <CSSTransitionGroup
-          transitionName='fade'
+          transitionName="fade"
           transitionEnterTimeout={800}
           transitionLeaveTimeout={300}
         >
           {trackPlayer}
         </CSSTransitionGroup>
         <i
-          className='fa fa-lg fa-globe menu-bar-icon'
+          className="fa fa-lg fa-globe menu-bar-icon"
           onClick={this.onNotificationsClick}
         />
         <i
-          className='fa fa-lg fa-user menu-bar-icon'
+          className="fa fa-lg fa-user menu-bar-icon"
           onClick={this.onUserSettingsClick}
         />
         <CSSTransitionGroup
-          component='div'
-          transitionName='fade'
+          component="div"
+          transitionName="fade"
           transitionEnterTimeout={800}
           transitionLeaveTimeout={300}
         >
           {trackSlider}
         </CSSTransitionGroup>
       </header>
-    )
+    );
   }
 }

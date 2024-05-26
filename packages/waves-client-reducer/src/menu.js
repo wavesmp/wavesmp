@@ -1,4 +1,4 @@
-const actionTypes = require('waves-action-types')
+const actionTypes = require("waves-action-types");
 
 /* State is list of objects describing a menu. e.g.
  * [
@@ -10,34 +10,34 @@ const actionTypes = require('waves-action-types')
  *   }
  * ]
  */
-const initialState = []
+const initialState = [];
 
 function menu(state = initialState, action) {
   switch (action.type) {
     case actionTypes.MENU_RESET: {
-      return []
+      return [];
     }
     case actionTypes.MENU_SET: {
-      const { menu } = action
-      return [menu]
+      const { menu } = action;
+      return [menu];
     }
     // Menu set must be called before this
     case actionTypes.MENU_NEXT: {
-      const { menu } = action
-      const numMenus = state.length
-      const oldMenu = state[numMenus - 1]
-      menu.transform = oldMenu.transform
-      return [...state, menu]
+      const { menu } = action;
+      const numMenus = state.length;
+      const oldMenu = state[numMenus - 1];
+      menu.transform = oldMenu.transform;
+      return [...state, menu];
     }
     // Menu next should be called before this
     case actionTypes.MENU_BACK: {
-      const newState = [...state]
-      newState.pop()
-      return newState
+      const newState = [...state];
+      newState.pop();
+      return newState;
     }
     default:
-      return state
+      return state;
   }
 }
 
-module.exports = menu
+module.exports = menu;

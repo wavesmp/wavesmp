@@ -1,37 +1,37 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import * as WavesActions from 'waves-client-actions'
-import { LIBRARY_NAME } from 'waves-client-constants'
-import { getFilteredSelection } from 'waves-client-selectors'
-import { normalizeTrack } from 'waves-client-util'
+import * as WavesActions from "waves-client-actions";
+import { LIBRARY_NAME } from "waves-client-constants";
+import { getFilteredSelection } from "waves-client-selectors";
+import { normalizeTrack } from "waves-client-util";
 
-import Modal from './util'
-import { libraryColumns } from '../table/columns'
+import Modal from "./util";
+import { libraryColumns } from "../table/columns";
 
 class TracksDeleteModal extends React.PureComponent {
   constructor(props) {
-    super(props)
-    this.state = { deleting: false }
+    super(props);
+    this.state = { deleting: false };
   }
 
   onDelete = async () => {
-    const { actions } = this.props
-    this.setState({ deleting: true })
-    const { deleteErrs, serverErrs } = await actions.tracksDelete()
-    this.setState({ deleting: false })
-    return deleteErrs.length === 0 && serverErrs.length === 0
-  }
+    const { actions } = this.props;
+    this.setState({ deleting: true });
+    const { deleteErrs, serverErrs } = await actions.tracksDelete();
+    this.setState({ deleting: false });
+    return deleteErrs.length === 0 && serverErrs.length === 0;
+  };
 
   renderDeleteItems() {
-    const { columns, isPlaying, library, index, selection } = this.props
-    const itemPlayIndexes = Array.from(selection.keys())
-    itemPlayIndexes.sort((a, b) => a - b)
+    const { columns, isPlaying, library, index, selection } = this.props;
+    const itemPlayIndexes = Array.from(selection.keys());
+    itemPlayIndexes.sort((a, b) => a - b);
     return (
       <div>
         <div>
-          <table className='table modal-table'>
+          <table className="table modal-table">
             <thead>
               <tr>
                 {columns.map(({ title }) => (
@@ -60,16 +60,16 @@ class TracksDeleteModal extends React.PureComponent {
           </table>
         </div>
       </div>
-    )
+    );
   }
 
   render() {
-    const { actions, selection } = this.props
-    const { deleting } = this.state
-    const deleteTitle = deleting ? 'Deleting' : 'Delete'
-    const plurality = selection.size > 1 ? 's' : ''
-    const title = `Delete track${plurality}`
-    const message = `This will delete the track${plurality} below. Are you sure?`
+    const { actions, selection } = this.props;
+    const { deleting } = this.state;
+    const deleteTitle = deleting ? "Deleting" : "Delete";
+    const plurality = selection.size > 1 ? "s" : "";
+    const title = `Delete track${plurality}`;
+    const message = `This will delete the track${plurality} below. Are you sure?`;
     return (
       <Modal
         actions={actions}
@@ -83,32 +83,32 @@ class TracksDeleteModal extends React.PureComponent {
         </div>
         {this.renderDeleteItems()}
       </Modal>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
-  const { account, tracks } = state
-  const { libraries, playlists, playing } = tracks
-  const library = libraries[LIBRARY_NAME]
-  const playlist = playlists[LIBRARY_NAME]
-  const { index } = playlist
-  const { isPlaying } = playing
-  const columns = libraryColumns.filter((c) => account.columns.has(c.title))
-  const selection = getFilteredSelection(state, LIBRARY_NAME)
+  const { account, tracks } = state;
+  const { libraries, playlists, playing } = tracks;
+  const library = libraries[LIBRARY_NAME];
+  const playlist = playlists[LIBRARY_NAME];
+  const { index } = playlist;
+  const { isPlaying } = playing;
+  const columns = libraryColumns.filter((c) => account.columns.has(c.title));
+  const selection = getFilteredSelection(state, LIBRARY_NAME);
   return {
     columns,
     library,
     selection,
     isPlaying,
     index,
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(WavesActions, dispatch),
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TracksDeleteModal)
+export default connect(mapStateToProps, mapDispatchToProps)(TracksDeleteModal);

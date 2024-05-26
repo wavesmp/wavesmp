@@ -1,20 +1,20 @@
-const actionTypes = require('waves-action-types')
+const actionTypes = require("waves-action-types");
 
-const initialState = []
+const initialState = [];
 
 function toasts(state = initialState, action) {
   switch (action.type) {
     case actionTypes.TOAST_ADD: {
-      const { toast } = action
-      return [...state, toast]
+      const { toast } = action;
+      return [...state, toast];
     }
     case actionTypes.TOAST_REMOVE: {
-      const { id } = action
-      return state.filter((toast) => toast.id !== id)
+      const { id } = action;
+      return state.filter((toast) => toast.id !== id);
     }
     default:
-      return state
+      return state;
   }
 }
 
-module.exports = toasts
+module.exports = toasts;

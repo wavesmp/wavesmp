@@ -4,7 +4,7 @@
   background: var(--body-color);
   position: fixed;
   width: 100%;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 /* Logo */
@@ -65,7 +65,7 @@
   height: auto;
   color: var(--title-color);
   font-size: 14px;
-  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-family: "Helvetica", "Arial", sans-serif;
   font-weight: 800;
   font-style: italic;
   transform: scaleX(2);

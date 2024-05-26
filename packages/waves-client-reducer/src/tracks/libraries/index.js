@@ -1,13 +1,13 @@
-const reducerLibrary = require('./library')
+const reducerLibrary = require("./library");
 
-const initialState = {}
+const initialState = {};
 
 function reducerLibraries(state = initialState, action) {
-  const { libName } = action
+  const { libName } = action;
   if (libName) {
-    return { ...state, [libName]: reducerLibrary(state[libName], action) }
+    return { ...state, [libName]: reducerLibrary(state[libName], action) };
   }
-  return state
+  return state;
 }
 
-module.exports = reducerLibraries
+module.exports = reducerLibraries;

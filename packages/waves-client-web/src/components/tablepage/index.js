@@ -1,18 +1,18 @@
-import React from 'react'
+import React from "react";
 
-import ContentPage from '../contentpage'
-import TableBar from '../tablebar'
-import Table from '../table'
-import './index.css'
+import ContentPage from "../contentpage";
+import TableBar from "../tablebar";
+import Table from "../table";
+import "./index.css";
 
 export default class TablePage extends React.PureComponent {
   render() {
-    const { title, ...other } = this.props
+    const { title, ...other } = this.props;
     return (
       <ContentPage title={title}>
         <TablePageData {...other} />
       </ContentPage>
-    )
+    );
   }
 }
 
@@ -29,32 +29,32 @@ class TablePageData extends React.PureComponent {
       loaded,
       numItems,
       ...other
-    } = this.props
+    } = this.props;
 
     if (!loaded) {
-      const numRows = 8
-      const rows = Array(numRows)
+      const numRows = 8;
+      const rows = Array(numRows);
       for (let i = 0; i < numRows; i += 1) {
         rows[i] = (
-          <div key={i} className='shelf-row'>
-            <div className='shelf shelf-cell shelf-cell-lg' />
-            <div className='shelf shelf-cell' />
-            <div className='shelf shelf-cell' />
+          <div key={i} className="shelf-row">
+            <div className="shelf shelf-cell shelf-cell-lg" />
+            <div className="shelf shelf-cell" />
+            <div className="shelf shelf-cell" />
           </div>
-        )
+        );
       }
       return (
         <div>
-          <div className='tablebar'>
+          <div className="tablebar">
             <div>
-              <div className='shelf shelf-btn' />
-              <div className='shelf shelf-btn' />
+              <div className="shelf shelf-btn" />
+              <div className="shelf shelf-btn" />
             </div>
-            <div className='shelf shelf-search-box' />
+            <div className="shelf shelf-search-box" />
           </div>
-          <div className='table'>{rows}</div>
+          <div className="table">{rows}</div>
         </div>
-      )
+      );
     }
     if (numItems === 0) {
       if (routerSearchString) {
@@ -68,11 +68,11 @@ class TablePageData extends React.PureComponent {
               onSettingsClick={onSettingsClick}
               history={history}
             />
-            <h3 className='tablepage-msg'>No data</h3>
+            <h3 className="tablepage-msg">No data</h3>
           </div>
-        )
+        );
       }
-      return <h3 className='tablepage-msg'>{noDataMsg}</h3>
+      return <h3 className="tablepage-msg">{noDataMsg}</h3>;
     }
     return (
       <>
@@ -86,6 +86,6 @@ class TablePageData extends React.PureComponent {
         />
         <Table {...other} pathname={pathname} qp={qp} numItems={numItems} />
       </>
-    )
+    );
   }
 }

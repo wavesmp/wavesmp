@@ -5,20 +5,20 @@ module.exports = {
    * https://developers.google.com/identity/sign-in/web/
    * reference#gapiauth2clientconfig */
   googleAuthOpts: {
-    client_id: 'REPLACE_ME',
+    client_id: "REPLACE_ME",
     /* Additional opts here, if needed */
   },
   s3Opts: {
     /* Role ARN for storing tracks in S3 */
-    roleArn: 'REPLACE_ME',
+    roleArn: "REPLACE_ME",
     /* Bucket for storing tracks */
-    bucketName: 'REPLACE_ME',
+    bucketName: "REPLACE_ME",
     /* AWS region */
-    regionName: 'REPLACE_ME',
+    regionName: "REPLACE_ME",
     /* null for google */
     providerId: null,
   },
-  defaultTrackSource: 's3',
+  defaultTrackSource: "s3",
   /* Waves websocket server url */
-  server: 'wss://www.HOST_NAME/ws',
-}
+  server: "wss://www.HOST_NAME/ws",
+};

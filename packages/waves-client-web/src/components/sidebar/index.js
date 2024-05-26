@@ -1,16 +1,16 @@
-import React from 'react'
-import { CSSTransitionGroup } from 'react-transition-group'
+import React from "react";
+import { CSSTransitionGroup } from "react-transition-group";
 
-import './index.css'
-import MainBar from './main'
-import PlaylistBar from './playlist'
+import "./index.css";
+import MainBar from "./main";
+import PlaylistBar from "./playlist";
 
 export default class SideBar extends React.PureComponent {
   render() {
-    const { actions, playing, playlists, sidebar, pathname } = this.props
-    const isSliderVisible = playing.track != null
-    let playlistBar = null
-    let mainBar = null
+    const { actions, playing, playlists, sidebar, pathname } = this.props;
+    const isSliderVisible = playing.track != null;
+    let playlistBar = null;
+    let mainBar = null;
     if (sidebar) {
       playlistBar = (
         <PlaylistBar
@@ -19,7 +19,7 @@ export default class SideBar extends React.PureComponent {
           actions={actions}
           playlists={playlists}
         />
-      )
+      );
     } else {
       mainBar = (
         <MainBar
@@ -29,25 +29,25 @@ export default class SideBar extends React.PureComponent {
           playlists={playlists}
           pathname={pathname}
         />
-      )
+      );
     }
     return (
       <span>
         <CSSTransitionGroup
-          transitionName='mainbartransition'
+          transitionName="mainbartransition"
           transitionEnterTimeout={SIDEBAR_ENTER_TIMEOUT}
           transitionLeaveTimeout={SIDEBAR_LEAVE_TIMEOUT}
         >
           {mainBar}
         </CSSTransitionGroup>
         <CSSTransitionGroup
-          transitionName='playlistbartransition'
+          transitionName="playlistbartransition"
           transitionEnterTimeout={SIDEBAR_ENTER_TIMEOUT}
           transitionLeaveTimeout={SIDEBAR_LEAVE_TIMEOUT}
         >
           {playlistBar}
         </CSSTransitionGroup>
       </span>
-    )
+    );
   }
 }

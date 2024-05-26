@@ -1,57 +1,57 @@
-import React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-import * as WavesActions from 'waves-client-actions'
-import { LIBRARY_NAME, modalTypes, routes } from 'waves-client-constants'
+import * as WavesActions from "waves-client-actions";
+import { LIBRARY_NAME, modalTypes, routes } from "waves-client-constants";
 import {
   getOrCreatePlaylistSelectors,
   getLibraryPlaylistSearch,
   getDefaultPlaylistSearch,
-} from 'waves-client-selectors'
+} from "waves-client-selectors";
 
-import TablePage from '../tablepage'
-import { playlistColumns } from '../table/columns'
+import TablePage from "../tablepage";
+import { playlistColumns } from "../table/columns";
 
-const NO_DATA_MSG = 'Empty playlist. Go ahead and add some tracks!'
+const NO_DATA_MSG = "Empty playlist. Go ahead and add some tracks!";
 
 class Playlist extends React.PureComponent {
   getButtons() {
-    const { libraryPlaylistSearch, defaultPlaylistSearch } = this.props
+    const { libraryPlaylistSearch, defaultPlaylistSearch } = this.props;
     const toLibrary = {
       pathname: routes.library,
       search: libraryPlaylistSearch,
-    }
+    };
     const toNowPlaying = {
       pathname: routes.nowplaying,
       search: defaultPlaylistSearch,
-    }
+    };
     return [
-      <Link key='Library' className='btn btn-primary' to={toLibrary}>
+      <Link key="Library" className="btn btn-primary" to={toLibrary}>
         Library
       </Link>,
-      <Link key='Now Playing' className='btn btn-primary' to={toNowPlaying}>
+      <Link key="Now Playing" className="btn btn-primary" to={toNowPlaying}>
         Now Playing
       </Link>,
-    ]
+    ];
   }
 
   onSettingsClick = () => {
-    const { actions, playlistName } = this.props
+    const { actions, playlistName } = this.props;
     actions.modalSet({
       type: modalTypes.PLAYLIST_SETTINGS,
       props: { playlistName },
-    })
-  }
+    });
+  };
 
   onItemEdit = (id, attr, update) => {
-    const { actions } = this.props
-    actions.tracksInfoUpdate(id, attr, update, LIBRARY_NAME)
-  }
+    const { actions } = this.props;
+    actions.tracksInfoUpdate(id, attr, update, LIBRARY_NAME);
+  };
 
   render() {
-    const { playlistName } = this.props
+    const { playlistName } = this.props;
     return (
       <TablePage
         {...this.props}
@@ -63,21 +63,21 @@ class Playlist extends React.PureComponent {
         onSettingsClick={this.onSettingsClick}
         title={playlistName}
       />
-    )
+    );
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const playlistName = ownProps.match.params.playlist
+  const playlistName = ownProps.match.params.playlist;
   const { getRouterSearchString, getRouterQueryParams, getPlaylistProps } =
-    getOrCreatePlaylistSelectors(playlistName, URLSearchParams, LIBRARY_NAME)
-  const { tracks, account, menubar, layout } = state
-  const { playing } = tracks
-  const { isPlaying } = playing
-  const { location } = ownProps
-  const { pathname, search } = location
-  const { theme } = account
-  const columns = playlistColumns.filter((c) => account.columns.has(c.title))
+    getOrCreatePlaylistSelectors(playlistName, URLSearchParams, LIBRARY_NAME);
+  const { tracks, account, menubar, layout } = state;
+  const { playing } = tracks;
+  const { isPlaying } = playing;
+  const { location } = ownProps;
+  const { pathname, search } = location;
+  const { theme } = account;
+  const columns = playlistColumns.filter((c) => account.columns.has(c.title));
 
   return {
     qp: getRouterQueryParams(undefined, search),
@@ -92,13 +92,13 @@ function mapStateToProps(state, ownProps) {
     theme,
     layout,
     ...getPlaylistProps(state, search),
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(WavesActions, dispatch),
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Playlist)
+export default connect(mapStateToProps, mapDispatchToProps)(Playlist);

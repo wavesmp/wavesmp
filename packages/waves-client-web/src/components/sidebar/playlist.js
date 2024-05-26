@@ -1,79 +1,79 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
-import constants from 'waves-client-constants'
+import constants from "waves-client-constants";
 
 export default class PlaylistBar extends React.PureComponent {
   onBackClick = () => {
-    const { actions } = this.props
-    actions.sidebarSet(false)
-  }
+    const { actions } = this.props;
+    actions.sidebarSet(false);
+  };
 
   onDragOver(ev) {
     if (ev.dataTransfer.types.includes(constants.PLAYLIST_TYPE)) {
-      ev.preventDefault()
+      ev.preventDefault();
     }
   }
 
   onNewPlaylistClick = () => {
-    const { actions } = this.props
-    actions.modalSet({ type: constants.modalTypes.PLAYLIST_CREATE })
-  }
+    const { actions } = this.props;
+    actions.modalSet({ type: constants.modalTypes.PLAYLIST_CREATE });
+  };
 
   onPlaylistDrop = (ev) => {
-    const { actions } = this.props
-    const playlistSrc = ev.dataTransfer.getData(constants.PLAYLIST_TYPE)
+    const { actions } = this.props;
+    const playlistSrc = ev.dataTransfer.getData(constants.PLAYLIST_TYPE);
     if (!playlistSrc) {
-      return
+      return;
     }
     const playlistDst = ev.currentTarget.getAttribute(
       constants.PLAYLIST_NAME_ATTR,
-    )
-    if (playlistDst === '__new') {
+    );
+    if (playlistDst === "__new") {
       actions.modalSet({
         type: constants.modalTypes.PLAYLIST_CREATE,
         props: { playlistSrc },
-      })
+      });
     } else {
-      actions.playlistAdd(playlistSrc, playlistDst)
+      actions.playlistAdd(playlistSrc, playlistDst);
     }
-    ev.preventDefault()
-  }
+    ev.preventDefault();
+  };
 
   render() {
-    const { playlists, isSliderVisible } = this.props
+    const { playlists, isSliderVisible } = this.props;
     const playlistObjs = Object.values(playlists).filter(
       (p) =>
         p.name !== constants.NOW_PLAYING_NAME &&
         p.name !== constants.LIBRARY_NAME &&
         p.name !== constants.UPLOADS_NAME,
-    )
-    let className = 'sidebar-container-wide'
+    );
+    let className = "sidebar-container-wide";
     if (isSliderVisible) {
-      className += ' sidebar-container-player-visible'
+      className += " sidebar-container-player-visible";
     }
     return (
-      <div id='sidebar-container' className={className}>
-        <ul className='nav'>
+      <div id="sidebar-container" className={className}>
+        <ul className="nav">
           <li>
             <span onClick={this.onBackClick}>
-              <i className='fa-fw fa fa-lg fa-arrow-left' />
-              <span className='sidebar-back-text'>Back</span>
+              <i className="fa-fw fa fa-lg fa-arrow-left" />
+              <span className="sidebar-back-text">Back</span>
             </span>
           </li>
-          <li className='sidebar-playlist'>
+          <li className="sidebar-playlist">
             <span
               onClick={this.onNewPlaylistClick}
               onDragOver={this.onDragOver}
               onDrop={this.onPlaylistDrop}
-              data-playlistname='__new'
+              data-playlistname="__new"
             >
-              <i className='fa-fw fa fa-lg fa-plus' />
+              <i className="fa-fw fa fa-lg fa-plus" />
               <span>New Playlist</span>
             </span>
           </li>
           {playlistObjs.map((playlist) => (
-            <li key={playlist.name} className='sidebar-playlist'>
+            <li key={playlist.name} className="sidebar-playlist">
               <Link
                 to={{
                   pathname: `/playlist/${playlist.name}`,
@@ -83,13 +83,13 @@ export default class PlaylistBar extends React.PureComponent {
                 onDrop={this.onPlaylistDrop}
                 data-playlistname={playlist.name}
               >
-                <i className='fa-fw fa fa-lg fa-list' />
+                <i className="fa-fw fa fa-lg fa-list" />
                 <span>{playlist.name}</span>
               </Link>
             </li>
           ))}
         </ul>
       </div>
-    )
+    );
   }
 }

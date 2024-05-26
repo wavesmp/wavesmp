@@ -1,30 +1,30 @@
-const actionTypes = require('waves-action-types')
+const actionTypes = require("waves-action-types");
 
-const initialState = null
+const initialState = null;
 
 function reducerLibrary(state = initialState, action) {
   switch (action.type) {
     case actionTypes.TRACKS_ADD:
-      return action.lib
+      return action.lib;
     case actionTypes.TRACKS_DELETE: {
-      const { deleteIds } = action
-      state = { ...state }
+      const { deleteIds } = action;
+      state = { ...state };
       for (const deleteId of deleteIds) {
-        delete state[deleteId]
+        delete state[deleteId];
       }
-      return state
+      return state;
     }
     case actionTypes.TRACKS_INFO_UPDATE: {
-      const { ids, key, value } = action
-      state = { ...state }
+      const { ids, key, value } = action;
+      state = { ...state };
       for (const id of ids) {
-        state[id] = { ...state[id], [key]: value }
+        state[id] = { ...state[id], [key]: value };
       }
-      return state
+      return state;
     }
     default:
-      return state
+      return state;
   }
 }
 
-module.exports = reducerLibrary
+module.exports = reducerLibrary;
