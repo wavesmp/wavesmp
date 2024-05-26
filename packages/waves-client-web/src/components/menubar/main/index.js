@@ -12,17 +12,17 @@ import LogoSvg from '../common/logo-wide.svg'
 let prevPlayerVisible = false
 
 export default class MenuBar extends React.PureComponent {
-  onNotificationsClick = ev => {
+  onNotificationsClick = (ev) => {
     const { actions } = this.props
     actions.menuSetElem({ ev, type: menuTypes.NOTIFICATIONS })
   }
 
-  onUserSettingsClick = ev => {
+  onUserSettingsClick = (ev) => {
     const { actions, history } = this.props
     actions.menuSetElem({
       ev,
       type: menuTypes.USER_SETTINGS,
-      props: { history }
+      props: { history },
     })
   }
 
@@ -34,7 +34,7 @@ export default class MenuBar extends React.PureComponent {
       menubar,
       filteredSelection,
       index,
-      playlistName
+      playlistName,
     } = this.props
 
     let trackSlider = null

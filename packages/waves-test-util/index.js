@@ -15,11 +15,11 @@ async function _assertThrows(fnName, fn, args, errFn, errVal, thisArg) {
 }
 
 async function assertThrows(fnName, fn, args, msg, thisArg) {
-  await _assertThrows(fnName, fn, args, err => `${err}`, msg, thisArg)
+  await _assertThrows(fnName, fn, args, (err) => `${err}`, msg, thisArg)
 }
 
 async function assertThrowsMessage(fnName, fn, args, msg, thisArg) {
-  await _assertThrows(fnName, fn, args, err => err.message, msg, thisArg)
+  await _assertThrows(fnName, fn, args, (err) => err.message, msg, thisArg)
 }
 
 function assertNewState(reducer, state, action) {

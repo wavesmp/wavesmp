@@ -8,11 +8,11 @@ import {
   NOW_PLAYING_NAME as playlistName,
   LIBRARY_NAME,
   modalTypes,
-  routes
+  routes,
 } from 'waves-client-constants'
 import {
   getOrCreatePlaylistSelectors,
-  getLibraryPlaylistSearch
+  getLibraryPlaylistSearch,
 } from 'waves-client-selectors'
 
 import TablePage from '../tablepage'
@@ -47,7 +47,7 @@ class NowPlaying extends React.PureComponent {
       onClick={this.onPlaylistSave}
     >
       Save
-    </button>
+    </button>,
   ]
 
   getPlaylistButtons() {
@@ -56,7 +56,7 @@ class NowPlaying extends React.PureComponent {
     return [
       <Link key='Library' className='btn btn-primary' to={to}>
         Library
-      </Link>
+      </Link>,
     ]
   }
 
@@ -90,18 +90,15 @@ class NowPlaying extends React.PureComponent {
 }
 
 function mapStateToProps(state, ownProps) {
-  const {
-    getRouterQueryParams,
-    getRouterSearchString,
-    getPlaylistProps
-  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, LIBRARY_NAME)
+  const { getRouterQueryParams, getRouterSearchString, getPlaylistProps } =
+    getOrCreatePlaylistSelectors(playlistName, URLSearchParams, LIBRARY_NAME)
   const { tracks, account, menubar, sidebar, layout } = state
   const { playing } = tracks
   const { isPlaying } = playing
   const { location } = ownProps
   const { pathname, search } = location
   const { theme } = account
-  const columns = playlistColumns.filter(c => account.columns.has(c.title))
+  const columns = playlistColumns.filter((c) => account.columns.has(c.title))
 
   return {
     qp: getRouterQueryParams(undefined, search),
@@ -114,13 +111,13 @@ function mapStateToProps(state, ownProps) {
     sidebar,
     theme,
     layout,
-    ...getPlaylistProps(state, search)
+    ...getPlaylistProps(state, search),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

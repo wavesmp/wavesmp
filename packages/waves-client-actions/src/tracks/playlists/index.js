@@ -3,7 +3,7 @@ const { LIBRARY_NAME } = require('waves-client-constants')
 const { getFilteredSelection } = require('waves-client-selectors')
 const {
   getOrCreatePlaylistSelectors,
-  getLibraryPlaylistSearch
+  getLibraryPlaylistSearch,
 } = require('waves-client-selectors')
 
 const { reorder } = require('./reorder')
@@ -41,12 +41,12 @@ function playlistAdd(source, dest) {
     const addIndexes = Array.from(selection.keys())
     addIndexes.sort((a, b) => a - b)
 
-    const addTracks = addIndexes.map(addIndex => selection.get(addIndex))
+    const addTracks = addIndexes.map((addIndex) => selection.get(addIndex))
 
     dispatch({ type: types.PLAYLIST_ADD, playlistName: dest, addTracks })
     ws.sendBestEffortMessage(types.PLAYLIST_ADD, {
       playlistName: dest,
-      trackIds: addTracks
+      trackIds: addTracks,
     })
   }
 }
@@ -57,7 +57,7 @@ function playlistCreate(playlistName) {
     dispatch({ type: types.PLAYLIST_ADD, playlistName, addTracks })
     ws.sendBestEffortMessage(types.PLAYLIST_ADD, {
       playlistName,
-      trackIds: addTracks
+      trackIds: addTracks,
     })
   }
 }
@@ -70,19 +70,19 @@ function playlistReorder(playlistName, insertAt) {
     const { reordered, newSelection, newIndex } = reorder(
       playlist,
       filteredSelection,
-      insertAt
+      insertAt,
     )
     dispatch({
       type: types.PLAYLIST_REORDER,
       playlistName,
       reordered,
       newSelection,
-      newIndex
+      newIndex,
     })
     await ws.sendAckedMessage(types.PLAYLIST_REORDER, {
       playlistName,
       selection: [...filteredSelection.entries()],
-      insertAt
+      insertAt,
     })
   }
 }
@@ -95,7 +95,7 @@ function playlistSort(sortKey, ascending) {
     const { getRouterQueryParams } = getOrCreatePlaylistSelectors(
       LIBRARY_NAME,
       URLSearchParams,
-      LIBRARY_NAME
+      LIBRARY_NAME,
     )
     const qp = new URLSearchParams(getRouterQueryParams(state, search))
     qp.set('sortKey', sortKey)
@@ -108,14 +108,14 @@ function playlistSort(sortKey, ascending) {
     dispatch({
       type: types.PLAYLIST_SEARCH_UPDATE,
       name: LIBRARY_NAME,
-      search: qp.toString()
+      search: qp.toString(),
     })
     dispatch({
       type: types.PLAYLIST_SORT,
       lib,
       name: LIBRARY_NAME,
       sortKey,
-      ascending
+      ascending,
     })
   }
 }

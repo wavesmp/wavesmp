@@ -6,7 +6,7 @@ const types = require('waves-action-types')
 const {
   LIBRARY_NAME,
   NOW_PLAYING_NAME,
-  UPLOADS_NAME
+  UPLOADS_NAME,
 } = require('waves-client-constants')
 const Player = require('waves-client-player')
 const { normalizeTrack } = require('waves-client-util')
@@ -15,7 +15,7 @@ const {
   TEST_PLAYLIST_NAME1: testPlaylistName1,
   TEST_PLAYLIST_NAME2: testPlaylistName2,
   TEST_TRACK1: baseTrack1,
-  TEST_TRACK2: baseTrack2
+  TEST_TRACK2: baseTrack2,
 } = require('waves-test-data')
 
 const actions = require('../../src/tracks')
@@ -30,11 +30,11 @@ const track1 = { ...baseTrack1, id: id1 }
 const track2 = { ...baseTrack2, id: id2 }
 const lib = {
   [id1]: track1,
-  [id2]: track2
+  [id2]: track2,
 }
 const libraries = {
   [LIBRARY_NAME]: lib,
-  [UPLOADS_NAME]: lib
+  [UPLOADS_NAME]: lib,
 }
 
 describe('#tracks()', async () => {
@@ -53,7 +53,7 @@ describe('#tracks()', async () => {
       playlistName: testPlaylistName2,
       index: testIndex,
       track: track2,
-      oldPlaylistName: testPlaylistName1
+      oldPlaylistName: testPlaylistName1,
     })
 
     const wsMock = sinon.mock(ws)
@@ -62,14 +62,11 @@ describe('#tracks()', async () => {
       .once()
       .withExactArgs(types.PLAYLIST_ADD, {
         playlistName: NOW_PLAYING_NAME,
-        trackIds: [track2.id]
+        trackIds: [track2.id],
       })
 
     const playerMock = sinon.mock(player)
-    playerMock
-      .expects('trackToggle')
-      .once()
-      .withExactArgs(track2)
+    playerMock.expects('trackToggle').once().withExactArgs(track2)
 
     const playing = { playlist: testPlaylistName1 }
     const tracks = { playing, libraries }
@@ -94,14 +91,11 @@ describe('#tracks()', async () => {
       playlistName: NOW_PLAYING_NAME,
       index: testIndex,
       track: track2,
-      oldPlaylistName: testPlaylistName1
+      oldPlaylistName: testPlaylistName1,
     })
 
     const playerMock = sinon.mock(player)
-    playerMock
-      .expects('trackToggle')
-      .once()
-      .withExactArgs(track2)
+    playerMock.expects('trackToggle').once().withExactArgs(track2)
 
     const playing = { playlist: testPlaylistName1 }
     const tracks = { playing, libraries }
@@ -124,7 +118,7 @@ describe('#tracks()', async () => {
     dispatchMock.once().withExactArgs({
       type: types.TRACK_NEXT,
       nextTrack: expectedTrack,
-      playlistName
+      playlistName,
     })
 
     const wsMock = sinon.mock(ws)
@@ -133,7 +127,7 @@ describe('#tracks()', async () => {
       .once()
       .withExactArgs(types.PLAYLIST_ADD, {
         playlistName: NOW_PLAYING_NAME,
-        trackIds: [track2.id]
+        trackIds: [track2.id],
       })
 
     const isPlaying = true
@@ -147,7 +141,7 @@ describe('#tracks()', async () => {
     const playlist = {
       tracks: [track1.id, track2.id],
       index: 0,
-      search: ''
+      search: '',
     }
     const playlists = { [playlistName]: playlist }
     const tracks = { playing, playlists, libraries }
@@ -169,10 +163,10 @@ describe('#tracks()', async () => {
 
     const libraryCopy = {
       [track1Copy.id]: track1Copy,
-      [track2Copy.id]: track2Copy
+      [track2Copy.id]: track2Copy,
     }
     const librariesCopy = {
-      [LIBRARY_NAME]: libraryCopy
+      [LIBRARY_NAME]: libraryCopy,
     }
 
     const player = new Player({})
@@ -184,7 +178,7 @@ describe('#tracks()', async () => {
     dispatchMock.once().withExactArgs({
       type: types.TRACK_NEXT,
       nextTrack: expectedTrack1,
-      playlistName
+      playlistName,
     })
 
     const isPlaying = true
@@ -198,7 +192,7 @@ describe('#tracks()', async () => {
     const playlist = {
       tracks: [track1Copy.id, track2Copy.id],
       index: 1,
-      search
+      search,
     }
     const playlists = { [playlistName]: playlist }
     const tracks = { playing, playlists, libraries: librariesCopy }
@@ -235,8 +229,8 @@ describe('#tracks()', async () => {
         ...track2Copy,
         title: 'Unknown title',
         createdAt: createdAt2,
-        createdAtPretty: createdAtPretty2
-      }
+        createdAtPretty: createdAtPretty2,
+      },
     }
     const thunk = actions.tracksAdd(update, libName)
 
@@ -260,21 +254,21 @@ describe('#tracks()', async () => {
     const playing = { track: { ...track1, file: { name: fileName1 } } }
     const uploads = {
       [track1.id]: { ...track1, file: { name: fileName1 } },
-      [track2.id]: { ...track2, file: { name: fileName2 } }
+      [track2.id]: { ...track2, file: { name: fileName2 } },
     }
     const uploadPlaylist = {
       tracks: [track1.id, track2.id],
       index: 1,
-      selection: new Map()
+      selection: new Map(),
     }
     const playlists = { [UPLOADS_NAME]: uploadPlaylist }
     const uploadValues = Object.values(uploads)
     const testLibraries = {
       [LIBRARY_NAME]: null,
-      [UPLOADS_NAME]: uploads
+      [UPLOADS_NAME]: uploads,
     }
     const getState = () => ({
-      tracks: { playing, playlists, libraries: testLibraries }
+      tracks: { playing, playlists, libraries: testLibraries },
     })
 
     const thunk = actions.tracksUpload(sourceType)
@@ -284,7 +278,7 @@ describe('#tracks()', async () => {
       .expects('upload')
       .once()
       .withExactArgs(sourceType, uploadValues)
-      .returns(uploadValues.map(uploadValue => Promise.resolve(uploadValue)))
+      .returns(uploadValues.map((uploadValue) => Promise.resolve(uploadValue)))
 
     assert.isDefined(types.TRACKS_ADD)
     const wsMock = sinon.mock(ws)
@@ -293,10 +287,7 @@ describe('#tracks()', async () => {
       .once()
       .withExactArgs(types.TRACKS_ADD, { tracks: uploadValues })
 
-    playerMock
-      .expects('pause')
-      .once()
-      .withExactArgs()
+    playerMock.expects('pause').once().withExactArgs()
 
     const dispatchMock = sinon.mock()
     const dispatchExpect = dispatchMock.exactly(6)
@@ -312,8 +303,8 @@ describe('#tracks()', async () => {
         ids: uploadIds,
         key: 'state',
         value: 'uploading',
-        libName: UPLOADS_NAME
-      })
+        libName: UPLOADS_NAME,
+      }),
     )
 
     const secondDispatchCall = dispatchExpect.secondCall
@@ -323,8 +314,8 @@ describe('#tracks()', async () => {
         ids: uploadIds,
         key: 'uploadProgress',
         value: 0,
-        libName: UPLOADS_NAME
-      })
+        libName: UPLOADS_NAME,
+      }),
     )
 
     assert.isDefined(types.TOAST_ADD)
@@ -350,8 +341,8 @@ describe('#tracks()', async () => {
       fifthDispatchCall.calledWithExactly({
         type: types.TRACKS_DELETE,
         deleteIds: uploadedIds,
-        libName: UPLOADS_NAME
-      })
+        libName: UPLOADS_NAME,
+      }),
     )
 
     const sixthDispatchCall = dispatchExpect.getCall(5)
@@ -376,12 +367,12 @@ describe('#tracks()', async () => {
       [testPlaylistName1]: {
         selection: selection1,
         tracks: [track1.id, track2.id],
-        index: 1
+        index: 1,
       },
       [testPlaylistName2]: {
         selection: selection2,
-        tracks: [track1.id, track2.id]
-      }
+        tracks: [track1.id, track2.id],
+      },
     }
     const tracks = { libraries, playing: {}, playlists }
     const account = { rowsPerPage: 25 }
@@ -397,7 +388,7 @@ describe('#tracks()', async () => {
       deleteIndexes,
       deletePlaying: false,
       selection: new Map(),
-      index: null
+      index: null,
     }
 
     const dispatchMock = sinon.mock()
@@ -411,8 +402,8 @@ describe('#tracks()', async () => {
         playlistName: testPlaylistName1,
         selection: [
           [0, track1.id],
-          [1, track2.id]
-        ]
+          [1, track2.id],
+        ],
       })
 
     thunk(dispatchMock, () => ({ tracks, account }), { ws })
@@ -432,7 +423,7 @@ describe('#tracks()', async () => {
       ids: [id],
       key,
       value,
-      libName
+      libName,
     }
     const thunk = actions.tracksInfoUpdate(id, key, value, libName)
 
@@ -462,11 +453,11 @@ describe('#tracks()', async () => {
       ids: [id],
       key,
       value,
-      libName
+      libName,
     }
     assert.deepEqual(
       actions.tracksLocalInfoUpdate(id, key, value, libName),
-      expectedAction
+      expectedAction,
     )
   })
 })

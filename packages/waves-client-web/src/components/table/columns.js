@@ -4,44 +4,44 @@ export const playlistColumns = [
   {
     title: 'Name',
     attribute: 'title',
-    Component: Name
+    Component: Name,
   },
   {
     title: 'State',
-    Component: State
+    Component: State,
   },
   {
     title: 'Time',
     attribute: 'duration',
-    Component: Time
+    Component: Time,
   },
   {
     title: 'Artist',
     attribute: 'artist',
-    Component: Artist
+    Component: Artist,
   },
   {
     title: 'Album',
     attribute: 'album',
-    Component: Album
+    Component: Album,
   },
   {
     title: 'Genre',
     attribute: 'genre',
-    Component: Genre
+    Component: Genre,
   },
   {
     title: 'Created At',
     attribute: 'createdAt',
-    Component: CreatedAt
-  }
+    Component: CreatedAt,
+  },
 ]
 
-export const libraryColumns = playlistColumns.map(col => ({
+export const libraryColumns = playlistColumns.map((col) => ({
   ...col,
-  sortable: !!col.attribute
+  sortable: !!col.attribute,
 }))
 
 export const uploadColumns = playlistColumns.filter(
-  c => c.title !== 'Created At'
+  (c) => c.title !== 'Created At',
 )

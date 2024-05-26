@@ -6,7 +6,7 @@ import * as WavesActions from 'waves-client-actions'
 import { LIBRARY_NAME } from 'waves-client-constants'
 import {
   getOrCreatePlaylistSelectors,
-  getLibraryPlaylistSearch
+  getLibraryPlaylistSearch,
 } from 'waves-client-selectors'
 
 import { libraryColumns } from '../table/columns'
@@ -26,7 +26,7 @@ class Settings extends React.PureComponent {
       theme,
       libraryColumns,
       librarySortKey,
-      libraryAscending
+      libraryAscending,
     } = this.props
     return (
       <ContentPage title='Settings'>
@@ -54,7 +54,7 @@ function mapStateToProps(state) {
   const { getRouterAscending, getRouterSortKey } = getOrCreatePlaylistSelectors(
     LIBRARY_NAME,
     URLSearchParams,
-    LIBRARY_NAME
+    LIBRARY_NAME,
   )
   const search = getLibraryPlaylistSearch(state)
   const sortKey = getRouterSortKey(state, search)
@@ -63,15 +63,15 @@ function mapStateToProps(state) {
     columns,
     rowsPerPage,
     theme,
-    libraryColumns: libraryColumns.filter(c => c.sortable),
+    libraryColumns: libraryColumns.filter((c) => c.sortable),
     librarySortKey: sortKey,
-    libraryAscending: ascending
+    libraryAscending: ascending,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

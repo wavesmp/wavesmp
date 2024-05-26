@@ -19,7 +19,7 @@ function trackUploadsDelete() {
     dispatch({
       type: types.TRACKS_DELETE,
       deleteIds,
-      libName: UPLOADS_NAME
+      libName: UPLOADS_NAME,
     })
   }
 }
@@ -54,5 +54,5 @@ Object.assign(
   require('./remove'),
   require('./tracknext'),
   require('./toggle'),
-  require('./upload')
+  require('./upload'),
 )

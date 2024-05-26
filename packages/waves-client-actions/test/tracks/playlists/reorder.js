@@ -19,7 +19,7 @@ describe('#reorder()', () => {
     const { reordered, newSelection, newIndex } = reorder(
       playlist,
       filteredSelection,
-      insertAt
+      insertAt,
     )
 
     const expectedReordered = [0, 1, 6, 2, 3, 4, 5, 7, 8, 9]
@@ -48,7 +48,7 @@ describe('#reorder()', () => {
     const { reordered, newSelection, newIndex } = reorder(
       playlist,
       filteredSelection,
-      insertAt
+      insertAt,
     )
 
     const expectedReordered = [0, 1, 2, 6, 3, 4, 5, 7, 8, 9]
@@ -78,7 +78,7 @@ describe('#reorder()', () => {
     const { reordered, newSelection, newIndex } = reorder(
       playlist,
       filteredSelection,
-      insertAt
+      insertAt,
     )
 
     const expectedReordered = [0, 2, 4, 5, 1, 3, 6, 7, 8, 9]
@@ -108,7 +108,7 @@ describe('#reorder()', () => {
     const { reordered, newSelection, newIndex } = reorder(
       playlist,
       filteredSelection,
-      insertAt
+      insertAt,
     )
 
     const expectedReordered = [0, 2, 4, 5, 1, 3, 6, 7, 8, 9]
@@ -138,7 +138,7 @@ describe('#reorder()', () => {
     const { reordered, newSelection, newIndex } = reorder(
       playlist,
       filteredSelection,
-      insertAt
+      insertAt,
     )
 
     const expectedReordered = [0, 2, 4, 5, 1, 3, 6, 7, 8, 9]
@@ -173,7 +173,7 @@ describe('#reorder()', () => {
     const { reordered, newSelection, newIndex } = reorder(
       playlist,
       filteredSelection,
-      insertAt
+      insertAt,
     )
 
     const expectedReordered = [1, 2, 3, 5, 0, 4, 6, 8, 7, 9]
@@ -210,7 +210,7 @@ describe('#reorder()', () => {
     const { reordered, newSelection, newIndex } = reorder(
       playlist,
       filteredSelection,
-      insertAt
+      insertAt,
     )
 
     const expectedReordered = [1, 2, 3, 5, 0, 4, 6, 8, 7, 9]

@@ -21,7 +21,11 @@
 }
 
 .menubar-main-logo.menubar-player-visible.menubar-transition {
-  transition: opacity 1s ease, left 1s ease, width 1s ease, transform 1s ease;
+  transition:
+    opacity 1s ease,
+    left 1s ease,
+    width 1s ease,
+    transform 1s ease;
 }
 
 .menubar-main-logo.menubar-player-visible {

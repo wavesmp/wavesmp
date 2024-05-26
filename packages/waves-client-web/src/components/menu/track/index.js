@@ -8,7 +8,7 @@ import {
   LIBRARY_NAME,
   UPLOADS_NAME,
   menuTypes,
-  modalTypes
+  modalTypes,
 } from 'waves-client-constants'
 
 import './index.css'
@@ -21,7 +21,7 @@ import {
   PlaylistAdd,
   PlaylistRemove,
   Download,
-  LibraryDelete
+  LibraryDelete,
 } from './items'
 
 class Track extends React.PureComponent {
@@ -69,7 +69,7 @@ class Track extends React.PureComponent {
     const { actions, playlistName } = this.props
     actions.menuNext({
       type: menuTypes.PLAYLIST_ADD,
-      props: { currentPlaylist: playlistName }
+      props: { currentPlaylist: playlistName },
     })
   }
 
@@ -134,7 +134,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

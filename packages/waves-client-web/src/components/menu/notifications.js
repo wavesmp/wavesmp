@@ -47,7 +47,7 @@ function mapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

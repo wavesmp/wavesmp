@@ -32,7 +32,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const playlist = playlists[name]
       return {
         ...playlists,
-        [name]: reducerSelection(playlist, action)
+        [name]: reducerSelection(playlist, action),
       }
     }
 
@@ -52,7 +52,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         sortKey,
         ascending,
         index,
-        selection
+        selection,
       )
       libPlaylist.tracks = libPlaylistTracks
       libPlaylist.index = newIndex
@@ -130,7 +130,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         sortKey,
         ascending,
         index,
-        selection
+        selection,
       )
       return {
         ...playlists,
@@ -140,8 +140,8 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
           ascending,
           tracks,
           index: newIndex,
-          selection: newSelection
-        }
+          selection: newSelection,
+        },
       }
     }
     case actionTypes.TRACKS_DELETE: {
@@ -151,7 +151,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
         const playlist = playlists[playlistName]
         newPlaylists[playlistName] = tracksDeleteFromPlaylist(
           playlist,
-          deleteIds
+          deleteIds,
         )
       }
       return newPlaylists
@@ -160,7 +160,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const { addTracks, playlistName } = action
       return {
         ...playlists,
-        [playlistName]: playlistAdd(addTracks, playlistName, playlists)
+        [playlistName]: playlistAdd(addTracks, playlistName, playlists),
       }
     }
     case actionTypes.PLAYLIST_REORDER: {
@@ -171,8 +171,8 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
           ...playlists[playlistName],
           tracks: reordered,
           selection: newSelection,
-          index: newIndex
-        }
+          index: newIndex,
+        },
       }
     }
     case actionTypes.PLAYLIST_MOVE: {
@@ -180,7 +180,7 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
       const newPlaylists = { ...playlists }
       newPlaylists[dest] = {
         ...playlists[src],
-        name: dest
+        name: dest,
       }
       delete newPlaylists[src]
       return newPlaylists
@@ -199,8 +199,8 @@ function reducerPlaylists(playlists = initialPlaylists, action) {
           ...playlist,
           tracks,
           selection,
-          index
-        }
+          index,
+        },
       }
     }
     case actionTypes.PLAYLIST_COPY: {
@@ -254,7 +254,7 @@ function mergePlaylists(playlist, newPlaylist) {
     ...playlist,
     tracks: newTracks,
     selection: newSelection,
-    index: newIndex
+    index: newIndex,
   }
 }
 
@@ -262,7 +262,7 @@ function mergePlaylists(playlist, newPlaylist) {
 function getDefaultLibraryPlaylist(playlistName) {
   const playlist = {
     name: playlistName,
-    sortKey: initialPlaylistsSortKey[playlistName] || 'title'
+    sortKey: initialPlaylistsSortKey[playlistName] || 'title',
   }
   if (playlistName in initialPlaylistsAscending) {
     playlist.ascending = initialPlaylistsAscending[playlistName]
@@ -278,7 +278,7 @@ function getDefaultLibraryPlaylist(playlistName) {
 function getDefaultPlaylist() {
   const playlist = {
     name: NOW_PLAYING_NAME,
-    tracks: []
+    tracks: [],
   }
   addPlaylistDefaults(playlist)
   return playlist
@@ -293,7 +293,7 @@ function trackNext(newPlaylists, playlistName, source, id, index) {
     newPlaylists[NOW_PLAYING_NAME] = {
       ...defaultPlaylist,
       tracks: [...tracks, id],
-      index: tracks.length
+      index: tracks.length,
     }
   }
 
@@ -327,7 +327,7 @@ function sortPlaylist(tracks, lib, sortKey, ascending, index, selection) {
   const resp = {}
   if (indexTrack) {
     // Possible to binary search here
-    resp.newIndex = tracks.findIndex(track => track === indexTrack)
+    resp.newIndex = tracks.findIndex((track) => track === indexTrack)
   } else {
     resp.newIndex = null
   }
@@ -359,7 +359,7 @@ function playlistAdd(addTracks, playlistName, playlists) {
   } else {
     playlistUpdate = {
       name: playlistName,
-      tracks: addTracks
+      tracks: addTracks,
     }
     addPlaylistDefaults(playlistUpdate)
   }
@@ -402,7 +402,7 @@ function tracksDeleteFromPlaylist(playlist, deleteIds) {
     ...playlist,
     selection: filteredSelection,
     tracks: filteredTracks,
-    index
+    index,
   }
 }
 

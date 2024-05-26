@@ -13,7 +13,7 @@ const MENUS = {
   [menuTypes.TRACK]: Track,
   [menuTypes.PLAYLIST_ADD]: PlaylistAdd,
   [menuTypes.NOTIFICATIONS]: Notifications,
-  [menuTypes.USER_SETTINGS]: UserSettings
+  [menuTypes.USER_SETTINGS]: UserSettings,
 }
 
 const EMPTY_MENU = <menu className='menu' />

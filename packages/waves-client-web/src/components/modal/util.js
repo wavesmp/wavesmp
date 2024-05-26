@@ -56,14 +56,8 @@ export default class Modal extends React.PureComponent {
 
 class ModalFooter extends React.PureComponent {
   render() {
-    const {
-      deleteTitle,
-      onDelete,
-      actionTitle,
-      onAction,
-      onClose,
-      disabled
-    } = this.props
+    const { deleteTitle, onDelete, actionTitle, onAction, onClose, disabled } =
+      this.props
     return (
       <div className='modal-footer'>
         <button

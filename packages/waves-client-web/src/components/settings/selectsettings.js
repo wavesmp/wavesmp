@@ -6,19 +6,19 @@ export default class SelectSettings extends React.PureComponent {
     actions.playlistSort(librarySortKey, !libraryAscending)
   }
 
-  onSortKeyChange = ev => {
+  onSortKeyChange = (ev) => {
     const { actions, libraryAscending } = this.props
     const librarySortKey = ev.target.value
     actions.playlistSort(librarySortKey, libraryAscending)
   }
 
-  onRowsPerPageChange = ev => {
+  onRowsPerPageChange = (ev) => {
     const { actions } = this.props
     const rowsPerPage = parseInt(ev.target.value, 10)
     actions.accountSetSettings({ rowsPerPage })
   }
 
-  onThemeChange = ev => {
+  onThemeChange = (ev) => {
     const { actions } = this.props
     const theme = ev.target.value
     actions.accountSetSettings({ theme })
@@ -36,7 +36,7 @@ export default class SelectSettings extends React.PureComponent {
       rowsPerPage,
       libraryColumns,
       librarySortKey,
-      libraryAscending
+      libraryAscending,
     } = this.props
     return (
       <>
@@ -79,7 +79,7 @@ export default class SelectSettings extends React.PureComponent {
                 value={librarySortKey}
                 onChange={this.onSortKeyChange}
               >
-                {libraryColumns.map(column => (
+                {libraryColumns.map((column) => (
                   <option value={column.attribute} key={column.attribute}>
                     {column.title}
                   </option>

@@ -8,7 +8,7 @@ import { LIBRARY_NAME, modalTypes, routes } from 'waves-client-constants'
 import {
   getOrCreatePlaylistSelectors,
   getLibraryPlaylistSearch,
-  getDefaultPlaylistSearch
+  getDefaultPlaylistSearch,
 } from 'waves-client-selectors'
 
 import TablePage from '../tablepage'
@@ -21,11 +21,11 @@ class Playlist extends React.PureComponent {
     const { libraryPlaylistSearch, defaultPlaylistSearch } = this.props
     const toLibrary = {
       pathname: routes.library,
-      search: libraryPlaylistSearch
+      search: libraryPlaylistSearch,
     }
     const toNowPlaying = {
       pathname: routes.nowplaying,
-      search: defaultPlaylistSearch
+      search: defaultPlaylistSearch,
     }
     return [
       <Link key='Library' className='btn btn-primary' to={toLibrary}>
@@ -33,7 +33,7 @@ class Playlist extends React.PureComponent {
       </Link>,
       <Link key='Now Playing' className='btn btn-primary' to={toNowPlaying}>
         Now Playing
-      </Link>
+      </Link>,
     ]
   }
 
@@ -41,7 +41,7 @@ class Playlist extends React.PureComponent {
     const { actions, playlistName } = this.props
     actions.modalSet({
       type: modalTypes.PLAYLIST_SETTINGS,
-      props: { playlistName }
+      props: { playlistName },
     })
   }
 
@@ -69,18 +69,15 @@ class Playlist extends React.PureComponent {
 
 function mapStateToProps(state, ownProps) {
   const playlistName = ownProps.match.params.playlist
-  const {
-    getRouterSearchString,
-    getRouterQueryParams,
-    getPlaylistProps
-  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, LIBRARY_NAME)
+  const { getRouterSearchString, getRouterQueryParams, getPlaylistProps } =
+    getOrCreatePlaylistSelectors(playlistName, URLSearchParams, LIBRARY_NAME)
   const { tracks, account, menubar, layout } = state
   const { playing } = tracks
   const { isPlaying } = playing
   const { location } = ownProps
   const { pathname, search } = location
   const { theme } = account
-  const columns = playlistColumns.filter(c => account.columns.has(c.title))
+  const columns = playlistColumns.filter((c) => account.columns.has(c.title))
 
   return {
     qp: getRouterQueryParams(undefined, search),
@@ -94,13 +91,13 @@ function mapStateToProps(state, ownProps) {
     menubar,
     theme,
     layout,
-    ...getPlaylistProps(state, search)
+    ...getPlaylistProps(state, search),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

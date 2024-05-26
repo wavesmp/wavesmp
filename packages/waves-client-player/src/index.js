@@ -3,7 +3,7 @@ const FilePlayer = require('./file')
 
 const sourceTypeToClass = {
   s3: S3Player,
-  file: FilePlayer
+  file: FilePlayer,
 }
 
 class Player {

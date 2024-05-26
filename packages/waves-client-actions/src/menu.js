@@ -26,7 +26,7 @@ function getOffset(elem) {
   const { left, top } = elem.getBoundingClientRect()
   return {
     left: left + window.scrollX,
-    top: top + window.scrollY
+    top: top + window.scrollY,
   }
 }
 

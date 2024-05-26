@@ -18,14 +18,14 @@ function tracksUpload(trackSource) {
       ids: uploadIds,
       key: 'state',
       value: 'uploading',
-      libName: UPLOADS_NAME
+      libName: UPLOADS_NAME,
     })
     dispatch({
       type: types.TRACKS_INFO_UPDATE,
       ids: uploadIds,
       key: 'uploadProgress',
       value: 0,
-      libName: UPLOADS_NAME
+      libName: UPLOADS_NAME,
     })
 
     /* Upload tracks to cloud */
@@ -44,7 +44,7 @@ function tracksUpload(trackSource) {
       result.serverErr = serverErr
       return result
     }
-    const uploadedIds = new Set(uploaded.map(t => t.id))
+    const uploadedIds = new Set(uploaded.map((t) => t.id))
     if (track && uploadedIds.has(track.id)) {
       /* Pause before deleting from state. Otherwise,
        * player may emit time change before
@@ -56,7 +56,7 @@ function tracksUpload(trackSource) {
     dispatch({
       type: types.TRACKS_DELETE,
       deleteIds: uploadedIds,
-      libName: UPLOADS_NAME
+      libName: UPLOADS_NAME,
     })
     dispatch(tracksAdd(uploaded, LIBRARY_NAME))
     return result
@@ -67,7 +67,7 @@ async function handleUploadPromises(promises, dispatch) {
   const uploaded = []
   const uploadErrs = []
   await Promise.all(
-    promises.map(async promise => {
+    promises.map(async (promise) => {
       try {
         const track = await promise
         const { file } = track
@@ -89,7 +89,7 @@ async function handleUploadPromises(promises, dispatch) {
         }
         uploadErrs.push(err)
       }
-    })
+    }),
   )
   return { uploaded, uploadErrs }
 }

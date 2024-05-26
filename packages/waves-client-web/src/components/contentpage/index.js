@@ -44,7 +44,7 @@ function mapStateToProps(state) {
   return {
     layout,
     isSliderVisible: tracks.playing.track != null,
-    sidebar
+    sidebar,
   }
 }
 

@@ -18,7 +18,7 @@ const MODALS = {
   [modalTypes.PLAYLIST_SAVE]: PlaylistSave,
   [modalTypes.PLAYLIST_SETTINGS]: PlaylistSettings,
   [modalTypes.TRACKS_DELETE]: TracksDelete,
-  [modalTypes.TRACKS_UPLOAD]: TracksUpload
+  [modalTypes.TRACKS_UPLOAD]: TracksUpload,
 }
 
 export default class Modal extends React.PureComponent {

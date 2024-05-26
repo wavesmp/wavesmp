@@ -8,11 +8,11 @@ export default class TrackSlider extends React.PureComponent {
     this.state = {
       seeking: false,
       seekingValue: 0,
-      currentTime: 0
+      currentTime: 0,
     }
   }
 
-  onTimeUpdate = ev => {
+  onTimeUpdate = (ev) => {
     const { currentTime } = ev.currentTarget
     this.setState({ currentTime })
   }
@@ -31,11 +31,11 @@ export default class TrackSlider extends React.PureComponent {
     this.setState({ seeking: true })
   }
 
-  onChange = ev => {
+  onChange = (ev) => {
     this.setState({ seekingValue: ev.currentTarget.value })
   }
 
-  onMouseUp = ev => {
+  onMouseUp = (ev) => {
     const { actions, playing } = this.props
     const { duration } = playing.track
     const currentTime = ev.target.value * duration

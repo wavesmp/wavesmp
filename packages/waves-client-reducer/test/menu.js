@@ -21,7 +21,7 @@ describe('#menu()', () => {
   it('set', () => {
     action = {
       type: actionTypes.MENU_SET,
-      menu: menu1
+      menu: menu1,
     }
     state = assertNewState(menu, state, action)
 
@@ -33,7 +33,7 @@ describe('#menu()', () => {
   it('next', () => {
     action = {
       type: actionTypes.MENU_NEXT,
-      menu: {}
+      menu: {},
     }
     state = assertNewState(menu, state, action)
 

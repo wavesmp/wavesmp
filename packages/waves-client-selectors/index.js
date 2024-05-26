@@ -3,7 +3,7 @@ const { NOW_PLAYING_NAME, LIBRARY_NAME } = require('waves-client-constants')
 const { getPlaylistSearch } = require('./base')
 const {
   getOrCreatePlaylistSelectors,
-  getPlaylistSelectors
+  getPlaylistSelectors,
 } = require('./playlist')
 const { getFilteredSelection, removeSelection } = require('./selection')
 

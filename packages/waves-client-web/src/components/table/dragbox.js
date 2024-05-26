@@ -12,7 +12,7 @@ export default function getDragCanvas(numSelected, theme) {
     0,
     DRAG_BOX_WIDTH,
     DRAG_BOX_HEIGHT,
-    DRAG_BOX_BORDER_RADIUS
+    DRAG_BOX_BORDER_RADIUS,
   )
 
   ctx.fillStyle = getBackgroundColor(theme)
@@ -20,7 +20,7 @@ export default function getDragCanvas(numSelected, theme) {
     DRAG_BOX_BORDER_WIDTH,
     DRAG_BOX_BORDER_WIDTH,
     DRAG_BOX_WIDTH - 2 * DRAG_BOX_BORDER_WIDTH,
-    DRAG_BOX_HEIGHT - 2 * DRAG_BOX_BORDER_WIDTH
+    DRAG_BOX_HEIGHT - 2 * DRAG_BOX_BORDER_WIDTH,
   )
 
   ctx.fillStyle = getTextColor(theme)

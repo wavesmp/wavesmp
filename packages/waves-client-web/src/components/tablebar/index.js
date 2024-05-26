@@ -8,11 +8,11 @@ export default class TableBar extends React.PureComponent {
     this.state = { searchValue: props.routerSearchString }
   }
 
-  onChange = ev => {
+  onChange = (ev) => {
     this.setState({ searchValue: ev.currentTarget.value })
   }
 
-  onKeyDown = ev => {
+  onKeyDown = (ev) => {
     const { key } = ev
     if (key !== 'Enter') {
       return

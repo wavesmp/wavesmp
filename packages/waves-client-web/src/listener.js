@@ -5,7 +5,7 @@ import { LIBRARY_NAME, UPLOADS_NAME } from 'waves-client-constants'
 
 export default async (store, ws, player, localState, history) => {
   store.dispatch(WavesActions.routerChange(history.location))
-  history.listen(location => {
+  history.listen((location) => {
     store.dispatch(WavesActions.routerChange(location))
   })
 
@@ -20,21 +20,21 @@ export default async (store, ws, player, localState, history) => {
         trackId,
         'uploadProgress',
         progress,
-        UPLOADS_NAME
-      )
+        UPLOADS_NAME,
+      ),
     )
   })
 
-  player.setOnToastErr(msg => {
+  player.setOnToastErr((msg) => {
     store.dispatch(WavesActions.toastErr(msg))
   })
 
   /* Recieve data from server */
-  ws.setOnLibraryUpdate(lib => {
+  ws.setOnLibraryUpdate((lib) => {
     store.dispatch(WavesActions.tracksAdd(lib, LIBRARY_NAME))
   })
 
-  ws.setOnPlaylistsUpdate(playlists => {
+  ws.setOnPlaylistsUpdate((playlists) => {
     store.dispatch(WavesActions.playlistsUpdate(playlists))
   })
 
@@ -56,32 +56,26 @@ export default async (store, ws, player, localState, history) => {
   layout = getInitialLayout(layout0Mql, layout1Mql)
   store.dispatch(WavesActions.layoutSet(layout))
 
-  document.addEventListener('keydown', ev => {
+  document.addEventListener('keydown', (ev) => {
     store.dispatch(WavesActions.tracksKeyDown(ev, history))
   })
 
   /* When localStorage is loaded, update the state */
-  const [
-    columns,
-    rowsPerPage,
-    lastIdp,
-    machineId,
-    theme,
-    volume
-  ] = await Promise.all([
-    localState.getItem('columns'),
-    localState.getItem('rowsPerPage'),
-    localState.getItem('lastIdp'),
-    localState.getItem('machineId'),
-    localState.getItem('theme'),
-    localState.getItem('volume')
-  ])
+  const [columns, rowsPerPage, lastIdp, machineId, theme, volume] =
+    await Promise.all([
+      localState.getItem('columns'),
+      localState.getItem('rowsPerPage'),
+      localState.getItem('lastIdp'),
+      localState.getItem('machineId'),
+      localState.getItem('theme'),
+      localState.getItem('volume'),
+    ])
   store.dispatch(
     WavesActions.accountSetSettings({
       columns: new Set(columns),
       rowsPerPage,
-      theme
-    })
+      theme,
+    }),
   )
   player.setVolume(volume)
   ObjectID.setMachineID(machineId)

@@ -7,25 +7,25 @@ const {
   NOW_PLAYING_NAME,
   LIBRARY_NAME,
   UPLOADS_NAME,
-  routes
+  routes,
 } = require('waves-client-constants')
 const { getPlaylistNameFromRoute } = require('waves-client-util')
 const {
   TEST_PLAYLIST_NAME1: testPlaylistName,
   TEST_SEARCH: testSearch,
   TEST_TRACK1: baseTrack1,
-  TEST_TRACK2: baseTrack2
+  TEST_TRACK2: baseTrack2,
 } = require('waves-test-data')
 
 const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }
 const lib = {
   [track1.id]: track1,
-  [track2.id]: track2
+  [track2.id]: track2,
 }
 const libraries = {
   [LIBRARY_NAME]: lib,
-  [UPLOADS_NAME]: lib
+  [UPLOADS_NAME]: lib,
 }
 
 const actions = require('../src/router')
@@ -34,7 +34,7 @@ describe('#router()', () => {
   it('Router change on unknown path', () => {
     const location = {
       pathname: '/unknown',
-      search: testSearch
+      search: testSearch,
     }
     const thunk = actions.routerChange(location)
 
@@ -44,7 +44,7 @@ describe('#router()', () => {
   it('Router change on default playlist', () => {
     const location = {
       pathname: '/nowplaying',
-      search: testSearch
+      search: testSearch,
     }
     const thunk = actions.routerChange(location)
 
@@ -52,7 +52,7 @@ describe('#router()', () => {
     const action = {
       type: types.PLAYLIST_SEARCH_UPDATE,
       name: NOW_PLAYING_NAME,
-      search: testSearch
+      search: testSearch,
     }
 
     const dispatchMock = sinon.mock()
@@ -65,7 +65,7 @@ describe('#router()', () => {
   it('Router change on custom playlist', () => {
     const location = {
       pathname: `/playlist/${testPlaylistName}`,
-      search: testSearch
+      search: testSearch,
     }
     const thunk = actions.routerChange(location)
 
@@ -73,7 +73,7 @@ describe('#router()', () => {
     const action = {
       type: types.PLAYLIST_SEARCH_UPDATE,
       name: testPlaylistName,
-      search: testSearch
+      search: testSearch,
     }
 
     const dispatchMock = sinon.mock()
@@ -98,7 +98,7 @@ describe('#router()', () => {
       const firstAction = {
         type: types.PLAYLIST_SEARCH_UPDATE,
         name: playlistName,
-        search
+        search,
       }
 
       assert.isDefined(types.PLAYLIST_SORT)
@@ -107,7 +107,7 @@ describe('#router()', () => {
         lib,
         name: playlistName,
         sortKey,
-        ascending
+        ascending,
       }
 
       const dispatchMock = sinon.mock()

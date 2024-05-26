@@ -8,7 +8,7 @@ import {
   TOGGLE_DATA_KEY,
   MENU_DATA_VALUE,
   MODAL_DATA_VALUE,
-  routes
+  routes,
 } from 'waves-client-constants'
 import { getPlaylistSelectors, getPlaylistSearch } from 'waves-client-selectors'
 import { getPlaylistNameFromRoute, filterSelection } from 'waves-client-util'
@@ -40,7 +40,7 @@ class MainApp extends React.PureComponent {
   }
 
   /* Add top-level click handler to dismiss overlay (e.g. modal or menu) */
-  onClick = ev => {
+  onClick = (ev) => {
     const { actions, menu, modal } = this.props
     const { target } = ev
 
@@ -75,7 +75,7 @@ class MainApp extends React.PureComponent {
       layout,
       location,
       history,
-      toasts
+      toasts,
     } = this.props
     return (
       <Boundary err={err}>
@@ -124,7 +124,7 @@ function mapStateToProps(state, ownProps) {
     layout: state.layout,
     menubar,
     modal: state.modal,
-    toasts: state.toasts
+    toasts: state.toasts,
   }
   if (menubar) {
     const playlistName = getPlaylistNameFromRoute(pathname)
@@ -144,7 +144,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

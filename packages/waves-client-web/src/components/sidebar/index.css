@@ -147,7 +147,8 @@
   #sidebar-container.mainbartransition-enter.mainbartransition-enter-active {
     width: var(--sidebar-width);
     transform: rotateY(0deg);
-    transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms,
+    transition:
+      transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms,
       width SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
   }
 
@@ -159,7 +160,8 @@
   #sidebar-container.mainbartransition-leave.mainbartransition-leave-active {
     width: var(--transitionbar-width);
     transform: rotateY(90deg);
-    transition: transform SIDEBAR_LEAVE_TIMEOUTms ease,
+    transition:
+      transform SIDEBAR_LEAVE_TIMEOUTms ease,
       width SIDEBAR_LEAVE_TIMEOUTms ease;
   }
 
@@ -172,7 +174,8 @@
   #sidebar-container.playlistbartransition-enter.playlistbartransition-enter-active {
     width: var(--playlistbar-width);
     transform: rotateY(0deg);
-    transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms,
+    transition:
+      transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms,
       width SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
   }
 
@@ -184,7 +187,8 @@
   #sidebar-container.playlistbartransition-leave.playlistbartransition-leave-active {
     width: var(--transitionbar-width);
     transform: rotateY(90deg);
-    transition: transform SIDEBAR_LEAVE_TIMEOUTms ease,
+    transition:
+      transform SIDEBAR_LEAVE_TIMEOUTms ease,
       width SIDEBAR_LEAVE_TIMEOUTms ease;
   }
 }

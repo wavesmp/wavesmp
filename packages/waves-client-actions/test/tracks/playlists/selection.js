@@ -25,11 +25,11 @@ describe('#selection()', () => {
       name,
       index,
       trackId,
-      displayItems
+      displayItems,
     }
     assert.deepEqual(
       actions.selectionClearAndAdd(name, index, trackId, displayItems),
-      expectedAction
+      expectedAction,
     )
   })
 
@@ -44,13 +44,13 @@ describe('#selection()', () => {
       name,
       startIndex,
       endIndex,
-      displayItems
+      displayItems,
     }
     const actualAction = actions.selectionRange(
       name,
       startIndex,
       endIndex,
-      displayItems
+      displayItems,
     )
     assert.deepEqual(actualAction, expectedAction)
   })

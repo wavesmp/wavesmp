@@ -13,14 +13,12 @@ function routerChange(location) {
     dispatch({
       type: types.PLAYLIST_SEARCH_UPDATE,
       name: playlistName,
-      search
+      search,
     })
     if (playlistName === LIBRARY_NAME || playlistName === UPLOADS_NAME) {
       const libName = playlistName
-      const {
-        getRouterAscending,
-        getRouterSortKey
-      } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, libName)
+      const { getRouterAscending, getRouterSortKey } =
+        getOrCreatePlaylistSelectors(playlistName, URLSearchParams, libName)
       const ascending = getRouterAscending(undefined, search)
       const sortKey = getRouterSortKey(undefined, search)
       const { libraries, playlists } = getState().tracks
@@ -39,7 +37,7 @@ function routerChange(location) {
         lib,
         name: playlistName,
         sortKey,
-        ascending
+        ascending,
       })
     }
   }

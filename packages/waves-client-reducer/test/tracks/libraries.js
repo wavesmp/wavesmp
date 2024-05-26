@@ -5,7 +5,7 @@ const actionTypes = require('waves-action-types')
 const {
   TEST_TRACK1: baseTrack1,
   TEST_TRACK2: baseTrack2,
-  TEST_TRACK1_UPDATE: update1
+  TEST_TRACK1_UPDATE: update1,
 } = require('waves-test-data')
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
 
@@ -15,7 +15,7 @@ const libName = 'testLibName'
 const updateKey = 'title'
 const testLib = {
   [track1.id]: track1,
-  [track2.id]: track2
+  [track2.id]: track2,
 }
 
 const libraries = require('../../src/tracks/libraries')
@@ -44,7 +44,7 @@ describe('#libraries()', () => {
       ids: [track1.id],
       key: updateKey,
       value: update1[updateKey],
-      libName
+      libName,
     }
     state = assertNewState(libraries, state, action)
     const expectedState = {
@@ -52,9 +52,9 @@ describe('#libraries()', () => {
         ...testLib,
         [track1.id]: {
           ...track1,
-          [updateKey]: update1[updateKey]
-        }
-      }
+          [updateKey]: update1[updateKey],
+        },
+      },
     }
     assert.deepEqual(state, expectedState)
   })
@@ -63,16 +63,16 @@ describe('#libraries()', () => {
     action = {
       type: actionTypes.TRACKS_DELETE,
       deleteIds: new Set([track2.id]),
-      libName
+      libName,
     }
     state = assertNewState(libraries, state, action)
     const expectedState = {
       [libName]: {
         [track1.id]: {
           ...track1,
-          [updateKey]: update1[updateKey]
-        }
-      }
+          [updateKey]: update1[updateKey],
+        },
+      },
     }
     assert.deepEqual(state, expectedState)
   })

@@ -16,7 +16,7 @@ export default class InputCell extends React.Component {
     }
   }
 
-  onKeyDown = ev => {
+  onKeyDown = (ev) => {
     const { key } = ev
     if (key === 'Enter') {
       this.inputRef.current.blur()
@@ -32,7 +32,7 @@ export default class InputCell extends React.Component {
     onBlur()
   }
 
-  onChange = ev => {
+  onChange = (ev) => {
     const newValue = ev.currentTarget.value
     this.setState({ value: newValue })
   }

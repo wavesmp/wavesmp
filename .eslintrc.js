@@ -6,7 +6,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
-    mocha: true
+    mocha: true,
   },
   extends: [
     'eslint:recommended',
@@ -14,7 +14,7 @@ module.exports = {
     'airbnb',
     'prettier',
     'prettier/babel',
-    'prettier/react'
+    'prettier/react',
   ],
   globals: getGlobals(),
   plugins: ['babel', 'react'],
@@ -60,14 +60,14 @@ module.exports = {
     /* Avoid prop types for now. May want to look into TypeScript instead */
     'react/prop-types': 'off',
     /* Allow different component method orderings */
-    'react/sort-comp': 'off'
-  }
+    'react/sort-comp': 'off',
+  },
 }
 
 function getGlobals() {
   const globals = {
     AWS: 'readonly',
-    gapi: 'readonly'
+    gapi: 'readonly',
   }
   for (const c in buildConstants) {
     globals[c] = 'readonly'

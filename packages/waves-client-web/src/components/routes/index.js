@@ -35,7 +35,7 @@ class PrivateRoute extends React.PureComponent {
     }
   }
 
-  renderRoute = routeProps => {
+  renderRoute = (routeProps) => {
     const { account, component: Component } = this.props
     const { loading } = this.state
     const { fetchingUser, user } = account
@@ -53,7 +53,7 @@ class PrivateRoute extends React.PureComponent {
       <Redirect
         to={{
           pathname: '/',
-          state: { from: routeProps.location }
+          state: { from: routeProps.location },
         }}
       />
     )
@@ -83,7 +83,7 @@ class PublicRoute extends React.PureComponent {
     }
   }
 
-  renderRoute = routeProps => {
+  renderRoute = (routeProps) => {
     const { account, component: Component } = this.props
     const { loading } = this.state
     const { fetchingUser, user } = account
@@ -116,5 +116,5 @@ const ConnectedPublicRoute = connect(mapStateToProps)(PublicRoute)
 
 export {
   ConnectedPrivateRoute as PrivateRoute,
-  ConnectedPublicRoute as PublicRoute
+  ConnectedPublicRoute as PublicRoute,
 }

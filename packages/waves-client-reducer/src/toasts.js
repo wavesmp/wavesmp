@@ -10,7 +10,7 @@ function toasts(state = initialState, action) {
     }
     case actionTypes.TOAST_REMOVE: {
       const { id } = action
-      return state.filter(toast => toast.id !== id)
+      return state.filter((toast) => toast.id !== id)
     }
     default:
       return state

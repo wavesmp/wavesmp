@@ -10,13 +10,13 @@ function toastRemove(id) {
 }
 
 function toastAdd(toast) {
-  return dispatch => {
+  return (dispatch) => {
     id += 1
     toast.id = id
     dispatch({ type: types.TOAST_ADD, toast })
     setTimeout(
       () => dispatch(toastRemove(toast.id)),
-      toast.timeout || DEFAULT_TIMEOUT
+      toast.timeout || DEFAULT_TIMEOUT,
     )
   }
 }

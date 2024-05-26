@@ -7,6 +7,6 @@ module.exports = {
   presets: ['@babel/preset-react'].map(require.resolve),
   plugins: [
     '@babel/plugin-proposal-class-properties',
-    'babel-plugin-inline-react-svg'
-  ].map(require.resolve)
+    'babel-plugin-inline-react-svg',
+  ].map(require.resolve),
 }

@@ -10,15 +10,12 @@ describe('#playing()', () => {
   it('#pause()', () => {
     const player = new Player({})
     const playerMock = sinon.mock(player)
-    playerMock
-      .expects('pause')
-      .once()
-      .withExactArgs()
+    playerMock.expects('pause').once().withExactArgs()
 
     const dispatchMock = sinon.mock()
     assert.isDefined(types.PLAYING_PAUSE)
     dispatchMock.once().withExactArgs({
-      type: types.PLAYING_PAUSE
+      type: types.PLAYING_PAUSE,
     })
 
     const thunk = actions.pause()
@@ -31,15 +28,12 @@ describe('#playing()', () => {
   it('#play()', () => {
     const player = new Player({})
     const playerMock = sinon.mock(player)
-    playerMock
-      .expects('play')
-      .once()
-      .withExactArgs()
+    playerMock.expects('play').once().withExactArgs()
 
     const dispatchMock = sinon.mock()
     assert.isDefined(types.PLAYING_PLAY)
     dispatchMock.once().withExactArgs({
-      type: types.PLAYING_PLAY
+      type: types.PLAYING_PLAY,
     })
 
     const thunk = actions.play()
@@ -53,10 +47,7 @@ describe('#playing()', () => {
     const newTime = 3
     const player = new Player({})
     const playerMock = sinon.mock(player)
-    playerMock
-      .expects('seek')
-      .once()
-      .withExactArgs(newTime)
+    playerMock.expects('seek').once().withExactArgs(newTime)
 
     const thunk = actions.seek(newTime)
     thunk(undefined, undefined, { player })

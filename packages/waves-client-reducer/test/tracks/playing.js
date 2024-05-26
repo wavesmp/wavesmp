@@ -5,7 +5,7 @@ const actionTypes = require('waves-action-types')
 const {
   TEST_TRACK1: baseTrack1,
   TEST_TRACK2: baseTrack2,
-  TEST_PLAYLIST_NAME1: playlistName1
+  TEST_PLAYLIST_NAME1: playlistName1,
 } = require('waves-test-data')
 const { assertNewState, UNKNOWN_ACTION } = require('waves-test-util')
 
@@ -24,7 +24,7 @@ describe('#playing()', () => {
       playlist: null,
       track: null,
       shuffle: false,
-      repeat: false
+      repeat: false,
     })
   })
 
@@ -64,7 +64,7 @@ describe('#playing()', () => {
     const action = {
       type: actionTypes.TRACK_TOGGLE,
       playlistName: playlistName1,
-      track: track1
+      track: track1,
     }
     state = assertNewState(playing, state, action)
     assert.isTrue(state.isPlaying)
@@ -87,7 +87,7 @@ describe('#playing()', () => {
   it('track next', () => {
     const action = {
       type: actionTypes.TRACK_NEXT,
-      nextTrack: track2
+      nextTrack: track2,
     }
     state = assertNewState(playing, state, action)
     assert.isTrue(state.isPlaying)
@@ -103,7 +103,7 @@ describe('#playing()', () => {
       type: actionTypes.TRACKS_INFO_UPDATE,
       ids: [track2.id],
       key,
-      value: updatedValue
+      value: updatedValue,
     }
     state = assertNewState(playing, state, action)
     assert.isTrue(state.isPlaying)
@@ -113,7 +113,7 @@ describe('#playing()', () => {
   it('empty track next', () => {
     const action = {
       type: actionTypes.TRACK_NEXT,
-      nextTrack: null
+      nextTrack: null,
     }
     state = assertNewState(playing, state, action)
     assert.isFalse(state.isPlaying)
@@ -123,7 +123,7 @@ describe('#playing()', () => {
     assert.isDefined(actionTypes.TRACKS_DELETE)
     const action = {
       type: actionTypes.TRACKS_DELETE,
-      deleteIds: new Set([track1.id])
+      deleteIds: new Set([track1.id]),
     }
     const oldState = state
     state = playing(state, action)
@@ -134,7 +134,7 @@ describe('#playing()', () => {
     assert.isDefined(actionTypes.TRACKS_DELETE)
     const action = {
       type: actionTypes.TRACKS_DELETE,
-      deleteIds: new Set([track2.id])
+      deleteIds: new Set([track2.id]),
     }
     state = assertNewState(playing, state, action)
     assert.deepEqual(state, {
@@ -142,7 +142,7 @@ describe('#playing()', () => {
       playlist: null,
       track: null,
       shuffle: false,
-      repeat: false
+      repeat: false,
     })
   })
 })

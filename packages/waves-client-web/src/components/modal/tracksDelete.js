@@ -40,16 +40,16 @@ class TracksDeleteModal extends React.PureComponent {
               </tr>
             </thead>
             <tbody>
-              {itemPlayIndexes.map(itemIndex => (
+              {itemPlayIndexes.map((itemIndex) => (
                 <tr key={itemIndex}>
-                  {columns.map(column => (
+                  {columns.map((column) => (
                     <column.Component
                       key={column.title}
                       isPlaying={isPlaying}
                       index={index}
                       sample={normalizeTrack(
                         library[selection.get(itemIndex)],
-                        itemIndex
+                        itemIndex,
                       )}
                       editable={false}
                     />
@@ -94,20 +94,20 @@ function mapStateToProps(state) {
   const playlist = playlists[LIBRARY_NAME]
   const { index } = playlist
   const { isPlaying } = playing
-  const columns = libraryColumns.filter(c => account.columns.has(c.title))
+  const columns = libraryColumns.filter((c) => account.columns.has(c.title))
   const selection = getFilteredSelection(state, LIBRARY_NAME)
   return {
     columns,
     library,
     selection,
     isPlaying,
-    index
+    index,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

@@ -4,7 +4,7 @@ const {
   NOW_PLAYING_NAME,
   LIBRARY_NAME,
   UPLOADS_NAME,
-  routes
+  routes,
 } = require('waves-client-constants')
 
 function shouldAddToDefaultPlaylist(playlistName) {
@@ -15,7 +15,7 @@ function normalizeTrack(track, index) {
   return {
     ...track,
     time: formatTime(1000 * track.duration),
-    index
+    index,
   }
 }
 

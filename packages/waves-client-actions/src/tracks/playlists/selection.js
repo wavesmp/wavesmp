@@ -10,7 +10,7 @@ function selectionClearAndAdd(name, index, trackId, displayItems) {
     name,
     index,
     trackId,
-    displayItems
+    displayItems,
   }
 }
 
@@ -20,7 +20,7 @@ function selectionRange(name, startIndex, endIndex, displayItems) {
     name,
     startIndex,
     endIndex,
-    displayItems
+    displayItems,
   }
 }
 

@@ -32,7 +32,7 @@ class LeftButtons extends React.PureComponent {
 }
 
 class RightButtons extends React.PureComponent {
-  onOptionsClick = ev => {
+  onOptionsClick = (ev) => {
     const { actions, filteredSelection, index, playlistName } = this.props
     if (!filteredSelection || filteredSelection.size === 0) {
       actions.toastErr('No selection found')
@@ -49,7 +49,7 @@ class RightButtons extends React.PureComponent {
     actions.menuSetElem({
       ev,
       type: menuTypes.TRACK,
-      props
+      props,
     })
   }
 

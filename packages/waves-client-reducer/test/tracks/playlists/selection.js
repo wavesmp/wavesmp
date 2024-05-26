@@ -15,7 +15,7 @@ describe('#selection()', () => {
       type: actionTypes.SELECTION_CLEAR_AND_ADD,
       index: 0,
       trackId: 'trackId0',
-      displayItems: []
+      displayItems: [],
     }
     state = assertNewState(selection, state, action)
     const expectedSelection = new Map()
@@ -27,7 +27,7 @@ describe('#selection()', () => {
     const action = {
       type: actionTypes.SELECTION_ADD,
       index: 1,
-      trackId: 'trackId1'
+      trackId: 'trackId1',
     }
     state = assertNewState(selection, state, action)
     const expectedSelection = new Map()
@@ -39,7 +39,7 @@ describe('#selection()', () => {
   it('selection remove', () => {
     const action = {
       type: actionTypes.SELECTION_REMOVE,
-      index: 0
+      index: 0,
     }
     state = assertNewState(selection, state, action)
     const expectedSelection = new Map()
@@ -57,7 +57,7 @@ describe('#selection()', () => {
       type: actionTypes.SELECTION_RANGE,
       displayItems: items,
       startIndex: 12,
-      endIndex: 15
+      endIndex: 15,
     }
     state = assertNewState(selection, state, action)
     const expectedSelection = new Map()
@@ -79,7 +79,7 @@ describe('#selection()', () => {
       type: actionTypes.SELECTION_CLEAR_AND_ADD,
       index: 5,
       trackId: 'trackId5',
-      displayItems: items
+      displayItems: items,
     }
     state = assertNewState(selection, state, action)
     const expectedSelection = new Map()

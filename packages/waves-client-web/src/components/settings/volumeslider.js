@@ -7,7 +7,7 @@ export default class VolumeSlider extends React.PureComponent {
     this.state = { volume: actions.getVolume() }
   }
 
-  onVolumeChange = ev => {
+  onVolumeChange = (ev) => {
     const { volume } = ev.currentTarget
     this.setState({ volume })
   }
@@ -22,7 +22,7 @@ export default class VolumeSlider extends React.PureComponent {
     actions.removeOnVolumeChange(this.onVolumeChange)
   }
 
-  onVolumeInputChange = ev => {
+  onVolumeInputChange = (ev) => {
     const volume = ev.target.valueAsNumber
     const { actions } = this.props
     actions.setVolume(volume)

@@ -7,11 +7,11 @@ import './index.css'
 
 const ICONS = {
   [toastTypes.Success]: 'fa fa-lg fa-2x fa-check',
-  [toastTypes.Error]: 'fa fa-lg fa-2x fa-exclamation-triangle'
+  [toastTypes.Error]: 'fa fa-lg fa-2x fa-exclamation-triangle',
 }
 
 export default class Toasts extends React.PureComponent {
-  onCloseClick = ev => {
+  onCloseClick = (ev) => {
     const { actions } = this.props
     const toastId = parseInt(ev.currentTarget.getAttribute(TOAST_ID_ATTR), 10)
     actions.toastRemove(toastId)
@@ -26,7 +26,7 @@ export default class Toasts extends React.PureComponent {
           transitionEnterTimeout={800}
           transitionLeaveTimeout={300}
         >
-          {toasts.map(toast => {
+          {toasts.map((toast) => {
             const { type, msg } = toast
             const iconClass = ICONS[type]
             const lowerType = type.toLowerCase()

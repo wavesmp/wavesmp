@@ -7,7 +7,7 @@ const playing = require('./playing')
 const tracks = combineReducers({
   libraries,
   playlists,
-  playing
+  playing,
 })
 
 module.exports = tracks

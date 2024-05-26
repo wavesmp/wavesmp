@@ -18,7 +18,7 @@ constants.ALL_COLUMNS = [
   'Artist',
   'Album',
   'Genre',
-  'Created At'
+  'Created At',
 ]
 
 constants.PLAYLIST_TYPE = 'application/wp'
@@ -29,19 +29,19 @@ constants.modalTypes = keyMirror({
   PLAYLIST_SAVE: null,
   PLAYLIST_SETTINGS: null,
   TRACKS_DELETE: null,
-  TRACKS_UPLOAD: null
+  TRACKS_UPLOAD: null,
 })
 
 constants.menuTypes = keyMirror({
   TRACK: null,
   PLAYLIST_ADD: null,
   NOTIFICATIONS: null,
-  USER_SETTINGS: null
+  USER_SETTINGS: null,
 })
 
 constants.toastTypes = keyMirror({
   Success: null,
-  Error: null
+  Error: null,
 })
 
 constants.routes = {
@@ -51,7 +51,7 @@ constants.routes = {
   upload: '/upload',
   playlist: '/playlist/:playlist',
   playlistBase: '/playlist/',
-  settings: '/settings'
+  settings: '/settings',
 }
 
 constants.MENU_DATA_VALUE = 'modal'

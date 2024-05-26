@@ -19,7 +19,7 @@ const combined = combineReducers({
   modal,
   sidebar,
   toasts,
-  tracks
+  tracks,
 })
 
 module.exports = combined

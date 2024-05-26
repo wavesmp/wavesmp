@@ -46,12 +46,12 @@ function addMissingState(state, defaultState) {
   for (const key in defaultState) {
     if (!(key in state)) {
       console.log(
-        `Adding missing state to storage ${key}: ${defaultState[key]}`
+        `Adding missing state to storage ${key}: ${defaultState[key]}`,
       )
       state[key] = defaultState[key]
     } else if (toType(state[key]) !== toType(defaultState[key])) {
       console.log(
-        `Invalid config type for key ${key}. Using default ${defaultState[key]}`
+        `Invalid config type for key ${key}. Using default ${defaultState[key]}`,
       )
       state[key] = defaultState[key]
     } else if (isObject(defaultState[key])) {

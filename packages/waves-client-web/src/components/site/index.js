@@ -29,7 +29,7 @@ class Site extends React.PureComponent {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 
@@ -37,7 +37,7 @@ function mapStateToProps(state) {
   return {
     err: state.err,
     theme: state.account.theme,
-    toasts: state.toasts
+    toasts: state.toasts,
   }
 }
 

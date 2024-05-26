@@ -13,16 +13,17 @@ function getFilteredSelection(state, playlistName) {
 function removeSelection(state, playlistName) {
   const search = getPlaylistSearch(state, playlistName)
   const { getPlaylistProps } = getPlaylistSelectors(playlistName)
-  const { selection, displayItems, index: oldPlaylistIndex } = getPlaylistProps(
-    state,
-    search
-  )
+  const {
+    selection,
+    displayItems,
+    index: oldPlaylistIndex,
+  } = getPlaylistProps(state, search)
   let playlistIndex = oldPlaylistIndex
 
   const indexes = Array.from(selection.keys())
   indexes.sort((a, b) => a - b)
 
-  const displayIndexes = new Set(displayItems.map(item => item.index))
+  const displayIndexes = new Set(displayItems.map((item) => item.index))
 
   const removedSelection = new Map()
   const updatedSelection = new Map()
@@ -53,7 +54,7 @@ function removeSelection(state, playlistName) {
     oldIndex: oldPlaylistIndex,
     index: playlistIndex,
     removedSelection,
-    updatedSelection
+    updatedSelection,
   }
 }
 

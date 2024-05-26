@@ -21,19 +21,19 @@ export default class MainBar extends React.PureComponent {
         name: 'Now Playing',
         pathname: constants.routes.nowplaying,
         playlistName: constants.NOW_PLAYING_NAME,
-        className: 'fa-fw fa fa-lg fa-headphones'
+        className: 'fa-fw fa fa-lg fa-headphones',
       },
       {
         name: 'Library',
         pathname: constants.routes.library,
         playlistName: constants.LIBRARY_NAME,
-        className: 'fa-fw fa fa-lg fa-book'
-      }
+        className: 'fa-fw fa fa-lg fa-book',
+      },
     ]
     return (
       <div id='sidebar-container' className={className}>
         <ul className='nav'>
-          {menuBarItems.map(sample => (
+          {menuBarItems.map((sample) => (
             <PlaylistLink
               key={sample.name}
               itemPathname={sample.pathname}

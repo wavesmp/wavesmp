@@ -30,7 +30,7 @@ const localState = new LocalState(localStorage)
 
 const reduxMiddleware = applyMiddleware(
   /* Include extra args for side effects */
-  ReduxThunk.withExtraArgument({ localState, player, ws, auth })
+  ReduxThunk.withExtraArgument({ localState, player, ws, auth }),
 )
 const store = createStore(rootReducer, reduxMiddleware)
 
@@ -43,7 +43,7 @@ render(
       </Switch>
     </Router>
   </Provider>,
-  document.getElementById('app')
+  document.getElementById('app'),
 )
 
 /* Objects need store access for dispatching on events

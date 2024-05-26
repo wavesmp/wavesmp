@@ -115,8 +115,8 @@ function playlistKeyDown(ev, history, dispatch, key, playlistName, props) {
           playlistName,
           displayItems[i].index,
           displayItems[i].id,
-          displayItems
-        )
+          displayItems,
+        ),
       )
       break
     }

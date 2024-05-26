@@ -9,7 +9,7 @@ const DEFAULT_LOCAL_CONFIG = {
   lastIdp: '',
   machineId: ObjectID.getMachineID(),
   theme: 'light',
-  volume: 1.0
+  volume: 1.0,
 }
 
 /* Exposes get/set methods that sit above the

@@ -17,7 +17,7 @@ function trackToggle(id, playlistName, index) {
       playlistName,
       index,
       track,
-      oldPlaylistName
+      oldPlaylistName,
     })
 
     /* By default, playing a track adds it to the default playlist.
@@ -25,7 +25,7 @@ function trackToggle(id, playlistName, index) {
     if (shouldAddToDefaultPlaylist(playlistName)) {
       ws.sendBestEffortMessage(types.PLAYLIST_ADD, {
         playlistName: NOW_PLAYING_NAME,
-        trackIds: [id]
+        trackIds: [id],
       })
     }
   }

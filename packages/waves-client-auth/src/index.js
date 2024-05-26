@@ -1,7 +1,7 @@
 const google = require('./google')
 
 const idpClasses = {
-  google
+  google,
 }
 
 class Auth {

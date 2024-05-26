@@ -12,13 +12,13 @@ const {
   TEST_INDEX: testIndex,
   TEST_SELECTION: testSelection,
   TEST_SORT_KEY: testSortKey,
-  TEST_ASCENDING: testAscending
+  TEST_ASCENDING: testAscending,
 } = require('waves-test-data')
 
 const {
   getDefaultPlaylistSearch,
   getLibraryPlaylistSearch,
-  getOrCreatePlaylistSelectors
+  getOrCreatePlaylistSelectors,
 } = require('..')
 
 const ORDER_QUERY_KEY = 'order'
@@ -35,17 +35,17 @@ const track2 = { ...baseTrack2, id: mongoid() }
 const libName = 'testLibName'
 const testLib = {
   [track1.id]: track1,
-  [track2.id]: track2
+  [track2.id]: track2,
 }
 const libraries = {
-  [libName]: testLib
+  [libName]: testLib,
 }
 
 describe('waves-client-selectors', () => {
   const playlistNames = [NOW_PLAYING_NAME, LIBRARY_NAME]
   const getPlaylistSearchFuncs = [
     getDefaultPlaylistSearch,
-    getLibraryPlaylistSearch
+    getLibraryPlaylistSearch,
   ]
 
   const combined = zip(playlistNames, getPlaylistSearchFuncs)
@@ -54,7 +54,7 @@ describe('waves-client-selectors', () => {
     describe(`get ${playlistName} playlist search`, () => {
       it('playlists is null', () => {
         const tracks = {
-          playlists: null
+          playlists: null,
         }
         const state = { tracks }
         const search = getPlaylistSearch(state)
@@ -63,7 +63,7 @@ describe('waves-client-selectors', () => {
 
       it('playlist is null', () => {
         const tracks = {
-          playlists: {}
+          playlists: {},
         }
         const state = { tracks }
         const search = getPlaylistSearch(state)
@@ -74,9 +74,9 @@ describe('waves-client-selectors', () => {
         const tracks = {
           playlists: {
             [playlistName]: {
-              search: ''
-            }
-          }
+              search: '',
+            },
+          },
         }
         const state = { tracks }
         const search = getPlaylistSearch(state)
@@ -87,9 +87,9 @@ describe('waves-client-selectors', () => {
         const tracks = {
           playlists: {
             [playlistName]: {
-              search: testSearch
-            }
-          }
+              search: testSearch,
+            },
+          },
         }
         const state = { tracks }
         const search = getPlaylistSearch(state)
@@ -104,14 +104,14 @@ describe('waves-client-selectors', () => {
       getRouterAscending,
       getRouterSortKey,
       getPlaylistProps,
-      getSearchItems
+      getSearchItems,
     } = getOrCreatePlaylistSelectors(testPlaylistName, URLSearchParams, libName)
 
     describe('#getPlaylistProps()', () => {
       it('playlist is null', () => {
         const tracks = {
           playlists: null,
-          libraries
+          libraries,
         }
         const state = { tracks, account: { rowsPerPage: 25 } }
         const props = getPlaylistProps(state, '')
@@ -132,10 +132,10 @@ describe('waves-client-selectors', () => {
           index: testIndex,
           selection: testSelection,
           sortKey: testSortKey,
-          ascending: testAscending
+          ascending: testAscending,
         }
         const playlists = {
-          [testPlaylistName]: playlist
+          [testPlaylistName]: playlist,
         }
 
         const tracks = { playlists, libraries }
@@ -154,9 +154,9 @@ describe('waves-client-selectors', () => {
             {
               ...track1,
               index: 0,
-              time: '1:01'
-            }
-          ]
+              time: '1:01',
+            },
+          ],
         }
         assert.deepEqual(props, expected)
       })
@@ -166,7 +166,7 @@ describe('waves-client-selectors', () => {
       it(`${SEARCH_QUERY_KEY} default value`, () => {
         assert.strictEqual(
           getRouterSearchString(null, ''),
-          DEFAULT_SEARCH_STRING
+          DEFAULT_SEARCH_STRING,
         )
       })
 
@@ -209,8 +209,8 @@ describe('waves-client-selectors', () => {
         const search = `${SEARCH_QUERY_KEY}=${searchString}`
         const playlists = {
           [testPlaylistName]: {
-            tracks: [track1.id, track2.id]
-          }
+            tracks: [track1.id, track2.id],
+          },
         }
         const tracks = { playlists, libraries }
         const state = { tracks }
@@ -228,8 +228,8 @@ describe('waves-client-selectors', () => {
         const search = `${SEARCH_QUERY_KEY}=${searchString}`
         const playlists = {
           [testPlaylistName]: {
-            tracks: [track1Copy.id, track2.id]
-          }
+            tracks: [track1Copy.id, track2.id],
+          },
         }
         const tracks = { playlists, libraries: librariesCopy }
         const state = { tracks }

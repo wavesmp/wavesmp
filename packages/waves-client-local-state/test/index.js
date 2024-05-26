@@ -21,7 +21,7 @@ describe('waves-client-local-state', async () => {
       lastIdp: '',
       machineId: 1010,
       theme: 'testTheme',
-      volume: 1.0
+      volume: 1.0,
     }
     const expectedConfig = {
       columns: ['Name', 'State', 'Time'],
@@ -29,7 +29,7 @@ describe('waves-client-local-state', async () => {
       lastIdp: '',
       machineId: 1010,
       theme: 'testTheme',
-      volume: 1.0
+      volume: 1.0,
     }
     localStorage.setItem(CONFIG_KEY, JSON.stringify(config))
 
@@ -39,7 +39,7 @@ describe('waves-client-local-state', async () => {
     assert.strictEqual(localStorage.key(0), CONFIG_KEY)
     assert.deepEqual(
       JSON.parse(localStorage.getItem(CONFIG_KEY)),
-      expectedConfig
+      expectedConfig,
     )
 
     const localStateKeys = await localState.keys()
@@ -70,14 +70,14 @@ describe('waves-client-local-state', async () => {
       lastIdp: '',
       machineId: ObjectID.getMachineID(),
       theme: 'light',
-      volume: 1.0
+      volume: 1.0,
     }
 
     assert.lengthOf(localStorage, 1)
     assert.strictEqual(localStorage.key(0), CONFIG_KEY)
     assert.deepEqual(
       JSON.parse(localStorage.getItem(CONFIG_KEY)),
-      defaultConfig
+      defaultConfig,
     )
 
     const localStateKeys = await localState.keys()

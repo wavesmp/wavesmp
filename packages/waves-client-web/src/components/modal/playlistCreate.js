@@ -13,7 +13,7 @@ class CreatePlaylistModal extends React.PureComponent {
     this.state = { name: '' }
   }
 
-  onChange = ev => {
+  onChange = (ev) => {
     const name = ev.currentTarget.value
     this.setState({ name })
   }
@@ -74,7 +74,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

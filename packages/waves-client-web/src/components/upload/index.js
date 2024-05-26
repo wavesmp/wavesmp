@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import * as WavesActions from 'waves-client-actions'
 import {
   UPLOADS_NAME as playlistName,
-  modalTypes
+  modalTypes,
 } from 'waves-client-constants'
 import { getOrCreatePlaylistSelectors } from 'waves-client-selectors'
 
@@ -31,7 +31,7 @@ class Upload extends React.PureComponent {
     actions.modalSet({ type: modalTypes.TRACKS_UPLOAD })
   }
 
-  onDragEnter = ev => {
+  onDragEnter = (ev) => {
     this.setState({ dragging: true })
     ev.preventDefault()
   }
@@ -43,11 +43,11 @@ class Upload extends React.PureComponent {
   // Needed preventDefault on dragenter, dragover, and ondrop events
   // https://stackoverflow.com/questions/8414154/
   // html5-drop-event-doesnt-work-unless-dragover-is-handled
-  onDragOver = ev => {
+  onDragOver = (ev) => {
     ev.preventDefault()
   }
 
-  validateDropFileType = f => {
+  validateDropFileType = (f) => {
     if (ACCEPTED_FILE_TYPE_LIST.indexOf(f.type) > -1) {
       return true
     }
@@ -56,13 +56,13 @@ class Upload extends React.PureComponent {
     return false
   }
 
-  onDrop = ev => {
+  onDrop = (ev) => {
     ev.preventDefault()
     this.setState({ dragging: false })
     // files (type FileList) is not an array, so can't use map.
     // Use Array.from(arrayLikeObj, mapFn) as a workaround
     const files = Array.from(ev.dataTransfer.files).filter(
-      this.validateDropFileType
+      this.validateDropFileType,
     )
 
     if (files.length === 0) {
@@ -71,7 +71,7 @@ class Upload extends React.PureComponent {
     this.processFiles(files)
   }
 
-  onFileSelect = ev => {
+  onFileSelect = (ev) => {
     /* Files should only be valid types due to the input accept clause */
     const { files } = ev.currentTarget
     this.processFiles(files)
@@ -90,13 +90,13 @@ class Upload extends React.PureComponent {
     return null
   }
 
-  processFiles = async files => {
+  processFiles = async (files) => {
     // files (type FileList) is not an array, so can't use map.
     // Use Array.from(arrayLikeObj, mapFn) as a workaround
     const newUploads = await Promise.all(
-      Array.from(files, this.wrapProcessTrack, this)
+      Array.from(files, this.wrapProcessTrack, this),
     )
-    const validNewUploads = newUploads.filter(upload => upload != null)
+    const validNewUploads = newUploads.filter((upload) => upload != null)
 
     const { actions, numItems, rowsPerPage } = this.props
     if (numItems + validNewUploads.length > rowsPerPage) {
@@ -128,7 +128,7 @@ class Upload extends React.PureComponent {
       isPlaying,
       layout,
       currentPage,
-      lastPage
+      lastPage,
     } = this.props
     return (
       <Table
@@ -205,16 +205,14 @@ class Upload extends React.PureComponent {
 }
 
 function mapStateToProps(state, ownProps) {
-  const {
-    getRouterQueryParams,
-    getPlaylistProps
-  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, playlistName)
+  const { getRouterQueryParams, getPlaylistProps } =
+    getOrCreatePlaylistSelectors(playlistName, URLSearchParams, playlistName)
   const { account, layout, tracks } = state
   const { playing } = tracks
   const { isPlaying } = playing
   const { location } = ownProps
   const { pathname, search } = location
-  const columns = uploadColumns.filter(c => account.columns.has(c.title))
+  const columns = uploadColumns.filter((c) => account.columns.has(c.title))
   return {
     rowsPerPage: account.rowsPerPage,
     pathname,
@@ -222,13 +220,13 @@ function mapStateToProps(state, ownProps) {
     isPlaying,
     columns,
     layout,
-    ...getPlaylistProps(state, search)
+    ...getPlaylistProps(state, search),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

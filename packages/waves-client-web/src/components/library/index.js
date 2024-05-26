@@ -7,7 +7,7 @@ import { LIBRARY_NAME as playlistName, routes } from 'waves-client-constants'
 import * as WavesActions from 'waves-client-actions'
 import {
   getOrCreatePlaylistSelectors,
-  getDefaultPlaylistSearch
+  getDefaultPlaylistSearch,
 } from 'waves-client-selectors'
 
 import { libraryColumns } from '../table/columns'
@@ -22,7 +22,7 @@ class Library extends React.PureComponent {
     return [
       <Link key='Now Playing' className='btn btn-primary' to={to}>
         Now Playing
-      </Link>
+      </Link>,
     ]
   }
 
@@ -56,18 +56,15 @@ class Library extends React.PureComponent {
 }
 
 function mapStateToProps(state, ownProps) {
-  const {
-    getRouterSearchString,
-    getRouterQueryParams,
-    getPlaylistProps
-  } = getOrCreatePlaylistSelectors(playlistName, URLSearchParams, playlistName)
+  const { getRouterSearchString, getRouterQueryParams, getPlaylistProps } =
+    getOrCreatePlaylistSelectors(playlistName, URLSearchParams, playlistName)
   const { tracks, account, menubar, sidebar, layout } = state
   const { playing } = tracks
   const { isPlaying } = playing
   const { location } = ownProps
   const { pathname, search } = location
   const { theme } = account
-  const columns = libraryColumns.filter(c => account.columns.has(c.title))
+  const columns = libraryColumns.filter((c) => account.columns.has(c.title))
 
   return {
     defaultPlaylistSearch: getDefaultPlaylistSearch(state),
@@ -80,13 +77,13 @@ function mapStateToProps(state, ownProps) {
     sidebar,
     theme,
     layout,
-    ...getPlaylistProps(state, search)
+    ...getPlaylistProps(state, search),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

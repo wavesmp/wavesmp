@@ -7,7 +7,7 @@ const PAUSE_ICON = <i className='fa fa-lg fa-pause table-pause-icon' />
 const PLAY_PAUSE_PADDING = <span className='table-blank-icon' />
 
 export class Name extends React.PureComponent {
-  emitChange = update => {
+  emitChange = (update) => {
     const { onChange, sample } = this.props
     onChange(sample.id, 'title', update)
   }
@@ -75,7 +75,7 @@ export class Time extends React.PureComponent {
 }
 
 export class Artist extends React.PureComponent {
-  emitChange = update => {
+  emitChange = (update) => {
     const { onChange, sample } = this.props
     onChange(sample.id, 'artist', update)
   }
@@ -97,7 +97,7 @@ export class Artist extends React.PureComponent {
 }
 
 export class Album extends React.PureComponent {
-  emitChange = update => {
+  emitChange = (update) => {
     const { onChange, sample } = this.props
     onChange(sample.id, 'album', update)
   }
@@ -119,7 +119,7 @@ export class Album extends React.PureComponent {
 }
 
 export class Genre extends React.PureComponent {
-  emitChange = update => {
+  emitChange = (update) => {
     const { onChange, sample } = this.props
     onChange(sample.id, 'genre', update)
   }

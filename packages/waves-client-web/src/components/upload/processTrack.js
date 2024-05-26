@@ -6,7 +6,7 @@ import * as musicmetadata from 'music-metadata-browser'
 export default async function processTrack(file) {
   const metadata = await musicmetadata.parseBlob(file, {
     duration: true,
-    native: true
+    native: true,
   })
   const { common, format } = metadata
   const { title, artists, albumartist, album, genre } = common
@@ -19,7 +19,7 @@ export default async function processTrack(file) {
     album: album && album.trim(),
     genre: genre && genre.map(trim).join(', '),
     duration,
-    file
+    file,
   }
 
   addMissingTags(upload)

@@ -17,7 +17,7 @@ class SavePlaylistModal extends React.PureComponent {
     this.state = { playlistSaveName: '' }
   }
 
-  onChange = ev => {
+  onChange = (ev) => {
     const playlistSaveName = ev.currentTarget.value
     this.setState({ playlistSaveName })
   }
@@ -62,7 +62,7 @@ function mapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

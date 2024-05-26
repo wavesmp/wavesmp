@@ -12,7 +12,7 @@ export default class TrackPlayer extends React.PureComponent {
       playlistName,
       index,
       actions,
-      playing
+      playing,
     } = this.props
     if (menubar) {
       return (

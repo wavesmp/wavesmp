@@ -3,7 +3,7 @@ const { NOW_PLAYING_NAME } = require('waves-client-constants')
 const { getOrCreatePlaylistSelectors } = require('waves-client-selectors')
 const {
   normalizeTrack,
-  shouldAddToDefaultPlaylist
+  shouldAddToDefaultPlaylist,
 } = require('waves-client-util')
 
 const { toastErr } = require('../toasts')
@@ -37,7 +37,7 @@ async function _trackNext(
   URLSearchParams,
   player,
   ws,
-  prev
+  prev,
 ) {
   const state = getState()
   const { tracks } = state
@@ -50,7 +50,7 @@ async function _trackNext(
   const { getSearchItems } = getOrCreatePlaylistSelectors(
     playlistName,
     URLSearchParams,
-    libName
+    libName,
   )
   const searchItems = getSearchItems(state, playlist.search)
   const nextTrack = getNextTrack(searchItems, playlist, shuffle, prev, lib)
@@ -58,13 +58,13 @@ async function _trackNext(
   dispatch({
     type: types.TRACK_NEXT,
     nextTrack,
-    playlistName
+    playlistName,
   })
   if (nextTrack) {
     if (shouldAddToDefaultPlaylist(playlistName)) {
       ws.sendBestEffortMessage(types.PLAYLIST_ADD, {
         playlistName: NOW_PLAYING_NAME,
-        trackIds: [nextTrack.id]
+        trackIds: [nextTrack.id],
       })
     }
     try {

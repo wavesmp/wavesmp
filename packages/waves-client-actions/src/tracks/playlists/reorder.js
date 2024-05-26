@@ -1,7 +1,7 @@
 function reorder(playlist, filteredSelection, insertAt) {
   const { tracks, selection, index } = playlist
   const filteredSelectionKeys = Array.from(filteredSelection.keys()).sort(
-    (a, b) => a - b
+    (a, b) => a - b,
   )
   const reordered = []
   const newSelection = new Map()

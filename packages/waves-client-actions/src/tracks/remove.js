@@ -4,12 +4,8 @@ const { removeSelection } = require('waves-client-selectors')
 function tracksRemove(playlistName) {
   return async (dispatch, getState, { player, ws }) => {
     const state = getState()
-    const {
-      oldIndex,
-      removedSelection,
-      updatedSelection,
-      index
-    } = removeSelection(state, playlistName)
+    const { oldIndex, removedSelection, updatedSelection, index } =
+      removeSelection(state, playlistName)
 
     /* Removed selection keys should be in order */
     const deleteIndexes = Array.from(removedSelection.keys())
@@ -32,11 +28,11 @@ function tracksRemove(playlistName) {
       deleteIndexes,
       selection: updatedSelection,
       index,
-      deletePlaying
+      deletePlaying,
     })
     await ws.sendAckedMessage(types.TRACKS_REMOVE, {
       playlistName,
-      selection: [...removedSelection.entries()]
+      selection: [...removedSelection.entries()],
     })
   }
 }

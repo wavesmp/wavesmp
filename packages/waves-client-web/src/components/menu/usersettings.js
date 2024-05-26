@@ -48,13 +48,13 @@ function mapStateToProps(state) {
   const { account } = state
   const { user } = account
   return {
-    userName: user && user.name
+    userName: user && user.name,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

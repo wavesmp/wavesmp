@@ -5,7 +5,7 @@ import { ALL_COLUMNS } from 'waves-client-constants'
 const COLUMN_NAME_ATTR = 'data-columnname'
 
 export default class ColumnSettings extends React.PureComponent {
-  addColumn = ev => {
+  addColumn = (ev) => {
     const { actions } = this.props
     /* eslint-disable-next-line react/destructuring-assignment */
     const columns = new Set(this.props.columns)
@@ -14,7 +14,7 @@ export default class ColumnSettings extends React.PureComponent {
     actions.accountSetSettings({ columns })
   }
 
-  removeColumn = ev => {
+  removeColumn = (ev) => {
     const { actions } = this.props
     /* eslint-disable-next-line react/destructuring-assignment */
     const columns = new Set(this.props.columns)
@@ -25,14 +25,14 @@ export default class ColumnSettings extends React.PureComponent {
 
   render() {
     const { columns } = this.props
-    const hiddenColumns = ALL_COLUMNS.filter(x => !columns.has(x))
-    const activeColumns = ALL_COLUMNS.filter(x => columns.has(x))
+    const hiddenColumns = ALL_COLUMNS.filter((x) => !columns.has(x))
+    const activeColumns = ALL_COLUMNS.filter((x) => columns.has(x))
 
     return (
       <div className='settings-columns'>
         <div className='settings-column'>
           <label className='settings-column-label'>Hidden Columns</label>
-          {hiddenColumns.map(sample => (
+          {hiddenColumns.map((sample) => (
             <div
               key={sample}
               className='settings-column-item'
@@ -46,7 +46,7 @@ export default class ColumnSettings extends React.PureComponent {
         </div>
         <div className='settings-column'>
           <label className='settings-column-label'>Active Columns</label>
-          {activeColumns.map(sample => (
+          {activeColumns.map((sample) => (
             <div
               key={sample}
               className='settings-column-item'

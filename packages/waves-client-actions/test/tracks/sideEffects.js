@@ -7,7 +7,7 @@ const { LIBRARY_NAME, toastTypes } = require('waves-client-constants')
 const Player = require('waves-client-player')
 const {
   TEST_TRACK1: baseTrack1,
-  TEST_TRACK2: baseTrack2
+  TEST_TRACK2: baseTrack2,
 } = require('waves-test-data')
 
 const actions = require('../../src/tracks/sideEffects')
@@ -16,10 +16,10 @@ const track1 = { ...baseTrack1, id: mongoid() }
 const track2 = { ...baseTrack2, id: mongoid() }
 const library = {
   [track1.id]: track1,
-  [track2.id]: track2
+  [track2.id]: track2,
 }
 const libraries = {
-  [LIBRARY_NAME]: library
+  [LIBRARY_NAME]: library,
 }
 
 describe('#sideEffects()', async () => {
@@ -32,10 +32,7 @@ describe('#sideEffects()', async () => {
     const thunk = actions.download(track1.id)
 
     const playerMock = sinon.mock(player)
-    playerMock
-      .expects('download')
-      .once()
-      .withExactArgs(track1)
+    playerMock.expects('download').once().withExactArgs(track1)
 
     const tracks = { libraries }
     await thunk(dispatchMock, () => ({ tracks }), { player })

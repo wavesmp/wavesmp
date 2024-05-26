@@ -9,7 +9,7 @@ const {
   TEST_PLAYLIST_NAME1: testPlaylistName1,
   TEST_PLAYLIST_NAME2: testPlaylistName2,
   TEST_TRACK1: baseTrack1,
-  TEST_TRACK2: baseTrack2
+  TEST_TRACK2: baseTrack2,
 } = require('waves-test-data')
 
 const track1 = { ...baseTrack1, id: mongoid() }
@@ -17,7 +17,7 @@ const track2 = { ...baseTrack2, id: mongoid() }
 const libName = 'testLibName'
 const lib = {
   [track1.id]: track1,
-  [track2.id]: track2
+  [track2.id]: track2,
 }
 const libraries = { [libName]: lib, [LIBRARY_NAME]: lib }
 
@@ -40,7 +40,7 @@ describe('#playlists()', () => {
     const action = {
       type: types.PLAYLIST_COPY,
       src: testPlaylistName1,
-      dest: testPlaylistName2
+      dest: testPlaylistName2,
     }
 
     const dispatchMock = sinon.mock()
@@ -67,7 +67,7 @@ describe('#playlists()', () => {
     assert.isDefined(types.PLAYLIST_DELETE)
     const action = {
       type: types.PLAYLIST_DELETE,
-      playlistName: testPlaylistName1
+      playlistName: testPlaylistName1,
     }
 
     const dispatchMock = sinon.mock()
@@ -94,7 +94,7 @@ describe('#playlists()', () => {
     const action = {
       type: types.PLAYLIST_MOVE,
       src: testPlaylistName1,
-      dest: testPlaylistName2
+      dest: testPlaylistName2,
     }
 
     const dispatchMock = sinon.mock()
@@ -106,7 +106,7 @@ describe('#playlists()', () => {
       .once()
       .withExactArgs(types.PLAYLIST_MOVE, {
         src: testPlaylistName1,
-        dest: testPlaylistName2
+        dest: testPlaylistName2,
       })
 
     await thunk(dispatchMock, undefined, { ws })
@@ -128,11 +128,11 @@ describe('#playlists()', () => {
     const playlists = {
       [source]: {
         selection: sourceSelection,
-        tracks: [track1.id, track2.id]
+        tracks: [track1.id, track2.id],
       },
       [dest]: {
-        selection: destSelection
-      }
+        selection: destSelection,
+      },
     }
     const tracks = { playlists, libraries }
     const account = { rowsPerPage: 25 }
@@ -145,7 +145,7 @@ describe('#playlists()', () => {
     const action = {
       type: types.PLAYLIST_ADD,
       playlistName: dest,
-      addTracks
+      addTracks,
     }
 
     const dispatchMock = sinon.mock()
@@ -157,7 +157,7 @@ describe('#playlists()', () => {
       .once()
       .withExactArgs(types.PLAYLIST_ADD, {
         playlistName: dest,
-        trackIds: addTracks
+        trackIds: addTracks,
       })
 
     thunk(dispatchMock, () => ({ tracks, account }), { ws })
@@ -180,7 +180,7 @@ describe('#playlists()', () => {
     const action = {
       type: types.PLAYLIST_ADD,
       playlistName,
-      addTracks
+      addTracks,
     }
 
     dispatchMock.once().withExactArgs(action)

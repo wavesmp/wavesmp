@@ -10,7 +10,7 @@ const WavesSocket = require('waves-socket')
 const {
   TEST_USER1: testUser,
   TEST_TOKEN: testToken,
-  TEST_IDP: testIdp
+  TEST_IDP: testIdp,
 } = require('waves-test-data')
 
 const actions = require('../src/account')
@@ -23,11 +23,11 @@ describe('#account()', () => {
     assert.isDefined(types.ACCOUNT_SET_FETCHING_USER)
     const expectedAction = {
       type: types.ACCOUNT_SET_FETCHING_USER,
-      fetchingUser
+      fetchingUser,
     }
     assert.deepEqual(
       actions.accountSetFetchingUser(fetchingUser),
-      expectedAction
+      expectedAction,
     )
   })
 
@@ -45,7 +45,7 @@ describe('#account()', () => {
 
     const action = {
       type: types.ACCOUNT_SET_SETTINGS,
-      settings: { columns, rowsPerPage, theme }
+      settings: { columns, rowsPerPage, theme },
     }
 
     const dispatchMock = sinon.mock()
@@ -58,12 +58,12 @@ describe('#account()', () => {
 
     const firstLocalStateCall = localStateExpect.firstCall
     assert.isTrue(
-      firstLocalStateCall.calledWithExactly('columns', [...columns])
+      firstLocalStateCall.calledWithExactly('columns', [...columns]),
     )
 
     const secondLocalStateCall = localStateExpect.secondCall
     assert.isTrue(
-      secondLocalStateCall.calledWithExactly('rowsPerPage', rowsPerPage)
+      secondLocalStateCall.calledWithExactly('rowsPerPage', rowsPerPage),
     )
 
     const thirdLocalStateCall = localStateExpect.thirdCall
@@ -90,10 +90,7 @@ describe('#account()', () => {
     dispatchMock.once().withExactArgs(action)
 
     const authMock = sinon.mock(auth)
-    authMock
-      .expects('signOut')
-      .once()
-      .withExactArgs(testIdp)
+    authMock.expects('signOut').once().withExactArgs(testIdp)
 
     const localStateMock = sinon.mock(localState)
     localStateMock
@@ -101,16 +98,10 @@ describe('#account()', () => {
       .once()
       .withExactArgs('lastIdp')
       .returns(testIdp)
-    localStateMock
-      .expects('setItem')
-      .once()
-      .withExactArgs('lastIdp', '')
+    localStateMock.expects('setItem').once().withExactArgs('lastIdp', '')
 
     const wsMock = sinon.mock(ws)
-    wsMock
-      .expects('setOnConnect')
-      .once()
-      .withExactArgs(null)
+    wsMock.expects('setOnConnect').once().withExactArgs(null)
 
     await thunk(dispatchMock, undefined, { auth, ws, localState })
 
@@ -128,10 +119,7 @@ describe('#account()', () => {
     const thunk = actions.signIn(testIdp)
 
     const authMock = sinon.mock(auth)
-    authMock
-      .expects('signIn')
-      .once()
-      .withExactArgs(testIdp)
+    authMock.expects('signIn').once().withExactArgs(testIdp)
     authMock
       .expects('tryAutoLogin')
       .once()
@@ -172,10 +160,7 @@ describe('#account()', () => {
     dispatchMock.once().withExactArgs(action)
 
     const authMock = sinon.mock(auth)
-    authMock
-      .expects('signIn')
-      .once()
-      .withExactArgs(testIdp)
+    authMock.expects('signIn').once().withExactArgs(testIdp)
     authMock
       .expects('tryAutoLogin')
       .once()
@@ -183,10 +168,7 @@ describe('#account()', () => {
       .returns(testToken)
 
     const localStateMock = sinon.mock(localState)
-    localStateMock
-      .expects('setItem')
-      .once()
-      .withExactArgs('lastIdp', testIdp)
+    localStateMock.expects('setItem').once().withExactArgs('lastIdp', testIdp)
 
     const wsMock = sinon.mock(ws)
     wsMock

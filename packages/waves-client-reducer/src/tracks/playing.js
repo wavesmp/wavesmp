@@ -5,7 +5,7 @@ const initialPlaying = {
   playlist: null,
   track: null,
   shuffle: false,
-  repeat: false
+  repeat: false,
 }
 
 function reducerPlaying(playing = initialPlaying, action) {
@@ -13,14 +13,14 @@ function reducerPlaying(playing = initialPlaying, action) {
     case actionTypes.PLAYING_PLAY: {
       return {
         ...playing,
-        isPlaying: true
+        isPlaying: true,
       }
     }
 
     case actionTypes.PLAYING_PAUSE: {
       return {
         ...playing,
-        isPlaying: false
+        isPlaying: false,
       }
     }
 
@@ -37,7 +37,7 @@ function reducerPlaying(playing = initialPlaying, action) {
       if (nextTrack) {
         return {
           ...playing,
-          track: nextTrack
+          track: nextTrack,
         }
       }
       return { ...playing, isPlaying: false }
@@ -49,7 +49,7 @@ function reducerPlaying(playing = initialPlaying, action) {
         ...playing,
         isPlaying: true,
         track,
-        playlist: playlistName
+        playlist: playlistName,
       }
     }
 
@@ -61,8 +61,8 @@ function reducerPlaying(playing = initialPlaying, action) {
           ...playing,
           track: {
             ...track,
-            [key]: value
-          }
+            [key]: value,
+          },
         }
       }
       return playing

@@ -19,7 +19,7 @@ export default class Table extends React.PureComponent {
       editingIndex: null,
       editingTitle: null,
       reorderTopIndex: null,
-      reorderBottomIndex: null
+      reorderBottomIndex: null,
     }
     this.dragGhost = null
 
@@ -38,7 +38,7 @@ export default class Table extends React.PureComponent {
   }
 
   /* Handled by MouseDown instead */
-  onContextMenu = ev => {
+  onContextMenu = (ev) => {
     ev.preventDefault()
   }
 
@@ -53,15 +53,15 @@ export default class Table extends React.PureComponent {
       playlistName,
       this.clearOnTouchEndIndex,
       this.clearOnTouchEndTrackId,
-      displayItems
+      displayItems,
     )
     actions.menubarSet(true)
   }
 
-  onTouchStart = ev => {
+  onTouchStart = (ev) => {
     this.longPressTimeout = setTimeout(
       this.onShowMenuOptions,
-      LONG_PRESS_THRESHOLD
+      LONG_PRESS_THRESHOLD,
     )
     const itemIndexAttr = ev.currentTarget.getAttribute(constants.INDEX_ATTR)
     const itemIndex = parseInt(itemIndexAttr, 10)
@@ -90,15 +90,9 @@ export default class Table extends React.PureComponent {
     actions.trackToggle(trackId, playlistName, index)
   }
 
-  onRowMouseDown = ev => {
-    const {
-      actions,
-      playlistName,
-      index,
-      selection,
-      menubar,
-      displayItems
-    } = this.props
+  onRowMouseDown = (ev) => {
+    const { actions, playlistName, index, selection, menubar, displayItems } =
+      this.props
 
     const clickTarget = ev.target
     const clickWasForEdit = clickTarget.nodeName.toLowerCase() === 'span'
@@ -128,7 +122,7 @@ export default class Table extends React.PureComponent {
           playlistName,
           this.lastClickIndex,
           itemIndex,
-          displayItems
+          displayItems,
         )
       } else {
         actions.selectionAdd(playlistName, itemIndex, trackId)
@@ -144,7 +138,7 @@ export default class Table extends React.PureComponent {
         playlistName,
         itemIndex,
         trackId,
-        displayItems
+        displayItems,
       )
     }
 
@@ -155,7 +149,7 @@ export default class Table extends React.PureComponent {
       actions.menuSet({
         ev,
         type: constants.menuTypes.TRACK,
-        props: { itemIndex, trackId, bulk, playlistName, index }
+        props: { itemIndex, trackId, bulk, playlistName, index },
       })
       ev.preventDefault()
       return
@@ -193,7 +187,7 @@ export default class Table extends React.PureComponent {
         playlistName,
         this.clearOnMouseUpIndex,
         this.clearOnMouseUpTrackId,
-        displayItems
+        displayItems,
       )
       this.clearOnMouseUpIndex = null
       this.clearOnMouseUpTrackId = null
@@ -203,7 +197,7 @@ export default class Table extends React.PureComponent {
       if (layout > 1) {
         this.setState({
           editingIndex: this.editOnMouseUpIndex,
-          editingTitle: this.editOnMouseUpTitle
+          editingTitle: this.editOnMouseUpTitle,
         })
       }
       this.editOnMouseUpIndex = null
@@ -230,7 +224,7 @@ export default class Table extends React.PureComponent {
     return { topIndex, bottomIndex }
   }
 
-  onRowDragOver = ev => {
+  onRowDragOver = (ev) => {
     const { orderable } = this.props
     if (
       !orderable ||
@@ -245,7 +239,7 @@ export default class Table extends React.PureComponent {
     if (topIndex !== reorderTopIndex || bottomIndex !== reorderBottomIndex) {
       this.setState({
         reorderTopIndex: topIndex,
-        reorderBottomIndex: bottomIndex
+        reorderBottomIndex: bottomIndex,
       })
     }
   }
@@ -284,7 +278,7 @@ export default class Table extends React.PureComponent {
     }
   }
 
-  onDragStart = ev => {
+  onDragStart = (ev) => {
     this.editOnMouseUpIndex = null
     this.editOnMouseUpTitle = null
 
@@ -331,20 +325,16 @@ export default class Table extends React.PureComponent {
       currentPage,
       lastPage,
       onItemEdit,
-      draggable
+      draggable,
     } = this.props
-    const {
-      reorderTopIndex,
-      reorderBottomIndex,
-      editingIndex,
-      editingTitle
-    } = this.state
+    const { reorderTopIndex, reorderBottomIndex, editingIndex, editingTitle } =
+      this.state
     return (
       <div>
         <table className='table table-hover'>
           <thead>
             <tr>
-              {columns.map(column => (
+              {columns.map((column) => (
                 <Column
                   key={column.title}
                   column={column}
@@ -357,7 +347,7 @@ export default class Table extends React.PureComponent {
             </tr>
           </thead>
           <tbody>
-            {displayItems.map(sample => {
+            {displayItems.map((sample) => {
               let className = ''
               if (selection.has(sample.index)) {
                 className = 'common-table-row-selected '
@@ -387,7 +377,7 @@ export default class Table extends React.PureComponent {
                   onTouchCancel={this.onTouchCancel}
                   className={className}
                 >
-                  {columns.map(column => (
+                  {columns.map((column) => (
                     <column.Component
                       key={column.title}
                       title={column.title}

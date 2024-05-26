@@ -8,7 +8,7 @@ const { getRowsPerPage, _getPlaylist } = require('./base')
 const FUSE_OPTS = {
   keys: ['title', 'artist', 'album', 'genre'],
   shouldSort: false,
-  threshold: 0.2
+  threshold: 0.2,
 }
 const ORDER_QUERY_KEY = 'order'
 const PAGE_QUERY_KEY = 'page'
@@ -27,7 +27,7 @@ function getOrCreatePlaylistSelectors(playlistName, URLSearchParams, libName) {
     playlistSelector = createPlaylistSelectors(
       playlistName,
       URLSearchParams,
-      libName
+      libName,
     )
     playlistSelectors[playlistName] = playlistSelector
   }
@@ -62,7 +62,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
    * accessed e.g. when sorting, track next, etc */
   const getRouterQueryParams = createSelector(
     [(_, search) => search],
-    _getRouterQueryParams
+    _getRouterQueryParams,
   )
 
   /* router search string
@@ -80,7 +80,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
 
   const getRouterSearchString = createSelector(
     [getRouterQueryParams],
-    _getRouterSearchString
+    _getRouterSearchString,
   )
 
   /* router ascending  */
@@ -94,7 +94,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
 
   const getRouterAscending = createSelector(
     [getRouterQueryParams],
-    _getRouterAscending
+    _getRouterAscending,
   )
 
   /* router sort key  */
@@ -104,7 +104,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
 
   const getRouterSortKey = createSelector(
     [getRouterQueryParams],
-    _getRouterSortKey
+    _getRouterSortKey,
   )
 
   /* router page  */
@@ -130,7 +130,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
 
   const getFuse = createSelector(
     [getPlaylist, getLib, getRouterSearchString],
-    _getFuse
+    _getFuse,
   )
 
   function _getSearchItems(fuse, searchString) {
@@ -142,7 +142,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
 
   const getSearchItems = createSelector(
     [getFuse, getRouterSearchString],
-    _getSearchItems
+    _getSearchItems,
   )
 
   function getPageItems(searchItems, tracks, lib, startIndex, stopIndex) {
@@ -163,7 +163,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
     rowsPerPage,
     searchItems,
     playlist,
-    lib
+    lib,
   ) {
     if (!playlist) {
       return { loaded: false }
@@ -181,7 +181,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
       tracks,
       lib,
       startIndex,
-      stopIndex
+      stopIndex,
     )
 
     return {
@@ -193,13 +193,13 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
       numItems,
       currentPage,
       lastPage,
-      displayItems
+      displayItems,
     }
   }
 
   const getPlaylistProps = createSelector(
     [getRouterPage, getRowsPerPage, getSearchItems, getPlaylist, getLib],
-    _getPlaylistProps
+    _getPlaylistProps,
   )
 
   return {
@@ -208,7 +208,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
     getRouterSearchString,
     getRouterSortKey,
     getSearchItems,
-    getPlaylistProps
+    getPlaylistProps,
   }
 }
 

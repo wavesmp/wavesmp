@@ -15,7 +15,7 @@ function tracksDelete() {
       ids: deleteIds,
       key: 'state',
       value: 'pending',
-      libName: LIBRARY_NAME
+      libName: LIBRARY_NAME,
     })
 
     /* Delete tracks from cloud */
@@ -23,16 +23,16 @@ function tracksDelete() {
     const { libraries, playing } = tracks
     const library = libraries[LIBRARY_NAME]
 
-    const deleteTracks = deleteIds.map(deleteId => library[deleteId])
+    const deleteTracks = deleteIds.map((deleteId) => library[deleteId])
     const deletePromises = await player.deleteTracks(deleteTracks)
     const result = await handleDeletePromises(deletePromises, dispatch)
     const { deleted } = result
-    const deletedIds = new Set(deleted.map(t => t.id))
+    const deletedIds = new Set(deleted.map((t) => t.id))
 
     /* Delete track metadata from server */
     try {
       await ws.sendAckedMessage(types.TRACKS_DELETE, {
-        deleteIds: [...deletedIds]
+        deleteIds: [...deletedIds],
       })
     } catch (err) {
       dispatch(toastErr(`Delete failure: ${err}`))
@@ -52,7 +52,7 @@ function tracksDelete() {
     dispatch({
       type: types.TRACKS_DELETE,
       deleteIds: deletedIds,
-      libName: LIBRARY_NAME
+      libName: LIBRARY_NAME,
     })
     return result
   }
@@ -63,7 +63,7 @@ async function handleDeletePromises(promises, dispatch) {
   const allDeleteErrs = []
   const serverErrs = []
   await Promise.all(
-    promises.map(async promise => {
+    promises.map(async (promise) => {
       try {
         const { deleted, deleteErrs } = await promise
         Array.prototype.push.apply(allDeleted, deleted)
@@ -82,12 +82,12 @@ async function handleDeletePromises(promises, dispatch) {
         console.log('Error deleting from server:')
         console.log(err)
       }
-    })
+    }),
   )
   return {
     deleted: allDeleted,
     deleteErrs: allDeleteErrs,
-    serverErrs
+    serverErrs,
   }
 }
 

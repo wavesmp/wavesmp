@@ -48,7 +48,7 @@ const actionTypes = keyMirror({
   PLAYLIST_REORDER: null,
 
   TOAST_ADD: null,
-  TOAST_REMOVE: null
+  TOAST_REMOVE: null,
 })
 
 module.exports = actionTypes

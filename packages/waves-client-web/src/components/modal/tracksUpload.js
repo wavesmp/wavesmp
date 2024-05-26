@@ -31,15 +31,15 @@ class TracksUploadModal extends React.PureComponent {
           <table className='table modal-table'>
             <thead>
               <tr>
-                {columns.map(column => (
+                {columns.map((column) => (
                   <th key={column.title}>{column.title}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {displayItems.map(sample => (
+              {displayItems.map((sample) => (
                 <tr key={sample.id}>
-                  {columns.map(column => (
+                  {columns.map((column) => (
                     <column.Component
                       key={column.title}
                       isPlaying={isPlaying}
@@ -83,7 +83,7 @@ function mapStateToProps(state, ownProps) {
   const { getPlaylistProps } = getOrCreatePlaylistSelectors(
     playlistName,
     URLSearchParams,
-    playlistName
+    playlistName,
   )
 
   const { account, tracks } = state
@@ -91,17 +91,17 @@ function mapStateToProps(state, ownProps) {
   const { isPlaying } = playing
   const { location } = ownProps
   const { search } = location
-  const columns = uploadColumns.filter(c => account.columns.has(c.title))
+  const columns = uploadColumns.filter((c) => account.columns.has(c.title))
   return {
     isPlaying,
     columns,
-    ...getPlaylistProps(state, search)
+    ...getPlaylistProps(state, search),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

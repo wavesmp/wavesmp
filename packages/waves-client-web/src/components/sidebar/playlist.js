@@ -20,19 +20,19 @@ export default class PlaylistBar extends React.PureComponent {
     actions.modalSet({ type: constants.modalTypes.PLAYLIST_CREATE })
   }
 
-  onPlaylistDrop = ev => {
+  onPlaylistDrop = (ev) => {
     const { actions } = this.props
     const playlistSrc = ev.dataTransfer.getData(constants.PLAYLIST_TYPE)
     if (!playlistSrc) {
       return
     }
     const playlistDst = ev.currentTarget.getAttribute(
-      constants.PLAYLIST_NAME_ATTR
+      constants.PLAYLIST_NAME_ATTR,
     )
     if (playlistDst === '__new') {
       actions.modalSet({
         type: constants.modalTypes.PLAYLIST_CREATE,
-        props: { playlistSrc }
+        props: { playlistSrc },
       })
     } else {
       actions.playlistAdd(playlistSrc, playlistDst)
@@ -43,10 +43,10 @@ export default class PlaylistBar extends React.PureComponent {
   render() {
     const { playlists, isSliderVisible } = this.props
     const playlistObjs = Object.values(playlists).filter(
-      p =>
+      (p) =>
         p.name !== constants.NOW_PLAYING_NAME &&
         p.name !== constants.LIBRARY_NAME &&
-        p.name !== constants.UPLOADS_NAME
+        p.name !== constants.UPLOADS_NAME,
     )
     let className = 'sidebar-container-wide'
     if (isSliderVisible) {
@@ -72,12 +72,12 @@ export default class PlaylistBar extends React.PureComponent {
               <span>New Playlist</span>
             </span>
           </li>
-          {playlistObjs.map(playlist => (
+          {playlistObjs.map((playlist) => (
             <li key={playlist.name} className='sidebar-playlist'>
               <Link
                 to={{
                   pathname: `/playlist/${playlist.name}`,
-                  search: playlist.search
+                  search: playlist.search,
                 }}
                 onDragOver={this.onDragOver}
                 onDrop={this.onPlaylistDrop}

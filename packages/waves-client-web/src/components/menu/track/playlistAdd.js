@@ -13,7 +13,7 @@ class PlaylistAdd extends React.PureComponent {
     actions.menuBack()
   }
 
-  onPlaylistAdd = playlist => {
+  onPlaylistAdd = (playlist) => {
     const { actions, currentPlaylist } = this.props
     actions.playlistAdd(currentPlaylist, playlist)
     actions.menuReset()
@@ -30,7 +30,7 @@ class PlaylistAdd extends React.PureComponent {
             key={playlist}
             name={playlist}
             onPlaylistAdd={this.onPlaylistAdd}
-          />
+          />,
         )
       }
     }
@@ -50,13 +50,13 @@ class PlaylistAdd extends React.PureComponent {
 
 function mapStateToProps(state) {
   return {
-    playlists: state.tracks.playlists
+    playlists: state.tracks.playlists,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(WavesActions, dispatch)
+    actions: bindActionCreators(WavesActions, dispatch),
   }
 }
 

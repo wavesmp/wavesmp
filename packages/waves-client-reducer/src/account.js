@@ -6,7 +6,7 @@ const initialState = {
   user: null,
   /* Application starts by fetching user */
   fetchingUser: true,
-  theme: 'light'
+  theme: 'light',
 }
 
 function account(state = initialState, action) {

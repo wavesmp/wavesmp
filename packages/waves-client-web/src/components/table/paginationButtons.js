@@ -39,7 +39,7 @@ export default class PaginationButtons extends React.PureComponent {
       paginationButtons.push({
         className,
         search: `${qp}`,
-        pageNum
+        pageNum,
       })
     }
     if (paginationButtons.length <= 1) {
@@ -63,7 +63,7 @@ export default class PaginationButtons extends React.PureComponent {
               <i className='fa fa-chevron-left' />
             </Link>
           </li>
-          {paginationButtons.map(sample => (
+          {paginationButtons.map((sample) => (
             <li key={sample.pageNum}>
               <Link
                 to={{ pathname, search: sample.search }}

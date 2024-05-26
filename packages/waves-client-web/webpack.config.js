@@ -18,9 +18,9 @@ const stringReplacer = {
       .map(([key, val]) => ({
         search: key,
         replace: val,
-        flags: 'g'
-      }))
-  }
+        flags: 'g',
+      })),
+  },
 }
 
 const wpConfig = {
@@ -28,11 +28,11 @@ const wpConfig = {
   stats: {
     /* Reduce output for MiniCssExtractPlugin
      * See https://github.com/webpack-contrib/mini-css-extract-plugin/issues/39 */
-    children: false
+    children: false,
   },
   optimization: {
     /* CSS is not optimized by default, so use override */
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
+    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
   },
 
   entry: path.join(__dirname, 'src', 'index.js'),
@@ -41,7 +41,7 @@ const wpConfig = {
     path: path.join(__dirname, '/build'),
     filename: '[name].js',
     chunkFilename: '[id].chunk.js',
-    publicPath: '/'
+    publicPath: '/',
   },
 
   module: {
@@ -52,36 +52,36 @@ const wpConfig = {
           stringReplacer,
           {
             loader: 'babel-loader',
-            options: babelConfig
-          }
+            options: babelConfig,
+          },
         ],
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
         use: [
           { loader: MiniCssExtractPlugin.loader, options: { esModule: true } },
           'css-loader',
-          stringReplacer
-        ]
+          stringReplacer,
+        ],
       },
-      { test: /\.png$/, use: 'file-loader' }
-    ]
+      { test: /\.png$/, use: 'file-loader' },
+    ],
   },
 
   plugins: [
     new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
-      chunkFilename: '[id].chunk.css'
-    })
+      chunkFilename: '[id].chunk.css',
+    }),
   ],
 
   /* Some libs e.g. musicmetadata require fs,
    * even though it might not actually be used. */
   node: {
-    fs: 'empty'
-  }
+    fs: 'empty',
+  },
 }
 
 module.exports = wpConfig
