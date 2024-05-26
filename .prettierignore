@@ -18,8 +18,8 @@
 /packages/waves-client-web/rootfs/etc/letsencrypt
 /packages/waves-client-web/rootfs/etc/ssl
 
-# Ignore server config file
-/packages/waves-server-main/config.js
+# Ignore server files
+/packages/waves-server-rust/
 
 # istanbuljs code coverage output
 .nyc_output
