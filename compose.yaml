@@ -5,9 +5,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: waves
     volumes:
-      - waves-server-sql:/var/lib/mysql
+    - waves-server-sql:/var/lib/mysql
     networks:
-      - wavesmp
+    - wavesmp
     extra_hosts:
     - "host.docker.internal:192.168.32.1"
     # May need to expose sql port to run ad hoc queries
@@ -19,13 +19,13 @@ services:
     environment:
       RUST_LOG: info
     volumes:
-      - './packages/waves-server-rust/config.json:/config.json'
+    - './packages/waves-server-rust/config.json:/config.json'
     networks:
-      - wavesmp
-   extra_hosts:
-   - "host.docker.internal:192.168.32.1"
+    - wavesmp
+    extra_hosts:
+    - "host.docker.internal:192.168.32.1"
     depends_on:
-      - waves-server-sql
+    - waves-server-sql
 
   waves-client-web-builder:
     image: node:21.7.3-bookworm
@@ -33,14 +33,14 @@ services:
     environment:
       NODE_ENV: development
     volumes:
-      - './:/repo'
+    - './:/repo'
     working_dir: /repo
     networks:
-      - wavesmp
+    - wavesmp
     extra_hosts:
     - "host.docker.internal:192.168.32.1"
     depends_on:
-      - waves-server-rust
+    - waves-server-rust
     entrypoint: bash
     command:
     - '-c'
@@ -64,8 +64,8 @@ services:
     extra_hosts:
     - "host.docker.internal:192.168.32.1"
     depends_on:
-      - waves-server-rust
-      - waves-client-web-builder
+    - waves-server-rust
+    - waves-client-web-builder
     ports:
     - '127.0.0.1:81:80'
     volumes:
@@ -85,5 +85,5 @@ networks:
   wavesmp:
     ipam:
       config:
-        - subnet: 192.168.32.0/20
-          gateway: 192.168.32.1
+      - subnet: 192.168.32.0/20
+        gateway: 192.168.32.1
