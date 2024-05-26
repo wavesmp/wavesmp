@@ -31,6 +31,7 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/control-has-associated-label': 'off',
     /* Allow multiple classes for convenience */
     'max-classes-per-file': 'off',
     /* Allow awaits in loops */
