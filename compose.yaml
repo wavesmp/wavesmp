@@ -8,6 +8,8 @@ services:
       - waves-server-sql:/var/lib/mysql
     networks:
       - wavesmp
+    extra_hosts:
+    - "host.docker.internal:192.168.32.1"
     # May need to expose sql port to run ad hoc queries
     # ports:
     # - '127.0.0.1:3306:3306'
@@ -20,6 +22,8 @@ services:
       - './packages/waves-server-rust/config.json:/config.json'
     networks:
       - wavesmp
+   extra_hosts:
+   - "host.docker.internal:192.168.32.1"
     depends_on:
       - waves-server-sql
 
@@ -33,6 +37,8 @@ services:
     working_dir: /repo
     networks:
       - wavesmp
+    extra_hosts:
+    - "host.docker.internal:192.168.32.1"
     depends_on:
       - waves-server-rust
     entrypoint: bash
@@ -55,6 +61,8 @@ services:
     image: nginx:1.25.5-bookworm
     networks:
     - wavesmp
+    extra_hosts:
+    - "host.docker.internal:192.168.32.1"
     depends_on:
       - waves-server-rust
       - waves-client-web-builder
