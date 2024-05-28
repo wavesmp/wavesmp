@@ -27,53 +27,19 @@ services:
     depends_on:
     - waves-server-sql
 
-  waves-client-web-builder:
-    image: node:21.7.3-bookworm
-    user: node
-    environment:
-      NODE_ENV: development
-    volumes:
-    - './:/repo'
-    working_dir: /repo
-    networks:
-    - wavesmp
-    extra_hosts:
-    - "host.docker.internal:192.168.32.1"
-    depends_on:
-    - waves-server-rust
-    entrypoint: bash
-    command:
-    - '-c'
-    - |
-        set -o errexit
-        set -o pipefail
-        set -o nounset
-
-        cp packages/waves-client-web/src/index.html \
-           packages/waves-client-web/src/privacy.html \
-           packages/waves-client-web/src/favicon.ico \
-           packages/waves-client-web/vendor/aws-sdk-2.268.1.min.js \
-           packages/waves-client-web/build
-
-        npm run watch
-
   waves-client-web:
-    image: nginx:1.25.5-bookworm
+    image: osoriano/waves-client-web:latest
     networks:
     - wavesmp
     extra_hosts:
     - "host.docker.internal:192.168.32.1"
     depends_on:
     - waves-server-rust
-    - waves-client-web-builder
     ports:
     - '127.0.0.1:81:80'
     volumes:
-    - './packages/waves-client-web/build:/srv/http'
     - './packages/waves-client-web/rootfs/etc/nginx/nginx.conf:/etc/nginx/nginx.conf'
     - './packages/waves-client-web/rootfs/etc/nginx/sites/:/etc/nginx/sites/'
-    environment:
-      NODE_ENV: development
 
 volumes:
   waves-server-sql:

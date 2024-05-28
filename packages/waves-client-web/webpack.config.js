@@ -23,6 +23,22 @@ const stringReplacer = {
   },
 };
 
+function getPlugins() {
+  const miniCssExtractPlugin = new MiniCssExtractPlugin({
+    filename: "[name].css",
+    chunkFilename: "[id].chunk.css",
+  });
+
+  const nodeEnv = process.env.NODE_ENV || "production";
+  if (nodeEnv === "production") {
+    return [miniCssExtractPlugin];
+  }
+  return [
+    new BundleAnalyzerPlugin({ analyzerMode: "static" }),
+    miniCssExtractPlugin,
+  ];
+}
+
 const wpConfig = {
   mode: process.env.NODE_ENV || "production",
   stats: {
@@ -69,13 +85,7 @@ const wpConfig = {
     ],
   },
 
-  plugins: [
-    new BundleAnalyzerPlugin({ analyzerMode: "static" }),
-    new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].chunk.css",
-    }),
-  ],
+  plugins: getPlugins(),
 
   /* Some libs e.g. musicmetadata require fs,
    * even though it might not actually be used. */
