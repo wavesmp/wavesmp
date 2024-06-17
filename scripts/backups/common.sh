@@ -4,45 +4,25 @@ BACKUP_VERSION_FORMAT='%03d'
 DB_DUMP_TAR=dump.tar.gz
 DB_DUMP_FILE=dump.sql
 DB_DUMP_WD=/root
-DB_NAME=wavesmp-waves-server-sql-1
-DB_VOLUME_NAME=wavesmp_waves-server-sql
-DB_RESTORE_NAME="${DB_NAME}_restore"
-DB_IMAGE=mysql:8.4.0-oraclelinux9
-DB_VOLUME_DEST=/var/lib/mysql
+DB_PORT=3306
+
+NAMESPACE=wavesmusicplayer
+KUBECTL="kubectl --namespace ${NAMESPACE}"
 
 PACKAGES_DIR=../../packages
+K8S_DIR=../../k8s
 
 CLIENT_CONFIG_FILE="${PACKAGES_DIR}/waves-client-web/src/config.js"
 SERVER_CONFIG_FILE="${PACKAGES_DIR}/waves-server-rust/config.json"
+SERVER_CONFIG_MAP_FILE="${K8S_DIR}/waves-server-rust-config-map.yaml"
 CLIENT_CONFIG_BACKUP_FILE=waves-client-web-config.js
 SERVER_CONFIG_BACKUP_FILE=waves-server-rust-config.json
+SERVER_CONFIG_MAP_BACKUP_FILE=waves-server-rust-config-map.yaml
 
 usage() {
     echo "Usage: $0 <bucket-name>"
     echo "  bucket-name - AWS backup S3 bucket name (e.g. foo.bar.com)"
     exit 1
-}
-
-# https://stackoverflow.com/questions/27599839/
-# how-to-wait-for-an-open-port-with-netcat
-wait_for_port_listen_in_container() {
-  local container="$1"
-  local port="$2"
-
-  docker exec \
-    --interactive \
-    --tty \
-    "${container}" \
-    bash -c "
-    set -o errexit
-    set -o nounset
-    set -o pipefail
-
-    while ! timeout 2 bash -c '< /dev/tcp/localhost/${port}' > /dev/null 2>&1; do
-        echo 'Waiting for port ${port} to listen'
-        sleep 3
-    done
-    "
 }
 
 get_backup_versions() {

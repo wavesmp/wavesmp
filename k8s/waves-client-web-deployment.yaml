@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: wavesmusicplayer
+  name: waves-client-web
+spec:
+  selector:
+    matchLabels:
+      app: waves-client-web
+  template:
+    metadata:
+      labels:
+        app: waves-client-web
+    spec:
+      containers:
+      - image: osoriano/waves-client-web:latest
+        name: waves-client-web
+        ports:
+        - containerPort: 80
+          name: http

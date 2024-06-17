@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: wavesmusicplayer
+  name: waves-server-rust
+spec:
+  selector:
+    matchLabels:
+      app: waves-server-rust
+  template:
+    metadata:
+      labels:
+        app: waves-server-rust
+    spec:
+      containers:
+      - image: osoriano/waves-server-rust:latest
+        name: waves-server-rust
+        env:
+        - name: RUST_LOG
+          value: info
+        ports:
+        - containerPort: 16244
+          name: ws
+        - containerPort: 16245
+          name: http
+        volumeMounts:
+        - name: config
+          mountPath: /config.json
+          subPath: config.json
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: waves-server-rust

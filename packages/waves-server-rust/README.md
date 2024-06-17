@@ -9,29 +9,7 @@ Websocket server for the Waves client
 
 # Development
 
-First, stop the local environment if it's running. Run this
-from the root of the repo.
-
-```
-docker compose down
-```
-
-The modify a few files:
-- Update the `compose.yaml` at the root to comment out the `waves-server-rust`
-  service. Also, expose the `waves-server-sql` port on `127.0.0.1:3306`.
-- Update the file `packages/waves-client-web/rootfs/etc/nginx/sites/waves`.
-  Replace `waves-server-rust` with the docker network gateway ip: `192.168.32.1`
-- Update the `config.json`. Change the `addresses` to use the docker network
-  gateway IP: `192.168.32.1`. Also, update the database url to use localhost:
-  `127.0.0.1`
-
-Finally, restart the local environment:
-
-```
-docker compose up
-```
-
-Then, follow the commands below for starting and testing the rust server.
+Work in progress
 
 ## Environment Variables
 
@@ -82,4 +60,11 @@ After building the static binary, run the following
 
 ```
 docker build -t waves-server-rust .
+```
+
+## Publishing the Image
+
+```
+docker tag waves-server-rust osoriano/waves-server-rust
+docker push osoriano/waves-server-rust
 ```

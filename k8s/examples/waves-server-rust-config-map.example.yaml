@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: wavesmusicplayer
+  name: waves-server-rust
+immutable: true
+data:
+  config.json: |
+    {
+      "addresses": {
+        "ws": "0.0.0.0:16244",
+        "http": "0.0.0.0:16245"
+      },
+      "auth": {
+        "google": {
+          "client_ids": [
+            "REPLACE_ME"
+          ]
+        }
+      },
+      "db": {
+        "url": "mysql://root:root@mysql/waves",
+        "max_connections": 5
+      }
+    }

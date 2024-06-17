@@ -12,13 +12,17 @@ Manages your personal music collection on the cloud.
 
 # Requirements
 
-- Docker Compose
+- Kubernetes
 - [Google Auth Client ID](https://developers.google.com/identity/sign-in/web/sign-in)
 - [S3 bucket configured for Google auth](./aws)
 
 # Instructions
 
 - Optionally, run the `scripts/backups/restore.sh <bucket_name>` script if restoring from an s3 bucket
-- See the [waves-client-web package](./packages/waves-client-web) for configuring the client
-- See the [waves-server-rust package](./packages/waves-server-rust) for configuring the server
-- Run `docker-compose up`
+- Rename `./k8s/examples/waves-server-rust-config-map.example.yaml` as `./k8s/waves-server-rust-config-map.yaml`
+- Substitute Google client id in the copied yaml
+- Apply the k8s manifest in the `./k8s` directory
+
+# Publishing Images
+- See the [waves-client-web package](./packages/waves-client-web) for publishing images
+- See the [waves-server-rust package](./packages/waves-server-rust) for publishing images

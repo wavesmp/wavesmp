@@ -25,27 +25,21 @@ BACKUP_VERSION="$(get_latest_backup_version "${BACKUP_PREFIX}")"
 BACKUP_URL="${BACKUP_PREFIX}/${BACKUP_VERSION}"
 echo "Using backup version ${BACKUP_VERSION}"
 
+DB_PVC_NAME="$($KUBECTL get pvc/mysql --output name --ignore-not-found)"
+
 # Restore the db volume if not present
-if [[ -n "$(docker volume ls --quiet --filter name="${DB_VOLUME_NAME}")" ]]; then
-  echo "Docker volume ${DB_VOLUME_NAME} already present"
+if [[ -n "${DB_PVC_NAME}" ]]; then
+  echo "pvc/mysql already present. Skipping backup restore"
 else
+  echo "Restoring backup"
 
-  # Create the volume
-  docker volume create "${DB_VOLUME_NAME}"
+  $KUBECTL apply --server-side -f "${K8S_DIR}/namespace.yaml"
+  $KUBECTL apply --server-side -f "${K8S_DIR}/mysql-pvc.yaml"
+  $KUBECTL apply --server-side -f ./mysql-restore-deployment.yaml
 
-  # Deploy the db
-  docker run \
-    --detach \
-    --interactive \
-    --tty \
-    --name "${DB_RESTORE_NAME}" \
-    --mount "type=volume,src=${DB_VOLUME_NAME},dst=${DB_VOLUME_DEST},volume-driver=local" \
-    --env MYSQL_ROOT_PASSWORD=root \
-    "${DB_IMAGE}"
+  $KUBECTL wait deployments --all --for=condition=Available --timeout=15m
 
-  # Wait for db to come up
-  DB_PORT=3306
-  wait_for_port_listen_in_container "${DB_RESTORE_NAME}" "${DB_PORT}"
+  DB_POD_NAME="$($KUBECTL get pods --selector app=mysql-restore --output name)"
 
   # Create temp dir for downloads
   DL_DIR="$(mktemp --tmpdir --directory waves-restore-XXXXXXX)"
@@ -53,20 +47,29 @@ else
 
   # Restore db data
   aws s3 cp --quiet "${BACKUP_URL}/${DB_DUMP_TAR}" "${DL_DIR}/${DB_DUMP_TAR}"
-  docker cp "${DL_DIR}/${DB_DUMP_TAR}" "${DB_RESTORE_NAME}:${DB_DUMP_WD}/${DB_DUMP_TAR}"
+  $KUBECTL cp "${DL_DIR}/${DB_DUMP_TAR}" "${DB_POD_NAME##pod/}:${DB_DUMP_WD}/${DB_DUMP_TAR}"
   rm "${DL_DIR}/${DB_DUMP_TAR}"
-  docker exec "${DB_RESTORE_NAME}" bash -c "
+  $KUBECTL exec "${DB_POD_NAME}" -- bash -c "
     set -o errexit
     set -o nounset
     set -o pipefail
 
+    echo 'Waiting for mysql to come up'
+
+    while ! timeout 2 bash -c '< /dev/tcp/localhost/${DB_PORT}' > /dev/null 2>&1; do
+        echo 'Waiting for port ${DB_PORT} to listen'
+        sleep 3
+    done
+
     cd '${DB_DUMP_WD}'
     tar xf '${DB_DUMP_TAR}'
-    mysql -u root -proot < dump.sql
+    mysql -u root -proot < '${DB_DUMP_FILE}'
+    rm '${DB_DUMP_FILE}' '${DB_DUMP_TAR}'
+
     echo 'Restored database'
     "
-  docker stop "${DB_RESTORE_NAME}"
-  docker rm "${DB_RESTORE_NAME}"
+
+    $KUBECTL delete -f ./mysql-deployment.yaml
 fi
 
 
@@ -87,4 +90,13 @@ else
     aws s3 cp --quiet "${BACKUP_URL}/${SERVER_CONFIG_BACKUP_FILE}" - \
         > "${SERVER_CONFIG_FILE}"
     echo "Restored server config"
+fi
+
+# Restore server config map, if not present
+if [[ -e "${SERVER_CONFIG_MAP_FILE}" ]]; then
+    echo "Server config map already present at ${SERVER_CONFIG_MAP_FILE}"
+else
+    aws s3 cp --quiet "${BACKUP_URL}/${SERVER_CONFIG_MAP_BACKUP_FILE}" - \
+        > "${SERVER_CONFIG_FILE}"
+    echo "Restored server config map"
 fi

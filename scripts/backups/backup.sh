@@ -29,8 +29,10 @@ echo "Using backup version ${BACKUP_VERSION}"
 UPLOAD_DIR="$(mktemp --tmpdir --directory waves-backup--XXXXXXX)"
 trap 'rm --recursive --force "${UPLOAD_DIR}"' EXIT
 
-# Back up db volume
-docker exec "${DB_NAME}" bash -c "
+DB_POD_NAME="$($KUBECTL get pods --selector app=mysql --output name)"
+
+# Back up db
+$KUBECTL exec "${DB_POD_NAME}" -- bash -c "
   set -o errexit
   set -o nounset
   set -o pipefail
@@ -40,7 +42,7 @@ docker exec "${DB_NAME}" bash -c "
   mysqldump -u root -proot --databases waves > '${DB_DUMP_FILE}'
   tar --create --gzip --file '${DB_DUMP_TAR}' '${DB_DUMP_FILE}'
   "
-docker cp "${DB_NAME}:${DB_DUMP_WD}/${DB_DUMP_TAR}" "${UPLOAD_DIR}/${DB_DUMP_TAR}"
+$KUBECTL cp "${DB_POD_NAME##pod/}:${DB_DUMP_WD}/${DB_DUMP_TAR}" "${UPLOAD_DIR}/${DB_DUMP_TAR}"
 aws s3 cp --quiet "${UPLOAD_DIR}/${DB_DUMP_TAR}" "${BACKUP_URL}/${DB_DUMP_TAR}"
 rm --force "${UPLOAD_DIR}/${DB_DUMP_TAR}"
 echo "Backed up database"
@@ -54,3 +56,18 @@ echo "Backed up web client config"
 aws s3 cp --quiet "${SERVER_CONFIG_FILE}" \
     "${BACKUP_URL}/${SERVER_CONFIG_BACKUP_FILE}"
 echo "Backed up server config"
+
+# Back up server config map
+aws s3 cp --quiet "${SERVER_CONFIG_MAP_FILE}" \
+    "${BACKUP_URL}/${SERVER_CONFIG_MAP_BACKUP_FILE}"
+echo "Backed up server config"
+
+# Clean up database backup files
+$KUBECTL exec "${DB_POD_NAME}" -- bash -c "
+  set -o errexit
+  set -o nounset
+  set -o pipefail
+
+  cd '${DB_DUMP_WD}'
+  rm --recursive --force '${DB_DUMP_TAR}' '${DB_DUMP_FILE}'
+  "
