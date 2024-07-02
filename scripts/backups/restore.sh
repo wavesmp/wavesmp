@@ -69,7 +69,7 @@ else
     echo 'Restored database'
     "
 
-    $KUBECTL delete -f ./mysql-deployment.yaml
+    $KUBECTL delete -f ./mysql-restore-deployment.yaml
 fi
 
 
