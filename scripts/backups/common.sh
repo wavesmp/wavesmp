@@ -1,14 +1,6 @@
 BACKUP_VERSION_REGEX='^\d{3}$'
 BACKUP_VERSION_FORMAT='%03d'
 
-DB_DUMP_TAR=dump.tar.gz
-DB_DUMP_FILE=dump.sql
-DB_DUMP_WD=/root
-DB_PORT=3306
-
-NAMESPACE=wavesmusicplayer
-KUBECTL="kubectl --namespace ${NAMESPACE}"
-
 PACKAGES_DIR=../../packages
 K8S_DIR=../../k8s
 
@@ -43,7 +35,7 @@ get_new_backup_version() {
   if [[ -z "${backup_version}" ]]; then
       echo -n 000
   else
-      ((backup_version+=1))
+      backup_version="$((10#${backup_version} + 1))"
       printf "${BACKUP_VERSION_FORMAT}" "${backup_version}"
   fi
 }
