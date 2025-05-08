@@ -81,22 +81,3 @@ else
         > "${CLIENT_CONFIG_FILE}"
     echo "Restored client config"
 fi
-
-
-# Restore server config, if not present
-if [[ -e "${SERVER_CONFIG_FILE}" ]]; then
-    echo "Server config already present at ${SERVER_CONFIG_FILE}"
-else
-    aws s3 cp --quiet "${BACKUP_URL}/${SERVER_CONFIG_BACKUP_FILE}" - \
-        > "${SERVER_CONFIG_FILE}"
-    echo "Restored server config"
-fi
-
-# Restore server config map, if not present
-if [[ -e "${SERVER_CONFIG_MAP_FILE}" ]]; then
-    echo "Server config map already present at ${SERVER_CONFIG_MAP_FILE}"
-else
-    aws s3 cp --quiet "${BACKUP_URL}/${SERVER_CONFIG_MAP_BACKUP_FILE}" - \
-        > "${SERVER_CONFIG_FILE}"
-    echo "Restored server config map"
-fi

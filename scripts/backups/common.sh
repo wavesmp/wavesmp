@@ -13,11 +13,7 @@ PACKAGES_DIR=../../packages
 K8S_DIR=../../k8s
 
 CLIENT_CONFIG_FILE="${PACKAGES_DIR}/waves-client-web/src/config.js"
-SERVER_CONFIG_FILE="${PACKAGES_DIR}/waves-server-rust/config.json"
-SERVER_CONFIG_MAP_FILE="${K8S_DIR}/waves-server-rust-config-map.yaml"
 CLIENT_CONFIG_BACKUP_FILE=waves-client-web-config.js
-SERVER_CONFIG_BACKUP_FILE=waves-server-rust-config.json
-SERVER_CONFIG_MAP_BACKUP_FILE=waves-server-rust-config-map.yaml
 
 usage() {
     echo "Usage: $0 <bucket-name>"

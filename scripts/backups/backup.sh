@@ -52,16 +52,6 @@ aws s3 cp --quiet "${CLIENT_CONFIG_FILE}" \
     "${BACKUP_URL}/${CLIENT_CONFIG_BACKUP_FILE}"
 echo "Backed up web client config"
 
-# Back up server config
-aws s3 cp --quiet "${SERVER_CONFIG_FILE}" \
-    "${BACKUP_URL}/${SERVER_CONFIG_BACKUP_FILE}"
-echo "Backed up server config"
-
-# Back up server config map
-aws s3 cp --quiet "${SERVER_CONFIG_MAP_FILE}" \
-    "${BACKUP_URL}/${SERVER_CONFIG_MAP_BACKUP_FILE}"
-echo "Backed up server config"
-
 # Clean up database backup files
 $KUBECTL exec "${DB_POD_NAME}" -- bash -c "
   set -o errexit

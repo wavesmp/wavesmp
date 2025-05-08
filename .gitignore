@@ -8,10 +8,6 @@
 # Ignore web client config file
 /packages/waves-client-web/src/config.js
 
-# Ignore server config file
-/packages/waves-server-rust/config.json
-/k8s/waves-server-rust-config-map.yaml
-
 # istanbuljs code coverage output
 .nyc_output
 
