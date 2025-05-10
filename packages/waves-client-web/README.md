@@ -2,8 +2,8 @@
 
 # Configuring the Client
 
-- Rename `src/config.example.json` as `src/config.json`
-- Substitute AWS/Google/hostname values in the config.json
+- Rename `src/config/config.example.js` as `src/config/config.js`
+- Substitute AWS/Google/hostname values in the config.js
 - Create a build directory `mkdir build`
 
 # Development

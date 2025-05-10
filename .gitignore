@@ -6,7 +6,7 @@
 /packages/waves-client-web/build
 
 # Ignore web client config file
-/packages/waves-client-web/src/config.js
+/packages/waves-client-web/src/config/config.js
 
 # istanbuljs code coverage output
 .nyc_output
