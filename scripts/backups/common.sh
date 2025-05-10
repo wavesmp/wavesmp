@@ -4,7 +4,7 @@ BACKUP_VERSION_FORMAT='%03d'
 PACKAGES_DIR=../../packages
 K8S_DIR=../../k8s
 
-CLIENT_CONFIG_FILE="${PACKAGES_DIR}/waves-client-web/src/config.js"
+CLIENT_CONFIG_FILE="${PACKAGES_DIR}/waves-client-web/src/config/config.js"
 CLIENT_CONFIG_BACKUP_FILE=waves-client-web-config.js
 
 usage() {

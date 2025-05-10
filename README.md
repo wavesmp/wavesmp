@@ -24,5 +24,6 @@ Manages your personal music collection on the cloud.
 - Apply the k8s manifest in the `./k8s` directory
 
 # Publishing Images
+
 - See the [waves-client-web package](./packages/waves-client-web) for publishing images
 - See the [waves-server-rust package](./packages/waves-server-rust) for publishing images
