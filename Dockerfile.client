@@ -5,6 +5,7 @@ RUN npm ci
 RUN npm run build
 
 FROM nginx:1.25.5-bookworm
+LABEL org.opencontainers.image.source=https://github.com/wavesmp/wavesmp
 EXPOSE 80
 
 COPY --from=builder \
