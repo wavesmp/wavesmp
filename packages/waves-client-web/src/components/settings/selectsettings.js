@@ -118,7 +118,7 @@ export default class SelectSettings extends React.PureComponent {
             </button>
           </div>
           <div className="settings-column">
-            Version: 1.0.45
+            Version: 1.0.46
           </div>
         </div>
       </>
