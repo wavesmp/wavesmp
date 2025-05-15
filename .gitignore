@@ -1,18 +1,18 @@
 # Ignore node_modules, for all packages
-/node_modules
-/packages/*/node_modules
+/client/node_modules
+/client/packages/*/node_modules
 
 # Ignore web client build artifacts
-/packages/waves-client-web/build
+/client/packages/waves-client-web/build
 
 # Ignore web client config file
-/packages/waves-client-web/src/config/config.js
+/client/packages/waves-client-web/src/config/config.js
 
 # istanbuljs code coverage output
 .nyc_output
 
 # TODO remove reliance on vendor code
-/packages/waves-client-web/vendor
+/client/packages/waves-client-web/vendor
 
 # Ignore rust build
-/packages/waves-server-rust/target
+/server/target
