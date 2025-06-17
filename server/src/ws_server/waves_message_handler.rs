@@ -146,6 +146,15 @@ async fn handle_waves_message(
                 req_id: None,
             };
             send_waves_message(ws, &playlists_update_response).await?;
+
+            // send server version
+            let server_version_response = WavesMessage {
+                message_type: WavesMessageType::Version,
+                data: "1.0.52".into(),
+                req_id: None,
+            };
+            send_waves_message(ws, &server_version_response).await?;
+
             Ok(())
         }
         WavesMessageType::TracksAdd => {
