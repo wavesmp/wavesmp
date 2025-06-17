@@ -46,6 +46,9 @@ pub enum WavesMessageType {
     /// Delete a playlist
     #[serde(rename = "PLAYLIST_DELETE")]
     PlaylistDelete,
+    /// Used to send the server version
+    #[serde(rename = "VERSION")]
+    Version,
     Error,
 }
 
