@@ -1,1 +1,5 @@
+/.dockerignore
+/Dockerfile
+/README.md
+/config.example.json
 /target

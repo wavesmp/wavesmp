@@ -504,7 +504,7 @@ impl Database {
         &'a self,
         tracks: &[String],
         selection: &'a [(usize, String)],
-    ) -> Result<HashMap<&usize, &String>> {
+    ) -> Result<HashMap<&'a usize, &'a String>> {
         let tracks_n = tracks.len();
         let selection_n = selection.len();
         let mut index_to_id = HashMap::with_capacity(selection_n);
@@ -534,7 +534,7 @@ impl Database {
         tracks: &'a [String],
         index_to_id: &HashMap<&usize, &String>,
         insert_at_i: &usize,
-    ) -> Result<Vec<&String>> {
+    ) -> Result<Vec<&'a String>> {
         let n = tracks.len();
         if insert_at_i > &n {
             return Err(WavesDatabaseError::PlaylistReorderOutOfBounds(*insert_at_i).into());

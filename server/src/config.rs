@@ -6,7 +6,7 @@ use std::fs::File;
 use std::io::BufReader;
 use std::net::SocketAddr;
 
-const CONFIG_FILE_PATH: &str = "config.json";
+const CONFIG_FILE_PATH: &str = "src/config/config.json";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WavesServerConfig {
