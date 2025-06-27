@@ -5,7 +5,7 @@ COPY Cargo.lock Cargo.toml ./
 COPY hack/empty-src ./src
 RUN cargo build --release
 COPY . .
-RUN DATABASE_URL="mysql://root:root@mysql.mysql/waves" \
+RUN DATABASE_URL="mysql://root:root@127.0.0.1/waves" \
   cargo build --release
 
 FROM build as test
@@ -14,7 +14,7 @@ RUN rust_host="$(rustc -vV | grep '^host:' | cut -d' ' -f2)" && \
     "https://github.com/taiki-e/cargo-llvm-cov/releases/latest/download/cargo-llvm-cov-${rust_host}.tar.gz" \
   | tar xzf - -C /usr/local/bin && \
   rustup component add clippy rustfmt
-RUN export DATABASE_URL="mysql://root:root@mysql.mysql/waves" && \
+RUN export DATABASE_URL="mysql://root:root@127.0.0.1/waves" && \
   cargo clippy -- -Dwarnings && \
   cargo fmt --check && \
   cargo llvm-cov --fail-under-lines 70 --ignore-filename-regex main.rs && \
