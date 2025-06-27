@@ -117,9 +117,7 @@ export default class SelectSettings extends React.PureComponent {
               <i className="fa fa-lg fa-sign-out" /> Sign Out
             </button>
           </div>
-          <div className="settings-column">
-            Version: 1.0.51
-          </div>
+          <div className="settings-column">Version: 1.0.51</div>
         </div>
       </>
     );

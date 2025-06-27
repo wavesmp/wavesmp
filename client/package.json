@@ -3,6 +3,7 @@
         "build": "lerna run --scope waves-client-web build",
         "eslint": "eslint --ignore-path .gitignore '**/*.js'",
         "prettier": "prettier --write '**/*.@(js|json|css|md)'",
+        "prettiercheck": "prettier --check '**/*.@(js|json|css|md)'",
         "test": "lerna run test",
         "watch": "lerna run --stream --scope waves-client-web watch"
     },
@@ -14,6 +15,7 @@
         "babel-loader": "^8.3.0",
         "babel-plugin-inline-react-svg": "^1.1.2",
         "chai": "^4.4.1",
+        "copy-webpack-plugin": "^6.4.1",
         "css-loader": "^2.1.1",
         "dockerode": "^2.5.8",
         "eslint": "^6.8.0",
