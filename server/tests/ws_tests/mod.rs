@@ -1,4 +1,3 @@
-use crate::port_utils::get_port_addr;
 use crate::port_utils::wait_for_port;
 use anyhow::Result;
 use fastwebsockets::FragmentCollector;
@@ -46,12 +45,12 @@ const PLAYLIST_NAME1: &str = "test_playlist1";
 const PLAYLIST_NAME2: &str = "test_playlist2";
 const PLAYLIST_NAME3: &str = "test_playlist3";
 
-pub async fn test_ws() -> Result<()> {
-    wait_for_port(WS_PORT).await?;
+pub async fn test_ws(test_host: &str) -> Result<()> {
+    wait_for_port(test_host, WS_PORT).await?;
 
-    let test_binary_message_fut = test_binary_message();
-    let test_user_flow_fut = test_user_flow();
-    let test_unknown_message_type_fut = test_unknown_message_type();
+    let test_binary_message_fut = test_binary_message(test_host);
+    let test_user_flow_fut = test_user_flow(test_host);
+    let test_unknown_message_type_fut = test_unknown_message_type(test_host);
 
     try_join!(
         test_binary_message_fut,
@@ -62,8 +61,8 @@ pub async fn test_ws() -> Result<()> {
     Ok(())
 }
 
-async fn test_binary_message() -> Result<()> {
-    let mut ws = get_ws_connection().await?;
+async fn test_binary_message(test_host: &str) -> Result<()> {
+    let mut ws = get_ws_connection(test_host).await?;
     send_binary_message(&mut ws).await?;
     let error_response = get_waves_message(&mut ws)
         .await?
@@ -87,8 +86,8 @@ async fn test_binary_message() -> Result<()> {
     Ok(())
 }
 
-async fn test_unknown_message_type() -> Result<()> {
-    let mut ws = get_ws_connection().await?;
+async fn test_unknown_message_type(test_host: &str) -> Result<()> {
+    let mut ws = get_ws_connection(test_host).await?;
     let message = json!({
         "type": "Unknown",
         "data": {
@@ -120,8 +119,8 @@ async fn test_unknown_message_type() -> Result<()> {
     Ok(())
 }
 
-pub async fn test_user_flow() -> Result<()> {
-    let mut ws = get_ws_connection().await?;
+pub async fn test_user_flow(test_host: &str) -> Result<()> {
+    let mut ws = get_ws_connection(test_host).await?;
 
     test_invalid_message_type(&mut ws).await?;
     test_user_does_not_exist(&mut ws).await?;
@@ -136,7 +135,7 @@ pub async fn test_user_flow() -> Result<()> {
     test_playlist_remove_tracks(&mut ws).await?;
 
     close_ws_connection(&mut ws).await?;
-    let mut ws = get_ws_connection().await?;
+    let mut ws = get_ws_connection(test_host).await?;
 
     test_relogin(&mut ws).await?;
     test_playlist1_delete(&mut ws).await?;
@@ -779,14 +778,14 @@ async fn test_delete_user(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Resu
     Ok(())
 }
 
-async fn get_ws_connection() -> Result<FragmentCollector<TokioIo<Upgraded>>> {
+async fn get_ws_connection(test_host: &str) -> Result<FragmentCollector<TokioIo<Upgraded>>> {
     // Open a TCP connection to the remote host
-    let stream = TcpStream::connect(get_port_addr(WS_PORT)).await?;
+    let stream = TcpStream::connect((test_host, WS_PORT)).await?;
 
     let req = Request::builder()
         .method("GET")
-        .uri(format!("http://localhost:{}", WS_PORT))
-        .header("Host", format!("localhost:{}", WS_PORT))
+        .uri(format!("http://{}:{}", test_host, WS_PORT))
+        .header("Host", format!("{}:{}", test_host, WS_PORT))
         .header(UPGRADE, "websocket")
         .header(CONNECTION, "upgrade")
         .header(
