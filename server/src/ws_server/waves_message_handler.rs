@@ -31,7 +31,7 @@ use serde_json::to_value;
 use serde_json::to_vec;
 use serde_json::Value;
 
-pub const SERVER_VERSION: &str = "1.0.52";
+pub const SERVER_VERSION: &str = "1.0.56";
 
 // todo set up ping/pong
 pub async fn handle_waves_messages(
