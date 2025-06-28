@@ -1,20 +1,29 @@
-FROM node:20 AS builder
+FROM node:20 AS build
 
+WORKDIR /home/node
 COPY . .
 RUN npm ci
 RUN npm run build
+
+FROM build as test
+RUN npm run test && \
+  npm run eslint && \
+  npm run prettiercheck
+
+# Build the Integration Tests for the Go application
+FROM ubuntu:24.04 as integration-test
+RUN apt-get update && \
+  apt-get -y install curl && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists /var/cache/apt/archives
+WORKDIR /root
+COPY tests .
+CMD [ "./integration-test.sh" ]
 
 FROM nginx:1.25.5-bookworm
 LABEL org.opencontainers.image.source=https://github.com/wavesmp/wavesmp
 EXPOSE 80
 
-COPY --from=builder \
-  packages/waves-client-web/build/* \
-  packages/waves-client-web/src/index.html \
-  packages/waves-client-web/src/privacy.html \
-  packages/waves-client-web/src/favicon.ico \
-  packages/waves-client-web/vendor/aws-sdk-2.268.1.min.js \
-  /srv/http/
-
-COPY --from=builder packages/waves-client-web/rootfs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=builder packages/waves-client-web/rootfs/etc/nginx/sites/waves /etc/nginx/sites/waves
+COPY --from=build /home/node/packages/waves-client-web/build/* /srv/http/
+COPY --from=build /home/node/packages/waves-client-web/rootfs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /home/node/packages/waves-client-web/rootfs/etc/nginx/sites/waves /etc/nginx/sites/waves

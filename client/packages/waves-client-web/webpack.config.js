@@ -4,9 +4,14 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserJSPlugin = require("terser-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const babelConfig = require("./babel.config");
 const constants = require("./buildConstants");
+
+const srcDir = path.join(__dirname, "src");
+const buildDir = path.join(__dirname, "build");
+const vendorDir = path.join(__dirname, "vendor");
 
 const stringReplacer = {
   loader: "string-replace-loader",
@@ -28,14 +33,23 @@ function getPlugins() {
     filename: "[name].css",
     chunkFilename: "[id].chunk.css",
   });
+  const copyStaticFilesPlugin = new CopyWebpackPlugin({
+    patterns: [
+      { from: path.join(srcDir, "index.html"), to: buildDir },
+      { from: path.join(srcDir, "privacy.html"), to: buildDir },
+      { from: path.join(srcDir, "favicon.ico"), to: buildDir },
+      { from: path.join(vendorDir, "aws-sdk-2.268.1.min.js"), to: buildDir },
+    ],
+  });
 
   const nodeEnv = process.env.NODE_ENV || "production";
   if (nodeEnv === "production") {
-    return [miniCssExtractPlugin];
+    return [miniCssExtractPlugin, copyStaticFilesPlugin];
   }
   return [
     new BundleAnalyzerPlugin({ analyzerMode: "static" }),
     miniCssExtractPlugin,
+    copyStaticFilesPlugin,
   ];
 }
 
@@ -51,10 +65,10 @@ const wpConfig = {
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
   },
 
-  entry: path.join(__dirname, "src", "index.js"),
+  entry: path.join(srcDir, "index.js"),
 
   output: {
-    path: path.join(__dirname, "/build"),
+    path: buildDir,
     filename: "[name].js",
     chunkFilename: "[id].chunk.js",
     publicPath: "/",

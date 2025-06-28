@@ -1,0 +1,5 @@
+# Ignore rust build
+/target
+
+# Ignore rust config
+/src/config/config.json

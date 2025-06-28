@@ -19,7 +19,12 @@ import MainApp from "./components/main";
 import Site from "./components/site";
 import { PublicRoute, PrivateRoute } from "./components/routes";
 
-import { googleAuthOpts, s3Opts, server, defaultTrackSource } from "./config/config";
+import {
+  googleAuthOpts,
+  s3Opts,
+  server,
+  defaultTrackSource,
+} from "./config/config";
 import storeListener from "./listener";
 
 const history = createBrowserHistory();

@@ -1,22 +1,12 @@
-# Ignore node_modules, package.json, and package-lock.json for all packages
+# Ignore node_modules, for all packages
 /node_modules
 /packages/*/node_modules
-
-/package.json
-/packages/*/package.json
-
-/package-lock.json
-/package-locks/*/package-lock.json
 
 # Ignore web client build artifacts
 /packages/waves-client-web/build
 
 # Ignore web client config file
 /packages/waves-client-web/src/config/config.js
-
-# Ignore web client certs
-/packages/waves-client-web/rootfs/etc/letsencrypt
-/packages/waves-client-web/rootfs/etc/ssl
 
 # istanbuljs code coverage output
 .nyc_output
