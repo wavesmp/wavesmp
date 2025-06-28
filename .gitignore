@@ -16,3 +16,6 @@
 
 # Ignore rust build
 /server/target
+
+# Ignore rust config
+/server/src/config/config.json

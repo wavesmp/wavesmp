@@ -272,6 +272,14 @@ async fn test_login(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Result<()>
     let playlists: Vec<WavesPlaylistExternal> = from_value(playlists_update_response.data)?;
     assert_eq!(0, playlists.len());
 
+    // Expect server version response after login
+    let server_version_response = get_waves_message(ws)
+        .await?
+        .expect("unexpected empty server version response");
+    assert!(server_version_response.req_id.is_none());
+    let server_version: String = from_value(server_version_response.data)?;
+    assert_eq!("1.0.52", server_version);
+
     Ok(())
 }
 
@@ -634,6 +642,14 @@ async fn test_relogin(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Result<(
     assert_eq!(2, playlists[1].tracks.len());
     assert_eq!(TRACK_UID3, playlists[1].tracks[0]);
     assert_eq!(TRACK_UID2, playlists[1].tracks[1]);
+
+    // Expect server version response after login
+    let server_version_response = get_waves_message(ws)
+        .await?
+        .expect("unexpected empty server version response");
+    assert!(server_version_response.req_id.is_none());
+    let server_version: String = from_value(server_version_response.data)?;
+    assert_eq!("1.0.52", server_version);
 
     Ok(())
 }
