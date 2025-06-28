@@ -1,4 +1,3 @@
-use crate::port_utils::get_port_addr;
 use crate::port_utils::wait_for_port;
 use anyhow::Result;
 use http_body_util::Empty;
@@ -12,10 +11,10 @@ use tokio::net::TcpStream;
 
 const HTTP_PORT: u16 = 16245;
 
-pub async fn test_http() -> Result<()> {
-    wait_for_port(HTTP_PORT).await?;
+pub async fn test_http(test_host: &str) -> Result<()> {
+    wait_for_port(test_host, HTTP_PORT).await?;
 
-    let mut http_sender = get_http_sender().await?;
+    let mut http_sender = get_http_sender(test_host).await?;
     test_invalid_http_path(&mut http_sender).await?;
     test_invalid_http_method(&mut http_sender).await?;
     test_valid_http(&mut http_sender).await
@@ -60,9 +59,9 @@ async fn test_valid_http(http_sender: &mut SendRequest<Empty<Bytes>>) -> Result<
     Ok(())
 }
 
-async fn get_http_sender() -> Result<SendRequest<Empty<Bytes>>> {
+async fn get_http_sender(test_host: &str) -> Result<SendRequest<Empty<Bytes>>> {
     // Open a TCP connection to the remote host
-    let stream = TcpStream::connect(get_port_addr(HTTP_PORT)).await?;
+    let stream = TcpStream::connect((test_host, HTTP_PORT)).await?;
 
     // Use an adapter to access something implementing `tokio::io` traits as if they implement
     // `hyper::rt` IO traits.
