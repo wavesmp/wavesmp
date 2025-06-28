@@ -22,6 +22,7 @@ use tokio::net::TcpStream;
 use waves_server_rust::ws_server::close_ws_connection;
 use waves_server_rust::ws_server::waves_message_handler::get_waves_message;
 use waves_server_rust::ws_server::waves_message_handler::send_waves_message;
+use waves_server_rust::ws_server::waves_message_handler::SERVER_VERSION;
 use waves_server_rust::ws_server::waves_message_types::WavesMessage;
 use waves_server_rust::ws_server::waves_message_types::WavesMessageAccount;
 use waves_server_rust::ws_server::waves_message_types::WavesMessageAccountIDP;
@@ -277,7 +278,7 @@ async fn test_login(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Result<()>
         .expect("unexpected empty server version response");
     assert!(server_version_response.req_id.is_none());
     let server_version: String = from_value(server_version_response.data)?;
-    assert_eq!("1.0.52", server_version);
+    assert_eq!(SERVER_VERSION, server_version);
 
     Ok(())
 }
@@ -648,7 +649,7 @@ async fn test_relogin(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Result<(
         .expect("unexpected empty server version response");
     assert!(server_version_response.req_id.is_none());
     let server_version: String = from_value(server_version_response.data)?;
-    assert_eq!("1.0.52", server_version);
+    assert_eq!(SERVER_VERSION, server_version);
 
     Ok(())
 }
