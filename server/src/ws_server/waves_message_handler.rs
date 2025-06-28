@@ -31,6 +31,8 @@ use serde_json::to_value;
 use serde_json::to_vec;
 use serde_json::Value;
 
+pub const SERVER_VERSION: &str = "1.0.52";
+
 // todo set up ping/pong
 pub async fn handle_waves_messages(
     ws: &mut FragmentCollector<TokioIo<Upgraded>>,
@@ -150,7 +152,7 @@ async fn handle_waves_message(
             // send server version
             let server_version_response = WavesMessage {
                 message_type: WavesMessageType::Version,
-                data: "1.0.52".into(),
+                data: SERVER_VERSION.into(),
                 req_id: None,
             };
             send_waves_message(ws, &server_version_response).await?;
