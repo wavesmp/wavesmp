@@ -67,7 +67,7 @@ module.exports = {
 function getGlobals() {
   const globals = {
     AWS: "readonly",
-    gapi: "readonly",
+    google: "readonly",
   };
   for (const c in buildConstants) {
     globals[c] = "readonly";

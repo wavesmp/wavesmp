@@ -193,4 +193,24 @@ describe("#account()", () => {
 
     localStorage._deleteLocation();
   });
+
+  it("#renderSignInButton()", () => {
+    const auth = new Auth({});
+    const element = {};
+    const onSignIn = () => {};
+
+    const authMock = sinon.mock(auth);
+    authMock
+      .expects("renderButton")
+      .once()
+      .withExactArgs(testIdp, element, onSignIn);
+
+    actions.renderSignInButton(testIdp, element, onSignIn)(
+      undefined,
+      undefined,
+      { auth },
+    );
+
+    authMock.verify();
+  });
 });

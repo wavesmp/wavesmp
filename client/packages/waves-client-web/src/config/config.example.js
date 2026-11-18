@@ -1,9 +1,7 @@
 module.exports = {
-  /* Auth opts are passed into the gapi.auth2.init method.
-   * client_id is required.
-   * See the gapi.auth2.ClientConfig for more options:
-   * https://developers.google.com/identity/sign-in/web/
-   * reference#gapiauth2clientconfig */
+  /* Auth opts are passed into google.accounts.id.initialize.
+   * client_id is required. See IdConfiguration for more options:
+   * https://developers.google.com/identity/gsi/web/reference/js-reference */
   googleAuthOpts: {
     client_id: "REPLACE_ME",
     /* Additional opts here, if needed */

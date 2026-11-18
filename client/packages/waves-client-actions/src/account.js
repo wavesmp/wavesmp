@@ -41,6 +41,12 @@ function signIn(idp) {
   };
 }
 
+function renderSignInButton(idp, element, onSignIn) {
+  return (dispatch, getState, { auth }) => {
+    auth.renderButton(idp, element, onSignIn);
+  };
+}
+
 function retryLoginOnConnect(idp) {
   return async (dispatch, getState, { ws }) => {
     ws.setOnConnect(async () => {
@@ -78,5 +84,6 @@ module.exports.accountSetFetchingUser = accountSetFetchingUser;
 module.exports.accountSetSettings = accountSetSettings;
 module.exports.signOut = signOut;
 module.exports.signIn = signIn;
+module.exports.renderSignInButton = renderSignInButton;
 module.exports.tryAutoLogin = tryAutoLogin;
 module.exports.retryLoginOnConnect = retryLoginOnConnect;

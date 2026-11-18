@@ -19,6 +19,10 @@ class Auth {
     return this.idps[idp].signIn();
   }
 
+  renderButton(idp, element, onSignIn) {
+    this.idps[idp].renderButton(element, onSignIn);
+  }
+
   async signOut(idp) {
     return this.idps[idp].signOut();
   }
