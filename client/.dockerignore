@@ -1,5 +1,10 @@
 /Dockerfile
 /README.md
-node_modules
-.nyc_output
-build
+
+/node_modules
+/packages/*/node_modules
+
+/.nyc_output
+/packages/*/.nyc_output
+
+/packages/waves-client-web/build
