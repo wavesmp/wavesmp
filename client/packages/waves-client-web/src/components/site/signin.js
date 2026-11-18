@@ -5,6 +5,17 @@ import { routes } from "waves-client-constants";
 // import UserInput from './userInput'
 
 export default class SignIn extends React.PureComponent {
+  googleButtonRef = React.createRef();
+
+  componentDidMount() {
+    const { actions } = this.props;
+    actions.renderSignInButton(
+      "google",
+      this.googleButtonRef.current,
+      this.signIn,
+    );
+  }
+
   onUnsupportedClick = () => {
     const { actions } = this.props;
     actions.toastErr("Feature Unavailable");
@@ -46,13 +57,7 @@ export default class SignIn extends React.PureComponent {
         <h2>On Any Platform</h2>
         <div className="site-login-separator" />
         <h3>Start playing now</h3>
-        <div className="btn btn-ok site-google-button" onClick={this.signIn}>
-          <img
-            className="site-google-login-img"
-            src="https://google-developers.appspot.com/identity/sign-in/g-normal.png"
-          />
-          <label className="site-google-login-text">Sign in with Google</label>
-        </div>
+        <div className="site-google-button" ref={this.googleButtonRef} />
       </div>
     );
   }

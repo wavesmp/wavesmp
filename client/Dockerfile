@@ -1,17 +1,25 @@
+# Build the production assets
 FROM node:20 AS build
 
 WORKDIR /home/node
+ENV CI=true
+
+# todo should first just copy deps
 COPY . .
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm \
+  npm ci
+
+# Build the production assets
 RUN npm run build
 
-FROM build as test
+# Run unit tests
+FROM build AS test-results
 RUN npm run test && \
   npm run eslint && \
   npm run prettiercheck
 
-# Build the Integration Tests for the Go application
-FROM ubuntu:24.04 as integration-test
+# Build the Integration Tests
+FROM ubuntu:24.04 AS integration-test
 RUN apt-get update && \
   apt-get -y install curl && \
   apt-get clean && \

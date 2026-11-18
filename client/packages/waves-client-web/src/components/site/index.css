@@ -31,19 +31,8 @@
 }
 
 .site-google-button {
-  display: flex;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-}
-
-.site-google-login-img {
-  border-radius: 4px;
-}
-
-.site-google-login-text {
-  width: 100%;
-  cursor: pointer;
+  /* Reserve the rendered button's height to avoid layout shift */
+  min-height: 44px;
 }
 
 .site-main-browser {
