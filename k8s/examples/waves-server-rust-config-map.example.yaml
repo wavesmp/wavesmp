@@ -7,10 +7,7 @@ immutable: true
 data:
   config.json: |
     {
-      "addresses": {
-        "ws": "0.0.0.0:16244",
-        "http": "0.0.0.0:16245"
-      },
+      "address": "0.0.0.0:16244",
       "auth": {
         "google": {
           "client_ids": [

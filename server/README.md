@@ -12,7 +12,7 @@ Websocket server for the Waves client
 
 The environment variables should be available in the development environment:
 
-`DATABSE_URL` - This can match the database url in the `config.json`
+`DATABASE_URL` - This can match the database url in the `config.json`
 `RUST_LOG` - This can be set to `info`, for example, to configure the logging
 
 # Local Development
