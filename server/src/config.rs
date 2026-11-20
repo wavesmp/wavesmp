@@ -10,15 +10,9 @@ const CONFIG_FILE_PATH: &str = "src/config/config.json";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WavesServerConfig {
-    pub addresses: WavesServerConfigAddresses,
+    pub address: SocketAddr,
     pub auth: WavesServerConfigAuth,
     pub db: WavesServerConfigDB,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct WavesServerConfigAddresses {
-    pub ws: SocketAddr,
-    pub http: SocketAddr,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -63,14 +57,9 @@ mod tests {
     #[test]
     fn test_valid_config() -> Result<()> {
         let mut config_file: File = tempfile()?;
-        write!(
-            config_file,
-            "{}",
-            r#"{
-              "addresses": {
-                "ws": "127.0.0.1:1",
-                "http": "127.0.0.1:2"
-              },
+        config_file.write_all(
+            br#"{
+              "address": "127.0.0.1:1",
               "auth": {
                 "google": {
                   "client_ids": [
@@ -87,8 +76,7 @@ mod tests {
         config_file.seek(SeekFrom::Start(0))?;
 
         let config = super::parse_config_file(&config_file)?;
-        assert_eq!("127.0.0.1:1".parse(), Ok(config.addresses.ws));
-        assert_eq!("127.0.0.1:2".parse(), Ok(config.addresses.http));
+        assert_eq!("127.0.0.1:1".parse(), Ok(config.address));
         assert_eq!(vec!("test_client_id"), config.auth.google.client_ids);
         assert_eq!("test_db_url", config.db.url);
         assert_eq!(3_u32, config.db.max_connections);
@@ -98,7 +86,7 @@ mod tests {
     #[test]
     fn test_invalid_config() -> Result<()> {
         let mut config_file: File = tempfile()?;
-        write!(config_file, "{}", "{}")?;
+        write!(config_file, "{{}}")?;
         config_file.seek(SeekFrom::Start(0))?;
 
         let config_err = super::parse_config_file(&config_file).unwrap_err();
