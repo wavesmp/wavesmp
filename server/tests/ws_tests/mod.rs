@@ -1,4 +1,5 @@
 use crate::port_utils::wait_for_port;
+use crate::port_utils::SERVER_PORT;
 use anyhow::Result;
 use fastwebsockets::FragmentCollector;
 use fastwebsockets::Frame;
@@ -36,7 +37,7 @@ use waves_server_rust::ws_server::waves_message_types::WavesPlaylistExternal;
 use waves_server_rust::ws_server::waves_message_types::WavesTrackExternal;
 use waves_server_rust::ws_server::waves_message_types::WavesUserExternal;
 
-const WS_PORT: u16 = 16244;
+const WS_PATH: &str = "/ws";
 
 const TRACK_UID1: &str = "aaaaaaaaaaaa";
 const TRACK_UID2: &str = "bbbbbbbbbbbb";
@@ -47,16 +48,18 @@ const PLAYLIST_NAME2: &str = "test_playlist2";
 const PLAYLIST_NAME3: &str = "test_playlist3";
 
 pub async fn test_ws(test_host: &str) -> Result<()> {
-    wait_for_port(test_host, WS_PORT).await?;
+    wait_for_port(test_host, SERVER_PORT).await?;
 
     let test_binary_message_fut = test_binary_message(test_host);
     let test_user_flow_fut = test_user_flow(test_host);
     let test_unknown_message_type_fut = test_unknown_message_type(test_host);
+    let test_invalid_ws_path_fut = test_invalid_ws_path(test_host);
 
     try_join!(
         test_binary_message_fut,
         test_user_flow_fut,
         test_unknown_message_type_fut,
+        test_invalid_ws_path_fut,
     )?;
 
     Ok(())
@@ -84,6 +87,18 @@ async fn test_binary_message(test_host: &str) -> Result<()> {
     );
     let empty_response = get_waves_message(&mut ws).await?;
     assert!(empty_response.is_none());
+    Ok(())
+}
+
+async fn test_invalid_ws_path(test_host: &str) -> Result<()> {
+    for path in ["/", "/foo"] {
+        let result = get_ws_connection_at_path(test_host, path).await;
+        assert!(
+            result.is_err(),
+            "expected websocket upgrade to fail for invalid path `{}`",
+            path
+        );
+    }
     Ok(())
 }
 
@@ -780,13 +795,20 @@ async fn test_delete_user(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Resu
 }
 
 async fn get_ws_connection(test_host: &str) -> Result<FragmentCollector<TokioIo<Upgraded>>> {
+    get_ws_connection_at_path(test_host, WS_PATH).await
+}
+
+async fn get_ws_connection_at_path(
+    test_host: &str,
+    path: &str,
+) -> Result<FragmentCollector<TokioIo<Upgraded>>> {
     // Open a TCP connection to the remote host
-    let stream = TcpStream::connect((test_host, WS_PORT)).await?;
+    let stream = TcpStream::connect((test_host, SERVER_PORT)).await?;
 
     let req = Request::builder()
         .method("GET")
-        .uri(format!("http://{}:{}", test_host, WS_PORT))
-        .header("Host", format!("{}:{}", test_host, WS_PORT))
+        .uri(format!("http://{}:{}{}", test_host, SERVER_PORT, path))
+        .header("Host", format!("{}:{}", test_host, SERVER_PORT))
         .header(UPGRADE, "websocket")
         .header(CONNECTION, "upgrade")
         .header(

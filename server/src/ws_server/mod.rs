@@ -14,8 +14,6 @@ use google_oauth::AsyncClient;
 use http_body_util::Empty;
 use hyper::body::Bytes;
 use hyper::body::Incoming;
-use hyper::server::conn::http1;
-use hyper::service::Service;
 use hyper::upgrade::Upgraded;
 use hyper::Request;
 use hyper::Response;
@@ -24,101 +22,40 @@ use hyper_util::rt::TokioIo;
 use log::error;
 use log::info;
 use serde_json::to_value;
-use std::future::Future;
-use std::net::SocketAddr;
-use std::pin::Pin;
-use tokio::net::TcpListener;
-use tokio::sync::watch::Receiver;
 
 pub mod waves_message_handler;
 pub mod waves_message_types;
 
-pub async fn start_ws_server(
-    rx_shutdown: &mut Receiver<bool>,
-    address: &SocketAddr,
+/// Upgrades the request to a websocket connection and spawns a task to handle
+/// the waves messages. Returns the response to complete the upgrade handshake
+pub(crate) fn upgrade_ws_connection(
+    req: &mut Request<Incoming>,
     auth_client: AsyncClient,
     db: Database,
-) -> Result<()> {
-    info!("starting ws server on address={}", address);
-    let listener = TcpListener::bind(address).await?;
-
-    let waves_service = WavesService { auth_client, db };
-
-    // We start a loop to continuously accept incoming connections
-    loop {
-        let listener_accept_fut = listener.accept();
-        tokio::pin!(listener_accept_fut);
-
-        tokio::select! {
-            accept_result = &mut listener_accept_fut => {
-                let (stream, _) = accept_result?;
-
-                // Use an adapter to access something implementing `tokio::io` traits as if they implement
-                // `hyper::rt` IO traits.
-                let io = TokioIo::new(stream);
-                let waves_service_clone = waves_service.clone();
-
-                tokio::task::spawn(async move {
-                    if let Err(err) = http1::Builder::new()
-                        .serve_connection(io, waves_service_clone)
-                        .with_upgrades()
-                        .await
-                    {
-                        error!("Error serving connection: {:?}", err);
-                    }
-                });
-
-            }
-            _ = rx_shutdown.changed() => {
-                info!("shutting down ws server on address={}", address);
-                return Ok(());
-            }
-        }
-    }
-}
-
-#[derive(Clone)]
-struct WavesService {
-    auth_client: AsyncClient,
-    db: Database,
-}
-
-impl Service<Request<Incoming>> for WavesService {
-    type Response = Response<Empty<Bytes>>;
-    type Error = anyhow::Error;
-    type Future = Pin<Box<dyn Future<Output = Result<Self::Response, Self::Error>> + Send>>;
-
-    fn call(&self, mut req: Request<Incoming>) -> Self::Future {
-        fn create_response(status_code: StatusCode) -> Result<Response<Empty<Bytes>>> {
-            Ok(Response::builder()
-                .status(status_code)
+) -> Result<Response<Empty<Bytes>>> {
+    let (response, fut) = match upgrade(req) {
+        Err(err) => {
+            error!("failed to upgrade connection: {:?}", err);
+            return Ok(Response::builder()
+                .status(StatusCode::BAD_REQUEST)
                 .body(Empty::new())
-                .expect("failed to build http response"))
+                .expect("failed to build http response"));
         }
+        Ok((response, fut)) => (response, fut),
+    };
 
-        let (response, fut) = match upgrade(&mut req) {
-            Err(err) => {
-                error!("failed to upgrade connection: {:?}", err);
-                return Box::pin(async { create_response(StatusCode::INTERNAL_SERVER_ERROR) });
+    tokio::spawn(async move {
+        match handle_ws_connection(fut, auth_client, db).await {
+            Ok(()) => {
+                info!("finished handling websocket connection")
             }
-            Ok((response, fut)) => (response, fut),
+            Err(err) => {
+                error!("failed to handle websocket connection: {:?}", err);
+            }
         };
+    });
 
-        let auth_client = self.auth_client.clone();
-        let db = self.db.clone();
-        tokio::spawn(async move {
-            match handle_ws_connection(fut, auth_client, db).await {
-                Ok(()) => {
-                    info!("finished handling websocket connection")
-                }
-                Err(err) => {
-                    error!("failed to handle websocket connection: {:?}", err);
-                }
-            };
-        });
-
-        Box::pin(async { Ok(response) })
-    }
+    Ok(response)
 }
 
 async fn handle_ws_connection(

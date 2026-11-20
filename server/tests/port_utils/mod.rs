@@ -5,6 +5,9 @@ use tokio::time;
 use tokio::time::sleep;
 use tokio::time::Duration;
 
+/// Port serving both http and websocket (at `/ws`) requests
+pub const SERVER_PORT: u16 = 16244;
+
 const SLEEP_INTERVAL: Duration = Duration::from_millis(100);
 const SERVER_TIMEOUT: Duration = Duration::from_secs(60);
 
