@@ -29,7 +29,7 @@ pub(crate) async fn handle_http_request(req: Request<Incoming>) -> Result<Respon
     let path = req.uri().path();
 
     match (method, path) {
-        (&Method::POST, "/csp-rust") => {
+        (&Method::POST, "/csp") => {
             // To protect our server, reject requests with large bodies
             let body_size_upper = req.body().size_hint().upper().unwrap_or(u64::MAX);
             if body_size_upper > MAX_BODY_SIZE {

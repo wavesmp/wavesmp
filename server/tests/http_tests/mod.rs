@@ -47,7 +47,7 @@ async fn test_invalid_http_path(http_sender: &mut SendRequest<Empty<Bytes>>) -> 
 }
 
 async fn test_invalid_http_method(http_sender: &mut SendRequest<Empty<Bytes>>) -> Result<()> {
-    let url = "/csp-rust".parse::<hyper::Uri>()?;
+    let url = "/csp".parse::<hyper::Uri>()?;
 
     let req = Request::builder()
         .uri(url)
@@ -60,7 +60,7 @@ async fn test_invalid_http_method(http_sender: &mut SendRequest<Empty<Bytes>>) -
 }
 
 async fn test_valid_http(http_sender: &mut SendRequest<Empty<Bytes>>) -> Result<()> {
-    let url = "/csp-rust".parse::<hyper::Uri>()?;
+    let url = "/csp".parse::<hyper::Uri>()?;
 
     let req = Request::builder()
         .uri(url)
