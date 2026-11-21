@@ -42,7 +42,7 @@ pub(crate) async fn handle_http_request(req: Request<Incoming>) -> Result<Respon
             let whole_body_string = from_utf8(&whole_body_bytes)
                 .context("received csp violation with invalid string")?;
 
-            warn!("received csp violation={}", &whole_body_string);
+            warn!("received csp violation={}", whole_body_string);
 
             create_response(StatusCode::OK)
         }

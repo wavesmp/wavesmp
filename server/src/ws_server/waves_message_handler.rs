@@ -108,7 +108,7 @@ async fn handle_waves_message(
             let auth_user = handle_auth_login(auth_client, &account_login_message).await?;
             let auth_user = user.insert(auth_user);
             db.create_or_update_user(auth_user).await?;
-            info!("got login for auth_user={}", &auth_user.idp_id);
+            info!("got login for auth_user={}", auth_user.idp_id);
             let external_user = WavesUserExternal {
                 idp_id: auth_user.idp_id.clone(),
                 name: auth_user.name.clone(),

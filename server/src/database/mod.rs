@@ -117,7 +117,7 @@ impl Database {
             // values may matter.
             r#"INSERT INTO tracks(uid, idp, idp_id, source, title, artist, genre, duration) "#,
         );
-        query_builder.push_values(tracks.into_iter(), |mut b, track| {
+        query_builder.push_values(tracks, |mut b, track| {
             // If you wanted to bind these by-reference instead of by-value,
             // you'd need an iterator that yields references that live as long as `query_builder`,
             // e.g. collect it to a `Vec` first.
@@ -144,9 +144,8 @@ impl Database {
         key: &str,
         value: &str,
     ) -> Result<()> {
-        let result;
-        if key == "title" {
-            result = sqlx::query!(
+        let result = if key == "title" {
+            sqlx::query!(
                 r#"
                     UPDATE tracks
                     SET title = ?
@@ -158,9 +157,9 @@ impl Database {
                 uid,
             )
             .execute(&self.pool)
-            .await?;
+            .await?
         } else if key == "artist" {
-            result = sqlx::query!(
+            sqlx::query!(
                 r#"
                     UPDATE tracks
                     SET artist = ?
@@ -172,9 +171,9 @@ impl Database {
                 uid,
             )
             .execute(&self.pool)
-            .await?;
+            .await?
         } else if key == "genre" {
-            result = sqlx::query!(
+            sqlx::query!(
                 r#"
                     UPDATE tracks
                     SET genre = ?
@@ -186,10 +185,10 @@ impl Database {
                 uid,
             )
             .execute(&self.pool)
-            .await?;
+            .await?
         } else {
             return Err(WavesDatabaseError::InvalidTrackUpdateKey(key.to_owned()).into());
-        }
+        };
 
         if result.rows_affected() != 1 {
             return Err(WavesDatabaseError::TrackUnchanged(key.to_owned()).into());
