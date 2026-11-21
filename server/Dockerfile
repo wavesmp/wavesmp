@@ -4,26 +4,25 @@ FROM rust:1.87-alpine3.22 AS build
 RUN apk add --no-cache curl musl-dev
 
 # Install rust build dependencies
-RUN rust_host="$(rustc -vV | grep '^host:' | cut -d' ' -f2)" && \
-  curl --proto '=https' --tlsv1.2 -fsSL \
-    "https://github.com/taiki-e/cargo-llvm-cov/releases/latest/download/cargo-llvm-cov-${rust_host}.tar.gz" \
-  | tar xzf - -C /usr/local/bin && \
+RUN cargo install cargo-llvm-cov --locked && \
   rustup component add clippy rustfmt
 
-# Install rust application dependencies
+# Install rust application and test dependencies
 WORKDIR /app
 COPY Cargo.lock Cargo.toml ./
 COPY hack/empty-src ./src
-RUN cargo build --release
+RUN cargo test --no-run
 
 # Build the rust project
 # todo could potentially use more caching
-COPY . .
+COPY migrations ./migrations
+COPY src ./src
+COPY tests ./tests
 RUN DATABASE_URL="mysql://root:root@mysql.mysql/waves" \
   cargo build --release
 
 # Unit test
-FROM build as test-results
+FROM build AS test-results
 RUN export DATABASE_URL="mysql://root:root@mysql.mysql/waves" && \
   cargo clippy -- -Dwarnings && \
   cargo fmt --check && \
@@ -33,7 +32,7 @@ RUN export DATABASE_URL="mysql://root:root@mysql.mysql/waves" && \
   mv "${INTEGRATION_TEST_BINARY}" integration_test
 
 # Integration Test
-FROM scratch as integration-test
+FROM scratch AS integration-test
 COPY --from=test-results /app/target/llvm-cov-target/debug/deps/integration_test /integration_test
 USER 1000
 CMD ["/integration_test"]
