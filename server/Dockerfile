@@ -1,4 +1,4 @@
-FROM rust:1.87-alpine3.22 AS build
+FROM rust:1.100-alpine3.24 AS build
 
 # Install system dependencies
 RUN apk add --no-cache curl musl-dev
