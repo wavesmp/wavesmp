@@ -1,6 +1,6 @@
+use crate::database::Database;
 use crate::database::types::WavesTrackDB;
 use crate::database::types::WavesUserDB;
-use crate::database::Database;
 use crate::ws_server::waves_message_types::WavesError;
 use crate::ws_server::waves_message_types::WavesMessage;
 use crate::ws_server::waves_message_types::WavesMessageAccount;
@@ -26,10 +26,10 @@ use hyper_util::rt::TokioIo;
 use log::error;
 use log::info;
 use serde::Deserialize;
+use serde_json::Value;
 use serde_json::de::from_slice;
 use serde_json::to_value;
 use serde_json::to_vec;
-use serde_json::Value;
 
 pub const SERVER_VERSION: &str = "1.0.56";
 

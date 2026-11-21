@@ -4,11 +4,11 @@ use crate::database::types::WavesPlaylistDB;
 use crate::database::types::WavesTrackDB;
 use crate::database::types::WavesUserDB;
 use anyhow::Result;
-use sqlx::mysql::MySqlPoolOptions;
-use sqlx::types::Json;
 use sqlx::MySql;
 use sqlx::Pool;
 use sqlx::QueryBuilder;
+use sqlx::mysql::MySqlPoolOptions;
+use sqlx::types::Json;
 use std::collections::HashMap;
 
 pub mod types;

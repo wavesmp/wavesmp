@@ -2,8 +2,8 @@ use anyhow::Context;
 use anyhow::Result;
 use tokio::net::TcpStream;
 use tokio::time;
-use tokio::time::sleep;
 use tokio::time::Duration;
+use tokio::time::sleep;
 
 /// Port serving both http and websocket (at `/ws`) requests
 pub const SERVER_PORT: u16 = 16244;
