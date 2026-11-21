@@ -18,12 +18,12 @@ RUN cargo test --no-run
 COPY migrations ./migrations
 COPY src ./src
 COPY tests ./tests
-RUN DATABASE_URL="mysql://root:root@mysql.mysql/waves" \
+RUN DATABASE_URL="mysql://root:root@localhost:3306/waves" \
   cargo build --release
 
 # Unit test
 FROM build AS test-results
-RUN export DATABASE_URL="mysql://root:root@mysql.mysql/waves" && \
+RUN export DATABASE_URL="mysql://root:root@localhost:3306/waves" && \
   cargo clippy -- -Dwarnings && \
   cargo fmt --check && \
   cargo llvm-cov --fail-under-lines 70 --ignore-filename-regex main.rs && \
