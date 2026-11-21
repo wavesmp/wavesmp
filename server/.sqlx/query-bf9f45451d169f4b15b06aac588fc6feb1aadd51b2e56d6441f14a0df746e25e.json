@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                    UPDATE tracks\n                    SET genre = ?\n                    WHERE idp = ? AND idp_id = ? AND uid = ?\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "bf9f45451d169f4b15b06aac588fc6feb1aadd51b2e56d6441f14a0df746e25e"
+}

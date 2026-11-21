@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                UPDATE playlists\n                SET tracks = ?\n                WHERE idp = ? AND idp_id = ? AND name = ?\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "cbdc2a0cc5aa07be21e9406a0be8fe5cabba06f3ce28b87505a81fe5307a84f1"
+}

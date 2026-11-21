@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                INSERT INTO playlists (idp, idp_id, name, tracks)\n                VALUES (?, ?, ?, ?) AS new\n                ON DUPLICATE KEY UPDATE playlists.tracks = JSON_MERGE_PRESERVE(playlists.tracks, new.tracks)\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "810a76fb748c89a54e59cc77f5c55595100b8fc51f906842bac90bd5015261f7"
+}

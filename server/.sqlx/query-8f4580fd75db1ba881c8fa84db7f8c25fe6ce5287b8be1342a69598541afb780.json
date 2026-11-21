@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                DELETE FROM playlists\n                WHERE idp = ? AND idp_id = ? AND name = ?\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "8f4580fd75db1ba881c8fa84db7f8c25fe6ce5287b8be1342a69598541afb780"
+}

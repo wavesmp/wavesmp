@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                INSERT INTO playlists (idp, idp_id, name, tracks)\n                SELECT idp, idp_id, ?, tracks\n                FROM playlists\n                WHERE idp = ? AND idp_id = ? AND name = ?\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "cf7edfdcb53876c9a239fc1bc96e15814c615237e0b2b621b1a907893765ee9c"
+}

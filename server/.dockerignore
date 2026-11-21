@@ -3,3 +3,10 @@
 /README.md
 /config.example.json
 /target
+/hack
+/tpenv
+/tpmount
+/osoriano
+/dev-scripts
+/src/config/*.json
+/src/config/config.orig

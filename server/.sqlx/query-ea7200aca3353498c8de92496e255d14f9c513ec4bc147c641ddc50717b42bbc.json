@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                    UPDATE tracks\n                    SET title = ?\n                    WHERE idp = ? AND idp_id = ? AND uid = ?\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "ea7200aca3353498c8de92496e255d14f9c513ec4bc147c641ddc50717b42bbc"
+}
