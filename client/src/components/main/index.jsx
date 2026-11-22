@@ -1,0 +1,156 @@
+import React from "react";
+import { connect } from "react-redux";
+import { Route } from "react-router-dom";
+import { bindActionCreators } from "redux";
+
+import * as WavesActions from "src/actions";
+import {
+  MENU_DATA_VALUE,
+  MODAL_DATA_VALUE,
+  routes,
+  TOGGLE_DATA_KEY,
+} from "src/constants";
+import { getPlaylistSearch, getPlaylistSelectors } from "src/selectors";
+import { filterSelection, getPlaylistNameFromRoute } from "src/utils";
+
+import { Boundary } from "../boundary";
+import { Library } from "../library";
+import { Menu } from "../menu";
+import { MenuBar } from "../menubar/main";
+import { Modal } from "../modal";
+import { NowPlaying } from "../nowplaying";
+import { Playlist } from "../playlist";
+import { Settings } from "../settings";
+import { SideBar } from "../sidebar";
+import { Toasts } from "../toasts";
+import { Upload } from "../upload";
+
+class MainAppComponent extends React.PureComponent {
+  ancestorHasAttribute(node, key, val) {
+    /* document object does not have parent node.
+     * Can't just check for node here, since document
+     * does not have getAttribute method */
+    while (node.parentNode) {
+      if (node.getAttribute(key) === val) {
+        return true;
+      }
+      node = node.parentNode;
+    }
+    return false;
+  }
+
+  /* Add top-level click handler to dismiss overlay (e.g. modal or menu) */
+  onClick = (ev) => {
+    const { actions, menu, modal } = this.props;
+    const { target } = ev;
+
+    if (
+      menu.length &&
+      !this.ancestorHasAttribute(target, TOGGLE_DATA_KEY, MENU_DATA_VALUE)
+    ) {
+      actions.menuReset();
+    }
+
+    if (
+      modal &&
+      !this.ancestorHasAttribute(target, TOGGLE_DATA_KEY, MODAL_DATA_VALUE)
+    ) {
+      actions.modalSet(null);
+    }
+  };
+
+  render() {
+    const {
+      err,
+      menubar,
+      filteredSelection,
+      index,
+      playlistName,
+      modal,
+      sidebar,
+      playlists,
+      playing,
+      actions,
+      menu,
+      layout,
+      location,
+      history,
+      toasts,
+    } = this.props;
+    return (
+      <Boundary err={err}>
+        <div onClick={this.onClick} onContextMenu={this.onContextMenu}>
+          <Route path={routes.nowplaying} component={NowPlaying} />
+          <Route path={routes.library} component={Library} />
+          <Route path={routes.upload} component={Upload} />
+          <Route path={routes.playlist} component={Playlist} />
+          <Route path={routes.settings} component={Settings} />
+          <SideBar
+            actions={actions}
+            sidebar={sidebar}
+            playlists={playlists}
+            playing={playing}
+            pathname={location.pathname}
+          />
+          <MenuBar
+            actions={actions}
+            layout={layout}
+            menubar={menubar}
+            filteredSelection={filteredSelection}
+            index={index}
+            playlistName={playlistName}
+            playing={playing}
+            history={history}
+          />
+          <Menu menu={menu} />
+          <Modal history={history} location={location} modal={modal} />
+          <Toasts actions={actions} toasts={toasts} />
+        </div>
+      </Boundary>
+    );
+  }
+}
+
+function mapStateToProps(state, ownProps) {
+  const { menubar } = state;
+  const { location } = ownProps;
+  const { pathname } = location;
+  const props = {
+    playlists: state.tracks.playlists,
+    playing: state.tracks.playing,
+    sidebar: state.sidebar,
+    menu: state.menu,
+    err: state.err,
+    layout: state.layout,
+    menubar,
+    modal: state.modal,
+    toasts: state.toasts,
+  };
+  if (menubar) {
+    const playlistName = getPlaylistNameFromRoute(pathname);
+    if (playlistName) {
+      const search = getPlaylistSearch(state, playlistName);
+      const { getPlaylistProps } = getPlaylistSelectors(playlistName);
+      const { index, selection, displayItems } = getPlaylistProps(
+        state,
+        search,
+      );
+      const filteredSelection = filterSelection(displayItems, selection);
+
+      props.playlistName = playlistName;
+      props.index = index;
+      props.filteredSelection = filteredSelection;
+    }
+  }
+  return props;
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(WavesActions, dispatch),
+  };
+}
+
+const MainApp = connect(mapStateToProps, mapDispatchToProps)(MainAppComponent);
+
+export { MainApp };

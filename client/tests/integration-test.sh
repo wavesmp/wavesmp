@@ -50,7 +50,7 @@ test_csp_api() {
   TEST_FILE="${TEST_DIR}/csp.txt"
 
   if ! req --data '{"source": "waves-integration-test" }' \
-    "${WAVESMP_URL}/csp-rust" \
+    "${WAVESMP_URL}/csp" \
     | tee "${TEST_FILE}"
   then
     echo "FAIL: Error response while posting csp data"

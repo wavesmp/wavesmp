@@ -4,19 +4,30 @@ FROM node:26 AS build
 WORKDIR /home/node
 ENV CI=true
 
-# todo should first just copy deps
-COPY . .
+# Install dependencies
+COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm \
   npm ci
 
 # Build the production assets
+COPY \
+  .prettierignore \
+  buildConstants.js \
+  eslint.config.js \
+  index.html \
+  vite.config.js \
+  ./
+
+COPY public ./public
+COPY rootfs ./rootfs
+COPY src ./src
+
 RUN npm run build
 
-# Run unit tests
+# Run unit tests and lint
 FROM build AS test-results
-RUN npm run test && \
-  npm run eslint && \
-  npm run prettiercheck
+RUN npm run lint && \
+  npm run test
 
 # Build the Integration Tests
 FROM ubuntu:24.04 AS integration-test
@@ -32,6 +43,6 @@ FROM nginx:1.25.5-bookworm
 LABEL org.opencontainers.image.source=https://github.com/wavesmp/wavesmp
 EXPOSE 80
 
-COPY --from=build /home/node/packages/waves-client-web/build/* /srv/http/
-COPY --from=build /home/node/packages/waves-client-web/rootfs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /home/node/packages/waves-client-web/rootfs/etc/nginx/sites/waves /etc/nginx/sites/waves
+COPY --from=build /home/node/dist/ /srv/http/
+COPY --from=build /home/node/rootfs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /home/node/rootfs/etc/nginx/sites/waves /etc/nginx/sites/waves

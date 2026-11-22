@@ -2,13 +2,45 @@
 
 # Configuring the Client
 
-- Rename `packages/waves-client-web/src/config/config.example.js` as `packages/waves-client-web/src/config/config.js`
+- Copy `src/config/config.example.js` to `src/config/config.js`
 - Substitute AWS/Google/hostname values in the `config.js`
-- Create a build directory `mkdir packages/waves-client-web/build`
+
+# Project Layout
+
+The client is a single npm package using ES modules. The app entrypoint is
+`src/main.jsx`, and the code is organized into modules under `src/`:
+
+- `src/components`, `src/styles`: React components and global styles
+- `src/actions`: Redux action creators and thunks
+- `src/actionTypes`: Redux action types. Some are also server message types
+- `src/auth`: Google sign in
+- `src/constants`, `src/errors`, `src/utils`: shared code
+- `src/localState`: settings persisted in localStorage
+- `src/player`: S3 and local file audio players
+- `src/reducer`, `src/selectors`: Redux state
+- `src/socket`: WebSocket client for the server
+- `src/testUtil`: shared test helpers and data
+
+Modules import each other with the `src/` alias (e.g. `src/constants`). Tests
+live next to the code as `*.test.js` and run with vitest.
+
+`npm run format` also sorts imports with prettier-plugin-organize-imports, as
+in jettison-ui. It only sorts within groups separated by blank lines, so keep
+order-sensitive side-effect imports (e.g. `import "./polyfills"` and CSS
+imports) in their own blank-line separated group.
 
 # Local Development
 
 ## Running the Client
+
+Start the vite dev server, which serves the client at http://localhost:5173
+with hot reloading. The websocket server url comes from `config.js`.
+
+```
+npm run dev
+```
+
+## Running the Client with nginx
 
 In one terminal, run a watch on the client files for automatic rebuilding
 
@@ -21,17 +53,19 @@ may need to be updated with the desired listening ports and server urls.
 
 ```
 docker run --rm -it --net host \
-  -v "./packages/waves-client-web/build:/srv/http" \
-  -v "./packages/waves-client-web/rootfs/etc/nginx/nginx.conf:/etc/nginx/nginx.conf" \
-  -v "./packages/waves-client-web/rootfs/etc/nginx/sites/waves:/etc/nginx/sites/waves" \
+  -v "./dist:/srv/http" \
+  -v "./rootfs/etc/nginx/nginx.conf:/etc/nginx/nginx.conf" \
+  -v "./rootfs/etc/nginx/sites/waves:/etc/nginx/sites/waves" \
   nginx:1.25.5-bookworm
 ```
 
 ## Building the Code
 
 ```
-NODE_ENV=production npm run build
+npm run build
 ```
+
+The output is written to `dist`. To serve it locally, run `npm run preview`.
 
 ## Testing the Code
 
@@ -39,16 +73,26 @@ NODE_ENV=production npm run build
 npm run test
 ```
 
-## Linting the Code
+The coverage report is written to `coverage`. To run a single test file, or
+to rerun tests on change:
 
 ```
-npm run eslint
+npx vitest run src/reducer/menu.test.js
+npx vitest
+```
+
+## Linting the Code
+
+Runs eslint and the prettier check
+
+```
+npm run lint
 ```
 
 ## Formatting the Code
 
 ```
-npm run prettier
+npm run format
 ```
 
 ## Running the Integration Test

@@ -1,0 +1,66 @@
+import React from "react";
+
+import { routes } from "src/constants";
+
+// import UserInput from './userInput'
+
+class SignIn extends React.PureComponent {
+  googleButtonRef = React.createRef();
+
+  componentDidMount() {
+    const { actions } = this.props;
+    actions.renderSignInButton(
+      "google",
+      this.googleButtonRef.current,
+      this.signIn,
+    );
+  }
+
+  onUnsupportedClick = () => {
+    const { actions } = this.props;
+    actions.toastErr("Feature Unavailable");
+  };
+
+  signIn = async () => {
+    const { history, actions, location } = this.props;
+    try {
+      const idp = "google";
+      await actions.signIn(idp);
+      actions.retryLoginOnConnect(idp);
+      const from = (location.state && location.state.from) || {
+        pathname: routes.defaultRoute,
+      };
+      history.push(from);
+    } catch (err) {
+      actions.toastErr(err.error || `${err}`);
+      console.log("Error signing in");
+      console.log(err);
+    }
+  };
+
+  // Custom user/pass not supported
+  // <UserInput iconClass='fa-user-plus' placeholder='Email Address'/>
+  // <UserInput iconClass='fa-key' placeholder='Password'/>
+  // <label className='btn btn-ok site-create-account-button' onClick={this.onUnsupportedClick}>Create Account</label>
+  // <div className='site-idp-separator'/>
+  // <p className='site-idp-separator-words'><strong>OR</strong></p>
+  // <div className='site-idp-separator'/>
+
+  render() {
+    return (
+      <div className="site-main-left">
+        <h1>
+          <strong>Waves Music Player</strong>
+        </h1>
+        <h2>Your Music</h2>
+        <h2>On Any Device</h2>
+        <h2>On Any Platform</h2>
+        <div className="site-login-separator" />
+        <h3>Start playing now</h3>
+        <div className="site-google-button" ref={this.googleButtonRef} />
+      </div>
+    );
+  }
+}
+
+export { SignIn };
