@@ -1,5 +1,5 @@
 # Build the production assets
-FROM node:20 AS build
+FROM node:26 AS build
 
 WORKDIR /home/node
 ENV CI=true
