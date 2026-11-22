@@ -27,8 +27,8 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
   --mount=type=cache,target=/usr/local/cargo/git \
   --mount=type=cache,id=wavesmp-server-target,sharing=locked,target=/app/target \
   export DATABASE_URL="mysql://root:root@mysql.mysql/waves" && \
-  cargo clippy -- -Dwarnings && \
   cargo fmt --check && \
+  cargo clippy --all-targets -- -Dwarnings && \
   cargo llvm-cov --fail-under-lines 70 --ignore-filename-regex main.rs && \
   cargo test --no-run --test integration_test --message-format=json > /tmp/integration-test-build.json && \
   INTEGRATION_TEST_BINARY="$(jq -r 'select(.reason == "compiler-artifact" and .target.name == "integration_test" and .executable != null) | .executable' /tmp/integration-test-build.json)" && \
