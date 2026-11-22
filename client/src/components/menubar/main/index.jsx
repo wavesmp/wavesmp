@@ -1,4 +1,4 @@
-import React from "react";
+import { memo, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CSSTransitionGroup } from "react-transition-group";
 
@@ -10,107 +10,108 @@ import LogoSvg from "../common/logo-wide.svg?react";
 import { TrackPlayer } from "./trackplayer";
 import { TrackSlider } from "./trackslider";
 
-let prevPlayerVisible = false;
+const MenuBar = memo(function MenuBar({
+  actions,
+  playing,
+  layout,
+  menubar,
+  filteredSelection,
+  index,
+  playlistName,
+  history,
+}) {
+  const isSliderVisible = playing.track != null;
+  const isPlayerVisible = isSliderVisible || menubar;
 
-class MenuBar extends React.PureComponent {
-  onNotificationsClick = (ev) => {
-    const { actions } = this.props;
+  /* Whether the player was visible as of the last committed update. Lags
+   * isPlayerVisible by one tick, so the transition can be disabled for the
+   * first render after the player becomes visible (see below) */
+  const [prevPlayerVisible, setPrevPlayerVisible] = useState(false);
+  useEffect(() => {
+    if (prevPlayerVisible === isPlayerVisible) {
+      return undefined;
+    }
+    const timeout = setTimeout(() => setPrevPlayerVisible(isPlayerVisible), 0);
+    return () => clearTimeout(timeout);
+  }, [isPlayerVisible, prevPlayerVisible]);
+
+  function onNotificationsClick(ev) {
     actions.menuSetElem({ ev, type: menuTypes.NOTIFICATIONS });
-  };
+  }
 
-  onUserSettingsClick = (ev) => {
-    const { actions, history } = this.props;
+  function onUserSettingsClick(ev) {
     actions.menuSetElem({
       ev,
       type: menuTypes.USER_SETTINGS,
       props: { history },
     });
-  };
+  }
 
-  render() {
-    const {
-      actions,
-      playing,
-      layout,
-      menubar,
-      filteredSelection,
-      index,
-      playlistName,
-    } = this.props;
-
-    let trackSlider = null;
-    let trackPlayer = null;
-    let logoClassName = "menubar-main-logo";
-    let logoNameClassName = "menubar-main-logo-name";
-    const isSliderVisible = playing.track != null;
-    const isPlayerVisible = isSliderVisible || menubar;
-    if (isPlayerVisible) {
-      /* Usually, transitions are enabled when the player is visible.
-       * However, disable the transition when player is becoming visible
-       * and the user is on a small screen. Adding a new transition
-       * for this case would conflict with the current one, so handle
-       * it programmatically (no pure-CSS solution available AFAIK). */
-      if (!prevPlayerVisible && layout === 0) {
-        setTimeout(() => this.forceUpdate(), 0);
-      } else {
-        logoClassName += " menubar-transition";
-        logoNameClassName += " menubar-transition";
-      }
-
-      prevPlayerVisible = true;
-      logoClassName += " menubar-player-visible";
-      logoNameClassName += " menubar-player-visible";
-      trackPlayer = (
-        <TrackPlayer
-          key={0}
-          actions={actions}
-          menubar={menubar}
-          index={index}
-          filteredSelection={filteredSelection}
-          playlistName={playlistName}
-          playing={playing}
-        />
-      );
-    } else {
-      prevPlayerVisible = false;
+  let trackSlider = null;
+  let trackPlayer = null;
+  let logoClassName = "menubar-main-logo";
+  let logoNameClassName = "menubar-main-logo-name";
+  if (isPlayerVisible) {
+    /* Usually, transitions are enabled when the player is visible.
+     * However, disable the transition when player is becoming visible
+     * and the user is on a small screen. Adding a new transition
+     * for this case would conflict with the current one, so handle
+     * it programmatically (no pure-CSS solution available AFAIK). */
+    if (prevPlayerVisible || layout !== 0) {
+      logoClassName += " menubar-transition";
+      logoNameClassName += " menubar-transition";
     }
 
-    if (isSliderVisible) {
-      trackSlider = <TrackSlider key={0} actions={actions} playing={playing} />;
-    }
-
-    return (
-      <header className="menubar-main-header">
-        <Link to={routes.defaultRoute}>
-          <LogoSvg className={logoClassName} />
-          <span className={logoNameClassName}>WAVES</span>
-        </Link>
-        <CSSTransitionGroup
-          transitionName="fade"
-          transitionEnterTimeout={800}
-          transitionLeaveTimeout={300}
-        >
-          {trackPlayer}
-        </CSSTransitionGroup>
-        <i
-          className="fa fa-lg fa-globe menu-bar-icon"
-          onClick={this.onNotificationsClick}
-        />
-        <i
-          className="fa fa-lg fa-user menu-bar-icon"
-          onClick={this.onUserSettingsClick}
-        />
-        <CSSTransitionGroup
-          component="div"
-          transitionName="fade"
-          transitionEnterTimeout={800}
-          transitionLeaveTimeout={300}
-        >
-          {trackSlider}
-        </CSSTransitionGroup>
-      </header>
+    logoClassName += " menubar-player-visible";
+    logoNameClassName += " menubar-player-visible";
+    trackPlayer = (
+      <TrackPlayer
+        key={0}
+        actions={actions}
+        menubar={menubar}
+        index={index}
+        filteredSelection={filteredSelection}
+        playlistName={playlistName}
+        playing={playing}
+      />
     );
   }
-}
+
+  if (isSliderVisible) {
+    trackSlider = <TrackSlider key={0} actions={actions} playing={playing} />;
+  }
+
+  return (
+    <header className="menubar-main-header">
+      <Link to={routes.defaultRoute}>
+        <LogoSvg className={logoClassName} />
+        <span className={logoNameClassName}>WAVES</span>
+      </Link>
+      <CSSTransitionGroup
+        transitionName="fade"
+        transitionEnterTimeout={800}
+        transitionLeaveTimeout={300}
+      >
+        {trackPlayer}
+      </CSSTransitionGroup>
+      <i
+        className="fa fa-lg fa-globe menu-bar-icon"
+        onClick={onNotificationsClick}
+      />
+      <i
+        className="fa fa-lg fa-user menu-bar-icon"
+        onClick={onUserSettingsClick}
+      />
+      <CSSTransitionGroup
+        component="div"
+        transitionName="fade"
+        transitionEnterTimeout={800}
+        transitionLeaveTimeout={300}
+      >
+        {trackSlider}
+      </CSSTransitionGroup>
+    </header>
+  );
+});
 
 export { MenuBar };

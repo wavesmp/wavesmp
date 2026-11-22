@@ -1,15 +1,13 @@
-import React from "react";
-import { connect } from "react-redux";
+import { memo, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { bindActionCreators } from "redux";
 
-import * as WavesActions from "src/actions";
 import {
   LIBRARY_NAME,
   modalTypes,
   NOW_PLAYING_NAME as playlistName,
   routes,
 } from "src/constants";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 import {
   getLibraryPlaylistSearch,
   getOrCreatePlaylistSelectors,
@@ -20,23 +18,29 @@ import { TablePage } from "../tablepage";
 
 const NO_DATA_MSG = "Empty playlist. Go ahead and add some tracks!";
 
-class NowPlayingComponent extends React.PureComponent {
-  onClear = () => {
-    const { actions } = this.props;
+const NowPlaying = memo(function NowPlaying(ownProps) {
+  const actions = useActions();
+  const stateProps = useWavesSelector((state) =>
+    selectStateProps(state, ownProps),
+  );
+  const props = { ...ownProps, ...stateProps, actions };
+
+  const onClear = () => {
+    const { actions } = props;
     actions.modalSet({ type: modalTypes.PLAYLIST_CLEAR });
   };
 
-  onPlaylistSave = () => {
-    const { actions } = this.props;
+  const onPlaylistSave = () => {
+    const { actions } = props;
     actions.modalSet({ type: modalTypes.PLAYLIST_SAVE });
   };
 
-  defaultButtons = [
+  const defaultButtons = [
     <button
       key="Clear"
       className="btn btn-primary"
       type="button"
-      onClick={this.onClear}
+      onClick={onClear}
     >
       Clear
     </button>,
@@ -44,14 +48,14 @@ class NowPlayingComponent extends React.PureComponent {
       key="Save"
       className="btn btn-primary"
       type="button"
-      onClick={this.onPlaylistSave}
+      onClick={onPlaylistSave}
     >
       Save
     </button>,
   ];
 
-  getPlaylistButtons() {
-    const { libraryPlaylistSearch } = this.props;
+  function getPlaylistButtons() {
+    const { libraryPlaylistSearch } = props;
     const to = { pathname: routes.library, search: libraryPlaylistSearch };
     return [
       <Link key="Library" className="btn btn-primary" to={to}>
@@ -60,36 +64,37 @@ class NowPlayingComponent extends React.PureComponent {
     ];
   }
 
-  getButtons() {
-    const { sidebar } = this.props;
+  function getButtons() {
+    const { sidebar } = props;
     if (sidebar) {
-      return this.getPlaylistButtons();
+      return getPlaylistButtons();
     }
-    return this.defaultButtons;
+    return defaultButtons;
   }
 
-  onItemEdit = (id, attr, update) => {
-    const { actions } = this.props;
-    actions.tracksInfoUpdate(id, attr, update, LIBRARY_NAME);
-  };
+  /* Stable, since it is passed down to every table cell */
+  const onItemEdit = useCallback(
+    (id, attr, update) => {
+      actions.tracksInfoUpdate(id, attr, update, LIBRARY_NAME);
+    },
+    [actions],
+  );
 
-  render() {
-    return (
-      <TablePage
-        {...this.props}
-        buttons={this.getButtons()}
-        draggable
-        orderable
-        noDataMsg={NO_DATA_MSG}
-        onItemEdit={this.onItemEdit}
-        playlistName={playlistName}
-        title="Now Playing"
-      />
-    );
-  }
-}
+  return (
+    <TablePage
+      {...props}
+      buttons={getButtons()}
+      draggable
+      orderable
+      noDataMsg={NO_DATA_MSG}
+      onItemEdit={onItemEdit}
+      playlistName={playlistName}
+      title="Now Playing"
+    />
+  );
+});
 
-function mapStateToProps(state, ownProps) {
+function selectStateProps(state, ownProps) {
   const { getRouterQueryParams, getRouterSearchString, getPlaylistProps } =
     getOrCreatePlaylistSelectors(playlistName, URLSearchParams, LIBRARY_NAME);
   const { tracks, account, menubar, sidebar, layout } = state;
@@ -114,16 +119,5 @@ function mapStateToProps(state, ownProps) {
     ...getPlaylistProps(state, search),
   };
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const NowPlaying = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NowPlayingComponent);
 
 export { NowPlaying };

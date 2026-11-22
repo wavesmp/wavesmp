@@ -1,31 +1,27 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { memo, useState } from "react";
 
-import * as WavesActions from "src/actions";
 import { LIBRARY_NAME } from "src/constants";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 import { getFilteredSelection } from "src/selectors";
 import { normalizeTrack } from "src/utils";
 
 import { libraryColumns } from "../table/columns";
 import { Modal } from "./util";
 
-class TracksDeleteModal extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { deleting: false };
+const TracksDelete = memo(function TracksDelete(ownProps) {
+  const actions = useActions();
+  const props = useWavesSelector((state) => selectStateProps(state, ownProps));
+  const [deleting, setDeleting] = useState(false);
+
+  async function onDelete() {
+    setDeleting(true);
+    const { deleteErrs, serverErrs } = await actions.tracksDelete();
+    setDeleting(false);
+    return deleteErrs.length === 0 && serverErrs.length === 0;
   }
 
-  onDelete = async () => {
-    const { actions } = this.props;
-    this.setState({ deleting: true });
-    const { deleteErrs, serverErrs } = await actions.tracksDelete();
-    this.setState({ deleting: false });
-    return deleteErrs.length === 0 && serverErrs.length === 0;
-  };
-
-  renderDeleteItems() {
-    const { columns, isPlaying, library, index, selection } = this.props;
+  function renderDeleteItems() {
+    const { columns, isPlaying, library, index, selection } = props;
     const itemPlayIndexes = Array.from(selection.keys());
     itemPlayIndexes.sort((a, b) => a - b);
     return (
@@ -63,31 +59,28 @@ class TracksDeleteModal extends React.PureComponent {
     );
   }
 
-  render() {
-    const { actions, selection } = this.props;
-    const { deleting } = this.state;
-    const deleteTitle = deleting ? "Deleting" : "Delete";
-    const plurality = selection.size > 1 ? "s" : "";
-    const title = `Delete track${plurality}`;
-    const message = `This will delete the track${plurality} below. Are you sure?`;
-    return (
-      <Modal
-        actions={actions}
-        deleteTitle={deleteTitle}
-        disabled={deleting}
-        title={title}
-        onDelete={this.onDelete}
-      >
-        <div>
-          <span>{message}</span>
-        </div>
-        {this.renderDeleteItems()}
-      </Modal>
-    );
-  }
-}
+  const { selection } = props;
+  const deleteTitle = deleting ? "Deleting" : "Delete";
+  const plurality = selection.size > 1 ? "s" : "";
+  const title = `Delete track${plurality}`;
+  const message = `This will delete the track${plurality} below. Are you sure?`;
+  return (
+    <Modal
+      actions={actions}
+      deleteTitle={deleteTitle}
+      disabled={deleting}
+      title={title}
+      onDelete={onDelete}
+    >
+      <div>
+        <span>{message}</span>
+      </div>
+      {renderDeleteItems()}
+    </Modal>
+  );
+});
 
-function mapStateToProps(state) {
+function selectStateProps(state) {
   const { account, tracks } = state;
   const { libraries, playlists, playing } = tracks;
   const library = libraries[LIBRARY_NAME];
@@ -104,16 +97,5 @@ function mapStateToProps(state) {
     index,
   };
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const TracksDelete = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TracksDeleteModal);
 
 export { TracksDelete };

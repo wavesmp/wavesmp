@@ -1,86 +1,79 @@
-import React from "react";
+import { memo } from "react";
 
 import { menuTypes } from "src/constants";
 
-class TrackInfo extends React.PureComponent {
-  render() {
-    const { filteredSelection } = this.props;
-    return (
-      <div className="trackplayer-info-title">
-        {filteredSelection.size} Selected
-      </div>
-    );
-  }
-}
+const TrackInfo = memo(function TrackInfo(props) {
+  const { filteredSelection } = props;
+  return (
+    <div className="trackplayer-info-title">
+      {filteredSelection.size} Selected
+    </div>
+  );
+});
 
-class LeftButtons extends React.PureComponent {
-  onBack = () => {
-    const { actions } = this.props;
+const LeftButtons = memo(function LeftButtons(props) {
+  const onBack = () => {
+    const { actions } = props;
     actions.menubarSet(false);
   };
 
-  render() {
-    return (
-      <div className="trackplayer-left">
-        <i
-          className="fa fa-lg fa-arrow-left trackplayer-btn"
-          onClick={this.onBack}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="trackplayer-left">
+      <i className="fa fa-lg fa-arrow-left trackplayer-btn" onClick={onBack} />
+    </div>
+  );
+});
 
-class RightButtons extends React.PureComponent {
-  onOptionsClick = (ev) => {
-    const { actions, filteredSelection, index, playlistName } = this.props;
+const RightButtons = memo(function RightButtons({
+  actions,
+  filteredSelection,
+  index,
+  playlistName,
+}) {
+  const onOptionsClick = (ev) => {
     if (!filteredSelection || filteredSelection.size === 0) {
       actions.toastErr("No selection found");
       return;
     }
 
-    const props = { index, playlistName };
+    const menuProps = { index, playlistName };
     if (filteredSelection.size === 1) {
       const { value } = filteredSelection.entries().next();
-      [props.itemIndex, props.trackId] = value;
+      [menuProps.itemIndex, menuProps.trackId] = value;
     } else {
-      props.bulk = true;
+      menuProps.bulk = true;
     }
     actions.menuSetElem({
       ev,
       type: menuTypes.TRACK,
-      props,
+      props: menuProps,
     });
   };
 
-  render() {
-    return (
-      <div className="trackplayer-right">
-        <i
-          className="fa fa-lg fa-ellipsis-v trackplayer-btn"
-          onClick={this.onOptionsClick}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="trackplayer-right">
+      <i
+        className="fa fa-lg fa-ellipsis-v trackplayer-btn"
+        onClick={onOptionsClick}
+      />
+    </div>
+  );
+});
 
-class Options extends React.PureComponent {
-  render() {
-    const { actions, filteredSelection, index, playlistName } = this.props;
-    return (
-      <div className="trackplayer">
-        <LeftButtons actions={actions} />
-        <TrackInfo filteredSelection={filteredSelection} />
-        <RightButtons
-          actions={actions}
-          filteredSelection={filteredSelection}
-          index={index}
-          playlistName={playlistName}
-        />
-      </div>
-    );
-  }
-}
+const Options = memo(function Options(props) {
+  const { actions, filteredSelection, index, playlistName } = props;
+  return (
+    <div className="trackplayer">
+      <LeftButtons actions={actions} />
+      <TrackInfo filteredSelection={filteredSelection} />
+      <RightButtons
+        actions={actions}
+        filteredSelection={filteredSelection}
+        index={index}
+        playlistName={playlistName}
+      />
+    </div>
+  );
+});
 
 export { Options };

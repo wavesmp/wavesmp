@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 
 import { modalTypes } from "src/constants";
 
@@ -21,21 +21,18 @@ const MODALS = {
   [modalTypes.TRACKS_UPLOAD]: TracksUpload,
 };
 
-class Modal extends React.PureComponent {
-  render() {
-    const { history, location, modal } = this.props;
-    if (!modal) {
-      return null;
-    }
-    const { type, props } = modal;
-    const Component = MODALS[type];
-    return (
-      <>
-        <div className="fixed-full-page modal-backdrop" />
-        <Component history={history} location={location} {...props} />
-      </>
-    );
+const Modal = memo(function Modal({ history, location, modal }) {
+  if (!modal) {
+    return null;
   }
-}
+  const { type, props: modalProps } = modal;
+  const Component = MODALS[type];
+  return (
+    <>
+      <div className="fixed-full-page modal-backdrop" />
+      <Component history={history} location={location} {...modalProps} />
+    </>
+  );
+});
 
 export { Modal };

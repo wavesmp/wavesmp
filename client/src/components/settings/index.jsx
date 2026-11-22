@@ -1,9 +1,7 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { memo } from "react";
 
-import * as WavesActions from "src/actions";
 import { LIBRARY_NAME } from "src/constants";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 import {
   getLibraryPlaylistSearch,
   getOrCreatePlaylistSelectors,
@@ -17,39 +15,42 @@ import { VolumeSlider } from "./volumeslider";
 
 import "./index.css";
 
-class SettingsComponent extends React.PureComponent {
-  render() {
-    const {
-      actions,
-      history,
-      columns,
-      rowsPerPage,
-      theme,
-      libraryColumns,
-      librarySortKey,
-      libraryAscending,
-    } = this.props;
-    return (
-      <ContentPage title="Settings">
-        <div>
-          <VolumeSlider actions={actions} />
-          <ColumnSettings actions={actions} columns={columns} />
-          <SelectSettings
-            actions={actions}
-            rowsPerPage={rowsPerPage}
-            theme={theme}
-            history={history}
-            libraryColumns={libraryColumns}
-            librarySortKey={librarySortKey}
-            libraryAscending={libraryAscending}
-          />
-        </div>
-      </ContentPage>
-    );
-  }
-}
+const Settings = memo(function Settings(ownProps) {
+  const actions = useActions();
+  const stateProps = useWavesSelector((state) =>
+    selectStateProps(state, ownProps),
+  );
+  const props = { ...ownProps, ...stateProps, actions };
 
-function mapStateToProps(state) {
+  const {
+    history,
+    columns,
+    rowsPerPage,
+    theme,
+    libraryColumns,
+    librarySortKey,
+    libraryAscending,
+  } = props;
+  return (
+    <ContentPage title="Settings">
+      <div>
+        <VolumeSlider actions={actions} />
+        <ColumnSettings actions={actions} columns={columns} />
+        <SelectSettings
+          actions={actions}
+          rowsPerPage={rowsPerPage}
+          theme={theme}
+          history={history}
+          libraryColumns={libraryColumns}
+          librarySortKey={librarySortKey}
+          libraryAscending={libraryAscending}
+        />
+      </div>
+    </ContentPage>
+  );
+});
+
+function selectStateProps(state) {
   const { account } = state;
   const { columns, rowsPerPage, theme } = account;
   const { getRouterAscending, getRouterSortKey } = getOrCreatePlaylistSelectors(
@@ -69,16 +70,5 @@ function mapStateToProps(state) {
     libraryAscending: ascending,
   };
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const Settings = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SettingsComponent);
 
 export { Settings };

@@ -1,75 +1,52 @@
-import React from "react";
+import { memo, useEffect, useState } from "react";
 
 import "./trackslider.css";
 
-class TrackSlider extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      seeking: false,
-      seekingValue: 0,
-      currentTime: 0,
-    };
-  }
+const TrackSlider = memo(function TrackSlider({ actions, playing }) {
+  const [seeking, setSeeking] = useState(false);
+  const [seekingValue, setSeekingValue] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
 
-  onTimeUpdate = (ev) => {
-    const { currentTime } = ev.currentTarget;
-    this.setState({ currentTime });
-  };
-
-  componentDidMount() {
-    const { actions } = this.props;
-    actions.addOnTimeUpdate(this.onTimeUpdate);
-  }
-
-  componentWillUnmount() {
-    const { actions } = this.props;
-    actions.removeOnTimeUpdate(this.onTimeUpdate);
-  }
-
-  onMouseDown = () => {
-    this.setState({ seeking: true });
-  };
-
-  onChange = (ev) => {
-    this.setState({ seekingValue: ev.currentTarget.value });
-  };
-
-  onMouseUp = (ev) => {
-    const { actions, playing } = this.props;
-    const { duration } = playing.track;
-    const currentTime = ev.target.value * duration;
-    actions.seek(currentTime);
-    this.setState({ seeking: false, currentTime });
-  };
-
-  getValue() {
-    const { seeking, seekingValue, currentTime } = this.state;
-    if (seeking) {
-      return seekingValue;
+  useEffect(() => {
+    function onTimeUpdate(ev) {
+      setCurrentTime(ev.currentTarget.currentTime);
     }
-    const { playing } = this.props;
-    return currentTime / playing.track.duration;
+    actions.addOnTimeUpdate(onTimeUpdate);
+    return () => actions.removeOnTimeUpdate(onTimeUpdate);
+  }, [actions]);
+
+  function onMouseDown() {
+    setSeeking(true);
   }
 
-  render() {
-    const value = this.getValue();
-    return (
-      <input
-        type="range"
-        min="0.0"
-        max="1.0"
-        step="0.001"
-        value={value}
-        onMouseDown={this.onMouseDown}
-        onMouseUp={this.onMouseUp}
-        onTouchStart={this.onMouseDown}
-        onTouchEnd={this.onMouseUp}
-        onChange={this.onChange}
-        className="trackslider"
-      />
-    );
+  function onChange(ev) {
+    setSeekingValue(ev.currentTarget.value);
   }
-}
+
+  function onMouseUp(ev) {
+    const { duration } = playing.track;
+    const time = ev.target.value * duration;
+    actions.seek(time);
+    setSeeking(false);
+    setCurrentTime(time);
+  }
+
+  const value = seeking ? seekingValue : currentTime / playing.track.duration;
+  return (
+    <input
+      type="range"
+      min="0.0"
+      max="1.0"
+      step="0.001"
+      value={value}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onTouchStart={onMouseDown}
+      onTouchEnd={onMouseUp}
+      onChange={onChange}
+      className="trackslider"
+    />
+  );
+});
 
 export { TrackSlider };

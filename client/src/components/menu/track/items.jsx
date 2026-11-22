@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 
 function LibraryDelete({ onClick }) {
   return (
@@ -81,22 +81,20 @@ function PlayResume({ onClick }) {
   );
 }
 
-class PlaylistAddItem extends React.PureComponent {
-  onClick = () => {
-    const { name, onPlaylistAdd } = this.props;
+const PlaylistAddItem = memo(function PlaylistAddItem(props) {
+  const onClick = () => {
+    const { name, onPlaylistAdd } = props;
     onPlaylistAdd(name);
   };
 
-  render() {
-    const { name } = this.props;
-    return (
-      <li className="btn btn-default menu-track-item" onClick={this.onClick}>
-        <i className="fa fa-lg fa-list" />
-        &nbsp;&nbsp;{name}
-      </li>
-    );
-  }
-}
+  const { name } = props;
+  return (
+    <li className="btn btn-default menu-track-item" onClick={onClick}>
+      <i className="fa fa-lg fa-list" />
+      &nbsp;&nbsp;{name}
+    </li>
+  );
+});
 
 export {
   Back,
@@ -105,8 +103,8 @@ export {
   NowPlayingAdd,
   Pause,
   Play,
-  PlayResume,
   PlaylistAdd,
   PlaylistAddItem,
   PlaylistRemove,
+  PlayResume,
 };

@@ -1,9 +1,7 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { memo } from "react";
 
-import * as WavesActions from "src/actions";
 import { NOW_PLAYING_NAME } from "src/constants";
+import { useActions } from "src/providers/hooks";
 
 import { Modal } from "./util";
 
@@ -11,9 +9,12 @@ const TITLE = "Clear Playlist";
 const DELETE_TITLE = "Clear";
 const MESSAGE = "This will clear the Now Playing playlist. Are you sure?";
 
-class ClearPlaylistModal extends React.PureComponent {
-  onDelete = async () => {
-    const { actions } = this.props;
+const PlaylistClear = memo(function PlaylistClear(ownProps) {
+  const actions = useActions();
+  const props = { ...ownProps, actions };
+
+  const onDelete = async () => {
+    const { actions } = props;
     try {
       await actions.playlistDelete(NOW_PLAYING_NAME);
     } catch (err) {
@@ -23,32 +24,18 @@ class ClearPlaylistModal extends React.PureComponent {
     return true;
   };
 
-  render() {
-    const { actions } = this.props;
-    return (
-      <Modal
-        actions={actions}
-        title={TITLE}
-        deleteTitle={DELETE_TITLE}
-        onDelete={this.onDelete}
-      >
-        <div>
-          <span>{MESSAGE}</span>
-        </div>
-      </Modal>
-    );
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const PlaylistClear = connect(
-  undefined,
-  mapDispatchToProps,
-)(ClearPlaylistModal);
+  return (
+    <Modal
+      actions={actions}
+      title={TITLE}
+      deleteTitle={DELETE_TITLE}
+      onDelete={onDelete}
+    >
+      <div>
+        <span>{MESSAGE}</span>
+      </div>
+    </Modal>
+  );
+});
 
 export { PlaylistClear };

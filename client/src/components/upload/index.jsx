@@ -1,9 +1,7 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
-import * as WavesActions from "src/actions";
 import { modalTypes, UPLOADS_NAME as playlistName } from "src/constants";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 import { getOrCreatePlaylistSelectors } from "src/selectors";
 
 import { ContentPage } from "../contentpage";
@@ -18,69 +16,67 @@ import "./index.css";
 const ACCEPTED_FILE_TYPES = "audio/mp3,audio/mpeg";
 const ACCEPTED_FILE_TYPE_LIST = ["audio/mp3", "audio/mpeg"];
 
-class UploadComponent extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { dragging: false, uploading: false };
+const Upload = memo(function Upload(ownProps) {
+  const actions = useActions();
+  const props = useWavesSelector((state) => selectStateProps(state, ownProps));
+  const {
+    columns,
+    currentPage,
+    displayItems,
+    index,
+    isPlaying,
+    lastPage,
+    layout,
+    loaded,
+    numItems,
+    pathname,
+    qp,
+    rowsPerPage,
+    selection,
+  } = props;
+  const [dragging, setDragging] = useState(false);
+  /* Never set. The upload modal tracks upload progress instead */
+  const uploading = false;
+
+  /* processFiles reads these after awaiting, so use the latest values */
+  const latest = useRef({ numItems, rowsPerPage });
+  useEffect(() => {
+    latest.current = { numItems, rowsPerPage };
+  });
+
+  function onUpload() {
+    actions.modalSet({ type: modalTypes.TRACKS_UPLOAD });
   }
 
-  onUpload = async () => {
-    const { actions } = this.props;
-    actions.modalSet({ type: modalTypes.TRACKS_UPLOAD });
-  };
-
-  onDragEnter = (ev) => {
-    this.setState({ dragging: true });
+  function onDragEnter(ev) {
+    setDragging(true);
     ev.preventDefault();
-  };
+  }
 
-  onDragLeave = () => {
-    this.setState({ dragging: false });
-  };
+  function onDragLeave() {
+    setDragging(false);
+  }
 
   // Needed preventDefault on dragenter, dragover, and ondrop events
   // https://stackoverflow.com/questions/8414154/
   // html5-drop-event-doesnt-work-unless-dragover-is-handled
-  onDragOver = (ev) => {
+  function onDragOver(ev) {
     ev.preventDefault();
-  };
+  }
 
-  validateDropFileType = (f) => {
+  function validateDropFileType(f) {
     if (ACCEPTED_FILE_TYPE_LIST.indexOf(f.type) > -1) {
       return true;
     }
-    const { actions } = this.props;
     actions.toastErr(`${f.name}: Invalid file type`);
     return false;
-  };
-
-  onDrop = (ev) => {
-    ev.preventDefault();
-    this.setState({ dragging: false });
-    // files (type FileList) is not an array, so can't use map.
-    // Use Array.from(arrayLikeObj, mapFn) as a workaround
-    const files = Array.from(ev.dataTransfer.files).filter(
-      this.validateDropFileType,
-    );
-
-    if (files.length === 0) {
-      return;
-    }
-    this.processFiles(files);
-  };
-
-  onFileSelect = (ev) => {
-    /* Files should only be valid types due to the input accept clause */
-    const { files } = ev.currentTarget;
-    this.processFiles(files);
-  };
+  }
 
   /* Wrap the processTrack call, and handle errors */
-  async wrapProcessTrack(file) {
+  async function wrapProcessTrack(file) {
     try {
       return processTrack(file);
     } catch (err) {
-      const { actions } = this.props;
       actions.toastErr(`${file.name}: Failed to read track info: ${err}`);
       console.log(err);
       console.log(err.stack);
@@ -88,47 +84,52 @@ class UploadComponent extends React.PureComponent {
     return null;
   }
 
-  processFiles = async (files) => {
+  async function processFiles(files) {
     // files (type FileList) is not an array, so can't use map.
     // Use Array.from(arrayLikeObj, mapFn) as a workaround
-    const newUploads = await Promise.all(
-      Array.from(files, this.wrapProcessTrack, this),
-    );
+    const newUploads = await Promise.all(Array.from(files, wrapProcessTrack));
     const validNewUploads = newUploads.filter((upload) => upload != null);
 
-    const { actions, numItems, rowsPerPage } = this.props;
-    if (numItems + validNewUploads.length > rowsPerPage) {
+    const { numItems: currentNumItems, rowsPerPage: maxItems } = latest.current;
+    if (currentNumItems + validNewUploads.length > maxItems) {
       /* TODO look into command line utility */
-      actions.toastErr(`Cannot upload more than ${rowsPerPage} items`);
+      actions.toastErr(`Cannot upload more than ${maxItems} items`);
       return;
     }
     actions.tracksAdd(validNewUploads, playlistName);
-  };
+  }
 
-  onItemEdit = (id, key, value) => {
-    const { actions } = this.props;
-    actions.tracksLocalInfoUpdate(id, key, value, playlistName);
-  };
+  function onDrop(ev) {
+    ev.preventDefault();
+    setDragging(false);
+    // files (type FileList) is not an array, so can't use map.
+    // Use Array.from(arrayLikeObj, mapFn) as a workaround
+    const files = Array.from(ev.dataTransfer.files).filter(
+      validateDropFileType,
+    );
 
-  renderUploads() {
-    const { loaded, numItems } = this.props;
-    if (!loaded || numItems === 0) {
-      return null;
+    if (files.length === 0) {
+      return;
     }
-    const {
-      columns,
-      index,
-      selection,
-      displayItems,
-      pathname,
-      qp,
-      actions,
-      isPlaying,
-      layout,
-      currentPage,
-      lastPage,
-    } = this.props;
-    return (
+    processFiles(files);
+  }
+
+  function onFileSelect(ev) {
+    /* Files should only be valid types due to the input accept clause */
+    processFiles(ev.currentTarget.files);
+  }
+
+  /* Stable, since it is passed down to every table cell */
+  const onItemEdit = useCallback(
+    (id, key, value) => {
+      actions.tracksLocalInfoUpdate(id, key, value, playlistName);
+    },
+    [actions],
+  );
+
+  let uploads = null;
+  if (loaded && numItems !== 0) {
+    uploads = (
       <Table
         actions={actions}
         columns={columns}
@@ -141,7 +142,7 @@ class UploadComponent extends React.PureComponent {
         qp={qp}
         displayItems={displayItems}
         numItems={numItems}
-        onItemEdit={this.onItemEdit}
+        onItemEdit={onItemEdit}
         index={index}
         layout={layout}
         selection={selection}
@@ -150,59 +151,54 @@ class UploadComponent extends React.PureComponent {
     );
   }
 
-  render() {
-    const { dragging, uploading } = this.state;
-    let dropZoneClass = "upload-drop-zone";
-    if (dragging) {
-      dropZoneClass += " upload-drop-zone-dragging";
-    }
-
-    const uploads = this.renderUploads();
-
-    // TODO add progress bar?
-    return (
-      <ContentPage title="Upload Files">
-        <div>
-          <h4>Select files from your device</h4>
-          <form>
-            <div>
-              <input
-                type="file"
-                className="upload-file-input"
-                name="uploads[]"
-                multiple
-                accept={ACCEPTED_FILE_TYPES}
-                onChange={this.onFileSelect}
-              />
-              <button
-                type="button"
-                className="btn btn-sm btn-primary"
-                disabled={uploads == null || uploading}
-                onClick={this.onUpload}
-              >
-                {uploading ? "Uploading" : "Upload files"}
-              </button>
-            </div>
-          </form>
-
-          <h4>Or drag and drop files below</h4>
-          <div
-            className={dropZoneClass}
-            onDragEnter={this.onDragEnter}
-            onDragLeave={this.onDragLeave}
-            onDragOver={this.onDragOver}
-            onDrop={this.onDrop}
-          >
-            Just drag and drop files here
-          </div>
-          {uploads}
-        </div>
-      </ContentPage>
-    );
+  let dropZoneClass = "upload-drop-zone";
+  if (dragging) {
+    dropZoneClass += " upload-drop-zone-dragging";
   }
-}
 
-function mapStateToProps(state, ownProps) {
+  // TODO add progress bar?
+  return (
+    <ContentPage title="Upload Files">
+      <div>
+        <h4>Select files from your device</h4>
+        <form>
+          <div>
+            <input
+              type="file"
+              className="upload-file-input"
+              name="uploads[]"
+              multiple
+              accept={ACCEPTED_FILE_TYPES}
+              onChange={onFileSelect}
+            />
+            <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              disabled={uploads == null || uploading}
+              onClick={onUpload}
+            >
+              {uploading ? "Uploading" : "Upload files"}
+            </button>
+          </div>
+        </form>
+
+        <h4>Or drag and drop files below</h4>
+        <div
+          className={dropZoneClass}
+          onDragEnter={onDragEnter}
+          onDragLeave={onDragLeave}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+        >
+          Just drag and drop files here
+        </div>
+        {uploads}
+      </div>
+    </ContentPage>
+  );
+});
+
+function selectStateProps(state, ownProps) {
   const { getRouterQueryParams, getPlaylistProps } =
     getOrCreatePlaylistSelectors(playlistName, URLSearchParams, playlistName);
   const { account, layout, tracks } = state;
@@ -221,13 +217,5 @@ function mapStateToProps(state, ownProps) {
     ...getPlaylistProps(state, search),
   };
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const Upload = connect(mapStateToProps, mapDispatchToProps)(UploadComponent);
 
 export { Upload };

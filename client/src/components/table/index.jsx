@@ -1,4 +1,4 @@
-import React from "react";
+import { memo, useCallback, useRef, useState } from "react";
 
 import * as constants from "src/constants";
 import { filterSelection } from "src/utils";
@@ -13,88 +13,123 @@ const CONTEXT_MENU_BUTTON = 2;
 const DOUBLE_CLICK_THRESHOLD = 500;
 const LONG_PRESS_THRESHOLD = 600;
 
-class Table extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      editingIndex: null,
-      editingTitle: null,
-      reorderTopIndex: null,
-      reorderBottomIndex: null,
-    };
-    this.dragGhost = null;
+/* Bookkeeping for mouse, touch and drag gestures. Read and written only in
+ * event handlers, so it does not need to trigger renders */
+function initialGesture() {
+  return {
+    dragGhost: null,
 
-    this.editOnMouseUpIndex = null;
-    this.editOnMouseUpTitle = null;
+    editOnMouseUpIndex: null,
+    editOnMouseUpTitle: null,
 
-    this.clearOnMouseUpIndex = null;
-    this.clearOnMouseUpTrackId = null;
+    clearOnMouseUpIndex: null,
+    clearOnMouseUpTrackId: null,
 
-    this.clearOnTouchEndIndex = null;
-    this.clearOnTouchEndTrackId = null;
+    clearOnTouchEndIndex: null,
+    clearOnTouchEndTrackId: null,
 
-    this.lastClickTime = 0;
-    this.lastClickIndex = null;
-    this.lastClickWasForEdit = false;
+    longPressTimeout: null,
+
+    lastClickTime: 0,
+    lastClickIndex: null,
+    lastClickWasForEdit: false,
+  };
+}
+
+function getOrderIndexes(ev) {
+  const { currentTarget: ct } = ev;
+  const { top, height } = ct.getBoundingClientRect();
+  const midY = top + height / 2;
+  if (ev.clientY <= midY) {
+    const bottomIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR), 10);
+    const topIndex =
+      ct.previousSibling &&
+      parseInt(ct.previousSibling.getAttribute(constants.INDEX_ATTR), 10);
+    return { topIndex, bottomIndex };
   }
 
-  /* Handled by MouseDown instead */
-  onContextMenu = (ev) => {
-    ev.preventDefault();
-  };
+  const topIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR), 10);
+  const bottomIndex =
+    ct.nextSibling &&
+    parseInt(ct.nextSibling.getAttribute(constants.INDEX_ATTR), 10);
+  return { topIndex, bottomIndex };
+}
 
-  getFilteredSelection() {
-    const { selection, displayItems } = this.props;
+/* Handled by MouseDown instead */
+function onContextMenu(ev) {
+  ev.preventDefault();
+}
+
+const Table = memo(function Table({
+  pathname,
+  qp,
+  actions,
+  index,
+  sortKey,
+  ascending,
+  columns,
+  isPlaying,
+  layout,
+  selection,
+  displayItems,
+  currentPage,
+  lastPage,
+  onItemEdit,
+  draggable,
+  orderable,
+  playlistName,
+  menubar,
+  theme,
+}) {
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingTitle, setEditingTitle] = useState(null);
+  const [reorderTopIndex, setReorderTopIndex] = useState(null);
+  const [reorderBottomIndex, setReorderBottomIndex] = useState(null);
+  const gestureRef = useRef(null);
+  if (gestureRef.current === null) {
+    gestureRef.current = initialGesture();
+  }
+
+  function getFilteredSelection() {
     return filterSelection(displayItems, selection);
   }
 
-  onShowMenuOptions = () => {
-    const { actions, playlistName, displayItems } = this.props;
+  function onShowMenuOptions() {
+    const gesture = gestureRef.current;
     actions.selectionClearAndAdd(
       playlistName,
-      this.clearOnTouchEndIndex,
-      this.clearOnTouchEndTrackId,
+      gesture.clearOnTouchEndIndex,
+      gesture.clearOnTouchEndTrackId,
       displayItems,
     );
     actions.menubarSet(true);
-  };
+  }
 
-  onTouchStart = (ev) => {
-    this.longPressTimeout = setTimeout(
-      this.onShowMenuOptions,
+  function onTouchStart(ev) {
+    const gesture = gestureRef.current;
+    gesture.longPressTimeout = setTimeout(
+      onShowMenuOptions,
       LONG_PRESS_THRESHOLD,
     );
     const itemIndexAttr = ev.currentTarget.getAttribute(constants.INDEX_ATTR);
-    const itemIndex = parseInt(itemIndexAttr, 10);
-    const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR);
-    this.clearOnTouchEndIndex = itemIndex;
-    this.clearOnTouchEndTrackId = trackId;
-  };
-
-  onTouchEnd = () => {
-    clearTimeout(this.longPressTimeout);
-  };
-
-  onTouchCancel = () => {
-    clearTimeout(this.longPressTimeout);
-  };
-
-  onTouchMove = () => {
-    clearTimeout(this.longPressTimeout);
-  };
-
-  onRowDoubleClick(ev) {
-    const { actions, playlistName } = this.props;
-    const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR);
-    const indexAttr = ev.currentTarget.getAttribute(constants.INDEX_ATTR);
-    const index = parseInt(indexAttr, 10);
-    actions.trackToggle(trackId, playlistName, index);
+    gesture.clearOnTouchEndIndex = parseInt(itemIndexAttr, 10);
+    gesture.clearOnTouchEndTrackId = ev.currentTarget.getAttribute(
+      constants.TRACK_ID_ATTR,
+    );
   }
 
-  onRowMouseDown = (ev) => {
-    const { actions, playlistName, index, selection, menubar, displayItems } =
-      this.props;
+  function clearLongPress() {
+    clearTimeout(gestureRef.current.longPressTimeout);
+  }
 
+  function onRowDoubleClick(ev) {
+    const trackId = ev.currentTarget.getAttribute(constants.TRACK_ID_ATTR);
+    const indexAttr = ev.currentTarget.getAttribute(constants.INDEX_ATTR);
+    actions.trackToggle(trackId, playlistName, parseInt(indexAttr, 10));
+  }
+
+  function onRowMouseDown(ev) {
+    const gesture = gestureRef.current;
     const clickTarget = ev.target;
     const clickWasForEdit = clickTarget.nodeName.toLowerCase() === "span";
     if (clickWasForEdit && document.activeElement === clickTarget) {
@@ -113,22 +148,22 @@ class Table extends React.PureComponent {
       } else {
         actions.selectionAdd(playlistName, itemIndex, trackId);
       }
-      this.lastClickIndex = itemIndex;
+      gesture.lastClickIndex = itemIndex;
       return;
     }
 
     if (ev.shiftKey) {
-      if (this.getFilteredSelection().has(this.lastClickIndex)) {
+      if (getFilteredSelection().has(gesture.lastClickIndex)) {
         actions.selectionRange(
           playlistName,
-          this.lastClickIndex,
+          gesture.lastClickIndex,
           itemIndex,
           displayItems,
         );
       } else {
         actions.selectionAdd(playlistName, itemIndex, trackId);
       }
-      this.lastClickIndex = itemIndex;
+      gesture.lastClickIndex = itemIndex;
       return;
     }
 
@@ -146,7 +181,7 @@ class Table extends React.PureComponent {
     if (isContextMenu) {
       /* In case we selected a new item at click time,
        * the operation is on a single item. */
-      const bulk = isSelected && this.getFilteredSelection().size > 1;
+      const bulk = isSelected && getFilteredSelection().size > 1;
       actions.menuSet({
         ev,
         type: constants.menuTypes.TRACK,
@@ -155,111 +190,78 @@ class Table extends React.PureComponent {
       ev.preventDefault();
       return;
     }
-    const isSameRowClick = this.lastClickIndex === itemIndex;
+    const isSameRowClick = gesture.lastClickIndex === itemIndex;
     const isSingleClick =
-      new Date() - this.lastClickTime > DOUBLE_CLICK_THRESHOLD;
+      new Date() - gesture.lastClickTime > DOUBLE_CLICK_THRESHOLD;
     const isDoubleClick = isSameRowClick && !isSingleClick;
 
     /* A single click on a selected item should clear other items.
      * However, we may be dragging, so defer clearing to mouseUp */
     if (isDoubleClick) {
-      this.onRowDoubleClick(ev);
+      onRowDoubleClick(ev);
     } else {
       if (isSelected) {
-        this.clearOnMouseUpIndex = itemIndex;
-        this.clearOnMouseUpTrackId = trackId;
+        gesture.clearOnMouseUpIndex = itemIndex;
+        gesture.clearOnMouseUpTrackId = trackId;
       }
-      if (isSameRowClick && this.lastClickWasForEdit && clickWasForEdit) {
-        this.editOnMouseUpIndex = itemIndex;
-        this.editOnMouseUpTitle = clickTarget.getAttribute(
+      if (isSameRowClick && gesture.lastClickWasForEdit && clickWasForEdit) {
+        gesture.editOnMouseUpIndex = itemIndex;
+        gesture.editOnMouseUpTitle = clickTarget.getAttribute(
           constants.TITLE_ATTR,
         );
       }
     }
-    this.lastClickWasForEdit = clickWasForEdit;
-    this.lastClickTime = new Date();
-    this.lastClickIndex = itemIndex;
-  };
+    gesture.lastClickWasForEdit = clickWasForEdit;
+    gesture.lastClickTime = new Date();
+    gesture.lastClickIndex = itemIndex;
+  }
 
   /* After mousedown, either mouseup or dragstart is called (not both) */
 
-  onRowMouseUp = () => {
-    const { actions, playlistName, layout, displayItems } = this.props;
-    if (this.clearOnMouseUpIndex != null) {
+  function onRowMouseUp() {
+    const gesture = gestureRef.current;
+    if (gesture.clearOnMouseUpIndex != null) {
       actions.selectionClearAndAdd(
         playlistName,
-        this.clearOnMouseUpIndex,
-        this.clearOnMouseUpTrackId,
+        gesture.clearOnMouseUpIndex,
+        gesture.clearOnMouseUpTrackId,
         displayItems,
       );
-      this.clearOnMouseUpIndex = null;
-      this.clearOnMouseUpTrackId = null;
+      gesture.clearOnMouseUpIndex = null;
+      gesture.clearOnMouseUpTrackId = null;
     }
-    if (this.editOnMouseUpIndex != null) {
+    if (gesture.editOnMouseUpIndex != null) {
       /* Disable inline editing for small layouts */
       if (layout > 1) {
-        this.setState({
-          editingIndex: this.editOnMouseUpIndex,
-          editingTitle: this.editOnMouseUpTitle,
-        });
+        setEditingIndex(gesture.editOnMouseUpIndex);
+        setEditingTitle(gesture.editOnMouseUpTitle);
       }
-      this.editOnMouseUpIndex = null;
-      this.editOnMouseUpTitle = null;
+      gesture.editOnMouseUpIndex = null;
+      gesture.editOnMouseUpTitle = null;
     }
-  };
-
-  getOrderIndexes(ev) {
-    const { currentTarget: ct } = ev;
-    const { top, height } = ct.getBoundingClientRect();
-    const midY = top + height / 2;
-    if (ev.clientY <= midY) {
-      const bottomIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR), 10);
-      const topIndex =
-        ct.previousSibling &&
-        parseInt(ct.previousSibling.getAttribute(constants.INDEX_ATTR), 10);
-      return { topIndex, bottomIndex };
-    }
-
-    const topIndex = parseInt(ct.getAttribute(constants.INDEX_ATTR), 10);
-    const bottomIndex =
-      ct.nextSibling &&
-      parseInt(ct.nextSibling.getAttribute(constants.INDEX_ATTR), 10);
-    return { topIndex, bottomIndex };
   }
 
-  onRowDragOver = (ev) => {
-    const { orderable } = this.props;
+  function onRowDragOver(ev) {
     if (
       !orderable ||
-      !this.dragGhost ||
+      !gestureRef.current.dragGhost ||
       !ev.dataTransfer.types.includes(constants.PLAYLIST_TYPE)
     ) {
       return;
     }
     ev.preventDefault();
-    const { topIndex, bottomIndex } = this.getOrderIndexes(ev);
-    const { reorderTopIndex, reorderBottomIndex } = this.state;
+    const { topIndex, bottomIndex } = getOrderIndexes(ev);
     if (topIndex !== reorderTopIndex || bottomIndex !== reorderBottomIndex) {
-      this.setState({
-        reorderTopIndex: topIndex,
-        reorderBottomIndex: bottomIndex,
-      });
+      setReorderTopIndex(topIndex);
+      setReorderBottomIndex(bottomIndex);
     }
-  };
+  }
 
-  onRowDragLeave = () => {
-    const { reorderTopIndex, reorderBottomIndex } = this.state;
+  function onRowDragLeave() {
     if (reorderTopIndex != null || reorderBottomIndex != null) {
-      this.setState({ reorderTopIndex: null, reorderBottomIndex: null });
+      setReorderTopIndex(null);
+      setReorderBottomIndex(null);
     }
-  };
-
-  getInsertAt() {
-    const { reorderTopIndex, reorderBottomIndex } = this.state;
-    if (reorderTopIndex != null) {
-      return reorderTopIndex + 1;
-    }
-    return reorderBottomIndex;
   }
 
   /* Insert items between top and bottom index.
@@ -270,147 +272,131 @@ class Table extends React.PureComponent {
    *
    * If no top index is available, insert immediately before bottom
    * index. */
-  onRowDrop = async () => {
-    this.setState({ reorderTopIndex: null, reorderBottomIndex: null });
-    const { actions, playlistName } = this.props;
-    const insertAt = this.getInsertAt();
+  async function onRowDrop() {
+    const insertAt =
+      reorderTopIndex != null ? reorderTopIndex + 1 : reorderBottomIndex;
+    setReorderTopIndex(null);
+    setReorderBottomIndex(null);
     try {
       await actions.playlistReorder(playlistName, insertAt);
     } catch (err) {
       actions.toastErr(`${err}`);
     }
-  };
+  }
 
-  onDragStart = (ev) => {
-    this.editOnMouseUpIndex = null;
-    this.editOnMouseUpTitle = null;
+  function onDragStart(ev) {
+    const gesture = gestureRef.current;
+    gesture.editOnMouseUpIndex = null;
+    gesture.editOnMouseUpTitle = null;
 
-    this.clearOnMouseUpIndex = null;
-    this.clearOnMouseUpTrackId = null;
+    gesture.clearOnMouseUpIndex = null;
+    gesture.clearOnMouseUpTrackId = null;
 
-    const { theme, playlistName } = this.props;
-    const numSelected = this.getFilteredSelection().size;
-    this.dragGhost = getDragCanvas(numSelected, theme);
+    const numSelected = getFilteredSelection().size;
+    const dragGhost = getDragCanvas(numSelected, theme);
+    gesture.dragGhost = dragGhost;
 
     // 1/21/2019 - Must be appended to dom for chrome
     // https://stackoverflow.com/questions/43790022/
     // html5-draggable-setdragimage-doesnt-work-with-canvas-on-chrome
-    this.dragGhost.style.position = "absolute";
-    this.dragGhost.style.left = "-100%";
-    document.body.append(this.dragGhost);
+    dragGhost.style.position = "absolute";
+    dragGhost.style.left = "-100%";
+    document.body.append(dragGhost);
 
     ev.dataTransfer.setData(constants.PLAYLIST_TYPE, playlistName);
-    ev.dataTransfer.setDragImage(this.dragGhost, 0, 0);
-  };
-
-  onDragEnd = () => {
-    this.dragGhost.remove();
-    this.dragGhost = null;
-  };
-
-  onBlur = () => {
-    this.setState({ editingIndex: null, editingTitle: null });
-  };
-
-  render() {
-    const {
-      pathname,
-      qp,
-      actions,
-      index,
-      sortKey,
-      ascending,
-      columns,
-      isPlaying,
-      layout,
-      selection,
-      displayItems,
-      currentPage,
-      lastPage,
-      onItemEdit,
-      draggable,
-    } = this.props;
-    const { reorderTopIndex, reorderBottomIndex, editingIndex, editingTitle } =
-      this.state;
-    return (
-      <div>
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              {columns.map((column) => (
-                <Column
-                  key={column.title}
-                  column={column}
-                  sortKey={sortKey}
-                  ascending={ascending}
-                  pathname={pathname}
-                  qp={qp}
-                />
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {displayItems.map((sample) => {
-              let className = "";
-              if (selection.has(sample.index)) {
-                className = "common-table-row-selected ";
-              }
-              if (sample.index === reorderTopIndex) {
-                className += "common-table-row-reorder-bottom";
-              } else if (sample.index === reorderBottomIndex) {
-                className += "common-table-row-reorder-top";
-              }
-              return (
-                <tr
-                  key={sample.index + sample.id}
-                  onMouseDown={this.onRowMouseDown}
-                  onDragOver={this.onRowDragOver}
-                  onDragLeave={this.onRowDragLeave}
-                  onDrop={this.onRowDrop}
-                  onMouseUp={this.onRowMouseUp}
-                  onContextMenu={this.onContextMenu}
-                  data-trackid={sample.id}
-                  data-index={sample.index}
-                  draggable={draggable}
-                  onDragStart={this.onDragStart}
-                  onDragEnd={this.onDragEnd}
-                  onTouchStart={this.onTouchStart}
-                  onTouchEnd={this.onTouchEnd}
-                  onTouchMove={this.onTouchMove}
-                  onTouchCancel={this.onTouchCancel}
-                  className={className}
-                >
-                  {columns.map((column) => (
-                    <column.Component
-                      key={column.title}
-                      title={column.title}
-                      isPlaying={isPlaying}
-                      onChange={onItemEdit}
-                      onBlur={this.onBlur}
-                      index={index}
-                      sample={sample}
-                      editable={
-                        layout &&
-                        editingIndex === sample.index &&
-                        editingTitle === column.title
-                      }
-                    />
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <PaginationButtons
-          currentPage={currentPage}
-          lastPage={lastPage}
-          pathname={pathname}
-          qp={qp}
-          actions={actions}
-        />
-      </div>
-    );
+    ev.dataTransfer.setDragImage(dragGhost, 0, 0);
   }
-}
+
+  function onDragEnd() {
+    const gesture = gestureRef.current;
+    gesture.dragGhost.remove();
+    gesture.dragGhost = null;
+  }
+
+  /* Stable, since it is passed down to every table cell */
+  const onBlur = useCallback(() => {
+    setEditingIndex(null);
+    setEditingTitle(null);
+  }, []);
+
+  return (
+    <div>
+      <table className="table table-hover">
+        <thead>
+          <tr>
+            {columns.map((column) => (
+              <Column
+                key={column.title}
+                column={column}
+                sortKey={sortKey}
+                ascending={ascending}
+                pathname={pathname}
+                qp={qp}
+              />
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {displayItems.map((sample) => {
+            let className = "";
+            if (selection.has(sample.index)) {
+              className = "common-table-row-selected ";
+            }
+            if (sample.index === reorderTopIndex) {
+              className += "common-table-row-reorder-bottom";
+            } else if (sample.index === reorderBottomIndex) {
+              className += "common-table-row-reorder-top";
+            }
+            return (
+              <tr
+                key={sample.index + sample.id}
+                onMouseDown={onRowMouseDown}
+                onDragOver={onRowDragOver}
+                onDragLeave={onRowDragLeave}
+                onDrop={onRowDrop}
+                onMouseUp={onRowMouseUp}
+                onContextMenu={onContextMenu}
+                data-trackid={sample.id}
+                data-index={sample.index}
+                draggable={draggable}
+                onDragStart={onDragStart}
+                onDragEnd={onDragEnd}
+                onTouchStart={onTouchStart}
+                onTouchEnd={clearLongPress}
+                onTouchMove={clearLongPress}
+                onTouchCancel={clearLongPress}
+                className={className}
+              >
+                {columns.map((column) => (
+                  <column.Component
+                    key={column.title}
+                    title={column.title}
+                    isPlaying={isPlaying}
+                    onChange={onItemEdit}
+                    onBlur={onBlur}
+                    index={index}
+                    sample={sample}
+                    editable={
+                      layout &&
+                      editingIndex === sample.index &&
+                      editingTitle === column.title
+                    }
+                  />
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <PaginationButtons
+        currentPage={currentPage}
+        lastPage={lastPage}
+        pathname={pathname}
+        qp={qp}
+        actions={actions}
+      />
+    </div>
+  );
+});
 
 export { Table };

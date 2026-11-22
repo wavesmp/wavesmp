@@ -1,8 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
+import { memo, useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 
 import { routes } from "src/constants";
+import { useAccount } from "src/providers/hooks";
 
 import "./index.css";
 
@@ -17,30 +17,28 @@ function LoadingComponent() {
   );
 }
 
+/* Whether fetching the user has taken longer than LOADING_TIMEOUT
+ * since the route was mounted */
+function useLoadingTimedOut() {
+  const [timedOut, setTimedOut] = useState(false);
+  useEffect(() => {
+    const timeout = setTimeout(() => setTimedOut(true), LOADING_TIMEOUT);
+    return () => clearTimeout(timeout);
+  }, []);
+  return timedOut;
+}
+
 /* Redirect to site if not authenticated */
-class PrivateRouteComponent extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { loading: false };
-  }
+const PrivateRoute = memo(function PrivateRoute({
+  component: Component,
+  path,
+}) {
+  const { fetchingUser, user } = useAccount();
+  const loadingTimedOut = useLoadingTimedOut();
 
-  componentDidMount() {
-    this.loadingTimeout = setTimeout(this.onLoadingTimeout, LOADING_TIMEOUT);
-  }
-
-  onLoadingTimeout = () => {
-    const { account } = this.props;
-    if (account.fetchingUser) {
-      this.setState({ loading: true });
-    }
-  };
-
-  renderRoute = (routeProps) => {
-    const { account, component: Component } = this.props;
-    const { loading } = this.state;
-    const { fetchingUser, user } = account;
+  function renderRoute(routeProps) {
     if (fetchingUser) {
-      if (loading) {
+      if (loadingTimedOut) {
         return <LoadingComponent />;
       }
       /* May want to display loading icon if this takes long */
@@ -57,38 +55,23 @@ class PrivateRouteComponent extends React.PureComponent {
         }}
       />
     );
-  };
-
-  render() {
-    const { path } = this.props;
-    return <Route path={path} render={this.renderRoute} />;
   }
-}
+
+  return <Route path={path} render={renderRoute} />;
+});
 
 /* Redirect to app if authenticated */
-class PublicRouteComponent extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { loading: false };
-  }
+const PublicRoute = memo(function PublicRoute({
+  component: Component,
+  path,
+  exact,
+}) {
+  const { fetchingUser, user } = useAccount();
+  const loadingTimedOut = useLoadingTimedOut();
 
-  componentDidMount() {
-    this.loadingTimeout = setTimeout(this.onLoadingTimeout, LOADING_TIMEOUT);
-  }
-
-  onLoadingTimeout = () => {
-    const { account } = this.props;
-    if (account.fetchingUser) {
-      this.setState({ loading: true });
-    }
-  };
-
-  renderRoute = (routeProps) => {
-    const { account, component: Component } = this.props;
-    const { loading } = this.state;
-    const { fetchingUser, user } = account;
+  function renderRoute(routeProps) {
     if (fetchingUser) {
-      if (loading) {
+      if (loadingTimedOut) {
         return <LoadingComponent />;
       }
       return null;
@@ -99,19 +82,9 @@ class PublicRouteComponent extends React.PureComponent {
       return <Redirect to={from} />;
     }
     return <Component {...routeProps} />;
-  };
-
-  render() {
-    const { path, exact } = this.props;
-    return <Route path={path} exact={exact} render={this.renderRoute} />;
   }
-}
 
-function mapStateToProps(state) {
-  return { account: state.account };
-}
-
-const PrivateRoute = connect(mapStateToProps)(PrivateRouteComponent);
-const PublicRoute = connect(mapStateToProps)(PublicRouteComponent);
+  return <Route path={path} exact={exact} render={renderRoute} />;
+});
 
 export { PrivateRoute, PublicRoute };

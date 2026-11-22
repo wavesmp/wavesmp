@@ -1,68 +1,64 @@
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 
-class InputCell extends React.Component {
-  constructor(props) {
-    super(props);
-    this.inputRef = React.createRef();
-    this.state = { value: props.value };
-  }
+/* Not memoized, matching the original React.Component (not PureComponent) */
+function InputCell({
+  editable,
+  title,
+  value: lastValue,
+  onBlur: propsOnBlur,
+  onChange: propsOnChange,
+}) {
+  const inputRef = useRef(null);
+  const [value, setValue] = useState(lastValue);
 
   /* Focus and select input when it becomes editable */
-  componentDidUpdate(prevProps) {
-    const { editable } = this.props;
-    if (!prevProps.editable && editable) {
-      this.inputRef.current.focus();
-      this.inputRef.current.select();
+  const wasEditable = useRef(editable);
+  useEffect(() => {
+    if (!wasEditable.current && editable) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+    wasEditable.current = editable;
+  }, [editable]);
+
+  function onKeyDown(ev) {
+    if (ev.key === "Enter") {
+      inputRef.current.blur();
     }
   }
 
-  onKeyDown = (ev) => {
-    const { key } = ev;
-    if (key === "Enter") {
-      this.inputRef.current.blur();
-    }
-  };
-
-  onBlur = () => {
-    const { value: lastValue, onBlur, onChange } = this.props;
-    const { value } = this.state;
+  function onBlur() {
     if (value && value !== lastValue) {
-      onChange(value);
+      propsOnChange(value);
     }
-    onBlur();
-  };
+    propsOnBlur();
+  }
 
-  onChange = (ev) => {
-    const newValue = ev.currentTarget.value;
-    this.setState({ value: newValue });
-  };
+  function onChange(ev) {
+    setValue(ev.currentTarget.value);
+  }
 
-  render() {
-    const { editable, title } = this.props;
-    if (editable) {
-      const { value } = this.state;
-      return (
-        <input
-          ref={this.inputRef}
-          className="table-input"
-          type="text"
-          onBlur={this.onBlur}
-          onKeyDown={this.onKeyDown}
-          draggable={false}
-          spellCheck="false"
-          data-title={title}
-          value={value}
-          onChange={this.onChange}
-        />
-      );
-    }
-    const { value } = this.props;
+  if (editable) {
     return (
-      <span draggable spellCheck="false" data-title={title}>
-        {value}
-      </span>
+      <input
+        ref={inputRef}
+        className="table-input"
+        type="text"
+        onBlur={onBlur}
+        onKeyDown={onKeyDown}
+        draggable={false}
+        spellCheck="false"
+        data-title={title}
+        value={value}
+        onChange={onChange}
+      />
     );
   }
+  return (
+    <span draggable spellCheck="false" data-title={title}>
+      {lastValue}
+    </span>
+  );
 }
 
 export { InputCell };

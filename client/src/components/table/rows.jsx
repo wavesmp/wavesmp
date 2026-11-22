@@ -1,4 +1,4 @@
-import React from "react";
+import { memo, useCallback } from "react";
 
 import { InputCell } from "./inputcell";
 
@@ -6,149 +6,146 @@ const PLAY_ICON = <i className="fa fa-lg fa-play table-play-icon" />;
 const PAUSE_ICON = <i className="fa fa-lg fa-pause table-pause-icon" />;
 const PLAY_PAUSE_PADDING = <span className="table-blank-icon" />;
 
-class Name extends React.PureComponent {
-  emitChange = (update) => {
-    const { onChange, sample } = this.props;
-    onChange(sample.id, "title", update);
-  };
-
-  render() {
-    const { sample, index, isPlaying, editable, title, onBlur } = this.props;
-
-    let playPauseIcon;
-    let playPausePadding;
-    if (index === sample.index) {
-      playPausePadding = null;
-      playPauseIcon = isPlaying ? PLAY_ICON : PAUSE_ICON;
-    } else {
-      playPauseIcon = null;
-      playPausePadding = PLAY_PAUSE_PADDING;
-    }
-    return (
-      <td>
-        {playPauseIcon}
-        <InputCell
-          onChange={this.emitChange}
-          onBlur={onBlur}
-          editable={editable}
-          value={sample.title}
-          title={title}
-        />
-        {playPausePadding}
-      </td>
-    );
-  }
+/* Calls onChange with the track id and attribute of an edited cell */
+function useEmitChange(onChange, id, attribute) {
+  return useCallback(
+    (update) => {
+      onChange(id, attribute, update);
+    },
+    [onChange, id, attribute],
+  );
 }
 
-class State extends React.PureComponent {
-  renderIcon(iconClasses) {
-    return <i className={`fa fa-lg ${iconClasses}`} />;
-  }
+const Name = memo(function Name({
+  sample,
+  index,
+  isPlaying,
+  editable,
+  title,
+  onBlur,
+  onChange,
+}) {
+  const emitChange = useEmitChange(onChange, sample.id, "title");
 
-  renderRow() {
-    const { sample } = this.props;
-    const { state } = sample;
-    switch (state) {
-      case "preview":
-        return this.renderIcon("fa-eye");
-      case "pending":
-        return this.renderIcon("fa-spinner fa-pulse");
-      case "uploading":
-        return <>{`${sample.uploadProgress}%`}</>;
-      default:
-        return this.renderIcon("fa-check-circle common-table-status-ok");
-    }
+  let playPauseIcon;
+  let playPausePadding;
+  if (index === sample.index) {
+    playPausePadding = null;
+    playPauseIcon = isPlaying ? PLAY_ICON : PAUSE_ICON;
+  } else {
+    playPauseIcon = null;
+    playPausePadding = PLAY_PAUSE_PADDING;
   }
+  return (
+    <td>
+      {playPauseIcon}
+      <InputCell
+        onChange={emitChange}
+        onBlur={onBlur}
+        editable={editable}
+        value={sample.title}
+        title={title}
+      />
+      {playPausePadding}
+    </td>
+  );
+});
 
-  render() {
-    return (
-      <td className="common-columns-small-screen-hide">{this.renderRow()}</td>
-    );
-  }
+function renderStateIcon(iconClasses) {
+  return <i className={`fa fa-lg ${iconClasses}`} />;
 }
 
-class Time extends React.PureComponent {
-  render() {
-    const { sample } = this.props;
-    return <td className="common-columns-small-screen-hide">{sample.time}</td>;
+const State = memo(function State({ sample }) {
+  let content;
+  switch (sample.state) {
+    case "preview":
+      content = renderStateIcon("fa-eye");
+      break;
+    case "pending":
+      content = renderStateIcon("fa-spinner fa-pulse");
+      break;
+    case "uploading":
+      content = <>{`${sample.uploadProgress}%`}</>;
+      break;
+    default:
+      content = renderStateIcon("fa-check-circle common-table-status-ok");
   }
-}
+  return <td className="common-columns-small-screen-hide">{content}</td>;
+});
 
-class Artist extends React.PureComponent {
-  emitChange = (update) => {
-    const { onChange, sample } = this.props;
-    onChange(sample.id, "artist", update);
-  };
+const Time = memo(function Time({ sample }) {
+  return <td className="common-columns-small-screen-hide">{sample.time}</td>;
+});
 
-  render() {
-    const { sample, editable, title, onBlur } = this.props;
-    return (
-      <td>
-        <InputCell
-          onChange={this.emitChange}
-          onBlur={onBlur}
-          editable={editable}
-          value={sample.artist}
-          title={title}
-        />
-      </td>
-    );
-  }
-}
+const Artist = memo(function Artist({
+  sample,
+  editable,
+  title,
+  onBlur,
+  onChange,
+}) {
+  const emitChange = useEmitChange(onChange, sample.id, "artist");
+  return (
+    <td>
+      <InputCell
+        onChange={emitChange}
+        onBlur={onBlur}
+        editable={editable}
+        value={sample.artist}
+        title={title}
+      />
+    </td>
+  );
+});
 
-class Album extends React.PureComponent {
-  emitChange = (update) => {
-    const { onChange, sample } = this.props;
-    onChange(sample.id, "album", update);
-  };
+const Album = memo(function Album({
+  sample,
+  editable,
+  title,
+  onBlur,
+  onChange,
+}) {
+  const emitChange = useEmitChange(onChange, sample.id, "album");
+  return (
+    <td>
+      <InputCell
+        onChange={emitChange}
+        onBlur={onBlur}
+        editable={editable}
+        value={sample.album}
+        title={title}
+      />
+    </td>
+  );
+});
 
-  render() {
-    const { sample, editable, title, onBlur } = this.props;
-    return (
-      <td>
-        <InputCell
-          onChange={this.emitChange}
-          onBlur={onBlur}
-          editable={editable}
-          value={sample.album}
-          title={title}
-        />
-      </td>
-    );
-  }
-}
+const Genre = memo(function Genre({
+  sample,
+  editable,
+  title,
+  onBlur,
+  onChange,
+}) {
+  const emitChange = useEmitChange(onChange, sample.id, "genre");
+  return (
+    <td>
+      <InputCell
+        onChange={emitChange}
+        onBlur={onBlur}
+        editable={editable}
+        value={sample.genre}
+        title={title}
+      />
+    </td>
+  );
+});
 
-class Genre extends React.PureComponent {
-  emitChange = (update) => {
-    const { onChange, sample } = this.props;
-    onChange(sample.id, "genre", update);
-  };
-
-  render() {
-    const { sample, editable, title, onBlur } = this.props;
-    return (
-      <td>
-        <InputCell
-          onChange={this.emitChange}
-          onBlur={onBlur}
-          editable={editable}
-          value={sample.genre}
-          title={title}
-        />
-      </td>
-    );
-  }
-}
-
-class CreatedAt extends React.PureComponent {
-  render() {
-    const { sample } = this.props;
-    return (
-      <td className="common-columns-small-screen-hide">
-        {sample.createdAtPretty}
-      </td>
-    );
-  }
-}
+const CreatedAt = memo(function CreatedAt({ sample }) {
+  return (
+    <td className="common-columns-small-screen-hide">
+      {sample.createdAtPretty}
+    </td>
+  );
+});
 
 export { Album, Artist, CreatedAt, Genre, Name, State, Time };
