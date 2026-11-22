@@ -2,13 +2,13 @@ use anyhow::Context;
 use anyhow::Result;
 use http_body_util::BodyExt;
 use http_body_util::Empty;
-use hyper::body::Body;
-use hyper::body::Bytes;
-use hyper::body::Incoming;
 use hyper::Method;
 use hyper::Request;
 use hyper::Response;
 use hyper::StatusCode;
+use hyper::body::Body;
+use hyper::body::Bytes;
+use hyper::body::Incoming;
 use log::error;
 use log::warn;
 use std::str::from_utf8;
@@ -42,7 +42,7 @@ pub(crate) async fn handle_http_request(req: Request<Incoming>) -> Result<Respon
             let whole_body_string = from_utf8(&whole_body_bytes)
                 .context("received csp violation with invalid string")?;
 
-            warn!("received csp violation={}", &whole_body_string);
+            warn!("received csp violation={}", whole_body_string);
 
             create_response(StatusCode::OK)
         }

@@ -1,12 +1,12 @@
-use crate::port_utils::wait_for_port;
 use crate::port_utils::SERVER_PORT;
+use crate::port_utils::wait_for_port;
 use anyhow::Result;
 use http_body_util::Empty;
-use hyper::body::Bytes;
-use hyper::client::conn::http1::SendRequest;
 use hyper::Method;
 use hyper::Request;
 use hyper::StatusCode;
+use hyper::body::Bytes;
+use hyper::client::conn::http1::SendRequest;
 use hyper_util::rt::TokioIo;
 use tokio::net::TcpStream;
 

@@ -1,4 +1,4 @@
-FROM rust:1.87-alpine3.22 AS build
+FROM rust:1.100-alpine3.24 AS build
 
 # Install system dependencies
 RUN apk add --no-cache curl musl-dev
@@ -27,13 +27,14 @@ RUN export DATABASE_URL="mysql://root:root@mysql.mysql/waves" && \
   cargo clippy -- -Dwarnings && \
   cargo fmt --check && \
   cargo llvm-cov --fail-under-lines 70 --ignore-filename-regex main.rs && \
-  cd /app/target/llvm-cov-target/debug/deps && \
-  INTEGRATION_TEST_BINARY="$(find . -name 'integration_test-*' -executable)" && \
-  mv "${INTEGRATION_TEST_BINARY}" integration_test
+  INTEGRATION_TEST_BINARY="$(find /app/target -type f -name 'integration_test-*' -executable)" && \
+  echo "integration test binaries: ${INTEGRATION_TEST_BINARY:-<none>}" && \
+  [ "$(printf '%s\n' "${INTEGRATION_TEST_BINARY}" | grep -c .)" -eq 1 ] && \
+  mv "${INTEGRATION_TEST_BINARY}" /app/integration_test
 
 # Integration Test
 FROM scratch AS integration-test
-COPY --from=test-results /app/target/llvm-cov-target/debug/deps/integration_test /integration_test
+COPY --from=test-results /app/integration_test /integration_test
 USER 1000
 CMD ["/integration_test"]
 
