@@ -82,7 +82,7 @@ async fn test_binary_message(test_host: &str) -> Result<()> {
         "error handling messages: invalid message opcode: Binary",
         &format!(
             "unexpected error message for binary message: `{}`",
-            &error_message.err
+            error_message.err
         ),
     );
     let empty_response = get_waves_message(&mut ws).await?;
@@ -127,7 +127,7 @@ async fn test_unknown_message_type(test_host: &str) -> Result<()> {
         "error handling messages: unknown variant ",
         &format!(
             "unexpected error message for unknown type: `{}`",
-            &error_message.err
+            error_message.err
         ),
     );
     let empty_response = get_waves_message(&mut ws).await?;
@@ -188,7 +188,7 @@ async fn test_invalid_message_type(ws: &mut FragmentCollector<TokioIo<Upgraded>>
         "error handling message: invalid message type: Error",
         &format!(
             "unexpected error message for invalid type: `{}`",
-            &error_message.err
+            error_message.err
         ),
     );
     Ok(())
