@@ -25,5 +25,5 @@ Manages your personal music collection on the cloud.
 
 # Publishing Images
 
-- See the [waves-client-web package](./packages/waves-client-web) for publishing images
-- See the [waves-server-rust package](./packages/waves-server-rust) for publishing images
+- See the [waves-client-web package](./client) for publishing images
+- See the [waves-server-rust package](./server) for publishing images
