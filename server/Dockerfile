@@ -1,11 +1,10 @@
 FROM rust:1.100-alpine3.24 AS build
 
 # Install system dependencies
-RUN apk add --no-cache curl musl-dev
+RUN apk add --no-cache musl-dev
 
 # Install rust build dependencies
-RUN cargo install cargo-llvm-cov --locked && \
-  rustup component add clippy rustfmt
+RUN rustup component add clippy rustfmt
 
 # Install rust application and test dependencies
 WORKDIR /app
