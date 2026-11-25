@@ -1,15 +1,16 @@
 import { memo, useState } from "react";
 
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useActions, useSelectorState } from "src/providers/hooks";
 import { getFilteredSelection } from "src/selectors";
 
 import { ModalInput } from "./util";
 
 const PlaylistCreate = memo(function PlaylistCreate({ playlistSrc }) {
   const actions = useActions();
-  const numItems = useWavesSelector((state) =>
-    playlistSrc ? getFilteredSelection(state, playlistSrc).size : undefined,
-  );
+  const selectorState = useSelectorState();
+  const numItems = playlistSrc
+    ? getFilteredSelection(selectorState, playlistSrc).size
+    : undefined;
   const [name, setName] = useState("");
 
   function onChange(ev) {

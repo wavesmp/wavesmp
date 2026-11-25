@@ -1,74 +1,86 @@
 /*
- * App-specific hooks for reading state and dispatching actions.
- *
- * Components use these instead of react-redux directly, so the store can
- * later be replaced (e.g. with React Context) by changing only this module.
+ * Hooks for reading state and dispatching actions. Each slice hook reads its
+ * own context, so a component only re-renders when a slice it reads changes.
  */
-import { useMemo } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
+import { useContext, useMemo } from "react";
 
-import * as WavesActions from "src/actions";
+import {
+  AccountContext,
+  ActionsContext,
+  ErrContext,
+  LayoutContext,
+  LibrariesContext,
+  MenubarContext,
+  MenuContext,
+  ModalContext,
+  PlayingContext,
+  PlaylistsContext,
+  SidebarContext,
+  ToastsContext,
+} from "./contexts";
 
 /* Action creators bound to dispatch. Stable across renders */
 function useActions() {
-  const dispatch = useDispatch();
-  return useMemo(() => bindActionCreators(WavesActions, dispatch), [dispatch]);
+  return useContext(ActionsContext);
 }
-
-/*
- * Select derived values from the whole state. The result is compared
- * shallowly, so a selector may return a new object of props on each call,
- * as connect's mapStateToProps did.
- */
-function useWavesSelector(selector) {
-  return useSelector(selector, shallowEqual);
-}
-
-/* State slices */
 
 function useAccount() {
-  return useSelector((state) => state.account);
+  return useContext(AccountContext);
 }
 
 function useErr() {
-  return useSelector((state) => state.err);
+  return useContext(ErrContext);
 }
 
 function useLayout() {
-  return useSelector((state) => state.layout);
+  return useContext(LayoutContext);
 }
 
 function useMenu() {
-  return useSelector((state) => state.menu);
+  return useContext(MenuContext);
 }
 
 function useMenubar() {
-  return useSelector((state) => state.menubar);
+  return useContext(MenubarContext);
 }
 
 function useModal() {
-  return useSelector((state) => state.modal);
+  return useContext(ModalContext);
 }
 
 function useSidebar() {
-  return useSelector((state) => state.sidebar);
+  return useContext(SidebarContext);
 }
 
 function useToasts() {
-  return useSelector((state) => state.toasts);
+  return useContext(ToastsContext);
 }
 
 function useLibraries() {
-  return useSelector((state) => state.tracks.libraries);
+  return useContext(LibrariesContext);
 }
 
 function usePlaying() {
-  return useSelector((state) => state.tracks.playing);
+  return useContext(PlayingContext);
 }
 
 function usePlaylists() {
-  return useSelector((state) => state.tracks.playlists);
+  return useContext(PlaylistsContext);
+}
+
+/*
+ * The part of the state read by the selectors in src/selectors:
+ * { account, tracks: { libraries, playlists, playing } }
+ */
+function useSelectorState() {
+  const account = useAccount();
+  const libraries = useLibraries();
+  const playlists = usePlaylists();
+  const playing = usePlaying();
+  return useMemo(
+    () => ({ account, tracks: { libraries, playlists, playing } }),
+    [account, libraries, playlists, playing],
+  );
 }
 
 export {
@@ -82,7 +94,7 @@ export {
   useModal,
   usePlaying,
   usePlaylists,
+  useSelectorState,
   useSidebar,
   useToasts,
-  useWavesSelector,
 };

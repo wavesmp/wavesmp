@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import { modalTypes, UPLOADS_NAME as playlistName } from "src/constants";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useActions, useLayout, useSelectorState } from "src/providers/hooks";
 import { getOrCreatePlaylistSelectors } from "src/selectors";
 
 import { ContentPage } from "../contentpage";
@@ -18,7 +18,9 @@ const ACCEPTED_FILE_TYPE_LIST = ["audio/mp3", "audio/mpeg"];
 
 const Upload = memo(function Upload(ownProps) {
   const actions = useActions();
-  const props = useWavesSelector((state) => selectStateProps(state, ownProps));
+  const selectorState = useSelectorState();
+  const layout = useLayout();
+  const props = selectStateProps({ ...selectorState, layout }, ownProps);
   const {
     columns,
     currentPage,
@@ -26,7 +28,6 @@ const Upload = memo(function Upload(ownProps) {
     index,
     isPlaying,
     lastPage,
-    layout,
     loaded,
     numItems,
     pathname,

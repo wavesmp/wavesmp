@@ -2,7 +2,13 @@ import { memo, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 import { LIBRARY_NAME as playlistName, routes } from "src/constants";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import {
+  useActions,
+  useLayout,
+  useMenubar,
+  useSelectorState,
+  useSidebar,
+} from "src/providers/hooks";
 import {
   getDefaultPlaylistSearch,
   getOrCreatePlaylistSelectors,
@@ -15,8 +21,13 @@ const NO_DATA_MSG = "Empty playlist. Go ahead and add some tracks!";
 
 const Library = memo(function Library(ownProps) {
   const actions = useActions();
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
+  const selectorState = useSelectorState();
+  const menubar = useMenubar();
+  const sidebar = useSidebar();
+  const layout = useLayout();
+  const stateProps = selectStateProps(
+    { ...selectorState, menubar, sidebar, layout },
+    ownProps,
   );
   const props = { ...ownProps, ...stateProps, actions };
 

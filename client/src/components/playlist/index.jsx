@@ -2,7 +2,12 @@ import { memo, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 import { LIBRARY_NAME, modalTypes, routes } from "src/constants";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import {
+  useActions,
+  useLayout,
+  useMenubar,
+  useSelectorState,
+} from "src/providers/hooks";
 import {
   getDefaultPlaylistSearch,
   getLibraryPlaylistSearch,
@@ -16,8 +21,12 @@ const NO_DATA_MSG = "Empty playlist. Go ahead and add some tracks!";
 
 const Playlist = memo(function Playlist(ownProps) {
   const actions = useActions();
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
+  const selectorState = useSelectorState();
+  const menubar = useMenubar();
+  const layout = useLayout();
+  const stateProps = selectStateProps(
+    { ...selectorState, menubar, layout },
+    ownProps,
   );
   const props = { ...ownProps, ...stateProps, actions };
 

@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import { combineReducers } from "../combineReducers";
 
 import { reducerLibraries as libraries } from "./libraries";
 import { reducerPlaying as playing } from "./playing";

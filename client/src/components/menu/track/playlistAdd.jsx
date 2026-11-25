@@ -1,15 +1,13 @@
 import { memo } from "react";
 
 import { isInternalPlaylist } from "src/playlistName";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useActions, usePlaylists } from "src/providers/hooks";
 import { Back, PlaylistAddItem } from "./items";
 
 const PlaylistAdd = memo(function PlaylistAdd(ownProps) {
   const actions = useActions();
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
-  );
-  const props = { ...ownProps, ...stateProps, actions };
+  const playlists = usePlaylists();
+  const props = { ...ownProps, playlists, actions };
 
   const onBackClick = () => {
     const { actions } = props;
@@ -48,11 +46,5 @@ const PlaylistAdd = memo(function PlaylistAdd(ownProps) {
     </div>
   );
 });
-
-function selectStateProps(state) {
-  return {
-    playlists: state.tracks.playlists,
-  };
-}
 
 export { PlaylistAdd };

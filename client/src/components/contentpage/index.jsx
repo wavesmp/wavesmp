@@ -1,16 +1,21 @@
 import { memo } from "react";
 
-import { useWavesSelector } from "src/providers/hooks";
+import { useLayout, usePlaying, useSidebar } from "src/providers/hooks";
 
 import "./index.css";
 
 const ContentPage = memo(function ContentPage(ownProps) {
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
-  );
-  const props = { ...ownProps, ...stateProps };
+  const layout = useLayout();
+  const sidebar = useSidebar();
+  const playing = usePlaying();
+  const props = {
+    ...ownProps,
+    layout,
+    isSliderVisible: playing.track != null,
+    sidebar,
+  };
 
-  const { children, title, sidebar, isSliderVisible, layout } = props;
+  const { children, title, isSliderVisible } = props;
   let className;
   /* Usually, transitions are enabled on this element. However,
    * disable the transitions when moving from layouts, so that
@@ -42,14 +47,5 @@ const ContentPage = memo(function ContentPage(ownProps) {
     </div>
   );
 });
-
-function selectStateProps(state) {
-  const { layout, tracks, sidebar } = state;
-  return {
-    layout,
-    isSliderVisible: tracks.playing.track != null,
-    sidebar,
-  };
-}
 
 export { ContentPage };

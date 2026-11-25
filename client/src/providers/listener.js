@@ -3,6 +3,7 @@ import ObjectID from "bson-objectid";
 import * as WavesActions from "src/actions";
 import { LIBRARY_NAME, UPLOADS_NAME } from "src/constants";
 
+/* store is the dispatcher (see dispatcher.js) */
 async function storeListener(store, ws, player, localState, history) {
   store.dispatch(WavesActions.routerChange(history.location));
   history.listen((location) => {
