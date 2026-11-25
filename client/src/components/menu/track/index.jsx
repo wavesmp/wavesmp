@@ -1,8 +1,5 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { memo } from "react";
 
-import * as WavesActions from "src/actions";
 import {
   LIBRARY_NAME,
   NOW_PLAYING_NAME,
@@ -10,6 +7,7 @@ import {
   menuTypes,
   modalTypes,
 } from "src/constants";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 
 import "./index.css";
 
@@ -24,33 +22,39 @@ import {
   PlaylistRemove,
 } from "./items";
 
-class TrackComponent extends React.PureComponent {
-  trackToggle = () => {
-    const { actions, playlistName, itemIndex, trackId } = this.props;
+const Track = memo(function Track(ownProps) {
+  const actions = useActions();
+  const stateProps = useWavesSelector((state) =>
+    selectStateProps(state, ownProps),
+  );
+  const props = { ...ownProps, ...stateProps, actions };
+
+  const trackToggle = () => {
+    const { actions, playlistName, itemIndex, trackId } = props;
     actions.trackToggle(trackId, playlistName, itemIndex);
     actions.menuReset();
   };
 
-  pause = () => {
-    const { actions } = this.props;
+  const pause = () => {
+    const { actions } = props;
     actions.pause();
     actions.menuReset();
   };
 
-  play = () => {
-    const { actions } = this.props;
+  const play = () => {
+    const { actions } = props;
     actions.play();
     actions.menuReset();
   };
 
-  tracksDelete = () => {
-    const { actions } = this.props;
+  const tracksDelete = () => {
+    const { actions } = props;
     actions.modalSet({ type: modalTypes.TRACKS_DELETE });
     actions.menuReset();
   };
 
-  tracksRemove = async () => {
-    const { actions, playlistName } = this.props;
+  const tracksRemove = async () => {
+    const { actions, playlistName } = props;
     try {
       await actions.tracksRemove(playlistName);
       actions.menuReset();
@@ -59,85 +63,73 @@ class TrackComponent extends React.PureComponent {
     }
   };
 
-  nowPlayingAdd = () => {
-    const { actions, playlistName } = this.props;
+  const nowPlayingAdd = () => {
+    const { actions, playlistName } = props;
     actions.playlistAdd(playlistName, NOW_PLAYING_NAME);
     actions.menuReset();
   };
 
-  playlistAdd = () => {
-    const { actions, playlistName } = this.props;
+  const playlistAdd = () => {
+    const { actions, playlistName } = props;
     actions.menuNext({
       type: menuTypes.PLAYLIST_ADD,
       props: { currentPlaylist: playlistName },
     });
   };
 
-  download = () => {
-    const { actions, trackId } = this.props;
+  const download = () => {
+    const { actions, trackId } = props;
     actions.download(trackId);
     actions.menuReset();
   };
 
-  getPlayOrPauseAction() {
-    const { isPlaying, index, itemIndex } = this.props;
+  function getPlayOrPauseAction() {
+    const { isPlaying, index, itemIndex } = props;
     if (index === itemIndex) {
       if (isPlaying) {
-        return <Pause onClick={this.pause} />;
+        return <Pause onClick={pause} />;
       }
-      return <PlayResume onClick={this.play} />;
+      return <PlayResume onClick={play} />;
     }
-    return <Play onClick={this.trackToggle} />;
+    return <Play onClick={trackToggle} />;
   }
 
-  getRemoveAction() {
-    const { actions, playlistName } = this.props;
+  function getRemoveAction() {
+    const { actions, playlistName } = props;
     if (playlistName === LIBRARY_NAME) {
-      return <LibraryDelete onClick={this.tracksDelete} />;
+      return <LibraryDelete onClick={tracksDelete} />;
     }
     if (playlistName === UPLOADS_NAME) {
       return <PlaylistRemove onClick={actions.trackUploadsDelete} />;
     }
-    return <PlaylistRemove onClick={this.tracksRemove} />;
+    return <PlaylistRemove onClick={tracksRemove} />;
   }
 
-  render() {
-    const { bulk, playlistName } = this.props;
-    return (
-      <div className="menu-track">
-        {!bulk && this.getPlayOrPauseAction()}
+  const { bulk, playlistName } = props;
+  return (
+    <div className="menu-track">
+      {!bulk && getPlayOrPauseAction()}
 
-        {playlistName !== NOW_PLAYING_NAME && playlistName !== UPLOADS_NAME && (
-          <NowPlayingAdd onClick={this.nowPlayingAdd} />
-        )}
+      {playlistName !== NOW_PLAYING_NAME && playlistName !== UPLOADS_NAME && (
+        <NowPlayingAdd onClick={nowPlayingAdd} />
+      )}
 
-        {playlistName !== UPLOADS_NAME && (
-          <PlaylistAdd onClick={this.playlistAdd} />
-        )}
+      {playlistName !== UPLOADS_NAME && <PlaylistAdd onClick={playlistAdd} />}
 
-        {!bulk && playlistName !== UPLOADS_NAME && (
-          <Download onClick={this.download} />
-        )}
+      {!bulk && playlistName !== UPLOADS_NAME && (
+        <Download onClick={download} />
+      )}
 
-        {this.getRemoveAction()}
-      </div>
-    );
-  }
-}
+      {getRemoveAction()}
+    </div>
+  );
+});
 
-function mapStateToProps(state) {
+function selectStateProps(state) {
   const { tracks } = state;
   const { playing } = tracks;
   const { isPlaying } = playing;
   return { isPlaying };
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const Track = connect(mapStateToProps, mapDispatchToProps)(TrackComponent);
 
 export { Track };

@@ -1,26 +1,29 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-
-import * as WavesActions from "src/actions";
+import { memo } from "react";
 
 import { isInternalPlaylist } from "src/playlistName";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 import { Back, PlaylistAddItem } from "./items";
 
-class PlaylistAddComponent extends React.PureComponent {
-  onBackClick = () => {
-    const { actions } = this.props;
+const PlaylistAdd = memo(function PlaylistAdd(ownProps) {
+  const actions = useActions();
+  const stateProps = useWavesSelector((state) =>
+    selectStateProps(state, ownProps),
+  );
+  const props = { ...ownProps, ...stateProps, actions };
+
+  const onBackClick = () => {
+    const { actions } = props;
     actions.menuBack();
   };
 
-  onPlaylistAdd = (playlist) => {
-    const { actions, currentPlaylist } = this.props;
+  const onPlaylistAdd = (playlist) => {
+    const { actions, currentPlaylist } = props;
     actions.playlistAdd(currentPlaylist, playlist);
     actions.menuReset();
   };
 
-  getPlaylistAddItems() {
-    const { playlists } = this.props;
+  function getPlaylistAddItems() {
+    const { playlists } = props;
     const items = [];
 
     for (const playlist in playlists) {
@@ -29,7 +32,7 @@ class PlaylistAddComponent extends React.PureComponent {
           <PlaylistAddItem
             key={playlist}
             name={playlist}
-            onPlaylistAdd={this.onPlaylistAdd}
+            onPlaylistAdd={onPlaylistAdd}
           />,
         );
       }
@@ -38,31 +41,18 @@ class PlaylistAddComponent extends React.PureComponent {
     return items;
   }
 
-  render() {
-    return (
-      <div className="menu-track">
-        <Back onClick={this.onBackClick} />
-        {this.getPlaylistAddItems()}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="menu-track">
+      <Back onClick={onBackClick} />
+      {getPlaylistAddItems()}
+    </div>
+  );
+});
 
-function mapStateToProps(state) {
+function selectStateProps(state) {
   return {
     playlists: state.tracks.playlists,
   };
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const PlaylistAdd = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PlaylistAddComponent);
 
 export { PlaylistAdd };

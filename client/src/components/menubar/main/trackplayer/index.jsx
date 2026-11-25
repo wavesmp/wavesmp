@@ -1,32 +1,24 @@
-import React from "react";
+import { memo } from "react";
 
 import { Options } from "./options";
 import { Player } from "./player";
 
 import "./index.css";
 
-class TrackPlayer extends React.PureComponent {
-  render() {
-    const {
-      menubar,
-      filteredSelection,
-      playlistName,
-      index,
-      actions,
-      playing,
-    } = this.props;
-    if (menubar) {
-      return (
-        <Options
-          actions={actions}
-          filteredSelection={filteredSelection}
-          playlistName={playlistName}
-          index={index}
-        />
-      );
-    }
-    return <Player actions={actions} playing={playing} />;
+const TrackPlayer = memo(function TrackPlayer(props) {
+  const { menubar, filteredSelection, playlistName, index, actions, playing } =
+    props;
+  if (menubar) {
+    return (
+      <Options
+        actions={actions}
+        filteredSelection={filteredSelection}
+        playlistName={playlistName}
+        index={index}
+      />
+    );
   }
-}
+  return <Player actions={actions} playing={playing} />;
+});
 
 export { TrackPlayer };

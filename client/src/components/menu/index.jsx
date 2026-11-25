@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 
 import { MENU_DATA_VALUE, menuTypes } from "src/constants";
 
@@ -18,33 +18,30 @@ const MENUS = {
 
 const EMPTY_MENU = <menu className="menu" />;
 
-class Menu extends React.PureComponent {
-  onContextMenu(ev) {
+const Menu = memo(function Menu({ menu }) {
+  function onContextMenu(ev) {
     ev.preventDefault();
   }
 
-  render() {
-    const { menu } = this.props;
-    const numMenus = menu.length;
-    if (numMenus === 0) {
-      return EMPTY_MENU;
-    }
-
-    const { type, props, transform } = menu[numMenus - 1];
-    const Component = MENUS[type];
-    const style = { transform };
-
-    return (
-      <menu
-        className="menu menu-active"
-        data-toggle={MENU_DATA_VALUE}
-        style={style}
-        onContextMenu={this.onContextMenu}
-      >
-        <Component {...props} />
-      </menu>
-    );
+  const numMenus = menu.length;
+  if (numMenus === 0) {
+    return EMPTY_MENU;
   }
-}
+
+  const { type, props: menuProps, transform } = menu[numMenus - 1];
+  const Component = MENUS[type];
+  const style = { transform };
+
+  return (
+    <menu
+      className="menu menu-active"
+      data-toggle={MENU_DATA_VALUE}
+      style={style}
+      onContextMenu={onContextMenu}
+    >
+      <Component {...menuProps} />
+    </menu>
+  );
+});
 
 export { Menu };

@@ -1,26 +1,22 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { memo, useState } from "react";
 
-import * as WavesActions from "src/actions";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 import { getFilteredSelection } from "src/selectors";
 
 import { ModalInput } from "./util";
 
-class CreatePlaylistModal extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { name: "" };
+const PlaylistCreate = memo(function PlaylistCreate({ playlistSrc }) {
+  const actions = useActions();
+  const numItems = useWavesSelector((state) =>
+    playlistSrc ? getFilteredSelection(state, playlistSrc).size : undefined,
+  );
+  const [name, setName] = useState("");
+
+  function onChange(ev) {
+    setName(ev.currentTarget.value);
   }
 
-  onChange = (ev) => {
-    const name = ev.currentTarget.value;
-    this.setState({ name });
-  };
-
-  onAction = async () => {
-    const { actions, numItems, playlistSrc } = this.props;
-    const { name } = this.state;
+  async function onAction() {
     if (numItems) {
       actions.playlistAdd(playlistSrc, name);
       return true;
@@ -34,53 +30,25 @@ class CreatePlaylistModal extends React.PureComponent {
     }
     actions.toastSuccess("Created playlist");
     return true;
-  };
-
-  getTitle() {
-    const { numItems } = this.props;
-    if (numItems) {
-      const plurality = numItems === 1 ? "" : "s";
-      return `Create Playlist with ${numItems} track${plurality}`;
-    }
-    return "Create Playlist";
   }
 
-  render() {
-    const { name } = this.state;
-    const { actions } = this.props;
-    const title = this.getTitle();
-    return (
-      <ModalInput
-        actions={actions}
-        title={title}
-        actionTitle="Create"
-        onAction={this.onAction}
-        label="Name"
-        value={name}
-        onChange={this.onChange}
-      />
-    );
+  let title = "Create Playlist";
+  if (numItems) {
+    const plurality = numItems === 1 ? "" : "s";
+    title = `Create Playlist with ${numItems} track${plurality}`;
   }
-}
 
-function mapStateToProps(state, ownProps) {
-  const { playlistSrc } = ownProps;
-  if (playlistSrc) {
-    const numItems = getFilteredSelection(state, playlistSrc).size;
-    return { numItems };
-  }
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const PlaylistCreate = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CreatePlaylistModal);
+  return (
+    <ModalInput
+      actions={actions}
+      title={title}
+      actionTitle="Create"
+      onAction={onAction}
+      label="Name"
+      value={name}
+      onChange={onChange}
+    />
+  );
+});
 
 export { PlaylistCreate };

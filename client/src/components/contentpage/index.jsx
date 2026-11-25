@@ -1,45 +1,49 @@
-import React from "react";
-import { connect } from "react-redux";
+import { memo } from "react";
+
+import { useWavesSelector } from "src/providers/hooks";
 
 import "./index.css";
 
-class ContentPageComponent extends React.PureComponent {
-  render() {
-    const { children, title, sidebar, isSliderVisible, layout } = this.props;
-    let className;
-    /* Usually, transitions are enabled on this element. However,
-     * disable the transitions when moving from layouts, so that
-     * the element can snap into place. Adding a new transition
-     * for this case would conflict with the current one, so handle
-     * it programmatically (no pure-CSS solution available AFAIK) */
-    if (layout > 1) {
-      className = "contentpage-container-transition ";
-    } else {
-      className = "";
-    }
-    className += "contentpage-container contentpage-container-";
-    if (sidebar) {
-      className += "wide";
-    } else {
-      className += "narrow";
-    }
-    if (isSliderVisible) {
-      className += " contentpage-container-player-visible";
-    }
-    return (
-      <div className={className}>
-        <div className="contentpage-panel">
-          <div className="contentpage-title">
-            <h1>{title}</h1>
-          </div>
-          {children}
-        </div>
-      </div>
-    );
-  }
-}
+const ContentPage = memo(function ContentPage(ownProps) {
+  const stateProps = useWavesSelector((state) =>
+    selectStateProps(state, ownProps),
+  );
+  const props = { ...ownProps, ...stateProps };
 
-function mapStateToProps(state) {
+  const { children, title, sidebar, isSliderVisible, layout } = props;
+  let className;
+  /* Usually, transitions are enabled on this element. However,
+   * disable the transitions when moving from layouts, so that
+   * the element can snap into place. Adding a new transition
+   * for this case would conflict with the current one, so handle
+   * it programmatically (no pure-CSS solution available AFAIK) */
+  if (layout > 1) {
+    className = "contentpage-container-transition ";
+  } else {
+    className = "";
+  }
+  className += "contentpage-container contentpage-container-";
+  if (sidebar) {
+    className += "wide";
+  } else {
+    className += "narrow";
+  }
+  if (isSliderVisible) {
+    className += " contentpage-container-player-visible";
+  }
+  return (
+    <div className={className}>
+      <div className="contentpage-panel">
+        <div className="contentpage-title">
+          <h1>{title}</h1>
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+});
+
+function selectStateProps(state) {
   const { layout, tracks, sidebar } = state;
   return {
     layout,
@@ -47,7 +51,5 @@ function mapStateToProps(state) {
     sidebar,
   };
 }
-
-const ContentPage = connect(mapStateToProps)(ContentPageComponent);
 
 export { ContentPage };

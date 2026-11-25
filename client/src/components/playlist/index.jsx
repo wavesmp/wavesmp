@@ -1,10 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
+import { memo, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { bindActionCreators } from "redux";
 
-import * as WavesActions from "src/actions";
 import { LIBRARY_NAME, modalTypes, routes } from "src/constants";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 import {
   getDefaultPlaylistSearch,
   getLibraryPlaylistSearch,
@@ -16,9 +14,15 @@ import { TablePage } from "../tablepage";
 
 const NO_DATA_MSG = "Empty playlist. Go ahead and add some tracks!";
 
-class PlaylistComponent extends React.PureComponent {
-  getButtons() {
-    const { libraryPlaylistSearch, defaultPlaylistSearch } = this.props;
+const Playlist = memo(function Playlist(ownProps) {
+  const actions = useActions();
+  const stateProps = useWavesSelector((state) =>
+    selectStateProps(state, ownProps),
+  );
+  const props = { ...ownProps, ...stateProps, actions };
+
+  function getButtons() {
+    const { libraryPlaylistSearch, defaultPlaylistSearch } = props;
     const toLibrary = {
       pathname: routes.library,
       search: libraryPlaylistSearch,
@@ -37,37 +41,38 @@ class PlaylistComponent extends React.PureComponent {
     ];
   }
 
-  onSettingsClick = () => {
-    const { actions, playlistName } = this.props;
+  const onSettingsClick = () => {
+    const { actions, playlistName } = props;
     actions.modalSet({
       type: modalTypes.PLAYLIST_SETTINGS,
       props: { playlistName },
     });
   };
 
-  onItemEdit = (id, attr, update) => {
-    const { actions } = this.props;
-    actions.tracksInfoUpdate(id, attr, update, LIBRARY_NAME);
-  };
+  /* Stable, since it is passed down to every table cell */
+  const onItemEdit = useCallback(
+    (id, attr, update) => {
+      actions.tracksInfoUpdate(id, attr, update, LIBRARY_NAME);
+    },
+    [actions],
+  );
 
-  render() {
-    const { playlistName } = this.props;
-    return (
-      <TablePage
-        {...this.props}
-        buttons={this.getButtons()}
-        draggable
-        orderable
-        noDataMsg={NO_DATA_MSG}
-        onItemEdit={this.onItemEdit}
-        onSettingsClick={this.onSettingsClick}
-        title={playlistName}
-      />
-    );
-  }
-}
+  const { playlistName } = props;
+  return (
+    <TablePage
+      {...props}
+      buttons={getButtons()}
+      draggable
+      orderable
+      noDataMsg={NO_DATA_MSG}
+      onItemEdit={onItemEdit}
+      onSettingsClick={onSettingsClick}
+      title={playlistName}
+    />
+  );
+});
 
-function mapStateToProps(state, ownProps) {
+function selectStateProps(state, ownProps) {
   const playlistName = ownProps.match.params.playlist;
   const { getRouterSearchString, getRouterQueryParams, getPlaylistProps } =
     getOrCreatePlaylistSelectors(playlistName, URLSearchParams, LIBRARY_NAME);
@@ -94,16 +99,5 @@ function mapStateToProps(state, ownProps) {
     ...getPlaylistProps(state, search),
   };
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const Playlist = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PlaylistComponent);
 
 export { Playlist };

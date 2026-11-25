@@ -1,10 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
+import { memo, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { bindActionCreators } from "redux";
 
-import * as WavesActions from "src/actions";
 import { LIBRARY_NAME as playlistName, routes } from "src/constants";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 import {
   getDefaultPlaylistSearch,
   getOrCreatePlaylistSelectors,
@@ -15,9 +13,15 @@ import { TablePage } from "../tablepage";
 
 const NO_DATA_MSG = "Empty playlist. Go ahead and add some tracks!";
 
-class LibraryComponent extends React.PureComponent {
-  getPlaylistButtons() {
-    const { defaultPlaylistSearch } = this.props;
+const Library = memo(function Library(ownProps) {
+  const actions = useActions();
+  const stateProps = useWavesSelector((state) =>
+    selectStateProps(state, ownProps),
+  );
+  const props = { ...ownProps, ...stateProps, actions };
+
+  function getPlaylistButtons() {
+    const { defaultPlaylistSearch } = props;
     const to = { pathname: routes.nowplaying, search: defaultPlaylistSearch };
     return [
       <Link key="Now Playing" className="btn btn-primary" to={to}>
@@ -26,36 +30,36 @@ class LibraryComponent extends React.PureComponent {
     ];
   }
 
-  getButtons() {
-    const { sidebar } = this.props;
+  function getButtons() {
+    const { sidebar } = props;
     if (sidebar) {
-      return this.getPlaylistButtons();
+      return getPlaylistButtons();
     }
     return null;
   }
 
-  onItemEdit = (id, attr, update) => {
-    const { actions } = this.props;
-    actions.tracksInfoUpdate(id, attr, update, playlistName);
-  };
+  const onItemEdit = useCallback(
+    (id, attr, update) => {
+      actions.tracksInfoUpdate(id, attr, update, playlistName);
+    },
+    [actions],
+  );
 
-  render() {
-    return (
-      <TablePage
-        {...this.props}
-        buttons={this.getButtons()}
-        draggable
-        orderable
-        noDataMsg={NO_DATA_MSG}
-        onItemEdit={this.onItemEdit}
-        playlistName={playlistName}
-        title="Library"
-      />
-    );
-  }
-}
+  return (
+    <TablePage
+      {...props}
+      buttons={getButtons()}
+      draggable
+      orderable
+      noDataMsg={NO_DATA_MSG}
+      onItemEdit={onItemEdit}
+      playlistName={playlistName}
+      title="Library"
+    />
+  );
+});
 
-function mapStateToProps(state, ownProps) {
+function selectStateProps(state, ownProps) {
   const { getRouterSearchString, getRouterQueryParams, getPlaylistProps } =
     getOrCreatePlaylistSelectors(playlistName, URLSearchParams, playlistName);
   const { tracks, account, menubar, sidebar, layout } = state;
@@ -80,13 +84,5 @@ function mapStateToProps(state, ownProps) {
     ...getPlaylistProps(state, search),
   };
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const Library = connect(mapStateToProps, mapDispatchToProps)(LibraryComponent);
 
 export { Library };

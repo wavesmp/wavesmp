@@ -1,59 +1,50 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { memo } from "react";
 
-import * as WavesActions from "src/actions";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 
-class NotificationsComponent extends React.PureComponent {
-  onUnsupportedClick = () => {
-    const { actions } = this.props;
+const Notifications = memo(function Notifications(ownProps) {
+  const actions = useActions();
+  const stateProps = useWavesSelector((state) =>
+    selectStateProps(state, ownProps),
+  );
+  const props = { ...ownProps, ...stateProps, actions };
+
+  const onUnsupportedClick = () => {
+    const { actions } = props;
     actions.toastErr("Feature Unavailable");
   };
 
-  render() {
-    return (
-      <ul className="menu-bar">
-        <li className="menu-bar-header">
-          Notifications
-          <i className="fa fa-globe menu-bar-item-icon" />
-        </li>
-        <li className="menu-bar-divider" />
-        <li>
-          <div className="menu-bar-item" onClick={this.onUnsupportedClick}>
-            File name mismatches
-            <i className="fa fa-file-text menu-bar-item-icon" />
-          </div>
-        </li>
-        <li>
-          <div className="menu-bar-item" onClick={this.onUnsupportedClick}>
-            Missing metadata
-            <i className="fa fa-tags menu-bar-item-icon" />
-          </div>
-        </li>
-        <li>
-          <div className="menu-bar-item" onClick={this.onUnsupportedClick}>
-            Missing files
-            <i className="fa fa-file-o menu-bar-item-icon" />
-          </div>
-        </li>
-      </ul>
-    );
-  }
-}
+  return (
+    <ul className="menu-bar">
+      <li className="menu-bar-header">
+        Notifications
+        <i className="fa fa-globe menu-bar-item-icon" />
+      </li>
+      <li className="menu-bar-divider" />
+      <li>
+        <div className="menu-bar-item" onClick={onUnsupportedClick}>
+          File name mismatches
+          <i className="fa fa-file-text menu-bar-item-icon" />
+        </div>
+      </li>
+      <li>
+        <div className="menu-bar-item" onClick={onUnsupportedClick}>
+          Missing metadata
+          <i className="fa fa-tags menu-bar-item-icon" />
+        </div>
+      </li>
+      <li>
+        <div className="menu-bar-item" onClick={onUnsupportedClick}>
+          Missing files
+          <i className="fa fa-file-o menu-bar-item-icon" />
+        </div>
+      </li>
+    </ul>
+  );
+});
 
-function mapStateToProps() {
+function selectStateProps() {
   return {};
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const Notifications = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NotificationsComponent);
 
 export { Notifications };

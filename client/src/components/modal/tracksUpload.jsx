@@ -1,30 +1,26 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { memo, useState } from "react";
 
-import * as WavesActions from "src/actions";
 import { UPLOADS_NAME as playlistName } from "src/constants";
+import { useActions, useWavesSelector } from "src/providers/hooks";
 import { getOrCreatePlaylistSelectors } from "src/selectors";
 
 import { uploadColumns } from "../table/columns";
 import { Modal } from "./util";
 
-class TracksUploadModal extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { uploading: false };
+const TracksUpload = memo(function TracksUpload(ownProps) {
+  const actions = useActions();
+  const props = useWavesSelector((state) => selectStateProps(state, ownProps));
+  const [uploading, setUploading] = useState(false);
+
+  async function onUpload() {
+    setUploading(true);
+    const { uploadErrs, serverErr } = await actions.tracksUpload();
+    setUploading(false);
+    return uploadErrs.length === 0 && !serverErr;
   }
 
-  onUpload = async () => {
-    const { actions } = this.props;
-    this.setState({ uploading: true });
-    const { uploadErrs, serverErr } = await actions.tracksUpload();
-    this.setState({ uploading: false });
-    return uploadErrs.length === 0 && !serverErr;
-  };
-
-  renderUploadItems() {
-    const { displayItems, columns, index, isPlaying } = this.props;
+  function renderUploadItems() {
+    const { displayItems, columns, index, isPlaying } = props;
     return (
       <div>
         <div>
@@ -57,29 +53,26 @@ class TracksUploadModal extends React.PureComponent {
     );
   }
 
-  render() {
-    const { uploading } = this.state;
-    const { actions, displayItems } = this.props;
-    const plurality = displayItems.length ? "s" : "";
-    const message = `This will upload the track${plurality} below.`;
-    return (
-      <Modal
-        actions={actions}
-        title={`Upload track${plurality}`}
-        actionTitle={uploading ? "Uploading" : "Upload"}
-        disabled={uploading}
-        onAction={this.onUpload}
-      >
-        <div>
-          <span>{message}</span>
-        </div>
-        {this.renderUploadItems()}
-      </Modal>
-    );
-  }
-}
+  const { displayItems } = props;
+  const plurality = displayItems.length ? "s" : "";
+  const message = `This will upload the track${plurality} below.`;
+  return (
+    <Modal
+      actions={actions}
+      title={`Upload track${plurality}`}
+      actionTitle={uploading ? "Uploading" : "Upload"}
+      disabled={uploading}
+      onAction={onUpload}
+    >
+      <div>
+        <span>{message}</span>
+      </div>
+      {renderUploadItems()}
+    </Modal>
+  );
+});
 
-function mapStateToProps(state, ownProps) {
+function selectStateProps(state, ownProps) {
   const { getPlaylistProps } = getOrCreatePlaylistSelectors(
     playlistName,
     URLSearchParams,
@@ -98,16 +91,5 @@ function mapStateToProps(state, ownProps) {
     ...getPlaylistProps(state, search),
   };
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(WavesActions, dispatch),
-  };
-}
-
-const TracksUpload = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TracksUploadModal);
 
 export { TracksUpload };
