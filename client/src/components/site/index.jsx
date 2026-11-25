@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useAccount, useActions, useErr, useToasts } from "src/providers/hooks";
 
 import "./index.css";
 
@@ -12,12 +12,12 @@ import { SignIn } from "./signin";
 
 const Site = memo(function Site(ownProps) {
   const actions = useActions();
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
-  );
-  const props = { ...ownProps, ...stateProps, actions };
+  const err = useErr();
+  const { theme } = useAccount();
+  const toasts = useToasts();
+  const props = { ...ownProps, err, theme, toasts, actions };
 
-  const { err, location, history, theme, toasts } = props;
+  const { location, history } = props;
   return (
     <Boundary err={err}>
       <>
@@ -29,13 +29,5 @@ const Site = memo(function Site(ownProps) {
     </Boundary>
   );
 });
-
-function selectStateProps(state) {
-  return {
-    err: state.err,
-    theme: state.account.theme,
-    toasts: state.toasts,
-  };
-}
 
 export { Site };

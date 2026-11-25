@@ -7,7 +7,17 @@ import {
   routes,
   TOGGLE_DATA_KEY,
 } from "src/constants";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import {
+  useActions,
+  useErr,
+  useLayout,
+  useMenu,
+  useMenubar,
+  useModal,
+  useSelectorState,
+  useSidebar,
+  useToasts,
+} from "src/providers/hooks";
 import { getPlaylistSearch, getPlaylistSelectors } from "src/selectors";
 import { filterSelection, getPlaylistNameFromRoute } from "src/utils";
 
@@ -25,8 +35,17 @@ import { Upload } from "../upload";
 
 const MainApp = memo(function MainApp(ownProps) {
   const actions = useActions();
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
+  const selectorState = useSelectorState();
+  const menubar = useMenubar();
+  const sidebar = useSidebar();
+  const menu = useMenu();
+  const err = useErr();
+  const layout = useLayout();
+  const modal = useModal();
+  const toasts = useToasts();
+  const stateProps = selectStateProps(
+    { ...selectorState, menubar, sidebar, menu, err, layout, modal, toasts },
+    ownProps,
   );
   const props = { ...ownProps, ...stateProps, actions };
 
@@ -64,20 +83,13 @@ const MainApp = memo(function MainApp(ownProps) {
   };
 
   const {
-    err,
-    menubar,
     filteredSelection,
     index,
     playlistName,
-    modal,
-    sidebar,
     playlists,
     playing,
-    menu,
-    layout,
     location,
     history,
-    toasts,
   } = props;
   return (
     <Boundary err={err}>

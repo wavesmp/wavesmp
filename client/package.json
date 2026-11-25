@@ -29,13 +29,11 @@
     "music-metadata-browser": "^1.10.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-redux": "^7.2.9",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.3.4",
     "react-transition-group": "^1.2.1",
-    "redux": "^4.2.1",
-    "redux-thunk": "^2.4.2",
-    "reselect": "^4.1.8"
+    "reselect": "^4.1.8",
+    "use-sync-external-store": "^1.7.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

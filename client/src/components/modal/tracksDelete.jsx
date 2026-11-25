@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 
 import { LIBRARY_NAME } from "src/constants";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useActions, useSelectorState } from "src/providers/hooks";
 import { getFilteredSelection } from "src/selectors";
 import { normalizeTrack } from "src/utils";
 
@@ -10,7 +10,8 @@ import { Modal } from "./util";
 
 const TracksDelete = memo(function TracksDelete(ownProps) {
   const actions = useActions();
-  const props = useWavesSelector((state) => selectStateProps(state, ownProps));
+  const selectorState = useSelectorState();
+  const props = selectStateProps(selectorState, ownProps);
   const [deleting, setDeleting] = useState(false);
 
   async function onDelete() {

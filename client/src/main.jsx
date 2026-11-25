@@ -2,16 +2,13 @@ import "./polyfills";
 
 import { createBrowserHistory } from "history";
 import { render } from "react-dom";
-import { Provider } from "react-redux";
 import { Router } from "react-router";
 import { Switch } from "react-router-dom";
-import { applyMiddleware, createStore } from "redux";
-import ReduxThunk from "redux-thunk";
 
 import { Auth } from "src/auth";
 import { LocalState } from "src/localState";
 import { Player } from "src/player";
-import { rootReducer } from "src/reducer";
+import { Provider } from "src/providers/provider";
 import { WavesSocket } from "src/socket";
 
 import "./styles";
@@ -21,7 +18,6 @@ import { PrivateRoute, PublicRoute } from "./components/routes";
 import { Site } from "./components/site";
 
 import { config } from "./config/config";
-import { storeListener } from "./listener";
 
 const { googleAuthOpts, s3Opts, server, defaultTrackSource } = config;
 
@@ -31,14 +27,11 @@ const auth = new Auth({ google: googleAuthOpts });
 const player = new Player({ s3: s3Opts, file: undefined, defaultTrackSource });
 const localState = new LocalState(localStorage);
 
-const reduxMiddleware = applyMiddleware(
-  /* Include extra args for side effects */
-  ReduxThunk.withExtraArgument({ localState, player, ws, auth }),
-);
-const store = createStore(rootReducer, reduxMiddleware);
+/* Side effect objects, passed to actions */
+const extraArgument = { localState, player, ws, auth };
 
 render(
-  <Provider store={store}>
+  <Provider extraArgument={extraArgument} history={history}>
     <Router history={history}>
       <Switch>
         <PublicRoute path="/" exact component={Site} />
@@ -48,8 +41,3 @@ render(
   </Provider>,
   document.getElementById("app"),
 );
-
-/* Objects need store access for dispatching on events
- * e.g. When player track ends, storage is available, location change.
- * Independent from component lifecycle */
-storeListener(store, ws, player, localState, history);

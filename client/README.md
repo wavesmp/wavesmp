@@ -11,13 +11,13 @@ The client is a single npm package using ES modules. The app entrypoint is
 `src/main.jsx`, and the code is organized into modules under `src/`:
 
 - `src/components`, `src/styles`: React components and global styles
-- `src/actions`: Redux action creators and thunks
-- `src/actionTypes`: Redux action types. Some are also server message types
+- `src/actions`: action creators and thunks
+- `src/actionTypes`: action types. Some are also server message types
 - `src/auth`: Google sign in
 - `src/constants`, `src/errors`, `src/utils`: shared code
 - `src/localState`: settings persisted in localStorage
 - `src/player`: S3 and local file audio players
-- `src/reducer`, `src/selectors`: Redux state
+- `src/reducer`, `src/selectors`: app state, provided by `src/providers` (React Context)
 - `src/socket`: WebSocket client for the server
 - `src/testUtil`: shared test helpers and data
 

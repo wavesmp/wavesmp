@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 
 import { UPLOADS_NAME as playlistName } from "src/constants";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useActions, useSelectorState } from "src/providers/hooks";
 import { getOrCreatePlaylistSelectors } from "src/selectors";
 
 import { uploadColumns } from "../table/columns";
@@ -9,7 +9,8 @@ import { Modal } from "./util";
 
 const TracksUpload = memo(function TracksUpload(ownProps) {
   const actions = useActions();
-  const props = useWavesSelector((state) => selectStateProps(state, ownProps));
+  const selectorState = useSelectorState();
+  const props = selectStateProps(selectorState, ownProps);
   const [uploading, setUploading] = useState(false);
 
   async function onUpload() {

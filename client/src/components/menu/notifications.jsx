@@ -1,13 +1,10 @@
 import { memo } from "react";
 
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useActions } from "src/providers/hooks";
 
 const Notifications = memo(function Notifications(ownProps) {
   const actions = useActions();
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
-  );
-  const props = { ...ownProps, ...stateProps, actions };
+  const props = { ...ownProps, actions };
 
   const onUnsupportedClick = () => {
     const { actions } = props;
@@ -42,9 +39,5 @@ const Notifications = memo(function Notifications(ownProps) {
     </ul>
   );
 });
-
-function selectStateProps() {
-  return {};
-}
 
 export { Notifications };

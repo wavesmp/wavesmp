@@ -1,0 +1,55 @@
+/*
+ * Holds the app state and applies actions to it, with the same semantics the
+ * actions were written for (previously Redux with redux-thunk):
+ *
+ * - dispatch(action) reduces the state synchronously, so getState() inside a
+ *   thunk sees the result of an earlier dispatch right away
+ * - dispatch(thunk) calls thunk(dispatch, getState, extraArgument) and returns
+ *   its result (e.g. a promise)
+ *
+ * The provider subscribes to publish each new state to React.
+ */
+const INIT_ACTION = { type: "@@waves/INIT" };
+
+function createDispatcher(reducer, extraArgument) {
+  let state = reducer(undefined, INIT_ACTION);
+  const listeners = new Set();
+
+  function getState() {
+    return state;
+  }
+
+  function dispatch(action) {
+    if (typeof action === "function") {
+      return action(dispatch, getState, extraArgument);
+    }
+    const nextState = reducer(state, action);
+    if (nextState !== state) {
+      state = nextState;
+      for (const listener of listeners) {
+        listener(state);
+      }
+    }
+    return action;
+  }
+
+  function subscribe(listener) {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  }
+
+  return { dispatch, getState, subscribe };
+}
+
+/* Wrap each action creator so calling it dispatches its result */
+function bindActionCreators(actionCreators, dispatch) {
+  const bound = {};
+  for (const [name, actionCreator] of Object.entries(actionCreators)) {
+    if (typeof actionCreator === "function") {
+      bound[name] = (...args) => dispatch(actionCreator(...args));
+    }
+  }
+  return bound;
+}
+
+export { bindActionCreators, createDispatcher };

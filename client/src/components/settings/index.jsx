@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 import { LIBRARY_NAME } from "src/constants";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useActions, useSelectorState } from "src/providers/hooks";
 import {
   getLibraryPlaylistSearch,
   getOrCreatePlaylistSelectors,
@@ -17,9 +17,8 @@ import "./index.css";
 
 const Settings = memo(function Settings(ownProps) {
   const actions = useActions();
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
-  );
+  const selectorState = useSelectorState();
+  const stateProps = selectStateProps(selectorState, ownProps);
   const props = { ...ownProps, ...stateProps, actions };
 
   const {

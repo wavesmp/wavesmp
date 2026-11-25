@@ -7,7 +7,7 @@ import {
   menuTypes,
   modalTypes,
 } from "src/constants";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useActions, usePlaying } from "src/providers/hooks";
 
 import "./index.css";
 
@@ -24,10 +24,8 @@ import {
 
 const Track = memo(function Track(ownProps) {
   const actions = useActions();
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
-  );
-  const props = { ...ownProps, ...stateProps, actions };
+  const { isPlaying } = usePlaying();
+  const props = { ...ownProps, isPlaying, actions };
 
   const trackToggle = () => {
     const { actions, playlistName, itemIndex, trackId } = props;
@@ -124,12 +122,5 @@ const Track = memo(function Track(ownProps) {
     </div>
   );
 });
-
-function selectStateProps(state) {
-  const { tracks } = state;
-  const { playing } = tracks;
-  const { isPlaying } = playing;
-  return { isPlaying };
-}
 
 export { Track };

@@ -2,14 +2,12 @@ import { memo } from "react";
 import { Link } from "react-router-dom";
 
 import { routes } from "src/constants";
-import { useActions, useWavesSelector } from "src/providers/hooks";
+import { useAccount, useActions } from "src/providers/hooks";
 
 const UserSettings = memo(function UserSettings(ownProps) {
   const actions = useActions();
-  const stateProps = useWavesSelector((state) =>
-    selectStateProps(state, ownProps),
-  );
-  const props = { ...ownProps, ...stateProps, actions };
+  const { user } = useAccount();
+  const props = { ...ownProps, userName: user && user.name, actions };
 
   const signOut = () => {
     const { actions, history } = props;
@@ -45,13 +43,5 @@ const UserSettings = memo(function UserSettings(ownProps) {
     </ul>
   );
 });
-
-function selectStateProps(state) {
-  const { account } = state;
-  const { user } = account;
-  return {
-    userName: user && user.name,
-  };
-}
 
 export { UserSettings };
