@@ -2,13 +2,15 @@
 
 # Configuring the Client
 
-- Copy `src/config/config.example.js` to `src/config/config.js`
-- Substitute AWS/Google/hostname values in the `config.js`
+- Copy `src/config/config.example.ts` to `src/config/config.ts`
+- Substitute AWS/Google/hostname values in the `config.ts`. Its type,
+  `Config`, is in `src/config/configTypes.ts`
 
 # Project Layout
 
-The client is a single npm package using ES modules. The app entrypoint is
-`src/main.jsx`, and the code is organized into modules under `src/`:
+The client is a single npm package using ES modules and TypeScript, with the
+same strict compiler and lint settings as jettison-ui. The app entrypoint is
+`src/main.tsx`, and the code is organized into modules under `src/`:
 
 - `src/components`, `src/styles`: React components and global styles
 - `src/actions`: action creators and thunks
@@ -20,9 +22,10 @@ The client is a single npm package using ES modules. The app entrypoint is
 - `src/reducer`, `src/selectors`: app state, provided by `src/providers` (React Context)
 - `src/socket`: WebSocket client for the server
 - `src/testUtil`: shared test helpers and data
+- `src/types`: types of the state, actions, tracks and playlists
 
 Modules import each other with the `src/` alias (e.g. `src/constants`). Tests
-live next to the code as `*.test.js` and run with vitest.
+live next to the code as `*.test.ts` and run with vitest.
 
 `npm run format` also sorts imports with prettier-plugin-organize-imports, as
 in jettison-ui. It only sorts within groups separated by blank lines, so keep
@@ -34,7 +37,7 @@ separated group.
 ## Running the Client
 
 Start the vite dev server, which serves the client at http://localhost:5173
-with hot reloading. The websocket server url comes from `config.js`.
+with hot reloading. The websocket server url comes from `config.ts`.
 
 ```
 npm run dev
@@ -65,7 +68,7 @@ docker run --rm -it --net host \
 npm run build
 ```
 
-The output is written to `dist`. To serve it locally, run `npm run preview`.
+The build type checks first (`tsc -b`). The output is written to `dist`. To serve it locally, run `npm run preview`.
 
 ## Testing the Code
 
@@ -77,13 +80,13 @@ The coverage report is written to `coverage`. To run a single test file, or
 to rerun tests on change:
 
 ```
-npx vitest run src/reducer/menu.test.js
+npx vitest run src/reducer/menu.test.ts
 npx vitest
 ```
 
 ## Linting the Code
 
-Runs eslint and the prettier check
+Runs eslint, the TypeScript type check (`tsc -b`) and the prettier check
 
 ```
 npm run lint

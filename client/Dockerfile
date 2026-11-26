@@ -12,10 +12,14 @@ RUN --mount=type=cache,target=/root/.npm \
 # Build the production assets
 COPY \
   .prettierignore \
-  buildConstants.js \
+  buildConstants.ts \
   eslint.config.js \
   index.html \
-  vite.config.js \
+  tsconfig.json \
+  tsconfig.app.json \
+  tsconfig.node.json \
+  tsconfig.test.json \
+  vite.config.ts \
   ./
 
 COPY public ./public

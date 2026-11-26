@@ -6,41 +6,43 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
 import globals from "globals";
+import tseslint from "typescript-eslint";
 
-import { buildConstants } from "./buildConstants.js";
-
-// eslint-disable-next-line no-restricted-syntax
 export default defineConfig([
-  globalIgnores(["coverage", "dist", "public", "vendor", "src/config"]),
+  globalIgnores([
+    "coverage",
+    "dist",
+    "public",
+    "vendor",
+    /* The local config is gitignored */
+    "src/config/config.ts",
+  ]),
   {
     settings: {
       react: { version: "19.3" },
       "import/resolver": {
         typescript: true,
-        // Resolve the "src/..." alias (see vite.config.js)
-        node: {
-          paths: [import.meta.dirname],
-          extensions: [".js", ".jsx", ".json"],
-        },
+        node: true,
       },
     },
-    extends: [js.configs.recommended, importPlugin.flatConfigs.recommended],
-    files: ["**/*.{js,jsx}"],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked,
+      importPlugin.flatConfigs.recommended,
+      importPlugin.flatConfigs.typescript,
+    ],
+    files: ["**/*.{ts,tsx}"],
     languageOptions: {
-      // jettison-ui uses 2020, but class fields require ES2022
-      ecmaVersion: "latest",
-      globals: {
-        ...globals.browser,
-        // Globals loaded by script tags in index.html
-        AWS: "readonly",
-        google: "readonly",
-        // Constants substituted at build time (see vite.config.js)
-        ...Object.fromEntries(
-          Object.keys(buildConstants).map((c) => [c, "readonly"]),
-        ),
-      },
+      ecmaVersion: 2020,
+      globals: globals.browser,
       parserOptions: {
-        ecmaFeatures: { jsx: true },
+        project: [
+          "./tsconfig.node.json",
+          "./tsconfig.app.json",
+          "./tsconfig.test.json",
+        ],
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
@@ -52,13 +54,10 @@ export default defineConfig([
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
         "warn",
-        // Unlike jettison-ui, react-redux connect() wraps exported components
-        { allowConstantExport: true, extraHOCs: ["connect"] },
+        { allowConstantExport: true },
       ],
       ...react.configs.recommended.rules,
       ...react.configs["jsx-runtime"].rules,
-      // Avoid prop types for now. May want to look into TypeScript instead
-      "react/prop-types": "off",
       "no-restricted-syntax": [
         "error",
         {
@@ -66,6 +65,8 @@ export default defineConfig([
           message: "Please use named exports instead.",
         },
       ],
+      "@typescript-eslint/explicit-function-return-type": "error",
+      /* Allow vite-plugin-svgr imports e.g. "./logo.svg?react" */
       "import/no-unresolved": ["error", { ignore: ["\\?react$"] }],
       "import/exports-last": "error",
       "object-shorthand": "error",
@@ -73,7 +74,7 @@ export default defineConfig([
   },
   {
     // Node code: configs and tests
-    files: ["*.config.js", "**/*.test.js", "src/testUtil/**"],
+    files: ["*.config.ts", "**/*.test.{ts,tsx}", "src/testUtil/**"],
     languageOptions: {
       globals: globals.node,
     },

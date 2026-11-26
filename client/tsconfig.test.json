@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.test.tsbuildinfo",
+    "types": ["vite/client", "node"],
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/testUtil",
+    "src/vite-env.d.ts",
+    "src/globals.d.ts",
+    "src/buildConstants.d.ts"
+  ],
+  "exclude": []
+}
