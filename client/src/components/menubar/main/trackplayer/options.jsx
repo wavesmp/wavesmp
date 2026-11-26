@@ -60,10 +60,10 @@ const RightButtons = memo(function RightButtons({
   );
 });
 
-const Options = memo(function Options(props) {
+const Options = memo(function Options({ ref, ...props }) {
   const { actions, filteredSelection, index, playlistName } = props;
   return (
-    <div className="trackplayer">
+    <div className="trackplayer" ref={ref}>
       <LeftButtons actions={actions} />
       <TrackInfo filteredSelection={filteredSelection} />
       <RightButtons

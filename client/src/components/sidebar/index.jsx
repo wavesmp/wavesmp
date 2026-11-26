@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { CSSTransitionGroup } from "react-transition-group";
+import { CSSTransitionGroup } from "src/components/transitions";
 
 import "./index.css";
 

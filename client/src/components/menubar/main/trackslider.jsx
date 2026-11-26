@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react";
 
 import "./trackslider.css";
 
-const TrackSlider = memo(function TrackSlider({ actions, playing }) {
+const TrackSlider = memo(function TrackSlider({ ref, actions, playing }) {
   const [seeking, setSeeking] = useState(false);
   const [seekingValue, setSeekingValue] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -34,6 +34,7 @@ const TrackSlider = memo(function TrackSlider({ actions, playing }) {
   const value = seeking ? seekingValue : currentTime / playing.track.duration;
   return (
     <input
+      ref={ref}
       type="range"
       min="0.0"
       max="1.0"

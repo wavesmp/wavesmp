@@ -1,5 +1,5 @@
 import { memo, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 import { LIBRARY_NAME as playlistName, routes } from "src/constants";
 import {
@@ -20,6 +20,7 @@ import { TablePage } from "../tablepage";
 const NO_DATA_MSG = "Empty playlist. Go ahead and add some tracks!";
 
 const Library = memo(function Library(ownProps) {
+  const location = useLocation();
   const actions = useActions();
   const selectorState = useSelectorState();
   const menubar = useMenubar();
@@ -27,7 +28,7 @@ const Library = memo(function Library(ownProps) {
   const layout = useLayout();
   const stateProps = selectStateProps(
     { ...selectorState, menubar, sidebar, layout },
-    ownProps,
+    { location },
   );
   const props = { ...ownProps, ...stateProps, actions };
 
@@ -70,13 +71,13 @@ const Library = memo(function Library(ownProps) {
   );
 });
 
-function selectStateProps(state, ownProps) {
+function selectStateProps(state, route) {
   const { getRouterSearchString, getRouterQueryParams, getPlaylistProps } =
     getOrCreatePlaylistSelectors(playlistName, URLSearchParams, playlistName);
   const { tracks, account, menubar, sidebar, layout } = state;
   const { playing } = tracks;
   const { isPlaying } = playing;
-  const { location } = ownProps;
+  const { location } = route;
   const { pathname, search } = location;
   const { theme } = account;
   const columns = libraryColumns.filter((c) => account.columns.has(c.title));

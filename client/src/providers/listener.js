@@ -1,15 +1,9 @@
-import ObjectID from "bson-objectid";
-
 import * as WavesActions from "src/actions";
 import { LIBRARY_NAME, UPLOADS_NAME } from "src/constants";
 
-/* store is the dispatcher (see dispatcher.js) */
-async function storeListener(store, ws, player, localState, history) {
-  store.dispatch(WavesActions.routerChange(history.location));
-  history.listen((location) => {
-    store.dispatch(WavesActions.routerChange(location));
-  });
-
+/* store is the dispatcher (see dispatcher.js). Router changes are handled by
+ * RouterListener (see routerListener.jsx) */
+async function storeListener(store, ws, player, localState) {
   /* When track ends, update the state */
   player.setOnTrackEnded(() => {
     store.dispatch(WavesActions.trackEnded(URLSearchParams));
@@ -57,20 +51,14 @@ async function storeListener(store, ws, player, localState, history) {
   layout = getInitialLayout(layout0Mql, layout1Mql);
   store.dispatch(WavesActions.layoutSet(layout));
 
-  document.addEventListener("keydown", (ev) => {
-    store.dispatch(WavesActions.tracksKeyDown(ev, history));
-  });
-
   /* When localStorage is loaded, update the state */
-  const [columns, rowsPerPage, lastIdp, machineId, theme, volume] =
-    await Promise.all([
-      localState.getItem("columns"),
-      localState.getItem("rowsPerPage"),
-      localState.getItem("lastIdp"),
-      localState.getItem("machineId"),
-      localState.getItem("theme"),
-      localState.getItem("volume"),
-    ]);
+  const [columns, rowsPerPage, lastIdp, theme, volume] = await Promise.all([
+    localState.getItem("columns"),
+    localState.getItem("rowsPerPage"),
+    localState.getItem("lastIdp"),
+    localState.getItem("theme"),
+    localState.getItem("volume"),
+  ]);
   store.dispatch(
     WavesActions.accountSetSettings({
       columns: new Set(columns),
@@ -79,7 +67,6 @@ async function storeListener(store, ws, player, localState, history) {
     }),
   );
   player.setVolume(volume);
-  ObjectID.setMachineID(machineId);
   if (lastIdp) {
     try {
       await store.dispatch(WavesActions.tryAutoLogin(lastIdp));

@@ -22,7 +22,6 @@ const Settings = memo(function Settings(ownProps) {
   const props = { ...ownProps, ...stateProps, actions };
 
   const {
-    history,
     columns,
     rowsPerPage,
     theme,
@@ -39,7 +38,6 @@ const Settings = memo(function Settings(ownProps) {
           actions={actions}
           rowsPerPage={rowsPerPage}
           theme={theme}
-          history={history}
           libraryColumns={libraryColumns}
           librarySortKey={librarySortKey}
           libraryAscending={libraryAscending}

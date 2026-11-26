@@ -21,7 +21,7 @@ const MODALS = {
   [modalTypes.TRACKS_UPLOAD]: TracksUpload,
 };
 
-const Modal = memo(function Modal({ history, location, modal }) {
+const Modal = memo(function Modal({ modal }) {
   if (!modal) {
     return null;
   }
@@ -30,7 +30,7 @@ const Modal = memo(function Modal({ history, location, modal }) {
   return (
     <>
       <div className="fixed-full-page modal-backdrop" />
-      <Component history={history} location={location} {...modalProps} />
+      <Component {...modalProps} />
     </>
   );
 });

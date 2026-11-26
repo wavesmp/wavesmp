@@ -1,19 +1,20 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 
 import { routes } from "src/constants";
 import { useAccount, useActions } from "src/providers/hooks";
 
 const UserSettings = memo(function UserSettings(ownProps) {
+  const navigate = useNavigate();
   const actions = useActions();
   const { user } = useAccount();
   const props = { ...ownProps, userName: user && user.name, actions };
 
   const signOut = () => {
-    const { actions, history } = props;
+    const { actions } = props;
     actions.signOut();
     actions.menuReset();
-    history.push("/");
+    navigate("/");
   };
 
   const { userName } = props;

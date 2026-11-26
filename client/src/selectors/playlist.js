@@ -137,7 +137,7 @@ function createPlaylistSelectors(playlistName, URLSearchParams, libName) {
     if (!fuse) {
       return null;
     }
-    return fuse.search(searchString);
+    return fuse.search(searchString).map(({ item }) => item);
   }
 
   const getSearchItems = createSelector(

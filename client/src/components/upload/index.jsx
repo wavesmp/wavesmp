@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router";
 
 import { modalTypes, UPLOADS_NAME as playlistName } from "src/constants";
 import { useActions, useLayout, useSelectorState } from "src/providers/hooks";
@@ -16,11 +17,12 @@ import "./index.css";
 const ACCEPTED_FILE_TYPES = "audio/mp3,audio/mpeg";
 const ACCEPTED_FILE_TYPE_LIST = ["audio/mp3", "audio/mpeg"];
 
-const Upload = memo(function Upload(ownProps) {
+const Upload = memo(function Upload() {
+  const location = useLocation();
   const actions = useActions();
   const selectorState = useSelectorState();
   const layout = useLayout();
-  const props = selectStateProps({ ...selectorState, layout }, ownProps);
+  const props = selectStateProps({ ...selectorState, layout }, { location });
   const {
     columns,
     currentPage,
@@ -199,13 +201,13 @@ const Upload = memo(function Upload(ownProps) {
   );
 });
 
-function selectStateProps(state, ownProps) {
+function selectStateProps(state, route) {
   const { getRouterQueryParams, getPlaylistProps } =
     getOrCreatePlaylistSelectors(playlistName, URLSearchParams, playlistName);
   const { account, layout, tracks } = state;
   const { playing } = tracks;
   const { isPlaying } = playing;
-  const { location } = ownProps;
+  const { location } = route;
   const { pathname, search } = location;
   const columns = uploadColumns.filter((c) => account.columns.has(c.title));
   return {

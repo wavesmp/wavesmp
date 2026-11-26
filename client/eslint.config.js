@@ -14,7 +14,7 @@ export default defineConfig([
   globalIgnores(["coverage", "dist", "public", "vendor", "src/config"]),
   {
     settings: {
-      react: { version: "16.14" },
+      react: { version: "19.3" },
       "import/resolver": {
         typescript: true,
         // Resolve the "src/..." alias (see vite.config.js)

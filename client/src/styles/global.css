@@ -155,7 +155,7 @@ table input[type="checkbox"] {
   top: -2px;
 }
 
-/* Fade effects for ReactCSSTransitionsGroup */
+/* Fade effects for CSSTransitionGroup (src/components/transitions) */
 .fade-enter {
   opacity: 0.01;
 }
@@ -165,11 +165,11 @@ table input[type="checkbox"] {
   transition: opacity 800ms ease-in;
 }
 
-.fade-leave {
+.fade-exit {
   opacity: 1;
 }
 
-.fade-leave.fade-leave-active {
+.fade-exit.fade-exit-active {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }

@@ -2,7 +2,6 @@ import path from "node:path";
 
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
 import svgr from "vite-plugin-svgr";
 
 import { buildConstants } from "./buildConstants.js";
@@ -43,17 +42,7 @@ function buildConstantsPlugin() {
 // https://vite.dev/config/
 // eslint-disable-next-line no-restricted-syntax
 export default defineConfig({
-  define: {
-    "process.env": {},
-  },
-  plugins: [
-    nodePolyfills({
-      include: ["stream"],
-    }),
-    buildConstantsPlugin(),
-    react(),
-    svgr(),
-  ],
+  plugins: [buildConstantsPlugin(), react(), svgr()],
   resolve: {
     alias: {
       src: "/src",

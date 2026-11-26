@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { CSSTransitionGroup } from "react-transition-group";
+import { CSSTransitionGroup } from "src/components/transitions";
 
 import { TOAST_ID_ATTR, toastTypes } from "src/constants";
 

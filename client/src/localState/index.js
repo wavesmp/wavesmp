@@ -1,5 +1,3 @@
-import ObjectID from "bson-objectid";
-
 import { storageInit } from "./storageInit";
 
 const CONFIG_KEY = "config";
@@ -7,7 +5,6 @@ const DEFAULT_LOCAL_CONFIG = {
   columns: ["Name", "State", "Time", "Artist", "Genre"],
   rowsPerPage: 25,
   lastIdp: "",
-  machineId: ObjectID.getMachineID(),
   theme: "light",
   volume: 1.0,
 };

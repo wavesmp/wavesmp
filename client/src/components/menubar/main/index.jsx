@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { CSSTransitionGroup } from "react-transition-group";
+import { Link } from "react-router";
+import { CSSTransitionGroup } from "src/components/transitions";
 
 import { menuTypes, routes } from "src/constants";
 
@@ -18,7 +18,6 @@ const MenuBar = memo(function MenuBar({
   filteredSelection,
   index,
   playlistName,
-  history,
 }) {
   const isSliderVisible = playing.track != null;
   const isPlayerVisible = isSliderVisible || menubar;
@@ -43,7 +42,6 @@ const MenuBar = memo(function MenuBar({
     actions.menuSetElem({
       ev,
       type: menuTypes.USER_SETTINGS,
-      props: { history },
     });
   }
 
