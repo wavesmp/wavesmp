@@ -1,4 +1,5 @@
 import { memo, useState } from "react";
+import { useNavigate } from "react-router";
 
 import { NOW_PLAYING_NAME, routes } from "src/constants";
 import { isPlaylistNameValid } from "src/playlistName";
@@ -9,10 +10,8 @@ import { ModalInput } from "./util";
 const TITLE = "Playlist Settings";
 const ACTION = "Save";
 
-const PlaylistSettings = memo(function PlaylistSettings({
-  playlistName,
-  history,
-}) {
+const PlaylistSettings = memo(function PlaylistSettings({ playlistName }) {
+  const navigate = useNavigate();
   const actions = useActions();
   const playlists = usePlaylists();
   const [playlistSaveName, setPlaylistSaveName] = useState("");
@@ -34,7 +33,7 @@ const PlaylistSettings = memo(function PlaylistSettings({
     }
     const { search } = playlists[playlistName];
     const to = { pathname: `/playlist/${playlistSaveName}`, search };
-    history.push(to);
+    navigate(to);
     actions.toastSuccess("Renamed playlist");
     return true;
   }
@@ -48,7 +47,7 @@ const PlaylistSettings = memo(function PlaylistSettings({
     }
     const { search } = playlists[NOW_PLAYING_NAME];
     const to = { pathname: routes.defaultRoute, search };
-    history.push(to);
+    navigate(to);
     actions.toastSuccess("Deleted playlist");
     return true;
   }

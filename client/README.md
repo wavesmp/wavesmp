@@ -26,8 +26,8 @@ live next to the code as `*.test.js` and run with vitest.
 
 `npm run format` also sorts imports with prettier-plugin-organize-imports, as
 in jettison-ui. It only sorts within groups separated by blank lines, so keep
-order-sensitive side-effect imports (e.g. `import "./polyfills"` and CSS
-imports) in their own blank-line separated group.
+order-sensitive side-effect imports (e.g. CSS imports) in their own blank-line
+separated group.
 
 # Local Development
 

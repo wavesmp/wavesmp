@@ -10,19 +10,17 @@ import { Toasts } from "../toasts";
 import { Preview } from "./preview";
 import { SignIn } from "./signin";
 
-const Site = memo(function Site(ownProps) {
+const Site = memo(function Site() {
   const actions = useActions();
   const err = useErr();
   const { theme } = useAccount();
   const toasts = useToasts();
-  const props = { ...ownProps, err, theme, toasts, actions };
 
-  const { location, history } = props;
   return (
     <Boundary err={err}>
       <>
         <MenuBar />
-        <SignIn actions={actions} location={location} history={history} />
+        <SignIn actions={actions} />
         <Preview theme={theme} />
         <Toasts actions={actions} toasts={toasts} />
       </>

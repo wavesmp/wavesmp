@@ -89,11 +89,11 @@ const RightButtons = memo(function RightButtons(props) {
   );
 });
 
-const Player = memo(function Player(props) {
+const Player = memo(function Player({ ref, ...props }) {
   const { playing, actions } = props;
   const { track } = playing;
   return (
-    <div className="trackplayer">
+    <div className="trackplayer" ref={ref}>
       <LeftButtons playing={playing} actions={actions} />
       <TrackInfo trackTitle={track.title} trackArtist={track.artist} />
       <RightButtons playing={playing} actions={actions} />

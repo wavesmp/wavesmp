@@ -1,9 +1,9 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import * as constants from "src/constants";
 
-const PlaylistBar = memo(function PlaylistBar(props) {
+const PlaylistBar = memo(function PlaylistBar({ ref, ...props }) {
   const onBackClick = () => {
     const { actions } = props;
     actions.sidebarSet(false);
@@ -52,7 +52,7 @@ const PlaylistBar = memo(function PlaylistBar(props) {
     className += " sidebar-container-player-visible";
   }
   return (
-    <div id="sidebar-container" className={className}>
+    <div id="sidebar-container" className={className} ref={ref}>
       <ul className="nav">
         <li>
           <span onClick={onBackClick}>

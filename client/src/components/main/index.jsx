@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Route } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router";
 
 import {
   MENU_DATA_VALUE,
@@ -34,6 +34,7 @@ import { Toasts } from "../toasts";
 import { Upload } from "../upload";
 
 const MainApp = memo(function MainApp(ownProps) {
+  const location = useLocation();
   const actions = useActions();
   const selectorState = useSelectorState();
   const menubar = useMenubar();
@@ -45,7 +46,7 @@ const MainApp = memo(function MainApp(ownProps) {
   const toasts = useToasts();
   const stateProps = selectStateProps(
     { ...selectorState, menubar, sidebar, menu, err, layout, modal, toasts },
-    ownProps,
+    { location },
   );
   const props = { ...ownProps, ...stateProps, actions };
 
@@ -82,23 +83,19 @@ const MainApp = memo(function MainApp(ownProps) {
     }
   };
 
-  const {
-    filteredSelection,
-    index,
-    playlistName,
-    playlists,
-    playing,
-    location,
-    history,
-  } = props;
+  const { filteredSelection, index, playlistName, playlists, playing } = props;
   return (
     <Boundary err={err}>
       <div onClick={onClick}>
-        <Route path={routes.nowplaying} component={NowPlaying} />
-        <Route path={routes.library} component={Library} />
-        <Route path={routes.upload} component={Upload} />
-        <Route path={routes.playlist} component={Playlist} />
-        <Route path={routes.settings} component={Settings} />
+        <Routes>
+          <Route path={routes.nowplaying} element={<NowPlaying />} />
+          <Route path={routes.library} element={<Library />} />
+          <Route path={routes.upload} element={<Upload />} />
+          <Route path={routes.playlist} element={<Playlist />} />
+          <Route path={routes.settings} element={<Settings />} />
+          {/* Other paths (e.g. while redirecting) render no page */}
+          <Route path="*" element={null} />
+        </Routes>
         <SideBar
           actions={actions}
           sidebar={sidebar}
@@ -114,19 +111,18 @@ const MainApp = memo(function MainApp(ownProps) {
           index={index}
           playlistName={playlistName}
           playing={playing}
-          history={history}
         />
         <Menu menu={menu} />
-        <Modal history={history} location={location} modal={modal} />
+        <Modal modal={modal} />
         <Toasts actions={actions} toasts={toasts} />
       </div>
     </Boundary>
   );
 });
 
-function selectStateProps(state, ownProps) {
+function selectStateProps(state, route) {
   const { menubar } = state;
-  const { location } = ownProps;
+  const { location } = route;
   const { pathname } = location;
   const props = {
     playlists: state.tracks.playlists,

@@ -75,12 +75,12 @@
   transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
 }
 
-#sidebar-container.mainbartransition-leave {
+#sidebar-container.mainbartransition-exit {
   bottom: 0px;
   transform: translateY(0%);
 }
 
-#sidebar-container.mainbartransition-leave.mainbartransition-leave-active {
+#sidebar-container.mainbartransition-exit.mainbartransition-exit-active {
   bottom: 0px;
   transform: translateY(100%);
   transition: transform SIDEBAR_LEAVE_TIMEOUTms ease;
@@ -98,12 +98,12 @@
   transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
 }
 
-#sidebar-container.playlistbartransition-leave {
+#sidebar-container.playlistbartransition-exit {
   bottom: 0px;
   transform: translateY(0%);
 }
 
-#sidebar-container.playlistbartransition-leave.playlistbartransition-leave-active {
+#sidebar-container.playlistbartransition-exit.playlistbartransition-exit-active {
   bottom: 0px;
   transform: translateY(100%);
   transition: transform SIDEBAR_LEAVE_TIMEOUTms ease;
@@ -152,12 +152,12 @@
       width SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
   }
 
-  #sidebar-container.mainbartransition-leave {
+  #sidebar-container.mainbartransition-exit {
     width: var(--sidebar-width);
     transform: rotateY(0deg);
   }
 
-  #sidebar-container.mainbartransition-leave.mainbartransition-leave-active {
+  #sidebar-container.mainbartransition-exit.mainbartransition-exit-active {
     width: var(--transitionbar-width);
     transform: rotateY(90deg);
     transition:
@@ -179,12 +179,12 @@
       width SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
   }
 
-  #sidebar-container.playlistbartransition-leave {
+  #sidebar-container.playlistbartransition-exit {
     width: var(--playlistbar-width);
     transform: rotateY(0deg);
   }
 
-  #sidebar-container.playlistbartransition-leave.playlistbartransition-leave-active {
+  #sidebar-container.playlistbartransition-exit.playlistbartransition-exit-active {
     width: var(--transitionbar-width);
     transform: rotateY(90deg);
     transition:

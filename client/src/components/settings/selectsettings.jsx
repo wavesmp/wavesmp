@@ -1,6 +1,8 @@
 import { memo } from "react";
+import { useNavigate } from "react-router";
 
 const SelectSettings = memo(function SelectSettings(props) {
+  const navigate = useNavigate();
   const onOrderChange = () => {
     const { actions, librarySortKey, libraryAscending } = props;
     actions.playlistSort(librarySortKey, !libraryAscending);
@@ -25,9 +27,9 @@ const SelectSettings = memo(function SelectSettings(props) {
   };
 
   const onSignOut = () => {
-    const { actions, history } = props;
+    const { actions } = props;
     actions.signOut();
-    history.push("/");
+    navigate("/");
   };
 
   const {

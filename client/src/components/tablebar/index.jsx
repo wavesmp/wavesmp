@@ -1,15 +1,17 @@
 import { memo, useState } from "react";
+import { useNavigate } from "react-router";
 
 import "./index.css";
 
 const TableBar = memo(function TableBar({
   buttons,
   onSettingsClick,
-  history,
   pathname,
   qp,
   routerSearchString,
 }) {
+  const navigate = useNavigate();
+
   /* Initialized from the router once. Typing does not update the router
    * until the search is applied */
   const [searchValue, setSearchValue] = useState(routerSearchString);
@@ -18,7 +20,7 @@ const TableBar = memo(function TableBar({
     const newQp = new URLSearchParams(qp);
     newQp.set("page", 0);
     newQp.set("search", searchString);
-    history.push({ pathname, search: `${newQp}` });
+    navigate({ pathname, search: `${newQp}` });
   }
 
   function onChange(ev) {

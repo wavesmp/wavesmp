@@ -1,23 +1,24 @@
 import ObjectID from "bson-objectid";
-import * as musicmetadata from "music-metadata-browser";
+import { parseBlob } from "music-metadata";
 
 /* Given the raw file to be uploaded,
  * return file metadata in an object. */
 async function processTrack(file) {
-  const metadata = await musicmetadata.parseBlob(file, {
-    duration: true,
-    native: true,
-  });
+  const metadata = await parseBlob(file, { duration: true });
   const { common, format } = metadata;
-  const { title, artists, albumartist, album, genre } = common;
+  /* A list of artists is only set when the file stores several. Otherwise,
+   * the single credit is in artist */
+  const { title, artist, artists, albumArtist, album, genres } = common;
   const { duration } = format;
   const upload = {
     id: ObjectID().toString(),
     source: "file",
     title: title && title.trim(),
-    artist: (artists && artists.map(trim).join(", ")) || albumartist,
+    artist:
+      (artists ? artists.map(trim).join(", ") : artist && artist.trim()) ||
+      albumArtist,
     album: album && album.trim(),
-    genre: genre && genre.map(trim).join(", "),
+    genre: genres && genres.map(trim).join(", "),
     duration,
     file,
   };

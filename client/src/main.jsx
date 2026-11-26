@@ -1,14 +1,11 @@
-import "./polyfills";
-
-import { createBrowserHistory } from "history";
-import { render } from "react-dom";
-import { Router } from "react-router";
-import { Switch } from "react-router-dom";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router";
 
 import { Auth } from "src/auth";
 import { LocalState } from "src/localState";
 import { Player } from "src/player";
 import { Provider } from "src/providers/provider";
+import { RouterListener } from "src/providers/routerListener";
 import { WavesSocket } from "src/socket";
 
 import "./styles";
@@ -21,7 +18,6 @@ import { config } from "./config/config";
 
 const { googleAuthOpts, s3Opts, server, defaultTrackSource } = config;
 
-const history = createBrowserHistory();
 const ws = new WavesSocket(() => new WebSocket(server));
 const auth = new Auth({ google: googleAuthOpts });
 const player = new Player({ s3: s3Opts, file: undefined, defaultTrackSource });
@@ -30,14 +26,28 @@ const localState = new LocalState(localStorage);
 /* Side effect objects, passed to actions */
 const extraArgument = { localState, player, ws, auth };
 
-render(
-  <Provider extraArgument={extraArgument} history={history}>
-    <Router history={history}>
-      <Switch>
-        <PublicRoute path="/" exact component={Site} />
-        <PrivateRoute path="/" component={MainApp} />
-      </Switch>
-    </Router>
+createRoot(document.getElementById("app")).render(
+  <Provider extraArgument={extraArgument}>
+    <BrowserRouter>
+      <RouterListener />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <Site />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <PrivateRoute>
+              <MainApp />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   </Provider>,
-  document.getElementById("app"),
 );

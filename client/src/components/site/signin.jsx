@@ -1,10 +1,13 @@
 import { memo, useEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 import { routes } from "src/constants";
 
 // import { UserInput } from "./userInput";
 
-const SignIn = memo(function SignIn({ actions, history, location }) {
+const SignIn = memo(function SignIn({ actions }) {
+  const location = useLocation();
+  const navigate = useNavigate();
   const googleButtonRef = useRef(null);
 
   async function signIn() {
@@ -15,7 +18,7 @@ const SignIn = memo(function SignIn({ actions, history, location }) {
       const from = (location.state && location.state.from) || {
         pathname: routes.defaultRoute,
       };
-      history.push(from);
+      navigate(from);
     } catch (err) {
       actions.toastErr(err.error || `${err}`);
       console.log("Error signing in");

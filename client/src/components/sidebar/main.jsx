@@ -1,9 +1,9 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import * as constants from "src/constants";
 
-const MainBar = memo(function MainBar(props) {
+const MainBar = memo(function MainBar({ ref, ...props }) {
   const onPlaylistClick = () => {
     const { actions } = props;
     actions.sidebarSet(true);
@@ -30,7 +30,7 @@ const MainBar = memo(function MainBar(props) {
     },
   ];
   return (
-    <div id="sidebar-container" className={className}>
+    <div id="sidebar-container" className={className} ref={ref}>
       <ul className="nav">
         {menuBarItems.map((sample) => (
           <PlaylistLink

@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Navigate, useLocation } from "react-router";
 
 import { routes } from "src/constants";
 import { useAccount } from "src/providers/hooks";
@@ -29,62 +29,42 @@ function useLoadingTimedOut() {
 }
 
 /* Redirect to site if not authenticated */
-const PrivateRoute = memo(function PrivateRoute({
-  component: Component,
-  path,
-}) {
+const PrivateRoute = memo(function PrivateRoute({ children }) {
   const { fetchingUser, user } = useAccount();
   const loadingTimedOut = useLoadingTimedOut();
+  const location = useLocation();
 
-  function renderRoute(routeProps) {
-    if (fetchingUser) {
-      if (loadingTimedOut) {
-        return <LoadingComponent />;
-      }
-      /* May want to display loading icon if this takes long */
-      return null;
+  if (fetchingUser) {
+    if (loadingTimedOut) {
+      return <LoadingComponent />;
     }
-    if (user) {
-      return <Component {...routeProps} />;
-    }
-    return (
-      <Redirect
-        to={{
-          pathname: "/",
-          state: { from: routeProps.location },
-        }}
-      />
-    );
+    /* May want to display loading icon if this takes long */
+    return null;
   }
-
-  return <Route path={path} render={renderRoute} />;
+  if (user) {
+    return children;
+  }
+  return <Navigate to="/" state={{ from: location }} replace />;
 });
 
 /* Redirect to app if authenticated */
-const PublicRoute = memo(function PublicRoute({
-  component: Component,
-  path,
-  exact,
-}) {
+const PublicRoute = memo(function PublicRoute({ children }) {
   const { fetchingUser, user } = useAccount();
   const loadingTimedOut = useLoadingTimedOut();
+  const location = useLocation();
 
-  function renderRoute(routeProps) {
-    if (fetchingUser) {
-      if (loadingTimedOut) {
-        return <LoadingComponent />;
-      }
-      return null;
+  if (fetchingUser) {
+    if (loadingTimedOut) {
+      return <LoadingComponent />;
     }
-    if (user) {
-      const defaultFrom = { from: { pathname: routes.defaultRoute } };
-      const { from } = routeProps.location.state || defaultFrom;
-      return <Redirect to={from} />;
-    }
-    return <Component {...routeProps} />;
+    return null;
   }
-
-  return <Route path={path} exact={exact} render={renderRoute} />;
+  if (user) {
+    const defaultFrom = { from: { pathname: routes.defaultRoute } };
+    const { from } = location.state || defaultFrom;
+    return <Navigate to={from} replace />;
+  }
+  return children;
 });
 
 export { PrivateRoute, PublicRoute };

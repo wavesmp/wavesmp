@@ -23,7 +23,6 @@ const TablePageData = memo(function TablePageData(props) {
     qp,
     routerSearchString,
     onSettingsClick,
-    history,
     loaded,
     numItems,
     ...other
@@ -64,7 +63,6 @@ const TablePageData = memo(function TablePageData(props) {
             qp={qp}
             routerSearchString={routerSearchString}
             onSettingsClick={onSettingsClick}
-            history={history}
           />
           <h3 className="tablepage-msg">No data</h3>
         </div>
@@ -80,7 +78,6 @@ const TablePageData = memo(function TablePageData(props) {
         qp={qp}
         routerSearchString={routerSearchString}
         onSettingsClick={onSettingsClick}
-        history={history}
       />
       <Table {...other} pathname={pathname} qp={qp} numItems={numItems} />
     </>

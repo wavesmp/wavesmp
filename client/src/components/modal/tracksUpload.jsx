@@ -1,4 +1,5 @@
 import { memo, useState } from "react";
+import { useLocation } from "react-router";
 
 import { UPLOADS_NAME as playlistName } from "src/constants";
 import { useActions, useSelectorState } from "src/providers/hooks";
@@ -7,10 +8,11 @@ import { getOrCreatePlaylistSelectors } from "src/selectors";
 import { uploadColumns } from "../table/columns";
 import { Modal } from "./util";
 
-const TracksUpload = memo(function TracksUpload(ownProps) {
+const TracksUpload = memo(function TracksUpload() {
+  const location = useLocation();
   const actions = useActions();
   const selectorState = useSelectorState();
-  const props = selectStateProps(selectorState, ownProps);
+  const props = selectStateProps(selectorState, { location });
   const [uploading, setUploading] = useState(false);
 
   async function onUpload() {
@@ -73,7 +75,7 @@ const TracksUpload = memo(function TracksUpload(ownProps) {
   );
 });
 
-function selectStateProps(state, ownProps) {
+function selectStateProps(state, route) {
   const { getPlaylistProps } = getOrCreatePlaylistSelectors(
     playlistName,
     URLSearchParams,
@@ -83,7 +85,7 @@ function selectStateProps(state, ownProps) {
   const { account, tracks } = state;
   const { playing } = tracks;
   const { isPlaying } = playing;
-  const { location } = ownProps;
+  const { location } = route;
   const { search } = location;
   const columns = uploadColumns.filter((c) => account.columns.has(c.title));
   return {
