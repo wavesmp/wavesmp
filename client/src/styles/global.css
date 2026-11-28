@@ -155,23 +155,32 @@ table input[type="checkbox"] {
   top: -2px;
 }
 
-/* Fade effects for CSSTransitionGroup (src/components/transitions) */
-.fade-enter {
-  opacity: 0.01;
-}
-
-.fade-enter.fade-enter-active {
+/* Fades for elements that stay mounted (e.g. the track player). Hidden
+ * elements fade out, then are not visible to clicks or focus */
+.fade {
   opacity: 1;
   transition: opacity 800ms ease-in;
 }
 
-.fade-exit {
-  opacity: 1;
+.fade.fade-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 300ms ease-in,
+    visibility 0s linear 300ms;
 }
 
-.fade-exit.fade-exit-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
+/* Fades for elements as they mount and before they unmount (e.g. toasts) */
+@keyframes fade-in {
+  from {
+    opacity: 0.01;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
 }
 
 .shelf {

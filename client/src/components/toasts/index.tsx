@@ -1,8 +1,7 @@
-import type { JSX, MouseEvent } from "react";
-import { memo } from "react";
+import type { AnimationEvent, CSSProperties, JSX, MouseEvent } from "react";
+import { memo, useState } from "react";
 
-import { CSSTransitionGroup } from "src/components/transitions";
-import { TOAST_ID_ATTR, toastTypes } from "src/constants";
+import { TOAST_ID_ATTR, TOAST_TIMEOUT, toastTypes } from "src/constants";
 import type { BoundActions } from "src/providers/dispatcher";
 import type { Toast, ToastType } from "src/types/stateTypes";
 
@@ -18,30 +17,69 @@ interface ToastsProps {
   toasts: Toast[];
 }
 
+/* The toast's timeout, for its fade out (see index.css) */
+function getToastStyle(toast: Toast): CSSProperties {
+  const timeout = toast.timeout ?? TOAST_TIMEOUT;
+  return { "--toast-timeout": `${timeout.toString()}ms` } as CSSProperties;
+}
+
+/*
+ * Toasts fade in as they are added. They fade out before their timeout
+ * removes them, or when closed, and are removed once the fade out ends
+ */
 const Toasts = memo(function Toasts(props: ToastsProps): JSX.Element {
+  const { actions, toasts } = props;
+  /* Toasts fading out after a close click */
+  const [closingIds, setClosingIds] = useState<ReadonlySet<number>>(
+    () => new Set(),
+  );
+
   const onCloseClick = (ev: MouseEvent<HTMLElement>): void => {
-    const { actions } = props;
+    const toastId = parseInt(
+      ev.currentTarget.getAttribute(TOAST_ID_ATTR) ?? "",
+      10,
+    );
+    setClosingIds((ids) => new Set(ids).add(toastId));
+  };
+
+  const onAnimationEnd = (ev: AnimationEvent<HTMLElement>): void => {
+    if (ev.target !== ev.currentTarget || ev.animationName !== "fade-out") {
+      return;
+    }
     const toastId = parseInt(
       ev.currentTarget.getAttribute(TOAST_ID_ATTR) ?? "",
       10,
     );
     actions.toastRemove(toastId);
+    setClosingIds((ids) => {
+      if (!ids.has(toastId)) {
+        return ids;
+      }
+      const remaining = new Set(ids);
+      remaining.delete(toastId);
+      return remaining;
+    });
   };
 
-  const { toasts } = props;
   return (
     <div className="toasts-container">
-      <CSSTransitionGroup
-        transitionName="fade"
-        transitionEnterTimeout={800}
-        transitionLeaveTimeout={300}
-      >
+      <span>
         {toasts.map((toast) => {
           const { type, msg } = toast;
           const iconClass = ICONS[type];
           const lowerType = type.toLowerCase();
+          let className = "toast-container";
+          if (toast.id !== undefined && closingIds.has(toast.id)) {
+            className += " toast-container-closing";
+          }
           return (
-            <div key={toast.id} className="toast-container">
+            <div
+              key={toast.id}
+              className={className}
+              style={getToastStyle(toast)}
+              data-toast={toast.id}
+              onAnimationEnd={onAnimationEnd}
+            >
               <div className={`toast-bar toast-bar-${lowerType}`} />
               <div className="toast-content">
                 <div
@@ -66,7 +104,7 @@ const Toasts = memo(function Toasts(props: ToastsProps): JSX.Element {
             </div>
           );
         })}
-      </CSSTransitionGroup>
+      </span>
     </div>
   );
 });

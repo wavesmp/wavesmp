@@ -1,4 +1,4 @@
-import type { ChangeEvent, JSX, Ref, SyntheticEvent } from "react";
+import type { ChangeEvent, JSX, SyntheticEvent } from "react";
 import { memo, useEffect, useState } from "react";
 
 import type { BoundActions } from "src/providers/dispatcher";
@@ -7,14 +7,12 @@ import type { Track } from "src/types/trackTypes";
 import "./trackslider.css";
 
 interface TrackSliderProps {
-  ref?: Ref<HTMLInputElement>;
   actions: BoundActions;
   /* The slider is only shown for a playing track */
   track: Pick<Track, "duration">;
 }
 
 const TrackSlider = memo(function TrackSlider({
-  ref,
   actions,
   track,
 }: TrackSliderProps): JSX.Element {
@@ -53,7 +51,6 @@ const TrackSlider = memo(function TrackSlider({
   const value = seeking ? seekingValue : currentTime / track.duration;
   return (
     <input
-      ref={ref}
       type="range"
       min="0.0"
       max="1.0"

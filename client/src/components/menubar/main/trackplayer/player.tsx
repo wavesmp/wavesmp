@@ -1,4 +1,4 @@
-import type { JSX, Ref } from "react";
+import type { JSX } from "react";
 import { memo } from "react";
 
 import type { BoundActions } from "src/providers/dispatcher";
@@ -114,18 +114,11 @@ const RightButtons = memo(function RightButtons(
   );
 });
 
-interface PlayerProps extends ButtonsProps {
-  ref?: Ref<HTMLDivElement>;
-}
-
-const Player = memo(function Player({
-  ref,
-  ...props
-}: PlayerProps): JSX.Element {
+const Player = memo(function Player(props: ButtonsProps): JSX.Element {
   const { playing, actions } = props;
   const { track } = playing;
   return (
-    <div className="trackplayer" ref={ref}>
+    <div className="trackplayer">
       <LeftButtons playing={playing} actions={actions} />
       <TrackInfo trackTitle={track?.title} trackArtist={track?.artist} />
       <RightButtons playing={playing} actions={actions} />

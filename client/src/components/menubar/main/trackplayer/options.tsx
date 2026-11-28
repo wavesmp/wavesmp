@@ -1,4 +1,4 @@
-import type { JSX, MouseEvent, Ref } from "react";
+import type { JSX, MouseEvent } from "react";
 import { memo } from "react";
 
 import { menuTypes } from "src/constants";
@@ -84,17 +84,10 @@ const RightButtons = memo(function RightButtons({
   );
 });
 
-interface OptionsProps extends RightButtonsProps {
-  ref?: Ref<HTMLDivElement>;
-}
-
-const Options = memo(function Options({
-  ref,
-  ...props
-}: OptionsProps): JSX.Element {
+const Options = memo(function Options(props: RightButtonsProps): JSX.Element {
   const { actions, filteredSelection, index, playlistName } = props;
   return (
-    <div className="trackplayer" ref={ref}>
+    <div className="trackplayer">
       <LeftButtons actions={actions} />
       <TrackInfo filteredSelection={filteredSelection} />
       <RightButtons

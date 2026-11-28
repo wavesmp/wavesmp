@@ -11,6 +11,19 @@
   border-radius: 5px;
 }
 
+/* Fade in, then fade out to end at the toast's timeout, when it is removed.
+ * --toast-timeout is set on each toast (see index.tsx) */
+.toast-container {
+  animation:
+    fade-in 800ms ease-in,
+    fade-out 300ms ease-in calc(var(--toast-timeout) - 300ms) forwards;
+}
+
+/* Closed toasts fade out now. They are removed when it ends */
+.toast-container.toast-container-closing {
+  animation: fade-out 300ms ease-in forwards;
+}
+
 .toast-bar {
   width: 5px;
   border-top-left-radius: 5px;

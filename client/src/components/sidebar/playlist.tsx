@@ -1,4 +1,4 @@
-import type { DragEvent, JSX, Ref } from "react";
+import type { DragEvent, JSX } from "react";
 import { memo } from "react";
 import { Link } from "react-router";
 
@@ -7,16 +7,16 @@ import type { BoundActions } from "src/providers/dispatcher";
 import type { Playlist, Playlists } from "src/types/playlistTypes";
 
 interface PlaylistBarProps {
-  ref?: Ref<HTMLDivElement>;
+  /* Hidden while the other bar is shown. Stays mounted to animate */
+  hidden: boolean;
   actions: BoundActions;
   playlists: Playlists;
   isSliderVisible: boolean;
 }
 
-const PlaylistBar = memo(function PlaylistBar({
-  ref,
-  ...props
-}: PlaylistBarProps): JSX.Element {
+const PlaylistBar = memo(function PlaylistBar(
+  props: PlaylistBarProps,
+): JSX.Element {
   const onBackClick = (): void => {
     const { actions } = props;
     actions.sidebarSet(false);
@@ -56,7 +56,7 @@ const PlaylistBar = memo(function PlaylistBar({
     ev.preventDefault();
   };
 
-  const { playlists, isSliderVisible } = props;
+  const { playlists, isSliderVisible, hidden } = props;
   const playlistObjs = Object.values(playlists ?? {}).filter(
     (p): p is Playlist =>
       p !== undefined &&
@@ -64,12 +64,15 @@ const PlaylistBar = memo(function PlaylistBar({
       p.name !== constants.LIBRARY_NAME &&
       p.name !== constants.UPLOADS_NAME,
   );
-  let className = "sidebar-container-wide";
+  let className = "sidebar-container sidebar-container-wide";
   if (isSliderVisible) {
     className += " sidebar-container-player-visible";
   }
+  if (hidden) {
+    className += " sidebar-container-hidden";
+  }
   return (
-    <div id="sidebar-container" className={className} ref={ref}>
+    <div className={className}>
       <ul className="nav">
         <li>
           <span onClick={onBackClick}>

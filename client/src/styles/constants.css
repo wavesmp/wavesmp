@@ -9,8 +9,7 @@
   /* Keep in sync with MENU_WIDTH in src/constants */
   --menu-width: 200px;
 
-  /* Sidebar transitions. Keep in sync with SIDEBAR_ENTER_TIMEOUT and
-   * SIDEBAR_LEAVE_TIMEOUT in src/constants */
+  /* Sidebar transitions. The shown bar enters after the hidden bar leaves */
   --sidebar-enter-timeout: 500ms;
   --sidebar-leave-timeout: 250ms;
 

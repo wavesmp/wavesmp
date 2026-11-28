@@ -1,9 +1,7 @@
 import { actionTypes } from "src/actionTypes";
-import { toastTypes } from "src/constants";
+import { TOAST_TIMEOUT, toastTypes } from "src/constants";
 import type { Thunk, WavesAction } from "src/types/actionTypes";
 import type { Toast } from "src/types/stateTypes";
-
-const DEFAULT_TIMEOUT = 3000;
 
 let id = 0;
 
@@ -21,7 +19,7 @@ function toastAdd(toast: Toast): Thunk<void> {
     dispatch({ type: actionTypes.TOAST_ADD, toast });
     setTimeout(
       () => dispatch(toastRemove(toastId)),
-      toast.timeout ?? DEFAULT_TIMEOUT,
+      toast.timeout ?? TOAST_TIMEOUT,
     );
   };
 }

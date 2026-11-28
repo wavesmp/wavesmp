@@ -1,7 +1,8 @@
 import type { JSX, MouseEvent } from "react";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
-import { CSSTransitionGroup } from "src/components/transitions";
+
+import { useLastVisible } from "src/components/transitions";
 
 import { menuTypes, routes } from "src/constants";
 import type { BoundActions } from "src/providers/dispatcher";
@@ -63,8 +64,6 @@ const MenuBar = memo(function MenuBar({
     });
   }
 
-  let trackSlider = null;
-  let trackPlayer = null;
   let logoClassName = "menubar-main-logo";
   let logoNameClassName = "menubar-main-logo-name";
   if (isPlayerVisible) {
@@ -80,24 +79,16 @@ const MenuBar = memo(function MenuBar({
 
     logoClassName += " menubar-player-visible";
     logoNameClassName += " menubar-player-visible";
-    trackPlayer = (
-      <TrackPlayer
-        key={0}
-        actions={actions}
-        menubar={menubar}
-        index={index}
-        filteredSelection={filteredSelection}
-        playlistName={playlistName}
-        playing={playing}
-      />
-    );
   }
 
-  if (playing.track) {
-    trackSlider = (
-      <TrackSlider key={0} actions={actions} track={playing.track} />
-    );
-  }
+  /* The player and slider stay mounted, so they can fade out. While
+   * fading out, they show their last content */
+  const playerProps = useMemo(
+    () => ({ menubar, index, filteredSelection, playlistName, playing }),
+    [menubar, index, filteredSelection, playlistName, playing],
+  );
+  const shownPlayerProps = useLastVisible(playerProps, isPlayerVisible);
+  const sliderTrack = useLastVisible(playing.track, isSliderVisible);
 
   return (
     <header className="menubar-main-header">
@@ -105,13 +96,9 @@ const MenuBar = memo(function MenuBar({
         <LogoSvg className={logoClassName} />
         <span className={logoNameClassName}>WAVES</span>
       </Link>
-      <CSSTransitionGroup
-        transitionName="fade"
-        transitionEnterTimeout={800}
-        transitionLeaveTimeout={300}
-      >
-        {trackPlayer}
-      </CSSTransitionGroup>
+      <span className={isPlayerVisible ? "fade" : "fade fade-hidden"}>
+        <TrackPlayer actions={actions} {...shownPlayerProps} />
+      </span>
       <i
         className="fa fa-lg fa-globe menu-bar-icon"
         onClick={onNotificationsClick}
@@ -120,14 +107,9 @@ const MenuBar = memo(function MenuBar({
         className="fa fa-lg fa-user menu-bar-icon"
         onClick={onUserSettingsClick}
       />
-      <CSSTransitionGroup
-        component="div"
-        transitionName="fade"
-        transitionEnterTimeout={800}
-        transitionLeaveTimeout={300}
-      >
-        {trackSlider}
-      </CSSTransitionGroup>
+      <div className={isSliderVisible ? "fade" : "fade fade-hidden"}>
+        {sliderTrack && <TrackSlider actions={actions} track={sliderTrack} />}
+      </div>
     </header>
   );
 });

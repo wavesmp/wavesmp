@@ -1,4 +1,4 @@
-import type { JSX, Ref } from "react";
+import type { JSX } from "react";
 import { memo } from "react";
 import { Link } from "react-router";
 
@@ -7,26 +7,27 @@ import type { BoundActions } from "src/providers/dispatcher";
 import type { Playlist, Playlists } from "src/types/playlistTypes";
 
 interface MainBarProps {
-  ref?: Ref<HTMLDivElement>;
+  /* Hidden while the other bar is shown. Stays mounted to animate */
+  hidden: boolean;
   actions: BoundActions;
   pathname: string;
   playlists: Playlists;
   isSliderVisible: boolean;
 }
 
-const MainBar = memo(function MainBar({
-  ref,
-  ...props
-}: MainBarProps): JSX.Element {
+const MainBar = memo(function MainBar(props: MainBarProps): JSX.Element {
   const onPlaylistClick = (): void => {
     const { actions } = props;
     actions.sidebarSet(true);
   };
 
-  const { pathname, playlists, isSliderVisible } = props;
-  let className = "sidebar-container-narrow";
+  const { pathname, playlists, isSliderVisible, hidden } = props;
+  let className = "sidebar-container sidebar-container-narrow";
   if (isSliderVisible) {
     className += " sidebar-container-player-visible";
+  }
+  if (hidden) {
+    className += " sidebar-container-hidden";
   }
 
   const menuBarItems = [
@@ -44,7 +45,7 @@ const MainBar = memo(function MainBar({
     },
   ];
   return (
-    <div id="sidebar-container" className={className} ref={ref}>
+    <div className={className}>
       <ul className="nav">
         {menuBarItems.map((sample) => (
           <PlaylistLink
