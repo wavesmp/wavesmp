@@ -121,7 +121,6 @@ interface TableProps {
   orderable: boolean;
   playlistName: string;
   menubar: boolean;
-  theme: string;
 }
 
 const Table = memo(function Table({
@@ -143,7 +142,6 @@ const Table = memo(function Table({
   orderable,
   playlistName,
   menubar,
-  theme,
 }: TableProps): JSX.Element {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingTitle, setEditingTitle] = useState<string | null>(null);
@@ -369,7 +367,7 @@ const Table = memo(function Table({
     gesture.clearOnMouseUpTrackId = null;
 
     const numSelected = getFilteredSelection().size;
-    const dragGhost = getDragCanvas(numSelected, theme);
+    const dragGhost = getDragCanvas(numSelected);
     gesture.dragGhost = dragGhost;
 
     // 1/21/2019 - Must be appended to dom for chrome

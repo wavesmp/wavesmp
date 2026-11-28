@@ -1,4 +1,5 @@
 import { actionTypes } from "src/actionTypes";
+import { MENU_WIDTH } from "src/constants";
 import type { WavesAction } from "src/types/actionTypes";
 import type { Menu } from "src/types/stateTypes";
 

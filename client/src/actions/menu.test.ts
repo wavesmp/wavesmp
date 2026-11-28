@@ -15,7 +15,6 @@ describe("#menu()", () => {
 
   it("#menuSet() to the right", () => {
     vi.stubGlobal("window", { pageXOffset: 0, innerWidth: 300 });
-    vi.stubGlobal("MENU_WIDTH", 200);
 
     const menu = {
       type: menuTypes.TRACK,
@@ -40,7 +39,6 @@ describe("#menu()", () => {
 
   it("#menuSet() to the left", () => {
     vi.stubGlobal("window", { pageXOffset: 0, innerWidth: 300 });
-    vi.stubGlobal("MENU_WIDTH", 200);
 
     const menu = {
       type: menuTypes.TRACK,

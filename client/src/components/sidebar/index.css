@@ -72,7 +72,8 @@
 #sidebar-container.mainbartransition-enter.mainbartransition-enter-active {
   bottom: 0px;
   transform: translateY(0%);
-  transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
+  transition: transform var(--sidebar-leave-timeout) ease
+    var(--sidebar-leave-timeout);
 }
 
 #sidebar-container.mainbartransition-exit {
@@ -83,7 +84,7 @@
 #sidebar-container.mainbartransition-exit.mainbartransition-exit-active {
   bottom: 0px;
   transform: translateY(100%);
-  transition: transform SIDEBAR_LEAVE_TIMEOUTms ease;
+  transition: transform var(--sidebar-leave-timeout) ease;
 }
 
 /* Playlist bar transition */
@@ -95,7 +96,8 @@
 #sidebar-container.playlistbartransition-enter.playlistbartransition-enter-active {
   bottom: 0px;
   transform: translateY(0%);
-  transition: transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
+  transition: transform var(--sidebar-leave-timeout) ease
+    var(--sidebar-leave-timeout);
 }
 
 #sidebar-container.playlistbartransition-exit {
@@ -106,7 +108,7 @@
 #sidebar-container.playlistbartransition-exit.playlistbartransition-exit-active {
   bottom: 0px;
   transform: translateY(100%);
-  transition: transform SIDEBAR_LEAVE_TIMEOUTms ease;
+  transition: transform var(--sidebar-leave-timeout) ease;
 }
 
 @media only screen and (min-width: 768px) {
@@ -148,8 +150,8 @@
     width: var(--sidebar-width);
     transform: rotateY(0deg);
     transition:
-      transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms,
-      width SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
+      transform var(--sidebar-leave-timeout) ease var(--sidebar-leave-timeout),
+      width var(--sidebar-leave-timeout) ease var(--sidebar-leave-timeout);
   }
 
   #sidebar-container.mainbartransition-exit {
@@ -161,8 +163,8 @@
     width: var(--transitionbar-width);
     transform: rotateY(90deg);
     transition:
-      transform SIDEBAR_LEAVE_TIMEOUTms ease,
-      width SIDEBAR_LEAVE_TIMEOUTms ease;
+      transform var(--sidebar-leave-timeout) ease,
+      width var(--sidebar-leave-timeout) ease;
   }
 
   /* Playlist bar transition */
@@ -175,8 +177,8 @@
     width: var(--playlistbar-width);
     transform: rotateY(0deg);
     transition:
-      transform SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms,
-      width SIDEBAR_LEAVE_TIMEOUTms ease SIDEBAR_LEAVE_TIMEOUTms;
+      transform var(--sidebar-leave-timeout) ease var(--sidebar-leave-timeout),
+      width var(--sidebar-leave-timeout) ease var(--sidebar-leave-timeout);
   }
 
   #sidebar-container.playlistbartransition-exit {
@@ -188,8 +190,8 @@
     width: var(--transitionbar-width);
     transform: rotateY(90deg);
     transition:
-      transform SIDEBAR_LEAVE_TIMEOUTms ease,
-      width SIDEBAR_LEAVE_TIMEOUTms ease;
+      transform var(--sidebar-leave-timeout) ease,
+      width var(--sidebar-leave-timeout) ease;
   }
 }
 

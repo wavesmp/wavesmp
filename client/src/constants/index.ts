@@ -2,6 +2,13 @@ const NOW_PLAYING_NAME = "__nowplaying";
 const LIBRARY_NAME = "__library";
 const UPLOADS_NAME = "__upload";
 
+/* Layout values JS needs. Keep in sync with --menu-width and
+ * --sidebar-enter-timeout / --sidebar-leave-timeout in
+ * src/styles/constants.css */
+const MENU_WIDTH = 200;
+const SIDEBAR_ENTER_TIMEOUT = 500;
+const SIDEBAR_LEAVE_TIMEOUT = 250;
+
 const TOAST_ID_ATTR = "data-toast";
 const TRACK_ID_ATTR = "data-trackid";
 const INDEX_ATTR = "data-index";
@@ -59,10 +66,13 @@ export {
   INDEX_ATTR,
   LIBRARY_NAME,
   MENU_DATA_VALUE,
+  MENU_WIDTH,
   MODAL_DATA_VALUE,
   NOW_PLAYING_NAME,
   PLAYLIST_NAME_ATTR,
   PLAYLIST_TYPE,
+  SIDEBAR_ENTER_TIMEOUT,
+  SIDEBAR_LEAVE_TIMEOUT,
   TITLE_ATTR,
   TOAST_ID_ATTR,
   TOGGLE_DATA_KEY,

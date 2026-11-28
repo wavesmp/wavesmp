@@ -12,7 +12,6 @@ RUN --mount=type=cache,target=/root/.npm \
 # Build the production assets
 COPY \
   .prettierignore \
-  buildConstants.ts \
   eslint.config.js \
   index.html \
   tsconfig.json \
