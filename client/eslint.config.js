@@ -15,7 +15,7 @@ export default defineConfig([
     "public",
     "vendor",
     /* The local config is gitignored */
-    "src/config/config.ts",
+    "src/config",
   ]),
   {
     settings: {
