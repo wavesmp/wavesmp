@@ -13,7 +13,6 @@ export default defineConfig([
     "coverage",
     "dist",
     "public",
-    "vendor",
     /* The local config is gitignored */
     "src/config",
   ]),

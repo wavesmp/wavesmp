@@ -6,9 +6,6 @@ type OnToastErr = (msg: string) => void;
 
 /* A track that failed to delete */
 interface DeleteErr {
-  Key: string;
-  Code: string;
-  Message: string;
   track: Track;
   code: string;
   message: string;
