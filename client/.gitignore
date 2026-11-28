@@ -8,6 +8,3 @@ node_modules
 
 # Vitest code coverage reports
 /coverage
-
-# TODO remove reliance on vendor code
-/vendor

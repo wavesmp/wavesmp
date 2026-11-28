@@ -8,7 +8,3 @@ package-lock.json
 # Web client config dir. Include entire dir,
 # since Kubernetes mounts additional files
 /src/config
-
-# TODO remove reliance on vendor code
-/vendor
-/public/aws-sdk-*.js
