@@ -1,5 +1,18 @@
+const DRAG_BOX_WIDTH = 180;
+const DRAG_BOX_HEIGHT = 50;
+const DRAG_BOX_BORDER_RADIUS = 5;
+const DRAG_BOX_BORDER_WIDTH = 5;
+
+/* A color from the CSS custom properties (see src/styles/constants.css).
+ * The theme colors follow the theme class on the root element */
+function getCssColor(name: string): string {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(name)
+    .trim();
+}
+
 /* The image shown while dragging tracks */
-function getDragCanvas(numSelected: number, theme: string): HTMLCanvasElement {
+function getDragCanvas(numSelected: number): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
   if (!ctx) {
@@ -9,7 +22,7 @@ function getDragCanvas(numSelected: number, theme: string): HTMLCanvasElement {
   canvas.width = DRAG_BOX_WIDTH;
   canvas.height = DRAG_BOX_HEIGHT;
 
-  ctx.fillStyle = "DRAG_BOX_BORDER_COLOR";
+  ctx.fillStyle = getCssColor("--drag-box-border-color");
   fillRoundRect(
     ctx,
     0,
@@ -19,7 +32,7 @@ function getDragCanvas(numSelected: number, theme: string): HTMLCanvasElement {
     DRAG_BOX_BORDER_RADIUS,
   );
 
-  ctx.fillStyle = getBackgroundColor(theme);
+  ctx.fillStyle = getCssColor("--drag-box-background-color");
   ctx.fillRect(
     DRAG_BOX_BORDER_WIDTH,
     DRAG_BOX_BORDER_WIDTH,
@@ -27,7 +40,7 @@ function getDragCanvas(numSelected: number, theme: string): HTMLCanvasElement {
     DRAG_BOX_HEIGHT - 2 * DRAG_BOX_BORDER_WIDTH,
   );
 
-  ctx.fillStyle = getTextColor(theme);
+  ctx.fillStyle = getCssColor("--drag-box-text-color");
   ctx.textBaseline = "middle";
 
   ctx.font = '17px/1.42857143 "Open Sans", sans-serif';
@@ -61,20 +74,6 @@ function fillRoundRect(
   ctx.closePath();
 
   ctx.fill();
-}
-
-function getBackgroundColor(theme: string): string {
-  if (theme === "dark") {
-    return "DARK_DRAG_BOX_BACKGROUND_COLOR";
-  }
-  return "LIGHT_DRAG_BOX_BACKGROUND_COLOR";
-}
-
-function getTextColor(theme: string): string {
-  if (theme === "dark") {
-    return "DARK_DRAG_BOX_TEXT_COLOR";
-  }
-  return "LIGHT_DRAG_BOX_TEXT_COLOR";
 }
 
 export { getDragCanvas };

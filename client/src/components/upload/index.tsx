@@ -27,7 +27,7 @@ const Upload = memo(function Upload(): JSX.Element {
   const selectorState = useSelectorState();
   const layout = useLayout();
   const stateProps = selectStateProps(selectorState, location);
-  const { columns, isPlaying, pathname, qp, rowsPerPage, theme } = stateProps;
+  const { columns, isPlaying, pathname, qp, rowsPerPage } = stateProps;
   const numItems = stateProps.loaded ? stateProps.numItems : 0;
   const [dragging, setDragging] = useState(false);
 
@@ -149,7 +149,6 @@ const Upload = memo(function Upload(): JSX.Element {
         selection={selection}
         playlistName={playlistName}
         menubar={false}
-        theme={theme}
       />
     );
   }
@@ -207,7 +206,6 @@ type UploadStateProps = {
   qp: URLSearchParams;
   isPlaying: boolean;
   columns: Column[];
-  theme: string;
 } & PlaylistProps;
 
 function selectStateProps(
@@ -226,7 +224,6 @@ function selectStateProps(
     qp: getRouterQueryParams(undefined, search),
     isPlaying,
     columns,
-    theme: account.theme,
     ...getPlaylistProps(state, search),
   };
 }

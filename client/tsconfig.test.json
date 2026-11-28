@@ -10,8 +10,7 @@
     "src/**/*.test.tsx",
     "src/testUtil",
     "src/vite-env.d.ts",
-    "src/globals.d.ts",
-    "src/buildConstants.d.ts"
+    "src/globals.d.ts"
   ],
   "exclude": []
 }

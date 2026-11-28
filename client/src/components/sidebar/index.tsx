@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import { memo } from "react";
 
 import { CSSTransitionGroup } from "src/components/transitions";
+import { SIDEBAR_ENTER_TIMEOUT, SIDEBAR_LEAVE_TIMEOUT } from "src/constants";
 import type { BoundActions } from "src/providers/dispatcher";
 import type { Playlists } from "src/types/playlistTypes";
 import type { Playing } from "src/types/stateTypes";

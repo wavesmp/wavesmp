@@ -20,7 +20,6 @@ type PageStateProps = {
   isPlaying: boolean;
   columns: Column[];
   menubar: boolean;
-  theme: string;
   layout: Layout;
 } & PlaylistProps;
 
@@ -36,7 +35,6 @@ function selectPageProps(
   const { tracks, account, menubar, layout } = state;
   const { isPlaying } = tracks.playing;
   const { pathname, search } = location;
-  const { theme } = account;
   const columns = allColumns.filter((c) => account.columns?.has(c.title));
 
   return {
@@ -46,7 +44,6 @@ function selectPageProps(
     isPlaying,
     columns,
     menubar,
-    theme,
     layout,
     ...getPlaylistProps(state, search),
   };
